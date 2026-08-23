@@ -1,0 +1,353 @@
+# CMakeLists.txt for Icewall 2025 Quantum Security System
+# Copyright © 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+cmake_minimum_required(VERSION 3.16)
+project(Icewall2025 VERSION 1.0.0 LANGUAGES CXX)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Build type configuration
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Compiler flags
+if(MSVC)
+    add_compile_options(/W4 /permissive-)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+endif()
+
+# Output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+# Find required packages
+find_package(OpenSSL REQUIRED)
+find_package(Threads REQUIRED)
+
+# Optional packages
+find_package(PkgConfig QUIET)
+if(PkgConfig_FOUND)
+    pkg_check_modules(JSONCPP jsoncpp)
+    pkg_check_modules(WEBSOCKETPP websocketpp)
+endif()
+
+# Include directories
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${OPENSSL_INCLUDE_DIR}
+)
+
+# Source files
+set(ICEWALL_SOURCES
+    src/icewall_2025_quantum_security.cpp
+)
+
+set(ICEWALL_HEADERS
+    include/icewall_2025_quantum_security.hpp
+)
+
+# Demo executable
+add_executable(icewall_2025_demo
+    src/icewall_2025_demo.cpp
+    ${ICEWALL_SOURCES}
+)
+
+# Main library
+add_library(icewall2025 STATIC
+    ${ICEWALL_SOURCES}
+    ${ICEWALL_HEADERS}
+)
+
+# Shared library
+add_library(icewall2025_shared SHARED
+    ${ICEWALL_SOURCES}
+    ${ICEWALL_HEADERS}
+)
+
+# Set library properties
+set_target_properties(icewall2025 PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    OUTPUT_NAME "icewall2025"
+)
+
+set_target_properties(icewall2025_shared PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    OUTPUT_NAME "icewall2025"
+)
+
+# Link libraries
+target_link_libraries(icewall2025
+    PUBLIC
+        OpenSSL::SSL
+        OpenSSL::Crypto
+        Threads::Threads
+)
+
+target_link_libraries(icewall2025_shared
+    PUBLIC
+        OpenSSL::SSL
+        OpenSSL::Crypto
+        Threads::Threads
+)
+
+target_link_libraries(icewall_2025_demo
+    PRIVATE
+        icewall2025
+        OpenSSL::SSL
+        OpenSSL::Crypto
+        Threads::Threads
+)
+
+# Include directories for targets
+target_include_directories(icewall2025
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+target_include_directories(icewall2025_shared
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+# Compiler definitions
+target_compile_definitions(icewall2025 PRIVATE
+    ICEWALL_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
+    ICEWALL_VERSION_MINOR=${PROJECT_VERSION_MINOR}
+    ICEWALL_VERSION_PATCH=${PROJECT_VERSION_PATCH}
+)
+
+target_compile_definitions(icewall2025_shared PRIVATE
+    ICEWALL_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
+    ICEWALL_VERSION_MINOR=${PROJECT_VERSION_MINOR}
+    ICEWALL_VERSION_PATCH=${PROJECT_VERSION_PATCH}
+)
+
+# Platform-specific configurations
+if(WIN32)
+    target_compile_definitions(icewall2025 PRIVATE ICEWALL_PLATFORM_WINDOWS)
+    target_compile_definitions(icewall2025_shared PRIVATE ICEWALL_PLATFORM_WINDOWS)
+
+    # Windows-specific libraries
+    target_link_libraries(icewall2025 PUBLIC ws2_32 crypt32)
+    target_link_libraries(icewall2025_shared PUBLIC ws2_32 crypt32)
+    target_link_libraries(icewall_2025_demo PRIVATE ws2_32 crypt32)
+
+elseif(UNIX AND NOT APPLE)
+    target_compile_definitions(icewall2025 PRIVATE ICEWALL_PLATFORM_LINUX)
+    target_compile_definitions(icewall2025_shared PRIVATE ICEWALL_PLATFORM_LINUX)
+
+    # Linux-specific libraries
+    target_link_libraries(icewall2025 PUBLIC dl rt)
+    target_link_libraries(icewall2025_shared PUBLIC dl rt)
+    target_link_libraries(icewall_2025_demo PRIVATE dl rt)
+
+elseif(APPLE)
+    target_compile_definitions(icewall2025 PRIVATE ICEWALL_PLATFORM_MACOS)
+    target_compile_definitions(icewall2025_shared PRIVATE ICEWALL_PLATFORM_MACOS)
+
+    # macOS-specific libraries
+    find_library(COREFOUNDATION_LIBRARY CoreFoundation)
+    find_library(SECURITY_LIBRARY Security)
+    target_link_libraries(icewall2025 PUBLIC ${COREFOUNDATION_LIBRARY} ${SECURITY_LIBRARY})
+    target_link_libraries(icewall2025_shared PUBLIC ${COREFOUNDATION_LIBRARY} ${SECURITY_LIBRARY})
+    target_link_libraries(icewall_2025_demo PRIVATE ${COREFOUNDATION_LIBRARY} ${SECURITY_LIBRARY})
+endif()
+
+# Installation
+include(GNUInstallDirs)
+
+install(TARGETS icewall2025 icewall2025_shared icewall_2025_demo
+    EXPORT Icewall2025Targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(FILES ${ICEWALL_HEADERS}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Export targets
+install(EXPORT Icewall2025Targets
+    FILE Icewall2025Targets.cmake
+    NAMESPACE Icewall2025::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Icewall2025
+)
+
+# Create and install config files
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/Icewall2025ConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Icewall2025Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/Icewall2025Config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Icewall2025
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/Icewall2025Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/Icewall2025ConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Icewall2025
+)
+
+# Testing
+enable_testing()
+
+# Unit tests
+add_executable(icewall_tests
+    tests/test_quantum_security.cpp
+    tests/test_ai_analyzer.cpp
+    tests/test_firewall_engine.cpp
+    tests/test_threat_intelligence.cpp
+    tests/test_self_healing.cpp
+    tests/test_compliance_auditor.cpp
+    tests/test_real_time_monitor.cpp
+    tests/test_websocket_dashboard.cpp
+    tests/test_rest_api.cpp
+    ${ICEWALL_SOURCES}
+)
+
+target_link_libraries(icewall_tests
+    PRIVATE
+        icewall2025
+        OpenSSL::SSL
+        OpenSSL::Crypto
+        Threads::Threads
+)
+
+# Add test
+add_test(NAME icewall_unit_tests COMMAND icewall_tests)
+
+# Benchmarking
+add_executable(icewall_benchmarks
+    benchmarks/benchmark_firewall.cpp
+    benchmarks/benchmark_ai.cpp
+    benchmarks/benchmark_threat_detection.cpp
+    ${ICEWALL_SOURCES}
+)
+
+target_link_libraries(icewall_benchmarks
+    PRIVATE
+        icewall2025
+        OpenSSL::SSL
+        OpenSSL::Crypto
+        Threads::Threads
+)
+
+# Documentation
+find_package(Doxygen)
+if(Doxygen_FOUND)
+    set(DOXYGEN_PROJECT_NAME "Icewall 2025")
+    set(DOXYGEN_PROJECT_VERSION ${PROJECT_VERSION})
+    set(DOXYGEN_PROJECT_BRIEF "The Ultimate Quantum Security System")
+    set(DOXYGEN_INPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs)
+    set(DOXYGEN_GENERATE_HTML YES)
+    set(DOXYGEN_GENERATE_MAN YES)
+
+    doxygen_add_docs(doxygen
+        ${ICEWALL_HEADERS}
+        COMMENT "Generate documentation"
+    )
+endif()
+
+# Packaging
+set(CPACK_PACKAGE_NAME "Icewall2025")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Icewall 2025 - The Ultimate Quantum Security System")
+set(CPACK_PACKAGE_VENDOR "Medusa Initiative")
+set(CPACK_PACKAGE_CONTACT "security@medusainitiative.com")
+
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+
+# Debian package
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "D Hargreaves <security@medusainitiative.com>")
+set(CPACK_DEBIAN_PACKAGE_SECTION "security")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "openssl, libssl-dev")
+
+# RPM package
+set(CPACK_RPM_PACKAGE_LICENSE "Proprietary")
+set(CPACK_RPM_PACKAGE_GROUP "System/Security")
+
+include(CPack)
+
+# Print build summary
+message(STATUS "========================================")
+message(STATUS "Icewall 2025 Build Configuration")
+message(STATUS "========================================")
+message(STATUS "Version: ${PROJECT_VERSION}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "Platform: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "OpenSSL: ${OPENSSL_VERSION}")
+message(STATUS "Install Prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "========================================")
+
+# Custom targets
+add_custom_target(install-deps
+    COMMAND ${CMAKE_COMMAND} -E echo "Installing dependencies..."
+    COMMAND sudo apt-get update && sudo apt-get install -y libssl-dev libsodium-dev nlohmann-json3-dev libwebsocketpp-dev
+    COMMENT "Install system dependencies"
+)
+
+add_custom_target(run-demo
+    COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/icewall_2025_demo
+    DEPENDS icewall_2025_demo
+    COMMENT "Run Icewall 2025 demonstration"
+)
+
+add_custom_target(run-tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    DEPENDS icewall_tests
+    COMMENT "Run all tests"
+)
+
+add_custom_target(security-scan
+    COMMAND cppcheck --enable=all --std=c++17 --language=c++ --platform=unix64
+                     --suppress=missingIncludeSystem
+                     --inline-suppr
+                     --xml
+                     --xml-version=2
+                     ${ICEWALL_SOURCES} ${ICEWALL_HEADERS}
+                     2> cppcheck_results.xml
+    COMMENT "Run security code analysis"
+)
+
+# Build optimization for release builds
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT ipo_supported OUTPUT ipo_output)
+    if(ipo_supported)
+        set_property(TARGET icewall2025 PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+        set_property(TARGET icewall2025_shared PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+        set_property(TARGET icewall_2025_demo PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+        message(STATUS "Interprocedural optimization enabled")
+    endif()
+endif()
+
+# Sanitizers for debug builds
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(NOT MSVC)
+        add_compile_options(-fsanitize=address -fsanitize=undefined)
+        add_link_options(-fsanitize=address -fsanitize=undefined)
+        message(STATUS "Address and undefined behavior sanitizers enabled")
+    endif()
+endif()

@@ -1,0 +1,190 @@
+<!--
+Purple-Pages.com - System Metrics API v1
+System performance metrics logging
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_metrics_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-API-Key, X-Server-ID");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    auth_result = verify_api_authentication();
+    if (!auth_result.authenticated) {
+        return response(401, json({"error": "Unauthorized"}));
+    }
+    
+    if (request.method == "POST") {
+        return handle_log_metrics(parse_json(request.body), auth_result);
+    }
+    
+    if (request.method == "GET") {
+        return handle_get_metrics(request.query, auth_result);
+    }
+    
+    return response(405, json({"error": "Method not allowed"}));
+}
+
+function handle_log_metrics(metrics_data, auth) {
+    metric_id = generate_uuid_v7();
+    server_id = metrics_data.get("server_id") || auth.server_id || "unknown";
+    
+    metric = {
+        "metric_id": metric_id,
+        "timestamp": now(),
+        "epoch_ms": get_epoch_ms(),
+        "server_id": server_id,
+        "server_vpc_ip": metrics_data.get("server_vpc_ip") || get_server_vpc_ip(server_id),
+        "cpu_usage_percent": metrics_data.get("cpu_usage_percent"),
+        "memory_usage_mb": metrics_data.get("memory_usage_mb"),
+        "memory_total_mb": metrics_data.get("memory_total_mb"),
+        "disk_usage_gb": metrics_data.get("disk_usage_gb"),
+        "disk_total_gb": metrics_data.get("disk_total_gb"),
+        "active_connections": metrics_data.get("active_connections"),
+        "queries_per_second": metrics_data.get("queries_per_second"),
+        "avg_query_time_ms": metrics_data.get("avg_query_time_ms"),
+        "cache_hit_ratio": metrics_data.get("cache_hit_ratio"),
+        "network_in_mbps": metrics_data.get("network_in_mbps"),
+        "network_out_mbps": metrics_data.get("network_out_mbps"),
+        "requests_per_second": metrics_data.get("requests_per_second")
+    };
+    
+    db_result = insert_metric_vpc(metric);
+    
+    if (db_result.success) {
+        return response(200, json({
+            "success": true,
+            "metric_id": metric_id
+        }));
+    } else {
+        return response(500, json({
+            "success": false,
+            "error": db_result.error
+        }));
+    }
+}
+
+function handle_get_metrics(query_params, auth) {
+    filters = build_metric_filters(query_params);
+    db_result = query_metrics_vpc(filters);
+    
+    if (db_result.success) {
+        return response(200, json({
+            "success": true,
+            "metrics": db_result.metrics,
+            "query_time_ms": db_result.query_time_ms
+        }));
+    } else {
+        return response(500, json({
+            "success": false,
+            "error": db_result.error
+        }));
+    }
+}
+
+function insert_metric_vpc(metric) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        query = "INSERT INTO purple_pages_system_metrics (
+            metric_id, timestamp, epoch_ms, server_id, server_vpc_ip,
+            cpu_usage_percent, memory_usage_mb, memory_total_mb,
+            disk_usage_gb, disk_total_gb, active_connections,
+            queries_per_second, avg_query_time_ms, cache_hit_ratio,
+            network_in_mbps, network_out_mbps, requests_per_second
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)";
+        
+        result = db_connection.execute_prepared(query, [
+            metric.metric_id, metric.timestamp, metric.epoch_ms,
+            metric.server_id, metric.server_vpc_ip,
+            metric.cpu_usage_percent, metric.memory_usage_mb, metric.memory_total_mb,
+            metric.disk_usage_gb, metric.disk_total_gb, metric.active_connections,
+            metric.queries_per_second, metric.avg_query_time_ms, metric.cache_hit_ratio,
+            metric.network_in_mbps, metric.network_out_mbps, metric.requests_per_second
+        ]);
+        
+        return {"success": true};
+        
+    } catch (error) {
+        return {"success": false, "error": error.message};
+    } finally {
+        db_connection.close();
+    }
+}
+
+function query_metrics_vpc(filters) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        where_clauses = [];
+        params = [];
+        param_index = 1;
+        
+        if (filters.server_id) {
+            where_clauses.push("server_id = $" + param_index);
+            params.push(filters.server_id);
+            param_index++;
+        }
+        
+        if (filters.start_time) {
+            where_clauses.push("epoch_ms >= $" + param_index);
+            params.push(filters.start_time);
+            param_index++;
+        }
+        
+        if (filters.end_time) {
+            where_clauses.push("epoch_ms <= $" + param_index);
+            params.push(filters.end_time);
+            param_index++;
+        }
+        
+        where_clause = where_clauses.length > 0 ? "WHERE " + join(where_clauses, " AND ") : "";
+        
+        limit = filters.limit || 100;
+        query = "SELECT * FROM purple_pages_system_metrics " + where_clause + " ORDER BY epoch_ms DESC LIMIT $" + param_index;
+        params.push(limit);
+        
+        start_time = get_epoch_ms();
+        result = db_connection.execute_prepared(query, params);
+        query_time = get_epoch_ms() - start_time;
+        
+        metrics = [];
+        for (row in result.rows) {
+            metrics.push({
+                "metric_id": row.metric_id,
+                "timestamp": row.timestamp,
+                "server_id": row.server_id,
+                "cpu_usage_percent": row.cpu_usage_percent,
+                "memory_usage_mb": row.memory_usage_mb,
+                "active_connections": row.active_connections,
+                "queries_per_second": row.queries_per_second
+            });
+        }
+        
+        return {
+            "success": true,
+            "metrics": metrics,
+            "query_time_ms": query_time
+        };
+        
+    } catch (error) {
+        return {"success": false, "error": error.message};
+    } finally {
+        db_connection.close();
+    }
+}
+
+function build_metric_filters(query_params) {
+    return {
+        "server_id": query_params.get("server_id"),
+        "start_time": query_params.get("start_time") ? parse_timestamp(query_params.get("start_time")) : null,
+        "end_time": query_params.get("end_time") ? parse_timestamp(query_params.get("end_time")) : null,
+        "limit": min(parse_int(query_params.get("limit", "100")), 10000)
+    };
+}
+

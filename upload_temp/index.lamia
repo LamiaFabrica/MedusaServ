@@ -1,0 +1,653 @@
+/**
+ * MEDUSASERV PORTAL - BACKEND CONTROL PANEL v0.3.0d
+ * portal.poweredbymedusa.com - Enterprise Web Server Management
+ * Native Lamia with Purple Pages Integration
+ */
+
+@manifest medusaserv_portal_control_panel() -> enterprise @production {
+    
+    @domain "portal.poweredbymedusa.com"
+    @version "0.3.0d"
+    @title "MedusaServ Portal - Enterprise Control Panel"
+    @description "Backend web server management and control panel for MedusaServ"
+    @seo_optimized true
+    @authentication_required true
+    @security_level "enterprise"
+    
+    // Purple Pages Integration
+    @purple_pages_location "/mnt/c/Build/htdocs/front-of-house/FINAL/"
+    @gold_standard_compliance true
+    @yorkshire_champion_standards true
+    
+    // Include modular components
+    @include_component "inc/components/lamia/layout/header/"
+    @include_component "inc/components/lamia/layout/footer/"
+    @include_component "inc/components/lamia/navigation/horizontal-menu/"
+    @include_component "inc/components/lamia/auth/login-system/"
+    @include_component "inc/components/lamia/dashboard/management-cards/"
+    
+    create PORTAL_APPLICATION {
+        
+        // =============================================
+        // AUTHENTICATION SYSTEM
+        // =============================================
+        
+        @page "/portal/auth/login" {
+            @title "MedusaServ Portal - Secure Login"
+            @layout "auth"
+            @seo_url "/portal/secure-login"
+            @meta_description "Secure authentication for MedusaServ Portal backend management"
+            
+            @render {
+                @component_include "inc/components/lamia/auth/login-system/"
+            }
+        }
+        
+        @api "/portal/api/auth/authenticate" {
+            @method "POST"
+            @security "csrf_protected"
+            @rate_limit "5_per_minute"
+            
+            @handler authenticate_user {
+                @validate_credentials @{request.username} @{request.password}
+                @check_2fa_if_enabled @{request.username}
+                @create_secure_session
+                @log_login_attempt
+                @update_last_login
+                
+                @on_success {
+                    @redirect "/portal/dashboard"
+                    @set_session_cookie secure=true httponly=true samesite="strict"
+                }
+                
+                @on_failure {
+                    @log_failed_attempt
+                    @increment_failed_counter
+                    @check_account_lockout
+                    @redirect "/portal/auth/login?error=invalid_credentials"
+                }
+            }
+        }
+        
+        // =============================================
+        // MAIN DASHBOARD
+        // =============================================
+        
+        @page "/portal/dashboard" {
+            @title "MedusaServ Portal - Control Dashboard"
+            @layout "portal_main"
+            @authentication_required true
+            @seo_url "/portal/control-dashboard"
+            @meta_description "Enterprise web server control dashboard for MedusaServ Portal"
+            
+            @load_system_metrics
+            @load_performance_data
+            @load_security_status
+            @load_purple_pages_analytics
+            
+            @render {
+                @component_include "inc/components/lamia/layout/header/"
+                @component_include "inc/components/lamia/navigation/horizontal-menu/"
+                
+                @container main-dashboard :: class="portal-dashboard-main" {
+                    @container dashboard-header :: class="dashboard-welcome" {
+                        @text h1 "MedusaServ Portal Control Dashboard" :: class="dashboard-title"
+                        @text "Welcome back, @{session.user.display_name || session.username}" :: class="welcome-message"
+                        @container quick-stats :: class="header-quick-stats" {
+                            @metric "Server Status" :: value=@{system.status} :: status="online" :: icon="🟢"
+                            @metric "Active Connections" :: value=@{system.active_connections} :: icon="🔗"
+                            @metric "CPU Usage" :: value=@{system.cpu_usage} :: icon="⚡"
+                            @metric "Memory Usage" :: value=@{system.memory_usage} :: icon="🧠"
+                        }
+                    }
+                    
+                    @container dashboard-grid :: class="management-cards-grid" {
+                        
+                        // SERVER MANAGEMENT CARD
+                        @card server_management :: priority="critical" :: class="management-card server-card" {
+                            @icon "⚙️" :: size="2rem" :: class="card-icon server-icon"
+                            @title "Server Management" :: class="card-title"
+                            @description "Control MedusaServ processes, performance tuning, and system configuration" :: class="card-description"
+                            
+                            @metrics_grid {
+                                @metric "Uptime" :: value=@{system.uptime} :: class="uptime-metric"
+                                @metric "Load Average" :: value=@{system.load_average} :: class="load-metric"
+                                @metric "Active Processes" :: value=@{system.process_count} :: class="process-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/system-management/server-control" :: class="card-action primary" :: text="Server Control"
+                                @link "/portal/system-management/performance-tuning" :: class="card-action secondary" :: text="Performance"
+                                @link "/portal/system-management/process-monitor" :: class="card-action tertiary" :: text="Processes"
+                            }
+                        }
+                        
+                        // VIRTUAL HOSTS MANAGEMENT CARD
+                        @card virtual_hosts :: priority="high" :: class="management-card domains-card" {
+                            @icon "🌐" :: size="2rem" :: class="card-icon domains-icon"
+                            @title "Virtual Hosts & Domains" :: class="card-title"
+                            @description "Manage virtual hosts, domains, subdomains, SSL certificates, and DNS configuration" :: class="card-description"
+                            
+                            @metrics_grid {
+                                @metric "Active Hosts" :: value=@{domains.active_count} :: class="hosts-metric"
+                                @metric "SSL Certificates" :: value=@{ssl.valid_count} :: class="ssl-metric" :: status=@{ssl.status}
+                                @metric "DNS Records" :: value=@{dns.total_records} :: class="dns-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/virtual-hosts/management" :: class="card-action primary" :: text="Manage Hosts"
+                                @link "/portal/virtual-hosts/domains" :: class="card-action secondary" :: text="Domain Manager"
+                                @link "/portal/security-center/ssl-certificates" :: class="card-action tertiary" :: text="SSL Manager"
+                            }
+                        }
+                        
+                        // SECURITY CENTER CARD
+                        @card security_center :: priority="critical" :: class="management-card security-card" {
+                            @icon "🛡️" :: size="2rem" :: class="card-icon security-icon"
+                            @title "ICEWALL Security Center" :: class="card-title"
+                            @description "Advanced security monitoring, firewall management, and threat detection" :: class="card-description"
+                            
+                            @security_status_grid {
+                                @status "Firewall" :: value="ACTIVE" :: level="secure" :: icon="❄️"
+                                @status "SSL/TLS" :: value=@{ssl.grade} :: level=@{ssl.security_level} :: icon="🔒"
+                                @status "Threats Blocked" :: value=@{security.threats_blocked_24h} :: icon="🚫"
+                            }
+                            
+                            @actions {
+                                @link "/portal/security-center/icewall-firewall" :: class="card-action primary" :: text="ICEWALL Control"
+                                @link "/portal/security-center/security-audit" :: class="card-action secondary" :: text="Security Audit"
+                                @link "/portal/security-center/authentication" :: class="card-action tertiary" :: text="Auth Settings"
+                            }
+                        }
+                        
+                        // FILE MANAGEMENT CARD
+                        @card file_manager :: priority="medium" :: class="management-card files-card" {
+                            @icon "📁" :: size="2rem" :: class="card-icon files-icon"
+                            @title "File Manager" :: class="card-title"
+                            @description "Web-based file management, uploads, permissions, and backup operations" :: class="card-description"
+                            
+                            @storage_metrics {
+                                @metric "Disk Usage" :: value=@{storage.disk_usage} :: class="disk-metric"
+                                @metric "Total Files" :: value=@{files.total_count} :: class="files-metric"
+                                @metric "Recent Backups" :: value=@{backup.recent_count} :: class="backup-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/file-manager/browser" :: class="card-action primary" :: text="File Browser"
+                                @link "/portal/file-manager/upload" :: class="card-action secondary" :: text="Upload Files"
+                                @link "/portal/file-manager/backup" :: class="card-action tertiary" :: text="Backup Manager"
+                            }
+                        }
+                        
+                        // DATABASE ADMINISTRATION CARD
+                        @card database_admin :: priority="high" :: class="management-card database-card" {
+                            @icon "🗄️" :: size="2rem" :: class="card-icon database-icon"
+                            @title "Database Administration" :: class="card-title"
+                            @description "PostgreSQL management, user administration, query builder, and backup tools" :: class="card-description"
+                            
+                            @database_metrics {
+                                @metric "Active Databases" :: value=@{database.active_count} :: class="db-count-metric"
+                                @metric "Total Size" :: value=@{database.total_size} :: class="db-size-metric"
+                                @metric "Active Connections" :: value=@{database.connections} :: class="db-connections-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/database-admin/management" :: class="card-action primary" :: text="DB Manager"
+                                @link "/portal/database-admin/query-builder" :: class="card-action secondary" :: text="Query Builder"
+                                @link "/portal/database-admin/user-management" :: class="card-action tertiary" :: text="User Admin"
+                            }
+                        }
+                        
+                        // ANALYTICS & MONITORING CARD
+                        @card analytics_monitoring :: priority="medium" :: class="management-card analytics-card" {
+                            @icon "📈" :: size="2rem" :: class="card-icon analytics-icon"
+                            @title "Analytics & Monitoring" :: class="card-title"
+                            @description "Performance metrics, log analysis, alerts, and comprehensive system reports" :: class="card-description"
+                            
+                            @analytics_metrics {
+                                @metric "Requests/Hour" :: value=@{analytics.requests_per_hour} :: trend=@{analytics.request_trend} :: class="requests-metric"
+                                @metric "Response Time" :: value=@{analytics.avg_response_time} :: class="response-metric"
+                                @metric "Error Rate" :: value=@{analytics.error_rate} :: class="error-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/monitoring-analytics/performance-metrics" :: class="card-action primary" :: text="Performance"
+                                @link "/portal/monitoring-analytics/log-analysis" :: class="card-action secondary" :: text="Logs"
+                                @link "/portal/monitoring-analytics/system-reports" :: class="card-action tertiary" :: text="Reports"
+                            }
+                        }
+                        
+                        // PURPLE PAGES INTEGRATION CARD
+                        @card purple_pages :: priority="high" :: class="management-card purple-pages-card" {
+                            @icon "💜" :: size="2rem" :: class="card-icon purple-icon"
+                            @title "Purple Pages System" :: class="card-title"
+                            @description "Gold Standard enterprise features, compliance management, and advanced analytics" :: class="card-description"
+                            
+                            @purple_pages_metrics {
+                                @metric "Gold Standard" :: value="COMPLIANT" :: status="active" :: class="gold-metric"
+                                @metric "Enterprise Features" :: value=@{purple_pages.feature_count} :: class="features-metric"
+                                @metric "Compliance Score" :: value=@{compliance.score} :: class="compliance-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/purple-pages/gold-standard" :: class="card-action primary" :: text="Gold Standard"
+                                @link "/portal/purple-pages/enterprise-features" :: class="card-action secondary" :: text="Enterprise"
+                                @link "/portal/purple-pages/compliance" :: class="card-action tertiary" :: text="Compliance"
+                            }
+                        }
+                        
+                        // USER MANAGEMENT CARD
+                        @card user_management :: priority="medium" :: class="management-card users-card" {
+                            @icon "👥" :: size="2rem" :: class="card-icon users-icon"
+                            @title "User & Account Management" :: class="card-title"
+                            @description "User accounts, sub-users, permissions, roles, and access control management" :: class="card-description"
+                            
+                            @user_metrics {
+                                @metric "Total Users" :: value=@{users.total_count} :: class="user-count-metric"
+                                @metric "Active Sessions" :: value=@{sessions.active_count} :: class="sessions-metric"
+                                @metric "Admin Users" :: value=@{users.admin_count} :: class="admin-metric"
+                            }
+                            
+                            @actions {
+                                @link "/portal/user-management/accounts" :: class="card-action primary" :: text="User Accounts"
+                                @link "/portal/user-management/permissions" :: class="card-action secondary" :: text="Permissions"
+                                @link "/portal/user-management/activity" :: class="card-action tertiary" :: text="Activity Log"
+                            }
+                        }
+                    }
+                    
+                    @container dashboard-sidebar :: class="dashboard-info-panel" {
+                        @container system-alerts :: class="alert-panel" {
+                            @title "System Alerts" :: class="panel-title"
+                            @if @{alerts.count > 0} {
+                                @foreach alert in @{alerts.recent} {
+                                    @alert_item @{alert.level} :: message=@{alert.message} :: time=@{alert.timestamp}
+                                }
+                            } @else {
+                                @text "✅ All systems operational" :: class="no-alerts-message"
+                            }
+                        }
+                        
+                        @container recent-activity :: class="activity-panel" {
+                            @title "Recent Activity" :: class="panel-title"
+                            @foreach activity in @{recent_activity} {
+                                @activity_item :: user=@{activity.user} :: action=@{activity.action} :: time=@{activity.timestamp} :: class="activity-item"
+                            }
+                        }
+                        
+                        @container quick-actions :: class="quick-actions-panel" {
+                            @title "Quick Actions" :: class="panel-title"
+                            @button "System Restart" :: onclick="quickRestart()" :: class="quick-action restart-action" :: icon="🔄"
+                            @button "Create Backup" :: onclick="quickBackup()" :: class="quick-action backup-action" :: icon="💾"
+                            @button "View Logs" :: onclick="openLogs()" :: class="quick-action logs-action" :: icon="📋"
+                            @button "Security Scan" :: onclick="securityScan()" :: class="quick-action security-action" :: icon="🔍"
+                        }
+                    }
+                }
+                
+                @component_include "inc/components/lamia/layout/footer/"
+            }
+        }
+        
+        // =============================================
+        // USER MANAGEMENT SYSTEM  
+        // =============================================
+        
+        @page "/portal/user-management/accounts" {
+            @title "User Account Management - MedusaServ Portal"
+            @authentication_required true
+            @permission_required "user_management"
+            @seo_url "/portal/user-account-management"
+            
+            @render {
+                @component_include "inc/components/lamia/layout/header/"
+                @component_include "inc/components/lamia/navigation/horizontal-menu/"
+                
+                @container user_management_main :: class="portal-page-main" {
+                    @container page_header :: class="page-header" {
+                        @text h1 "User Account Management" :: class="page-title"
+                        @text "Manage user accounts, sub-users, and access permissions" :: class="page-description"
+                        @button "Add New User" :: onclick="openAddUserModal()" :: class="primary-action" :: icon="➕"
+                    }
+                    
+                    @container user_management_grid :: class="user-management-layout" {
+                        @container users_table :: class="users-data-table" {
+                            @component_include "inc/components/lamia/user-management/users-table/"
+                        }
+                        
+                        @container user_actions :: class="user-management-actions" {
+                            @component_include "inc/components/lamia/user-management/user-crud/"
+                            @component_include "inc/components/lamia/user-management/password-generator/"
+                        }
+                    }
+                }
+                
+                @component_include "inc/components/lamia/layout/footer/"
+            }
+        }
+    }
+    
+    // =============================================
+    // GLOBAL STYLES
+    // =============================================
+    
+    @styles {
+        :root {
+            --portal-primary: #6f42c1;
+            --portal-primary-dark: #5a2d91;
+            --portal-secondary: #8e44ad;
+            --portal-success: #28a745;
+            --portal-warning: #ffc107;
+            --portal-danger: #dc3545;
+            --portal-info: #17a2b8;
+            --portal-light: #f8f9fa;
+            --portal-dark: #343a40;
+            --portal-gradient: linear-gradient(135deg, var(--portal-primary) 0%, var(--portal-secondary) 100%);
+        }
+        
+        .portal-dashboard-main {
+            min-height: 100vh;
+            background: var(--portal-light);
+            padding: 2rem;
+        }
+        
+        .dashboard-welcome {
+            background: var(--portal-gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(111, 66, 193, 0.2);
+        }
+        
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-message {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .header-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .management-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .management-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .management-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--portal-gradient);
+        }
+        
+        .management-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 40px rgba(111, 66, 193, 0.15);
+        }
+        
+        .card-icon {
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--portal-dark);
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .card-description {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-action {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem 0.5rem 0.25rem 0;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .card-action.primary {
+            background: var(--portal-primary);
+            color: white;
+        }
+        
+        .card-action.primary:hover {
+            background: var(--portal-primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .card-action.secondary {
+            background: #f8f9fa;
+            color: var(--portal-primary);
+            border: 1px solid #e9ecef;
+        }
+        
+        .card-action.secondary:hover {
+            background: var(--portal-primary);
+            color: white;
+        }
+        
+        .card-action.tertiary {
+            background: transparent;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+        
+        .card-action.tertiary:hover {
+            background: #f8f9fa;
+            color: var(--portal-primary);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .portal-dashboard-main {
+                padding: 1rem;
+            }
+            
+            .management-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .dashboard-title {
+                font-size: 2rem;
+            }
+            
+            .header-quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+        }
+    }
+    
+    // =============================================
+    // PORTAL JAVASCRIPT
+    // =============================================
+    
+    @scripts {
+        // System Management Functions
+        async function quickRestart() {
+            if (confirm('⚠️ Restart MedusaServ? This will briefly interrupt all services.')) {
+                showLoadingOverlay('Restarting MedusaServ...');
+                try {
+                    const response = await fetch('/portal/api/system/restart', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showSuccessMessage('✅ System restart initiated. Refreshing in 5 seconds...');
+                        setTimeout(() => location.reload(), 5000);
+                    } else {
+                        showErrorMessage('❌ Restart failed: ' + result.error);
+                    }
+                } catch (error) {
+                    showErrorMessage('❌ Network error during restart request');
+                } finally {
+                    hideLoadingOverlay();
+                }
+            }
+        }
+        
+        async function quickBackup() {
+            showLoadingOverlay('Creating system backup...');
+            try {
+                const response = await fetch('/portal/api/system/backup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccessMessage(`✅ Backup created successfully: ${result.backup_name}`);
+                } else {
+                    showErrorMessage('❌ Backup failed: ' + result.error);
+                }
+            } catch (error) {
+                showErrorMessage('❌ Network error during backup request');
+            } finally {
+                hideLoadingOverlay();
+            }
+        }
+        
+        function openLogs() {
+            window.open('/portal/monitoring-analytics/log-analysis', '_blank');
+        }
+        
+        async function securityScan() {
+            showLoadingOverlay('Running security scan...');
+            try {
+                const response = await fetch('/portal/api/security/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccessMessage(`✅ Security scan completed. ${result.issues_found} issues found.`);
+                    if (result.issues_found > 0) {
+                        window.open('/portal/security-center/security-audit', '_blank');
+                    }
+                } else {
+                    showErrorMessage('❌ Security scan failed: ' + result.error);
+                }
+            } catch (error) {
+                showErrorMessage('❌ Network error during security scan');
+            } finally {
+                hideLoadingOverlay();
+            }
+        }
+        
+        // UI Helper Functions
+        function showLoadingOverlay(message) {
+            const overlay = document.createElement('div');
+            overlay.id = 'loading-overlay';
+            overlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-message">${message}</div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+        
+        function hideLoadingOverlay() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+        
+        function showSuccessMessage(message) {
+            showToast(message, 'success');
+        }
+        
+        function showErrorMessage(message) {
+            showToast(message, 'error');
+        }
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('toast-visible');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('toast-visible');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update metrics every 30 seconds
+            setInterval(updateDashboardMetrics, 30000);
+            
+            // Initial metrics load
+            updateDashboardMetrics();
+        });
+        
+        async function updateDashboardMetrics() {
+            try {
+                const response = await fetch('/portal/api/dashboard/metrics');
+                const metrics = await response.json();
+                
+                // Update dashboard metrics
+                updateMetricElements(metrics);
+            } catch (error) {
+                console.error('Failed to update dashboard metrics:', error);
+            }
+        }
+        
+        function updateMetricElements(metrics) {
+            // Update various metric displays
+            const elements = document.querySelectorAll('[data-metric]');
+            elements.forEach(element => {
+                const metricKey = element.dataset.metric;
+                if (metrics[metricKey] !== undefined) {
+                    element.textContent = metrics[metricKey];
+                }
+            });
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "pfql-portal",
+  "version": "1.0.0",
+  "description": "PFQL Portal - Yorkshire Champion Gold Standard System Management",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "install-deps": "npm install",
+    "setup": "npm install && node setup.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^6.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "pg": "^8.16.3",
+    "winston": "^3.17.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "MedusaServ",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusaserv/pfql-portal"
+  },
+  "keywords": [
+    "pfql",
+    "portal",
+    "database",
+    "management",
+    "yorkshire-champion",
+    "medusa"
+  ]
+}

@@ -1,0 +1,186 @@
+<!--
+Purple-Pages.com - PsiForceDB Documentation Landing Page
+Main documentation hub for PsiForceDB
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_psiforcedb_index() {
+    include "base.lamia" {
+        title: "PsiForceDB Documentation - Purple Pages"
+        description: "Complete documentation for PsiForceDB - revolutionary hybrid database combining PostgreSQL, Neo4j, MongoDB, and vector operations"
+        keywords: "PsiForceDB, database, hybrid database, PostgreSQL, Neo4j, MongoDB, vector, documentation"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/psiforcedb/index.lamia") {
+                            "PsiForceDB"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "tech-hero") {
+            div(class: "tech-hero-content") {
+                div(class: "tech-icon") {
+                    "🦕"
+                }
+                h1 {
+                    "PsiForceDB Documentation"
+                }
+                p(class: "tech-description") {
+                    "Revolutionary hybrid database combining PostgreSQL, Neo4j, MongoDB, and vector operations. The database of tomorrow, today."
+                }
+            }
+        }
+        
+        // Quick Links
+        section(class: "quick-links-section") {
+            div(class: "quick-links-container") {
+                h2 {
+                    "Quick Start"
+                }
+                div(class: "quick-links-grid") {
+                    a(href: "/pages/psiforcedb/getting-started.lamia", class: "quick-link-card") {
+                        h3 {
+                            "🚀 Getting Started"
+                        }
+                        p {
+                            "Installation and first steps"
+                        }
+                    }
+                    
+                    a(href: "/pages/psiforcedb/pfql.lamia", class: "quick-link-card") {
+                        h3 {
+                            "📝 PFQL Guide"
+                        }
+                        p {
+                            "PsiForce Query Language reference"
+                        }
+                    }
+                    
+                    a(href: "/pages/psiforcedb/api.lamia", class: "quick-link-card") {
+                        h3 {
+                            "🔌 API Reference"
+                        }
+                        p {
+                            "Complete API documentation"
+                        }
+                    }
+                    
+                    a(href: "/pages/psiforcedb/administration.lamia", class: "quick-link-card") {
+                        h3 {
+                            "⚙️ Administration"
+                        }
+                        p {
+                            "System administration guides"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Documentation Sections
+        section(class: "docs-sections") {
+            div(class: "docs-container") {
+                div(class: "docs-grid") {
+                    div(class: "docs-category") {
+                        h3 {
+                            "📚 User Guides"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/psiforcedb/guides/beginner.lamia") {
+                                    "Beginner's Guide"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/guides/developer.lamia") {
+                                    "Developer Guide"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/guides/business.lamia") {
+                                    "Business User Guide"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/guides/advanced.lamia") {
+                                    "Advanced Guide"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "docs-category") {
+                        h3 {
+                            "🔧 Technical"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/psiforcedb/architecture.lamia") {
+                                    "Architecture"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/configuration.lamia") {
+                                    "Configuration"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/performance.lamia") {
+                                    "Performance Tuning"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/security.lamia") {
+                                    "Security"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "docs-category") {
+                        h3 {
+                            "🆘 Support"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/psiforcedb/troubleshooting.lamia") {
+                                    "Troubleshooting"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/faq.lamia") {
+                                    "FAQ"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/examples.lamia") {
+                                    "Examples"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/psiforcedb/changelog.lamia") {
+                                    "Changelog"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

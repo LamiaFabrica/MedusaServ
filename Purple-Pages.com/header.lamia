@@ -1,0 +1,140 @@
+<!--
+Purple-Pages.com - Header Component
+Documentation hub navigation
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_header() {
+    header(class: "main-header") {
+        div(class: "header-container") {
+            // Logo and Brand
+            div(class: "logo-section") {
+                a(href: "/index.lamia", class: "logo-link") {
+                    span(class: "logo-icon") {
+                        "🟣"
+                    }
+                    span(class: "brand-name") {
+                        "Purple Pages"
+                    }
+                    span(class: "brand-tagline") {
+                        "Documentation Hub"
+                    }
+                }
+            }
+
+            // Navigation Menu
+            nav(class: "main-nav") {
+                ul(class: "nav-menu") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/search.lamia") {
+                            "Search"
+                        }
+                    }
+                    li {
+                        a(href: "#", class: "dropdown-toggle") {
+                            "Technologies"
+                        }
+                        ul(class: "dropdown-menu") {
+                            li {
+                                a(href: "/pages/psiforcedb/index.lamia") {
+                                    "🦕 PsiForceDB"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/index.lamia") {
+                                    "🌐 MedusaServ"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lfssl/index.lamia") {
+                                    "🔒 LFSSL"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lamia/index.lamia") {
+                                    "📝 Lamia"
+                                }
+                            }
+                        }
+                    }
+                    li {
+                        a(href: "#", class: "dropdown-toggle") {
+                            "Categories"
+                        }
+                        ul(class: "dropdown-menu") {
+                            li {
+                                a(href: "/pages/category/getting-started.lamia") {
+                                    "Getting Started"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/category/user-guides.lamia") {
+                                    "User Guides"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/category/api.lamia") {
+                                    "API Documentation"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/category/administration.lamia") {
+                                    "Administration"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/category/troubleshooting.lamia") {
+                                    "Troubleshooting"
+                                }
+                            }
+                        }
+                    }
+                    li {
+                        a(href: "/pages/admin.lamia") {
+                            "Admin"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/about.lamia") {
+                            "About"
+                        }
+                    }
+                }
+            }
+
+            // Quick Search
+            div(class: "header-search") {
+                input(type: "text", id: "header-search", class: "search-input-small", placeholder: "Quick search...")
+                button(id: "header-search-btn", class: "btn-search") {
+                    "🔍"
+                }
+            }
+
+            // User Info (SSO)
+            div(id: "user-info", class: "user-info hidden", data-auth: "required") {
+                span(id: "user-name") {
+                    ""
+                }
+                a(href: "#", data-action: "logout", class: "logout-link") {
+                    "Logout"
+                }
+            }
+            
+            // Social Links
+            div(class: "social-links") {
+                a(href: "https://x.com/Medusainit", target: "_blank", rel: "noopener noreferrer", class: "social-link twitter", title: "Follow @Medusainit on X/Twitter") {
+                    "X"
+                }
+                a(href: "https://discord.gg/cGV8bMS3Jy", target: "_blank", rel: "noopener noreferrer", class: "social-link discord", title: "Join Discord Community") {
+                    "Discord"
+                }
+            }
+        }
+    }
+}
+

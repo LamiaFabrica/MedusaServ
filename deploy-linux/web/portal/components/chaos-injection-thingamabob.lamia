@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Injection Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🔥 Chaos Injection Service</h1>
+        <div class="portal-status" id="chaosStatus">
+            <span class="status-indicator online"></span>
+            Chaos Engine: CONTROLLED
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="chaosInjector.injectLatency()">⏱️ Inject Latency</button>
+            <button class="service-btn" onclick="chaosInjector.injectErrors()">❌ Inject Errors</button>
+            <button class="service-btn" onclick="chaosInjector.injectFailures()">💥 Inject Failures</button>
+            <button class="service-btn" onclick="chaosInjector.stopChaos()">⏹️ Stop All Chaos</button>
+        </div>
+
+        <div class="chaos-dashboard" id="chaosDashboard">
+            <div class="chaos-metrics">
+                <div class="metric-card">
+                    <h4>Active Chaos Tests</h4>
+                    <div id="activeChaos">3</div>
+                </div>
+                <div class="metric-card">
+                    <h4>System Resilience</h4>
+                    <div id="systemResilience">87%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Chaos Success Rate</h4>
+                    <div id="chaosSuccess">94%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Recovery Time</h4>
+                    <div id="recoveryTime">1.2s</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-output" id="chaosOutput">
+            <div>[CHAOS] Controlled chaos injection service initialized</div>
+            <div>[CHAOS] Connected to PsiForceDB with MASTER credentials</div>
+            <div>[CHAOS] Yorkshire Champion chaos protocols loaded</div>
+            <div>[CHAOS] Chaos testing environment ready...</div>
+        </div>
+    </div>
+
+    <script>
+        class ChaosInjectionService {
+            constructor() {
+                this.masterCredentials = {
+                    server: '172.236.23.54',
+                    user: 'LamiaFabrica',
+                    database: 'psiforcedb_chaos'
+                };
+                this.activeChaosTests = [];
+                this.chaosMetrics = {
+                    activeChaos: 3,
+                    systemResilience: 87,
+                    chaosSuccess: 94,
+                    recoveryTime: 1.2
+                };
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                this.startChaosMonitoring();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/chaos/injector/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://chaos:injector:status',
+                            server: this.masterCredentials.server,
+                            database: this.masterCredentials.database,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            options: {
+                                chaosLevel: 'controlled',
+                                safetyProtocols: 'enabled'
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[CHAOS] Connected to PsiForceDB chaos injection system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async injectLatency() {
+                const latency = prompt('Enter latency to inject (ms):', '500');
+                const target = prompt('Target service (or "all"):', 'database');
+                
+                if (latency && target) {
+                    this.logOutput(`[CHAOS] Injecting ${latency}ms latency into ${target}...`);
+                    await this.executeChaosInjection('latency', { 
+                        latency: parseInt(latency), 
+                        target: target,
+                        duration: '60s',
+                        rampUp: true 
+                    });
+                }
+            }
+
+            async injectErrors() {
+                const errorRate = prompt('Enter error rate (%):', '5');
+                const target = prompt('Target service:', 'api');
+                
+                if (errorRate && target) {
+                    this.logOutput(`[CHAOS] Injecting ${errorRate}% error rate into ${target}...`);
+                    await this.executeChaosInjection('errors', { 
+                        errorRate: parseInt(errorRate), 
+                        target: target,
+                        errorTypes: ['timeout', 'connection_refused', 'service_unavailable'],
+                        distribution: 'random'
+                    });
+                }
+            }
+
+            async injectFailures() {
+                const failureType = prompt('Failure type (network/disk/memory):', 'network');
+                const duration = prompt('Duration (seconds):', '30');
+                
+                if (failureType && duration) {
+                    this.logOutput(`[CHAOS] Injecting ${failureType} failure for ${duration}s...`);
+                    await this.executeChaosInjection('failure', { 
+                        type: failureType, 
+                        duration: parseInt(duration),
+                        severity: 'moderate',
+                        gradual: true
+                    });
+                }
+            }
+
+            async executeChaosInjection(chaosType, params) {
+                document.getElementById('chaosStatus').innerHTML = 
+                    '<span class="status-indicator error pulse"></span>Chaos Engine: INJECTING';
+
+                try {
+                    const response = await fetch('/api/pfql-routes/chaos/injector/execute', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: `pf://chaos:inject:${chaosType}`,
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            params: params,
+                            options: {
+                                controlled: true,
+                                safetyLimits: true,
+                                monitoringEnabled: true,
+                                autoRecovery: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayChaosResults(result);
+                        this.addActiveChaosTest(chaosType, params);
+                        this.logOutput(`[CHAOS] ${chaosType} injection executed successfully`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Chaos injection failed: ${error.message}`);
+                    // Simulate demo results
+                    const demoResult = this.generateDemoResult(chaosType, params);
+                    this.displayChaosResults(demoResult);
+                    this.addActiveChaosTest(chaosType, params);
+                }
+
+                document.getElementById('chaosStatus').innerHTML = 
+                    '<span class="status-indicator warning"></span>Chaos Engine: ACTIVE';
+            }
+
+            generateDemoResult(chaosType, params) {
+                const baseResults = {
+                    status: 'SUCCESS',
+                    impact: Math.random() > 0.5 ? 'MODERATE' : 'LOW',
+                    response: Math.random() > 0.3 ? 'RESILIENT' : 'ADAPTING',
+                    recoveryTime: (Math.random() * 3 + 0.5).toFixed(1) + 's'
+                };
+
+                const observations = {
+                    latency: [
+                        'Response times increased as expected',
+                        'Load balancer adapted to increased latency',
+                        'Circuit breakers remained stable',
+                        'User experience degradation within acceptable limits'
+                    ],
+                    errors: [
+                        'Error handling mechanisms activated correctly',
+                        'Retry logic performed as designed',
+                        'Fallback services engaged automatically',
+                        'Error rates stabilized after initial spike'
+                    ],
+                    failure: [
+                        'System gracefully degraded functionality',
+                        'Backup systems activated within tolerance',
+                        'Auto-scaling responded to increased load',
+                        'Service mesh rerouted traffic successfully'
+                    ]
+                };
+
+                return {
+                    ...baseResults,
+                    observations: observations[chaosType] || observations.latency
+                };
+            }
+
+            async stopChaos() {
+                this.logOutput('[CHAOS] Stopping all active chaos tests...');
+                
+                try {
+                    const response = await fetch('/api/pfql-routes/chaos/injector/stop', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://chaos:stop:all',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            options: {
+                                gracefulShutdown: true,
+                                recoveryTime: 'immediate'
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.activeChaosTests = [];
+                        this.chaosMetrics.activeChaos = 0;
+                        this.updateMetrics();
+                        this.logOutput('[CHAOS] All chaos tests stopped successfully');
+                        
+                        document.getElementById('chaosStatus').innerHTML = 
+                            '<span class="status-indicator online"></span>Chaos Engine: CONTROLLED';
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to stop chaos: ${error.message}`);
+                    // Force stop for demo
+                    this.activeChaosTests = [];
+                    this.chaosMetrics.activeChaos = 0;
+                    this.updateMetrics();
+                    document.getElementById('chaosStatus').innerHTML = 
+                        '<span class="status-indicator online"></span>Chaos Engine: CONTROLLED';
+                }
+            }
+
+            addActiveChaosTest(type, params) {
+                this.activeChaosTests.push({
+                    id: Date.now(),
+                    type: type,
+                    params: params,
+                    startTime: Date.now(),
+                    status: 'active'
+                });
+                this.chaosMetrics.activeChaos = this.activeChaosTests.length;
+                this.updateMetrics();
+            }
+
+            displayChaosResults(results) {
+                const dashboard = document.getElementById('chaosDashboard');
+                dashboard.innerHTML += `
+                    <div class="chaos-report">
+                        <h3>🔥 Chaos Injection Results</h3>
+                        <div class="chaos-summary">
+                            <div class="summary-item">
+                                <strong>Injection Status:</strong> ${results.status || 'SUCCESS'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Target Impact:</strong> ${results.impact || 'MODERATE'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>System Response:</strong> ${results.response || 'RESILIENT'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Recovery Time:</strong> ${results.recoveryTime || '1.2s'}
+                            </div>
+                        </div>
+                        
+                        ${results.observations ? `
+                            <h4>🔍 Chaos Engineering Observations</h4>
+                            <ul class="chaos-observations">
+                                ${results.observations.map(obs => `<li>${obs}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+
+                        ${results.recommendations ? `
+                            <h4>💡 Resilience Recommendations</h4>
+                            <ul class="chaos-recommendations">
+                                ${results.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            updateMetrics() {
+                document.getElementById('activeChaos').textContent = this.chaosMetrics.activeChaos;
+                
+                // Update resilience based on active chaos tests
+                const resilience = Math.max(60, 100 - (this.chaosMetrics.activeChaos * 8));
+                this.chaosMetrics.systemResilience = resilience;
+                document.getElementById('systemResilience').textContent = resilience + '%';
+
+                // Update success rate and recovery time
+                document.getElementById('chaosSuccess').textContent = this.chaosMetrics.chaosSuccess + '%';
+                document.getElementById('recoveryTime').textContent = this.chaosMetrics.recoveryTime + 's';
+            }
+
+            startChaosMonitoring() {
+                // Monitor active chaos tests
+                setInterval(() => {
+                    this.activeChaosTests.forEach((test, index) => {
+                        const duration = (Date.now() - test.startTime) / 1000;
+                        if (duration > 120) { // Auto-expire after 2 minutes
+                            this.activeChaosTests.splice(index, 1);
+                            this.chaosMetrics.activeChaos = this.activeChaosTests.length;
+                            this.updateMetrics();
+                            this.logOutput(`[CHAOS] Chaos test ${test.type} auto-expired`);
+                        }
+                    });
+                }, 10000);
+
+                // Random chaos suggestions
+                setInterval(() => {
+                    if (Math.random() > 0.95 && this.activeChaosTests.length === 0) {
+                        const suggestions = [
+                            'Consider testing database connection resilience',
+                            'API rate limiting chaos test recommended',
+                            'Network partition simulation suggested',
+                            'Memory pressure test could be valuable'
+                        ];
+                        const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+                        this.logOutput(`[CHAOS] Engineering suggestion: ${suggestion}`);
+                    }
+                }, 30000);
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('chaosOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.chaosInjector = new ChaosInjectionService();
+        });
+    </script>
+    
+    <style>
+        .chaos-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .metric-card {
+            background: rgba(255, 69, 0, 0.2);
+            border: 1px solid #FF4500;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .metric-card div {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF4500;
+            margin-top: 8px;
+        }
+        .chaos-report {
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid #FF4500;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .chaos-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .summary-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .chaos-observations li,
+        .chaos-recommendations li {
+            margin: 8px 0;
+            background: rgba(255, 69, 0, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!--
+Purple-Pages.com - MedusaServ Documentation Landing Page
+Main documentation hub for MedusaServ
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_medusaserv_index() {
+    include "base.lamia" {
+        title: "MedusaServ Documentation - Purple Pages"
+        description: "Complete documentation for MedusaServ - Native C++ web server with TLS 1.3 support. No Apache, no Nginx."
+        keywords: "MedusaServ, webserver, native C++, TLS 1.3, HTTP server, documentation"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/medusaserv/index.lamia") {
+                            "MedusaServ"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "tech-hero") {
+            div(class: "tech-hero-content") {
+                div(class: "tech-icon") {
+                    "🌐"
+                }
+                h1 {
+                    "MedusaServ Documentation"
+                }
+                p(class: "tech-description") {
+                    "Native C++ web server with TLS 1.3 support. No Apache, no Nginx. Our own implementation built from the ground up."
+                }
+            }
+        }
+        
+        // Quick Links
+        section(class: "quick-links-section") {
+            div(class: "quick-links-container") {
+                h2 {
+                    "Quick Start"
+                }
+                div(class: "quick-links-grid") {
+                    a(href: "/pages/medusaserv/installation.lamia", class: "quick-link-card") {
+                        h3 {
+                            "🚀 Installation"
+                        }
+                        p {
+                            "Install and configure MedusaServ"
+                        }
+                    }
+                    
+                    a(href: "/pages/medusaserv/configuration.lamia", class: "quick-link-card") {
+                        h3 {
+                            "⚙️ Configuration"
+                        }
+                        p {
+                            "Configure MedusaServ for your needs"
+                        }
+                    }
+                    
+                    a(href: "/pages/medusaserv/api.lamia", class: "quick-link-card") {
+                        h3 {
+                            "🔌 API Reference"
+                        }
+                        p {
+                            "Complete API documentation"
+                        }
+                    }
+                    
+                    a(href: "/pages/medusaserv/lamia-integration.lamia", class: "quick-link-card") {
+                        h3 {
+                            "📝 Lamia Integration"
+                        }
+                        p {
+                            "Using Lamia templates with MedusaServ"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Documentation Sections
+        section(class: "docs-sections") {
+            div(class: "docs-container") {
+                div(class: "docs-grid") {
+                    div(class: "docs-category") {
+                        h3 {
+                            "📚 User Guides"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/medusaserv/guides/getting-started.lamia") {
+                                    "Getting Started"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/guides/deployment.lamia") {
+                                    "Deployment Guide"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/guides/performance.lamia") {
+                                    "Performance Tuning"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/guides/security.lamia") {
+                                    "Security Best Practices"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "docs-category") {
+                        h3 {
+                            "🔧 Technical"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/medusaserv/architecture.lamia") {
+                                    "Architecture"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/request-handling.lamia") {
+                                    "Request Handling"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/tls-configuration.lamia") {
+                                    "TLS Configuration"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/lamia-templates.lamia") {
+                                    "Lamia Template Engine"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "docs-category") {
+                        h3 {
+                            "🆘 Support"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/medusaserv/troubleshooting.lamia") {
+                                    "Troubleshooting"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/faq.lamia") {
+                                    "FAQ"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/examples.lamia") {
+                                    "Examples"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/medusaserv/changelog.lamia") {
+                                    "Changelog"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Key Features
+        section(class: "features-showcase") {
+            div(class: "features-container") {
+                h2 {
+                    "Key Features"
+                }
+                div(class: "features-grid") {
+                    div(class: "feature-card") {
+                        h3 {
+                            "🚀 Native C++"
+                        }
+                        p {
+                            "Built from the ground up in C++ for maximum performance"
+                        }
+                    }
+                    
+                    div(class: "feature-card") {
+                        h3 {
+                            "🔒 TLS 1.3"
+                        }
+                        p {
+                            "Full TLS 1.3 support via LFSSL"
+                        }
+                    }
+                    
+                    div(class: "feature-card") {
+                        h3 {
+                            "📝 Lamia Templates"
+                        }
+                        p {
+                            "Native integration with Lamia templating engine"
+                        }
+                    }
+                    
+                    div(class: "feature-card") {
+                        h3 {
+                            "⚡ High Performance"
+                        }
+                        p {
+                            "Optimized for speed and efficiency"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

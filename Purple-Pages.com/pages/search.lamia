@@ -1,0 +1,264 @@
+<!--
+Purple-Pages.com - Search Page
+Full-text search across all documentation with SEO optimization
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_search() {
+    meta {
+        title: "Search Documentation - Purple Pages | The Medusa Project Ecosystem"
+        description: "Search all Purple Pages documentation for PsiForceDB, MedusaServ, LFSSL, Lamia, and The Medusa Project ecosystem. Find answers instantly."
+        keywords: "search documentation, Purple Pages search, PsiForceDB search, MedusaServ search, documentation search"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+        robots: "index, follow"
+    }
+    
+    // Structured Data for SEO
+    script(type: "application/ld+json") {
+        raw {
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Purple Pages",
+                "description": "Documentation hub for The Medusa Project ecosystem",
+                "url": "https://purple-pages.com",
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://purple-pages.com/pages/search.lamia?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            }
+        }
+    }
+    
+    link(rel: "stylesheet", href: "/css/main.css")
+    link(rel: "stylesheet", href: "/css/search.css")
+    script(src: "/js/main.js")
+    script(src: "/js/search.js")
+    
+    include "header.lamia"
+    
+    // Breadcrumbs for SEO
+    nav(class: "breadcrumbs", aria-label: "Breadcrumb") {
+        div(class: "breadcrumb-container") {
+            ol(class: "breadcrumb-list") {
+                li {
+                    a(href: "/index.lamia") {
+                        "Home"
+                    }
+                }
+                li(class: "active") {
+                    "Search"
+                }
+            }
+        }
+    }
+    
+    // Main Search Section
+    section(class: "search-page-hero") {
+        div(class: "search-hero-content") {
+            h1 {
+                "Search All Documentation"
+            }
+            p(class: "search-subtitle") {
+                "Find answers across PsiForceDB, MedusaServ, LFSSL, Lamia, and the entire Medusa Project ecosystem"
+            }
+            
+            // Advanced Search Form
+            form(id: "search-form", class: "advanced-search-form") {
+                div(class: "search-main-input") {
+                    input(type: "text", id: "search-query", name: "q", class: "search-input-large", placeholder: "Enter your search query...", autocomplete: "off", autofocus: true, required: true)
+                    button(type: "submit", class: "btn btn-primary btn-large") {
+                        "🔍 Search"
+                    }
+                }
+                
+                // Search Filters
+                div(class: "search-filters") {
+                    div(class: "filter-group") {
+                        label {
+                            "Filter by Technology:"
+                        }
+                        select(id: "filter-technology", name: "technology") {
+                            option(value: "all") {
+                                "All Technologies"
+                            }
+                            option(value: "psiforcedb") {
+                                "🦕 PsiForceDB"
+                            }
+                            option(value: "medusaserv") {
+                                "🌐 MedusaServ"
+                            }
+                            option(value: "lfssl") {
+                                "🔒 LFSSL"
+                            }
+                            option(value: "lamia") {
+                                "📝 Lamia"
+                            }
+                        }
+                    }
+                    
+                    div(class: "filter-group") {
+                        label {
+                            "Filter by Category:"
+                        }
+                        select(id: "filter-category", name: "category") {
+                            option(value: "all") {
+                                "All Categories"
+                            }
+                            option(value: "getting-started") {
+                                "Getting Started"
+                            }
+                            option(value: "user-guides") {
+                                "User Guides"
+                            }
+                            option(value: "api") {
+                                "API Documentation"
+                            }
+                            option(value: "administration") {
+                                "Administration"
+                            }
+                            option(value: "troubleshooting") {
+                                "Troubleshooting"
+                            }
+                            option(value: "architecture") {
+                                "Architecture"
+                            }
+                        }
+                    }
+                    
+                    div(class: "filter-group") {
+                        label {
+                            "Sort by:"
+                        }
+                        select(id: "sort-results", name: "sort") {
+                            option(value: "relevance") {
+                                "Relevance"
+                            }
+                            option(value: "date") {
+                                "Date (Newest)"
+                            }
+                            option(value: "popularity") {
+                                "Popularity"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Quick Search Suggestions
+    section(class: "quick-suggestions") {
+        div(class: "suggestions-container") {
+            h2 {
+                "Popular Searches"
+            }
+            div(class: "suggestion-tags") {
+                a(href: "/pages/psiforcedb/getting-started.lamia", class: "suggestion-tag") {
+                    "PsiForceDB Installation"
+                }
+                a(href: "/pages/psiforcedb/pfql.lamia", class: "suggestion-tag") {
+                    "PFQL Query Language"
+                }
+                a(href: "/pages/medusaserv/installation.lamia", class: "suggestion-tag") {
+                    "MedusaServ Setup"
+                }
+                a(href: "/pages/lamia/templates.lamia", class: "suggestion-tag") {
+                    "Lamia Templates"
+                }
+                a(href: "/pages/category/api.lamia", class: "suggestion-tag") {
+                    "API Reference"
+                }
+                a(href: "/pages/category/troubleshooting.lamia", class: "suggestion-tag") {
+                    "Troubleshooting"
+                }
+            }
+        }
+    }
+    
+    // Search Results Container
+    section(id: "search-results-section", class: "search-results-section hidden") {
+        div(class: "results-container") {
+            div(class: "results-header") {
+                h2(id: "results-title") {
+                    "Search Results"
+                }
+                p(id: "results-count", class: "results-count") {
+                    ""
+                }
+            }
+            
+            div(id: "search-results", class: "results-list") {
+                // Results will be populated by JavaScript
+            }
+            
+            // Pagination
+            div(id: "pagination", class: "pagination hidden") {
+                // Pagination will be populated by JavaScript
+            }
+        }
+    }
+    
+    // Browse by Category (SEO Internal Linking)
+    section(class: "browse-categories") {
+        div(class: "categories-container") {
+            h2 {
+                "Browse Documentation by Category"
+            }
+            div(class: "category-links-grid") {
+                div(class: "category-link-card") {
+                    h3 {
+                        "🚀 Getting Started"
+                    }
+                    p {
+                        "Installation guides, quick starts, and first steps"
+                    }
+                    a(href: "/pages/category/getting-started.lamia", class: "btn btn-secondary") {
+                        "Browse Guides"
+                    }
+                }
+                
+                div(class: "category-link-card") {
+                    h3 {
+                        "📚 User Guides"
+                    }
+                    p {
+                        "Comprehensive guides for all user types"
+                    }
+                    a(href: "/pages/category/user-guides.lamia", class: "btn btn-secondary") {
+                        "Browse Guides"
+                    }
+                }
+                
+                div(class: "category-link-card") {
+                    h3 {
+                        "🔌 API Documentation"
+                    }
+                    p {
+                        "Complete API references and integration guides"
+                    }
+                    a(href: "/pages/category/api.lamia", class: "btn btn-secondary") {
+                        "Browse APIs"
+                    }
+                }
+                
+                div(class: "category-link-card") {
+                    h3 {
+                        "⚙️ Administration"
+                    }
+                    p {
+                        "System administration and configuration"
+                    }
+                    a(href: "/pages/category/administration.lamia", class: "btn btn-secondary") {
+                        "Browse Guides"
+                    }
+                }
+            }
+        }
+    }
+    
+    include "footer.lamia"
+}
+

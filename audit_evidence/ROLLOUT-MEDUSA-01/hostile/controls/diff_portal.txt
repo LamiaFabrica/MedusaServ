@@ -1,0 +1,62 @@
+34a35
+> #include <lfssl/crypto/hmac.hpp>
+106,139c107,112
+< // HMAC-SHA256 implementation using LFSSL SHA256
+< static std::string hmac_sha256(const std::string& key, const std::string& message) {
+<     // HMAC-SHA256: H(K XOR opad, H(K XOR ipad, message))
+<     constexpr size_t BLOCK_SIZE = 64;
+<     
+<     // Prepare key
+<     std::string key_padded = key;
+<     if (key_padded.length() > BLOCK_SIZE) {
+<         // Hash key if longer than block size
+<         auto hash_vec = LFSSL::Crypto::SHA256::hash(key);
+<         key_padded = std::string(hash_vec.begin(), hash_vec.end());
+<         key_padded.resize(32);
+<     }
+<     key_padded.resize(BLOCK_SIZE, 0);
+<     
+<     // Inner pad (ipad = 0x36)
+<     std::string ipad_key = key_padded;
+<     for (size_t i = 0; i < BLOCK_SIZE; ++i) {
+<         ipad_key[i] ^= 0x36;
+<     }
+<     
+<     // Outer pad (opad = 0x5C)
+<     std::string opad_key = key_padded;
+<     for (size_t i = 0; i < BLOCK_SIZE; ++i) {
+<         opad_key[i] ^= 0x5C;
+<     }
+<     
+<     // H(K XOR ipad, message)
+<     std::string inner_hash_input = ipad_key + message;
+<     std::vector<uint8_t> inner_hash_bin = LFSSL::Crypto::SHA256::hash(inner_hash_input);
+<     
+<     // H(K XOR opad, inner_hash)
+<     std::string outer_hash_input = opad_key + std::string(inner_hash_bin.begin(), inner_hash_bin.end());
+<     return LFSSL::Crypto::SHA256::hash_hex(outer_hash_input);
+---
+> // HMAC-SHA256 via the canonical LFSSL implementation (RFC 2104).
+> // Returns the raw 32-byte MAC. Replaces the hand-rolled ipad/opad version.
+> static std::vector<uint8_t> hmac_sha256(const std::string& key, const std::string& message) {
+>     const std::vector<uint8_t> key_bin(key.begin(), key.end());
+>     const std::vector<uint8_t> msg_bin(message.begin(), message.end());
+>     return LFSSL::Crypto::HMAC_SHA256::compute(key_bin, msg_bin);
+177,178c150,151
+<     std::string expected_signature = hmac_sha256(secret, message);
+<     
+---
+>     std::vector<uint8_t> expected_signature_bin = hmac_sha256(secret, message);
+> 
+181,187c154
+<     std::vector<uint8_t> expected_signature_bin;
+<     expected_signature_bin.reserve(32);
+<     for (size_t i = 0; i < expected_signature.length(); i += 2) {
+<         uint8_t byte = static_cast<uint8_t>(std::stoul(expected_signature.substr(i, 2), nullptr, 16));
+<         expected_signature_bin.push_back(byte);
+<     }
+<     
+---
+> 
+1861a1829
+>         (void)result; // benchmark timing sink (ROLLOUT-MEDUSA-01 -Werror gate cure)

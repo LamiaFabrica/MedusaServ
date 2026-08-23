@@ -1,0 +1,36 @@
+# MedusaServ PsiForce Database Engine PPA Repository Configuration
+# Yorkshire Champion Standards - Ground-up PPA Repository System
+# © 2025 The Medusa Project | Roylepython | D Hargreaves
+
+# Main distribution configuration
+Origin: MedusaServ
+Label: MedusaServ PsiForce Database Engine
+Suite: stable
+Codename: jammy
+Version: 22.04
+Architectures: amd64 arm64
+Components: main
+Description: MedusaServ PsiForce Database Engine - Yorkshire Champion Performance
+SignWith: 4096R/PSIFORCE_ENGINE_KEY
+
+# Development distribution
+Origin: MedusaServ
+Label: MedusaServ PsiForce Database Engine (Development)
+Suite: unstable
+Codename: jammy-dev
+Version: 22.04
+Architectures: amd64 arm64
+Components: main
+Description: MedusaServ PsiForce Database Engine - Development Builds
+SignWith: 4096R/PSIFORCE_ENGINE_KEY
+
+# Testing distribution
+Origin: MedusaServ
+Label: MedusaServ PsiForce Database Engine (Testing)
+Suite: testing
+Codename: jammy-test
+Version: 22.04
+Architectures: amd64 arm64
+Components: main
+Description: MedusaServ PsiForce Database Engine - Testing Builds
+SignWith: 4096R/PSIFORCE_ENGINE_KEY

@@ -1,0 +1,482 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+LAMIA PROGRAMMING LANGUAGE - REVOLUTIONARY PROGRAMMING PLATFORM
+==============================================================
+
+This page showcases the Lamia programming language with deep ecosystem interlinking
+-->
+
+manifest lamia_language() {
+    // SEO META TAGS
+    meta {
+        title: "Lamia Programming Language - 78.3% Complexity Reduction | Revolutionary Syntax"
+        description: "Experience Lamia programming language with 78.3% complexity reduction vs C++. Industry-first features: 3D emotion synthesis, manifest system, crystal return types, @ludicrous mode."
+        keywords: "lamia programming language, 78.3% complexity reduction, 3D emotion synthesis, manifest system, crystal return types, @ludicrous mode, revolutionary programming"
+        author: "D Hargreaves AKA Roylepython"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+    }
+
+    // OPEN GRAPH & TWITTER CARDS
+    social {
+        og_title: "Lamia Programming Language - Revolutionary 78.3% Complexity Reduction"
+        og_description: "Experience the future of programming with Lamia's revolutionary syntax and industry-first features"
+        og_image: "C:/Build/Medusa_Art/medusa-transformed.png"
+        og_url: "https://poweredbymedusa.com/lamia"
+        twitter_card: "summary_large_image"
+        twitter_creator: "@Roylepython"
+    }
+
+    // STRUCTURED DATA
+    structured_data {
+        type: "SoftwareApplication"
+        name: "Lamia Programming Language"
+        version: "0.3.0d"
+        description: "Revolutionary programming language with 78.3% complexity reduction"
+        applicationCategory: "Programming Language"
+        operatingSystem: "Cross-platform"
+        author: "D Hargreaves"
+    }
+
+    // INCLUDE HEADER, MENU, FOOTER, COPYRIGHT
+    include "../header.lamia"
+    include "../menu.lamia"
+
+    // HERO SECTION
+    section hero {
+        background: "linear-gradient(135deg, #8B3F8B 0%, #6B2B6B 100%)"
+        padding: "120px 0 80px"
+        margin_top: "200px"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            badge {
+                text: "🐍 Revolutionary Programming Language"
+                background: "rgba(255, 255, 255, 0.2)"
+                color: "white"
+                padding: "0.5rem 1rem"
+                border_radius: "25px"
+                margin_bottom: "2rem"
+                animation: "pulse 2s infinite"
+            }
+            
+            title {
+                text: "Lamia Programming Language"
+                size: "4rem"
+                weight: "800"
+                margin_bottom: "1.5rem"
+                gradient: "linear-gradient(45deg, #ff6b00, #ffffff)"
+            }
+            
+            subtitle {
+                text: "78.3% complexity reduction vs C++ with industry-first features that revolutionize how we think about programming"
+                size: "1.4rem"
+                margin_bottom: "3rem"
+                opacity: "0.9"
+                max_width: "800px"
+                margin: "0 auto 3rem"
+            }
+            
+            stats_grid {
+                display: "grid"
+                grid_template_columns: "repeat(3, 1fr)"
+                gap: "2rem"
+                margin_bottom: "3rem"
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "2rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "78.3%"
+                    label: "Complexity Reduction"
+                    description: "vs traditional C++"
+                }
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "2rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "3D"
+                    label: "Emotion Synthesis"
+                    description: "Industry-first feature"
+                }
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "2rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "∞"
+                    label: "Possibilities"
+                    description: "With manifest system"
+                }
+            }
+            
+            buttons {
+                button primary {
+                    text: "🎮 Try Playground"
+                    link: "playground.lamia"
+                    background: "#ff6b00"
+                    color: "white"
+                    padding: "1rem 2rem"
+                    border_radius: "50px"
+                    hover_effect: "translateY(-2px)"
+                }
+                
+                button secondary {
+                    text: "📚 View Documentation"
+                    link: "purple-pages.lamia"
+                    background: "transparent"
+                    color: "white"
+                    border: "2px solid white"
+                    padding: "1rem 2rem"
+                    border_radius: "50px"
+                    hover_effect: "background: white; color: #8B3F8B"
+                }
+                
+                button secondary {
+                    text: "📊 See Benchmarks"
+                    link: "benchmarks.lamia"
+                    background: "transparent"
+                    color: "white"
+                    border: "2px solid white"
+                    padding: "1rem 2rem"
+                    border_radius: "50px"
+                    hover_effect: "background: white; color: #8B3F8B"
+                }
+            }
+        }
+    }
+
+    // FEATURES SECTION
+    section features {
+        background: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            
+            title {
+                text: "Revolutionary Features"
+                size: "3rem"
+                weight: "700"
+                color: "#8B3F8B"
+                text_align: "center"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Discover the industry-first features that make Lamia the future of programming"
+                size: "1.2rem"
+                color: "#666"
+                text_align: "center"
+                max_width: "600px"
+                margin: "0 auto 4rem"
+            }
+            
+            features_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(350px, 1fr))"
+                gap: "2rem"
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "📄"
+                    title: "Manifest System"
+                    description: "Declarative configuration with crystal-clear structure. Define your entire application in a single, readable manifest file."
+                    link: "manifest.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "💎"
+                    title: "Crystal Return Types"
+                    description: "Type-safe programming with crystal-clear return types. Eliminate runtime errors with compile-time guarantees."
+                    link: "crystal.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "🚀"
+                    title: "@ludicrous Mode"
+                    description: "Ultra-high performance mode that pushes your code to the absolute limits. For when you need maximum speed."
+                    link: "ludicrous.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "🧠"
+                    title: "3D Emotion Synthesis"
+                    description: "Industry-first feature that brings emotional intelligence to your applications. Create truly intelligent systems."
+                    link: "emotion.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "⚙️"
+                    title: "G-code Generation"
+                    description: "Native manufacturing integration. Generate G-code directly from your Lamia applications for CNC and 3D printing."
+                    link: "gcode.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "👥"
+                    title: "Social Protocols"
+                    description: "Built-in social networking capabilities. Create applications that understand human interaction patterns."
+                    link: "social.lamia"
+                }
+            }
+        }
+    }
+
+    // 3D GIF SECTION
+    section gif3d_section {
+        background: "linear-gradient(135deg, #6B2B6B 0%, #2a1a2a 100%)"
+        color: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            title {
+                text: "3D GIF Technology"
+                size: "3rem"
+                weight: "700"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Experience the revolutionary 3D GIF technology that brings your applications to life"
+                size: "1.2rem"
+                margin_bottom: "4rem"
+                opacity: "0.9"
+            }
+            
+            gif3d_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(300px, 1fr))"
+                gap: "2rem"
+                
+                gif3d_feature {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "🎨"
+                    title: "3D GIF Creation"
+                    description: "Create stunning 3D GIFs with Lamia's built-in tools and libraries."
+                    link: "gif3d.lamia"
+                }
+                
+                gif3d_feature {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "🎮"
+                    title: "Interactive 3D"
+                    description: "Build interactive 3D experiences with real-time rendering and user interaction."
+                    link: "interactive.lamia"
+                }
+                
+                gif3d_feature {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "🚀"
+                    title: "Performance Optimized"
+                    description: "Lightning-fast 3D rendering with optimized algorithms and hardware acceleration."
+                    link: "performance.lamia"
+                }
+            }
+        }
+    }
+
+    // ECOSYSTEM INTEGRATION SECTION
+    section ecosystem_integration {
+        background: "linear-gradient(135deg, #2a1a2a 0%, #1a1a2e 100%)"
+        color: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            title {
+                text: "Deep Ecosystem Integration"
+                size: "3rem"
+                weight: "700"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Lamia is the foundation that powers the entire Medusa ecosystem"
+                size: "1.2rem"
+                margin_bottom: "4rem"
+                opacity: "0.9"
+            }
+            
+            integration_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(300px, 1fr))"
+                gap: "2rem"
+                
+                integration {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "🤖"
+                    title: "Lamia Fabrica"
+                    description: "The massive backend system with 3D model generation, auction house, plugin store, and client management."
+                    link: "../lamia-fabrica.lamia"
+                    highlight: true
+                }
+                
+                integration {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "⚡"
+                    title: "MedusaServ"
+                    description: "High-performance web server with native C++ integration and military-grade security."
+                    link: "../medusaserv.lamia"
+                }
+                
+                integration {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "📚"
+                    title: "Purple Pages"
+                    description: "Comprehensive documentation system with interactive examples and real-time updates."
+                    link: "purple-pages.lamia"
+                }
+            }
+        }
+    }
+
+    // PATREON SUPPORT SECTION
+    section patreon_support {
+        background: "linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%)"
+        color: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            title {
+                text: "Support Lamia Development"
+                size: "2.5rem"
+                weight: "700"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Your support makes the difference between life and death for this revolutionary programming language"
+                size: "1.2rem"
+                margin_bottom: "3rem"
+                opacity: "0.9"
+            }
+            
+            cta_button {
+                text: "🎯 Support on Patreon"
+                link: "https://www.patreon.com/TheMedusaInitiative"
+                background: "#ff6b00"
+                color: "white"
+                padding: "1rem 3rem"
+                border_radius: "50px"
+                font_size: "1.2rem"
+                font_weight: "600"
+                hover_effect: "transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255, 107, 0, 0.4)"
+            }
+        }
+    }
+
+    include "../footer.lamia"
+    include "../copyright.lamia"
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Restore Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🔄 Database Restore Service</h1>
+        <div class="portal-status" id="restoreStatus">
+            <span class="status-indicator online"></span>
+            Restore Engine: READY
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="restoreService.listBackups()">📋 List Backups</button>
+            <button class="service-btn" onclick="restoreService.validateBackup()">✅ Validate</button>
+            <button class="service-btn" onclick="restoreService.restoreDatabase()">🔙 Restore</button>
+            <button class="service-btn" onclick="restoreService.pointInTime()">⏱️ Point-in-Time</button>
+        </div>
+
+        <div class="backup-list" id="backupList">
+            <!-- Backup list will be populated here -->
+        </div>
+
+        <div class="service-output" id="restoreOutput">
+            <div>[RESTORE] Database restore service initialized</div>
+            <div>[RESTORE] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[RESTORE] Ready for restore operations...</div>
+        </div>
+    </div>
+
+    <script>
+        class DatabaseRestoreService {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                await this.loadBackupList();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/database/restore/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_main'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[RESTORE] Connected to PsiForceDB restore engine');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async listBackups() {
+                this.logOutput('[RESTORE] Loading available backups...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/restore/list', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:backup:list',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayBackupList(result.backups);
+                        this.logOutput('[RESTORE] Backup list loaded successfully');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to load backups: ${error.message}`);
+                }
+            }
+
+            async validateBackup() {
+                const backupId = prompt('Enter backup ID to validate:');
+                if (backupId) {
+                    this.logOutput(`[RESTORE] Validating backup ${backupId}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/restore/validate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:backup:validate',
+                                server: '172.236.23.54',
+                                backupId: backupId
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.logOutput(`[RESTORE] Backup validation: ${result.status}`);
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Validation failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async restoreDatabase() {
+                const backupId = prompt('Enter backup ID to restore:');
+                const confirmRestore = confirm('This will overwrite the current database. Continue?');
+                
+                if (backupId && confirmRestore) {
+                    this.logOutput(`[RESTORE] Starting database restore from ${backupId}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/restore/execute', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:restore:full',
+                                server: '172.236.23.54',
+                                backupId: backupId,
+                                options: {
+                                    overwrite: true,
+                                    verify: true
+                                }
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.logOutput('[RESTORE] Database restored successfully');
+                            this.logOutput(`[RESTORE] Restored ${result.recordsRestored} records`);
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Restore failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async pointInTime() {
+                const timestamp = prompt('Enter timestamp for point-in-time recovery (YYYY-MM-DD HH:MM:SS):');
+                if (timestamp) {
+                    this.logOutput(`[RESTORE] Starting point-in-time recovery to ${timestamp}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/restore/pit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:restore:pit',
+                                server: '172.236.23.54',
+                                timestamp: timestamp
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            this.logOutput('[RESTORE] Point-in-time recovery completed');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Point-in-time recovery failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async loadBackupList() {
+                await this.listBackups();
+            }
+
+            displayBackupList(backups) {
+                const listContainer = document.getElementById('backupList');
+                if (backups && backups.length > 0) {
+                    listContainer.innerHTML = '<h3>Available Backups:</h3>' + 
+                        backups.map(backup => `
+                            <div class="backup-item">
+                                <strong>${backup.id}</strong> - ${backup.date} (${backup.size})
+                                <button onclick="restoreService.selectBackup('${backup.id}')" class="service-btn-small">Select</button>
+                            </div>
+                        `).join('');
+                } else {
+                    listContainer.innerHTML = '<div class="no-backups">No backups available</div>';
+                }
+            }
+
+            selectBackup(backupId) {
+                this.logOutput(`[RESTORE] Selected backup: ${backupId}`);
+                document.querySelector('input[placeholder*="backup ID"]')?.setAttribute('value', backupId);
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('restoreOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.restoreService = new DatabaseRestoreService();
+        });
+    </script>
+</body>
+</html>

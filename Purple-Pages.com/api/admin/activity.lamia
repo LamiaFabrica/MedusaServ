@@ -1,0 +1,33 @@
+<!--
+Purple-Pages.com - Admin Activity API
+Returns recent admin activity
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_admin_activity_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify admin access
+    if (!verify_admin_access()) {
+        return response(401, json({
+            "error": "Unauthorized",
+            "message": "Admin access required"
+        }));
+    }
+    
+    // Get recent activity (last 20 items)
+    activity = get_recent_activity(20);
+    
+    return response(200, json({
+        "success": true,
+        "activity": activity
+    }));
+}
+

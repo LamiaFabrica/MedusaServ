@@ -1,0 +1,1178 @@
+/**
+ * MEDUSASERV PORTAL USER CRUD SYSTEM v0.3.0d
+ * Native Lamia User & SubUser Management with CRUD Operations
+ * SEO: /portal/inc/components/lamia/user-management/user-crud/
+ */
+
+@component "medusaserv_user_crud_system" {
+    @version "0.3.0d"
+    @type "user_management_crud"
+    @seo_friendly true
+    @enterprise_level true
+    
+    @config {
+        @user_roles {
+            super_admin: { level: 100, title: "Super Administrator", permissions: ["all"] },
+            admin: { level: 80, title: "Administrator", permissions: ["user_management", "system_management", "security"] },
+            manager: { level: 60, title: "Manager", permissions: ["user_management", "file_management", "analytics"] },
+            operator: { level: 40, title: "Operator", permissions: ["file_management", "basic_system"] },
+            sub_user: { level: 20, title: "Sub User", permissions: ["basic_access"] },
+            viewer: { level: 10, title: "Viewer", permissions: ["read_only"] }
+        }
+        
+        @password_requirements {
+            min_length: 12,
+            require_uppercase: true,
+            require_lowercase: true,
+            require_numbers: true,
+            require_special: true,
+            require_unique_chars: 8,
+            max_common_patterns: 0,
+            require_2fa: true
+        }
+    }
+    
+    @render {
+        @container user_crud_main :: class="user-crud-container" {
+            
+            // =============================================
+            // USER CREATION FORM
+            // =============================================
+            
+            @container add_user_section :: class="crud-section add-user-section" {
+                @text h3 "Add New User Account" :: class="section-title"
+                @text "Create new user or sub-user account with appropriate permissions" :: class="section-description"
+                
+                @form add_user_form :: class="user-crud-form" :: id="add-user-form" :: onsubmit="createUser(event)" {
+                    @container form_grid :: class="form-grid two-column" {
+                        
+                        // Basic Information
+                        @container basic_info :: class="form-section" {
+                            @text h4 "Basic Information" :: class="form-section-title"
+                            
+                            @input username :: type="text" :: placeholder="Enter username" :: 
+                                   class="form-input" :: id="new-username" :: required :: 
+                                   pattern="[a-zA-Z0-9_.-]{3,32}" :: 
+                                   title="Username: 3-32 characters, alphanumeric, underscore, dot, hyphen only" {
+                                @label "Username" :: class="form-label" :: required_indicator="*"
+                                @validation_message id="username-validation"
+                            }
+                            
+                            @input display_name :: type="text" :: placeholder="Enter display name" :: 
+                                   class="form-input" :: id="new-display-name" :: required :: 
+                                   maxlength="64" {
+                                @label "Display Name" :: class="form-label" :: required_indicator="*"
+                            }
+                            
+                            @input email :: type="email" :: placeholder="Enter email address" :: 
+                                   class="form-input" :: id="new-email" :: required :: 
+                                   title="Valid email address required for account recovery" {
+                                @label "Email Address" :: class="form-label" :: required_indicator="*"
+                                @validation_message id="email-validation"
+                            }
+                            
+                            @select user_role :: class="form-select" :: id="new-user-role" :: required {
+                                @label "User Role" :: class="form-label" :: required_indicator="*"
+                                @option "" :: text="Select user role" :: disabled :: selected
+                                @foreach role in @{user_roles} {
+                                    @option @{role.key} :: text="@{role.title} (Level @{role.level})" :: 
+                                            title="Permissions: @{role.permissions.join(', ')}"
+                                }
+                            }
+                        }
+                        
+                        // Password & Security
+                        @container security_info :: class="form-section" {
+                            @text h4 "Password & Security" :: class="form-section-title"
+                            
+                            @container password_generation :: class="password-generator-container" {
+                                @input password :: type="password" :: placeholder="Generate or enter password" :: 
+                                       class="form-input password-input" :: id="new-password" :: required :: 
+                                       minlength="12" :: autocomplete="new-password" {
+                                    @label "Password" :: class="form-label" :: required_indicator="*"
+                                }
+                                @button generate_password :: type="button" :: class="btn-generate-password" :: 
+                                        onclick="generateSecurePassword('new-password')" :: 
+                                        title="Generate Chrome-style secure password" {
+                                    @icon "🔑" @text "Generate Secure Password"
+                                }
+                                @container password_strength :: class="password-strength-indicator" :: id="password-strength-new" {
+                                    @container strength_bar :: class="strength-bar"
+                                    @text strength_text :: class="strength-text" "Password strength will appear here"
+                                }
+                            }
+                            
+                            @input confirm_password :: type="password" :: placeholder="Confirm password" :: 
+                                   class="form-input" :: id="new-confirm-password" :: required :: 
+                                   minlength="12" :: autocomplete="new-password" {
+                                @label "Confirm Password" :: class="form-label" :: required_indicator="*"
+                                @validation_message id="confirm-password-validation"
+                            }
+                            
+                            @checkbox require_2fa :: class="form-checkbox" :: id="new-require-2fa" :: checked {
+                                @label "Require Two-Factor Authentication (2FA)" :: class="checkbox-label"
+                                @help_text "Strongly recommended for enhanced security"
+                            }
+                            
+                            @checkbox force_password_change :: class="form-checkbox" :: id="new-force-password-change" :: checked {
+                                @label "Force password change on first login" :: class="checkbox-label"
+                                @help_text "User must create new password on first access"
+                            }
+                        }
+                    }
+                    
+                    // Account Settings
+                    @container account_settings :: class="form-section full-width" {
+                        @text h4 "Account Settings & Permissions" :: class="form-section-title"
+                        
+                        @container settings_grid :: class="form-grid three-column" {
+                            @checkbox account_enabled :: class="form-checkbox" :: id="new-account-enabled" :: checked {
+                                @label "Account Enabled" :: class="checkbox-label"
+                                @help_text "Account can log in and access system"
+                            }
+                            
+                            @checkbox email_notifications :: class="form-checkbox" :: id="new-email-notifications" :: checked {
+                                @label "Email Notifications" :: class="checkbox-label"
+                                @help_text "Send system alerts and updates via email"
+                            }
+                            
+                            @input session_timeout :: type="number" :: class="form-input" :: id="new-session-timeout" :: 
+                                   value="3600" :: min="300" :: max="86400" :: step="300" {
+                                @label "Session Timeout (seconds)" :: class="form-label"
+                                @help_text "Auto-logout after inactivity (5 min - 24 hours)"
+                            }
+                        }
+                        
+                        @container permission_matrix :: class="permission-matrix" :: id="permission-matrix" {
+                            @text h5 "Detailed Permissions" :: class="permission-title"
+                            @text "Select specific permissions for this user account" :: class="permission-description"
+                            
+                            @container permissions_grid :: class="permissions-grid" {
+                                @foreach category in @{permission_categories} {
+                                    @container permission_category :: class="permission-category" {
+                                        @text h6 "@{category.name}" :: class="category-title"
+                                        @foreach permission in @{category.permissions} {
+                                            @checkbox @{permission.key} :: class="permission-checkbox" :: 
+                                                      id="perm-@{permission.key}" :: 
+                                                      data-category="@{category.key}" :: 
+                                                      data-level="@{permission.required_level}" {
+                                                @label "@{permission.name}" :: class="permission-label"
+                                                @help_text "@{permission.description}"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    @container form_actions :: class="form-actions" {
+                        @button submit :: type="submit" :: class="btn-primary btn-create-user" {
+                            @icon "➕" @text "Create User Account"
+                        }
+                        @button reset :: type="reset" :: class="btn-secondary" :: onclick="resetUserForm()" {
+                            @icon "🔄" @text "Reset Form"
+                        }
+                        @button cancel :: type="button" :: class="btn-tertiary" :: onclick="closeUserForm()" {
+                            @icon "✕" @text "Cancel"
+                        }
+                    }
+                }
+            }
+            
+            // =============================================
+            // USER MANAGEMENT TABLE
+            // =============================================
+            
+            @container users_list_section :: class="crud-section users-list-section" {
+                @container list_header :: class="list-header" {
+                    @text h3 "User Accounts Management" :: class="section-title"
+                    @container header_actions :: class="header-actions" {
+                        @input search :: type="text" :: placeholder="Search users..." :: 
+                               class="search-input" :: id="user-search" :: 
+                               oninput="filterUsers(this.value)" {
+                            @icon "🔍" :: class="search-icon"
+                        }
+                        @select filter_role :: class="filter-select" :: id="role-filter" :: 
+                                onchange="filterUsersByRole(this.value)" {
+                            @option "" :: text="All Roles" :: selected
+                            @foreach role in @{user_roles} {
+                                @option @{role.key} :: text="@{role.title}"
+                            }
+                        }
+                        @select filter_status :: class="filter-select" :: id="status-filter" :: 
+                                onchange="filterUsersByStatus(this.value)" {
+                            @option "" :: text="All Status" :: selected
+                            @option "active" :: text="Active Only"
+                            @option "inactive" :: text="Inactive Only"
+                            @option "locked" :: text="Locked Only"
+                        }
+                    }
+                }
+                
+                @container users_table_container :: class="table-container" {
+                    @table users_table :: class="users-data-table" :: id="users-table" {
+                        @thead {
+                            @tr {
+                                @th @checkbox select_all :: class="select-all" :: onclick="toggleSelectAll()" 
+                                @th "Avatar" :: class="avatar-col"
+                                @th "Username" :: class="username-col sortable" :: onclick="sortTable('username')"
+                                @th "Display Name" :: class="name-col sortable" :: onclick="sortTable('display_name')"  
+                                @th "Email" :: class="email-col sortable" :: onclick="sortTable('email')"
+                                @th "Role" :: class="role-col sortable" :: onclick="sortTable('role')"
+                                @th "Status" :: class="status-col sortable" :: onclick="sortTable('status')"
+                                @th "Last Login" :: class="login-col sortable" :: onclick="sortTable('last_login')"
+                                @th "2FA" :: class="2fa-col"
+                                @th "Actions" :: class="actions-col"
+                            }
+                        }
+                        @tbody id="users-table-body" {
+                            // Dynamic user rows loaded via JavaScript
+                            @container loading :: class="table-loading" :: id="table-loading" {
+                                @text "Loading users..." :: class="loading-message"
+                            }
+                        }
+                    }
+                }
+                
+                @container table_pagination :: class="pagination-container" :: id="pagination-container" {
+                    @container pagination_info :: class="pagination-info" {
+                        @text "Showing " :: class="pagination-text"
+                        @text page_start :: id="page-start" :: class="pagination-number"
+                        @text " to " :: class="pagination-text"
+                        @text page_end :: id="page-end" :: class="pagination-number"
+                        @text " of " :: class="pagination-text"
+                        @text total_users :: id="total-users" :: class="pagination-number"
+                        @text " users" :: class="pagination-text"
+                    }
+                    @container pagination_controls :: class="pagination-controls" :: id="pagination-controls" {
+                        // Dynamic pagination buttons loaded via JavaScript
+                    }
+                }
+            }
+            
+            // =============================================
+            // BULK ACTIONS
+            // =============================================
+            
+            @container bulk_actions :: class="bulk-actions-container" :: id="bulk-actions" :: hidden {
+                @container actions_bar :: class="bulk-actions-bar" {
+                    @text selected_count :: id="selected-count" :: class="selected-count"
+                    @text " users selected" :: class="selected-text"
+                    
+                    @container bulk_buttons :: class="bulk-action-buttons" {
+                        @button bulk_enable :: class="bulk-btn bulk-enable" :: onclick="bulkEnableUsers()" {
+                            @icon "✅" @text "Enable"
+                        }
+                        @button bulk_disable :: class="bulk-btn bulk-disable" :: onclick="bulkDisableUsers()" {
+                            @icon "⏸️" @text "Disable"
+                        }
+                        @button bulk_reset_password :: class="bulk-btn bulk-reset" :: onclick="bulkResetPasswords()" {
+                            @icon "🔑" @text "Reset Passwords"
+                        }
+                        @button bulk_send_email :: class="bulk-btn bulk-email" :: onclick="bulkSendEmail()" {
+                            @icon "📧" @text "Send Email"
+                        }
+                        @button bulk_delete :: class="bulk-btn bulk-delete" :: onclick="bulkDeleteUsers()" {
+                            @icon "🗑️" @text "Delete"
+                        }
+                    }
+                    
+                    @button clear_selection :: class="bulk-btn bulk-clear" :: onclick="clearSelection()" {
+                        @icon "✕" @text "Clear Selection"
+                    }
+                }
+            }
+        }
+        
+        // =============================================
+        // USER EDIT MODAL
+        // =============================================
+        
+        @modal edit_user_modal :: class="user-edit-modal" :: id="edit-user-modal" :: hidden {
+            @container modal_header :: class="modal-header" {
+                @text h3 "Edit User Account" :: class="modal-title" :: id="edit-modal-title"
+                @button close_modal :: class="modal-close" :: onclick="closeEditModal()" {
+                    @icon "✕"
+                }
+            }
+            @container modal_body :: class="modal-body" :: id="edit-modal-body" {
+                // Dynamic edit form loaded via JavaScript
+            }
+            @container modal_footer :: class="modal-footer" {
+                @button save_changes :: class="btn-primary" :: onclick="saveUserChanges()" {
+                    @icon "💾" @text "Save Changes"
+                }
+                @button cancel_edit :: class="btn-secondary" :: onclick="closeEditModal()" {
+                    @text "Cancel"
+                }
+            }
+        }
+    }
+    
+    @styles {
+        .user-crud-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .crud-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #343a40;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .section-description {
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+        
+        .user-crud-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .form-grid.two-column {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .form-grid.three-column {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-section.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #6f42c1;
+        }
+        
+        .form-input,
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-label::after {
+            content: attr(required_indicator);
+            color: #dc3545;
+            margin-left: 0.25rem;
+        }
+        
+        .password-generator-container {
+            position: relative;
+        }
+        
+        .btn-generate-password {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-generate-password:hover {
+            background: #5a2d91;
+        }
+        
+        .password-strength-indicator {
+            margin-top: 0.5rem;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .strength-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .strength-bar.weak::before {
+            width: 25%;
+            background: #dc3545;
+        }
+        
+        .strength-bar.fair::before {
+            width: 50%;
+            background: #ffc107;
+        }
+        
+        .strength-bar.good::before {
+            width: 75%;
+            background: #17a2b8;
+        }
+        
+        .strength-bar.strong::before {
+            width: 100%;
+            background: #28a745;
+        }
+        
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+        
+        .form-checkbox {
+            margin-right: 0.5rem;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .help_text {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        
+        .permission-matrix {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .permission-category {
+            border: 1px solid #f8f9fa;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        
+        .category-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #6f42c1;
+            margin-bottom: 0.75rem;
+        }
+        
+        .permission-checkbox {
+            margin: 0.25rem 0;
+        }
+        
+        .permission-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .btn-primary,
+        .btn-secondary,
+        .btn-tertiary {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a2d91;
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6f42c1;
+            border: 1px solid #e9ecef;
+        }
+        
+        .btn-secondary:hover {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .btn-tertiary {
+            background: transparent;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-tertiary:hover {
+            background: #f8f9fa;
+            color: #495057;
+        }
+        
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-input {
+            position: relative;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            min-width: 250px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            min-width: 120px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+        
+        .users-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        .users-data-table th {
+            background: #f8f9fa;
+            padding: 1rem 0.75rem;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            text-align: left;
+        }
+        
+        .users-data-table th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .users-data-table th.sortable:hover {
+            background: #e9ecef;
+        }
+        
+        .users-data-table td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .users-data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .bulk-actions-container {
+            background: #6f42c1;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .bulk-actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+        
+        .bulk-action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .bulk-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .bulk-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .user-edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-edit-modal .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .modal-title {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .user-crud-container {
+                padding: 1rem;
+            }
+            
+            .form-grid.two-column,
+            .form-grid.three-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .list-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            .header-actions {
+                flex-wrap: wrap;
+            }
+            
+            .search-input {
+                min-width: unset;
+                width: 100%;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .bulk-actions-bar {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    }
+    
+    @scripts {
+        let currentUsers = [];
+        let filteredUsers = [];
+        let selectedUsers = [];
+        let currentPage = 1;
+        let usersPerPage = 25;
+        let sortColumn = 'username';
+        let sortDirection = 'asc';
+        
+        // Initialize user management
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            setupEventListeners();
+            loadPermissionCategories();
+        });
+        
+        function setupEventListeners() {
+            // Real-time password strength checking
+            const passwordInput = document.getElementById('new-password');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
+                    checkPasswordStrength(this.value, 'password-strength-new');
+                });
+            }
+            
+            // Password confirmation matching
+            const confirmPasswordInput = document.getElementById('new-confirm-password');
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', function() {
+                    validatePasswordMatch('new-password', 'new-confirm-password', 'confirm-password-validation');
+                });
+            }
+            
+            // Username availability checking
+            const usernameInput = document.getElementById('new-username');
+            if (usernameInput) {
+                let usernameTimeout;
+                usernameInput.addEventListener('input', function() {
+                    clearTimeout(usernameTimeout);
+                    usernameTimeout = setTimeout(() => {
+                        checkUsernameAvailability(this.value);
+                    }, 500);
+                });
+            }
+            
+            // Role-based permission updating
+            const roleSelect = document.getElementById('new-user-role');
+            if (roleSelect) {
+                roleSelect.addEventListener('change', function() {
+                    updatePermissionsForRole(this.value);
+                });
+            }
+        }
+        
+        async function loadUsers() {
+            try {
+                showTableLoading(true);
+                const response = await fetch('/portal/api/users/list');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentUsers = data.users;
+                    filteredUsers = [...currentUsers];
+                    renderUsersTable();
+                    updatePagination();
+                } else {
+                    showErrorMessage('Failed to load users: ' + data.error);
+                }
+            } catch (error) {
+                showErrorMessage('Network error loading users: ' + error.message);
+            } finally {
+                showTableLoading(false);
+            }
+        }
+        
+        function renderUsersTable() {
+            const tbody = document.getElementById('users-table-body');
+            const startIndex = (currentPage - 1) * usersPerPage;
+            const endIndex = Math.min(startIndex + usersPerPage, filteredUsers.length);
+            const pageUsers = filteredUsers.slice(startIndex, endIndex);
+            
+            tbody.innerHTML = pageUsers.map(user => `
+                <tr data-user-id="${user.id}" class="user-row ${user.status}">
+                    <td><input type="checkbox" class="user-select" value="${user.id}" onchange="updateSelectedUsers()"></td>
+                    <td class="avatar-cell">
+                        <img src="${user.avatar || '/portal/assets/default-avatar.png'}" 
+                             alt="${user.display_name}" class="user-avatar">
+                    </td>
+                    <td class="username-cell">
+                        <strong>${user.username}</strong>
+                        ${user.is_sub_user ? '<span class="sub-user-badge">Sub User</span>' : ''}
+                    </td>
+                    <td class="name-cell">${user.display_name}</td>
+                    <td class="email-cell">
+                        <a href="mailto:${user.email}">${user.email}</a>
+                    </td>
+                    <td class="role-cell">
+                        <span class="role-badge ${user.role}">${getUserRoleTitle(user.role)}</span>
+                    </td>
+                    <td class="status-cell">
+                        <span class="status-badge ${user.status}">${user.status}</span>
+                        ${user.locked_until ? `<small>Locked until ${formatDate(user.locked_until)}</small>` : ''}
+                    </td>
+                    <td class="login-cell">
+                        ${user.last_login ? formatRelativeTime(user.last_login) : 'Never'}
+                    </td>
+                    <td class="2fa-cell">
+                        ${user.two_factor_enabled ? '<span class="2fa-enabled">✅</span>' : '<span class="2fa-disabled">❌</span>'}
+                    </td>
+                    <td class="actions-cell">
+                        <div class="action-buttons">
+                            <button onclick="editUser(${user.id})" class="btn-edit" title="Edit User">✏️</button>
+                            <button onclick="toggleUserStatus(${user.id})" class="btn-toggle" 
+                                    title="${user.status === 'active' ? 'Disable' : 'Enable'} User">
+                                ${user.status === 'active' ? '⏸️' : '▶️'}
+                            </button>
+                            <button onclick="resetUserPassword(${user.id})" class="btn-reset" title="Reset Password">🔑</button>
+                            <button onclick="deleteUser(${user.id})" class="btn-delete" title="Delete User">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // Chrome-style secure password generation
+        function generateSecurePassword(inputId) {
+            const length = 16;
+            const charset = {
+                lowercase: 'abcdefghijklmnopqrstuvwxyz',
+                uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                numbers: '0123456789',
+                symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?'
+            };
+            
+            let password = '';
+            const allChars = Object.values(charset).join('');
+            
+            // Ensure at least one character from each category
+            password += getRandomChar(charset.lowercase);
+            password += getRandomChar(charset.uppercase);
+            password += getRandomChar(charset.numbers);
+            password += getRandomChar(charset.symbols);
+            
+            // Fill remaining length with random characters
+            for (let i = 4; i < length; i++) {
+                password += getRandomChar(allChars);
+            }
+            
+            // Shuffle the password
+            password = shuffleString(password);
+            
+            // Set the password and show strength
+            const input = document.getElementById(inputId);
+            input.value = password;
+            input.type = 'text'; // Briefly show password
+            
+            // Check strength
+            checkPasswordStrength(password, inputId.replace('new-password', 'password-strength-new'));
+            
+            // Hide password after 2 seconds
+            setTimeout(() => {
+                input.type = 'password';
+            }, 2000);
+            
+            // Show success message
+            showToast('🔑 Secure password generated successfully!', 'success');
+        }
+        
+        function getRandomChar(charset) {
+            return charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+        
+        function shuffleString(str) {
+            return str.split('').sort(() => Math.random() - 0.5).join('');
+        }
+        
+        function checkPasswordStrength(password, indicatorId) {
+            const indicator = document.getElementById(indicatorId);
+            if (!indicator) return;
+            
+            const strengthBar = indicator.querySelector('.strength-bar');
+            const strengthText = indicator.querySelector('.strength-text');
+            
+            let score = 0;
+            let feedback = [];
+            
+            // Length check
+            if (password.length >= 12) score += 2;
+            else if (password.length >= 8) score += 1;
+            else feedback.push('Use at least 12 characters');
+            
+            // Character variety
+            if (/[a-z]/.test(password)) score += 1;
+            else feedback.push('Include lowercase letters');
+            
+            if (/[A-Z]/.test(password)) score += 1;  
+            else feedback.push('Include uppercase letters');
+            
+            if (/[0-9]/.test(password)) score += 1;
+            else feedback.push('Include numbers');
+            
+            if (/[^a-zA-Z0-9]/.test(password)) score += 1;
+            else feedback.push('Include special characters');
+            
+            // Common patterns check
+            if (!/(.)\1{2,}/.test(password)) score += 1; // No repeated characters
+            if (!/123|abc|qwe/i.test(password)) score += 1; // No common sequences
+            
+            let strength, className, color;
+            if (score < 3) {
+                strength = 'Very Weak';
+                className = 'weak';
+                color = '#dc3545';
+            } else if (score < 5) {
+                strength = 'Weak';
+                className = 'weak';
+                color = '#dc3545';
+            } else if (score < 6) {
+                strength = 'Fair';
+                className = 'fair';
+                color = '#ffc107';
+            } else if (score < 7) {
+                strength = 'Good';
+                className = 'good';
+                color = '#17a2b8';
+            } else {
+                strength = 'Strong';
+                className = 'strong';
+                color = '#28a745';
+            }
+            
+            strengthBar.className = `strength-bar ${className}`;
+            strengthText.textContent = `${strength}${feedback.length ? ': ' + feedback.join(', ') : ''}`;
+            strengthText.style.color = color;
+        }
+        
+        async function createUser(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const userData = {
+                username: formData.get('username'),
+                display_name: formData.get('display_name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                confirm_password: formData.get('confirm_password'),
+                role: formData.get('user_role'),
+                require_2fa: formData.has('require_2fa'),
+                force_password_change: formData.has('force_password_change'),
+                account_enabled: formData.has('account_enabled'),
+                email_notifications: formData.has('email_notifications'),
+                session_timeout: parseInt(formData.get('session_timeout')),
+                permissions: getSelectedPermissions()
+            };
+            
+            // Validate form data
+            const validation = validateUserData(userData);
+            if (!validation.valid) {
+                showErrorMessage('Please fix the following errors: ' + validation.errors.join(', '));
+                return;
+            }
+            
+            try {
+                showLoadingOverlay('Creating user account...');
+                
+                const response = await fetch('/portal/api/users/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': getCsrfToken()
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccessMessage(`✅ User account "${userData.username}" created successfully!`);
+                    resetUserForm();
+                    loadUsers(); // Reload users table
+                } else {
+                    showErrorMessage('❌ Failed to create user: ' + result.error);
+                }
+            } catch (error) {
+                showErrorMessage('❌ Network error creating user: ' + error.message);
+            } finally {
+                hideLoadingOverlay();
+            }
+        }
+        
+        function validateUserData(userData) {
+            const errors = [];
+            
+            // Username validation
+            if (!userData.username || userData.username.length < 3) {
+                errors.push('Username must be at least 3 characters');
+            }
+            if (!/^[a-zA-Z0-9_.-]+$/.test(userData.username)) {
+                errors.push('Username contains invalid characters');
+            }
+            
+            // Email validation
+            if (!userData.email || !isValidEmail(userData.email)) {
+                errors.push('Valid email address required');
+            }
+            
+            // Password validation
+            if (!userData.password || userData.password.length < 12) {
+                errors.push('Password must be at least 12 characters');
+            }
+            if (userData.password !== userData.confirm_password) {
+                errors.push('Password confirmation does not match');
+            }
+            
+            // Role validation
+            if (!userData.role) {
+                errors.push('User role must be selected');
+            }
+            
+            return {
+                valid: errors.length === 0,
+                errors: errors
+            };
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function getSelectedPermissions() {
+            const checkboxes = document.querySelectorAll('.permission-checkbox:checked');
+            return Array.from(checkboxes).map(cb => cb.id.replace('perm-', ''));
+        }
+        
+        // Additional helper functions
+        function showTableLoading(show) {
+            const loading = document.getElementById('table-loading');
+            if (loading) {
+                loading.style.display = show ? 'block' : 'none';
+            }
+        }
+        
+        function getUserRoleTitle(roleKey) {
+            const roles = @{user_roles};
+            return roles[roleKey] ? roles[roleKey].title : roleKey;
+        }
+        
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString();
+        }
+        
+        function formatRelativeTime(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diff = now - date;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            if (days === 0) return 'Today';
+            if (days === 1) return 'Yesterday';
+            if (days < 7) return `${days} days ago`;
+            if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
+            return `${Math.floor(days / 30)} months ago`;
+        }
+        
+        function getCsrfToken() {
+            return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+        }
+        
+        // Initialize password requirements display
+        function showPasswordRequirements() {
+            const requirements = @{password_requirements};
+            // Implementation for showing password requirements tooltip
+        }
+    }
+}

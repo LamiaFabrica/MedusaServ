@@ -1,0 +1,86 @@
+<!--
+Purple-Pages.com - Admin Login API
+Handles admin authentication for Purple Pages
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_admin_login_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    // Handle OPTIONS preflight
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    if (request.method != "POST") {
+        return response(405, json({
+            "error": "Method not allowed",
+            "message": "Only POST method is supported"
+        }));
+    }
+    
+    // Parse request body
+    body = parse_json(request.body);
+    
+    username = body.get("username", "");
+    password = body.get("password", "");
+    remember = body.get("remember", false);
+    
+    if (!username || !password) {
+        return response(400, json({
+            "error": "Missing credentials",
+            "message": "Username and password are required"
+        }));
+    }
+    
+    // Verify credentials (integrate with master licensing system)
+    // This should check against the master admin key or user database
+    is_master_admin = verify_master_admin(username, password);
+    is_admin_user = verify_admin_user(username, password);
+    
+    if (!is_master_admin && !is_admin_user) {
+        return response(401, json({
+            "error": "Invalid credentials",
+            "message": "Username or password is incorrect"
+        }));
+    }
+    
+    // Generate session token
+    session_token = generate_session_token({
+        "user_id": get_user_id(username),
+        "username": username,
+        "is_master_admin": is_master_admin,
+        "roles": ["admin", "purple_pages_admin"]
+    });
+    
+    // Set session cookie
+    cookie_options = {
+        "domain": ".poweredbymedusa.com",
+        "path": "/",
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "None"
+    };
+    
+    if (remember) {
+        cookie_options["maxAge"] = 3600 * 24 * 30; // 30 days
+    } else {
+        cookie_options["maxAge"] = 3600 * 24; // 1 day
+    }
+    
+    response.set_cookie("session_token", session_token, cookie_options);
+    
+    return response(200, json({
+        "success": true,
+        "message": "Login successful",
+        "user": {
+            "username": username,
+            "is_master_admin": is_master_admin
+        },
+        "redirect": "/pages/admin/dashboard.lamia"
+    }));
+}
+

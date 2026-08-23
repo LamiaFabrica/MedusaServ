@@ -1,0 +1,373 @@
+/**
+ * MEDUSASERV PORTAL HEADER COMPONENT v0.3.0d
+ * Native Lamia modular header with corporate branding
+ * SEO: /portal/inc/components/lamia/layout/header/
+ */
+
+@component "medusaserv_portal_header" {
+    @version "0.3.0d"
+    @type "layout_header"
+    @seo_friendly true
+    
+    @render {
+        @container header :: class="portal-header" :: role="banner" {
+            @container header-top :: class="header-brand-section" {
+                @link "/" :: class="brand-link" :: title="MedusaServ Portal Home" {
+                    @image logo://inc/img/MedusaServ.png :: alt="MedusaServ Portal" :: class="brand-logo" :: width="60" :: height="60"
+                    @container brand-text {
+                        @text h1 "MedusaServ Portal" :: class="brand-title"
+                        @text "Enterprise Web Management" :: class="brand-subtitle"
+                    }
+                }
+                
+                @container header-tools :: class="header-actions" {
+                    @link "/portal/system-status" :: class="status-indicator" :: title="System Status" {
+                        @icon "🟢" :: class="status-icon online"
+                        @text "All Systems Operational"
+                    }
+                    
+                    @container user-menu :: class="user-dropdown" {
+                        @button user-toggle :: class="user-button" :: data-toggle="dropdown" {
+                            @icon "👤" :: class="user-icon"
+                            @text @{session.username || "Administrator"} :: class="username"
+                            @icon "▼" :: class="dropdown-arrow"
+                        }
+                        @container dropdown-menu :: class="user-dropdown-menu" :: hidden {
+                            @link "/portal/my-account" :: title="Account Settings" {
+                                @icon "⚙️" @text "Account Settings"
+                            }
+                            @link "/portal/security-settings" :: title="Security Settings" {
+                                @icon "🔒" @text "Security & Privacy"
+                            }
+                            @link "/portal/activity-logs" :: title="Activity Logs" {
+                                @icon "📋" @text "Activity Logs"
+                            }
+                            @divider
+                            @button logout :: class="logout-action" :: onclick="logout()" {
+                                @icon "🚪" @text "Sign Out"
+                            }
+                        }
+                    }
+                }
+            }
+            
+            @container header-nav :: class="main-navigation" :: role="navigation" {
+                @nav primary-nav :: class="nav-primary" {
+                    @link "/portal/dashboard" :: class="nav-item" :: title="Dashboard Overview" {
+                        @icon "📊" @text "Dashboard"
+                    }
+                    @link "/portal/system-management" :: class="nav-item" :: title="System Management" {
+                        @icon "⚙️" @text "System"
+                    }
+                    @link "/portal/virtual-hosts" :: class="nav-item" :: title="Virtual Host Management" {
+                        @icon "🌐" @text "Virtual Hosts"
+                    }
+                    @link "/portal/security-center" :: class="nav-item" :: title="Security Center" {
+                        @icon "🛡️" @text "Security"
+                    }
+                    @link "/portal/file-manager" :: class="nav-item" :: title="File Management" {
+                        @icon "📁" @text "Files"
+                    }
+                    @link "/portal/database-admin" :: class="nav-item" :: title="Database Administration" {
+                        @icon "🗄️" @text "Database"
+                    }
+                    @link "/portal/monitoring-analytics" :: class="nav-item" :: title="Monitoring & Analytics" {
+                        @icon "📈" @text "Analytics"
+                    }
+                }
+                
+                @container quick-actions :: class="nav-quick-actions" {
+                    @button quick-restart :: class="quick-action" :: title="Quick Server Restart" :: onclick="quickRestart()" {
+                        @icon "🔄"
+                    }
+                    @button quick-backup :: class="quick-action" :: title="Quick System Backup" :: onclick="quickBackup()" {
+                        @icon "💾"
+                    }
+                    @link "/portal/system-logs" :: class="quick-action" :: title="View System Logs" {
+                        @icon "📋"
+                    }
+                }
+            }
+        }
+    }
+    
+    @styles {
+        .portal-header {
+            background: linear-gradient(135deg, #6f42c1 0%, #8e44ad 50%, #9b59b6 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(111, 66, 193, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-brand-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: white;
+            transition: opacity 0.3s ease;
+        }
+        
+        .brand-link:hover {
+            opacity: 0.9;
+        }
+        
+        .brand-logo {
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+            border-radius: 8px;
+        }
+        
+        .brand-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .status-indicator:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .user-dropdown {
+            position: relative;
+        }
+        
+        .user-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            min-width: 200px;
+            z-index: 1001;
+            margin-top: 0.5rem;
+        }
+        
+        .user-dropdown-menu a,
+        .user-dropdown-menu button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: #333;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .user-dropdown-menu a:hover,
+        .user-dropdown-menu button:hover {
+            background: #f8f9fa;
+        }
+        
+        .main-navigation {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 0 2rem;
+        }
+        
+        .nav-primary {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-item:hover,
+        .nav-item.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom-color: #a78bfa;
+        }
+        
+        .nav-quick-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+        
+        .quick-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .quick-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-brand-section {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .nav-primary {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-item {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .nav-quick-actions {
+                margin-left: 0;
+                justify-content: center;
+                margin-top: 0.5rem;
+            }
+        }
+    }
+    
+    @scripts {
+        function logout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                window.location.href = '/portal/auth/logout';
+            }
+        }
+        
+        async function quickRestart() {
+            if (confirm('Restart MedusaServ? This will briefly interrupt service.')) {
+                try {
+                    const response = await fetch('/portal/api/system/restart', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        alert('✅ System restart initiated successfully');
+                        setTimeout(() => location.reload(), 3000);
+                    } else {
+                        alert('❌ Restart failed: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('❌ Network error during restart request');
+                }
+            }
+        }
+        
+        async function quickBackup() {
+            try {
+                const response = await fetch('/portal/api/system/backup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('✅ System backup started successfully');
+                } else {
+                    alert('❌ Backup failed: ' + result.error);
+                }
+            } catch (error) {
+                alert('❌ Network error during backup request');
+            }
+        }
+        
+        // Toggle user dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            const userToggle = document.querySelector('.user-button');
+            const userMenu = document.querySelector('.user-dropdown-menu');
+            
+            if (userToggle && userMenu) {
+                userToggle.addEventListener('click', function() {
+                    userMenu.classList.toggle('hidden');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!userToggle.contains(event.target) && !userMenu.contains(event.target)) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    }
+}

@@ -1,0 +1,359 @@
+/**
+ * Purple-Pages.com - Mission Impossible Highlight System
+ * Eye-catching yellow chase line for "can you show me..." queries
+ * © 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+ */
+
+/* ============================================================================
+   MISSION IMPOSSIBLE FUSE HIGHLIGHT
+   ============================================================================ */
+
+.highlight-fuse {
+    position: relative;
+    overflow: visible !important;
+    z-index: 9999;
+    animation: fusePulse 2s infinite;
+}
+
+.highlight-fuse::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.highlight-fuse::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 3px solid #FFD700;
+    border-radius: 8px;
+    z-index: -1;
+    pointer-events: none;
+    animation: fuseChase 1.5s linear infinite;
+    box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFA500,
+        0 0 30px #FF8C00,
+        inset 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Pulse animation for the entire element */
+@keyframes fusePulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+}
+
+/* Chase line animation - Mission Impossible style */
+@keyframes fuseChase {
+    0% {
+        clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
+        border-color: #FFD700;
+    }
+    25% {
+        clip-path: polygon(0% 0%, 25% 0%, 25% 0%, 0% 0%);
+        border-color: #FFA500;
+    }
+    50% {
+        clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
+        border-color: #FF8C00;
+    }
+    75% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        border-color: #FFA500;
+    }
+    100% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        border-color: #FFD700;
+    }
+}
+
+/* Alternative: Animated border chase effect */
+.highlight-fuse-border {
+    position: relative;
+    overflow: visible !important;
+    z-index: 9999;
+    animation: fusePulse 2s infinite;
+}
+
+.highlight-fuse-border::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 45%,
+        #FFD700 50%,
+        #FFA500 52%,
+        #FF8C00 54%,
+        #FFA500 56%,
+        #FFD700 58%,
+        transparent 60%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    border-radius: 8px;
+    z-index: -1;
+    pointer-events: none;
+    animation: fuseBorderChase 2s linear infinite;
+    box-shadow: 
+        0 0 15px #FFD700,
+        0 0 30px #FFA500,
+        0 0 45px #FF8C00;
+}
+
+@keyframes fuseBorderChase {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Spark effect */
+.highlight-fuse-spark {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #FFD700 0%, #FF8C00 100%);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFA500,
+        0 0 30px #FF8C00;
+    animation: sparkMove 1.5s linear infinite;
+    pointer-events: none;
+    z-index: 10000;
+}
+
+@keyframes sparkMove {
+    0% {
+        top: -4px;
+        left: -4px;
+        opacity: 1;
+        transform: scale(1);
+    }
+    25% {
+        top: -4px;
+        left: calc(25% - 4px);
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    50% {
+        top: calc(100% - 4px);
+        left: calc(50% - 4px);
+        opacity: 1;
+        transform: scale(1);
+    }
+    75% {
+        top: calc(100% - 4px);
+        left: calc(75% - 4px);
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    100% {
+        top: -4px;
+        left: calc(100% - 4px);
+        opacity: 0.8;
+        transform: scale(0.8);
+    }
+}
+
+/* Intense highlight mode */
+.highlight-fuse-intense {
+    animation: fusePulseIntense 1s infinite, fuseShake 0.5s infinite;
+}
+
+@keyframes fusePulseIntense {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px #FFD700,
+            0 0 40px #FFA500,
+            0 0 60px #FF8C00,
+            0 0 80px rgba(255, 140, 0, 0.5);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px #FFD700,
+            0 0 60px #FFA500,
+            0 0 90px #FF8C00,
+            0 0 120px rgba(255, 140, 0, 0.8);
+    }
+}
+
+@keyframes fuseShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    75% {
+        transform: translateX(2px);
+    }
+}
+
+/* Highlight overlay for entire sections */
+.highlight-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 215, 0, 0.1);
+    pointer-events: none;
+    z-index: 9998;
+    animation: overlayPulse 2s infinite;
+}
+
+@keyframes overlayPulse {
+    0%, 100% {
+        opacity: 0.1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+}
+
+/* Settings Gear with Highlight Indicator */
+.settings-gear-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 10000;
+}
+
+.settings-gear-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+    border: 3px solid #FFD700;
+    color: #FFD700;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 
+        0 4px 15px rgba(155, 89, 182, 0.4),
+        0 0 20px rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: gearRotate 3s linear infinite;
+    position: relative;
+}
+
+.settings-gear-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 
+        0 6px 25px rgba(155, 89, 182, 0.6),
+        0 0 40px rgba(255, 215, 0, 0.8);
+    border-color: #FFA500;
+}
+
+.settings-gear-btn.active {
+    animation: gearRotate 1s linear infinite;
+    border-color: #FF8C00;
+    box-shadow: 
+        0 0 30px #FFD700,
+        0 0 60px #FFA500,
+        0 0 90px #FF8C00;
+}
+
+@keyframes gearRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Notification badge for highlights */
+.highlight-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 
+        0 4px 15px rgba(255, 215, 0, 0.5),
+        0 0 30px rgba(255, 140, 0, 0.3);
+    z-index: 10001;
+    font-weight: 700;
+    animation: notificationSlide 0.5s ease-out;
+    border: 2px solid #FFD700;
+}
+
+@keyframes notificationSlide {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.highlight-notification::before {
+    content: '⚡';
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+/* Scroll to highlight animation */
+@keyframes scrollToHighlight {
+    0% {
+        scroll-margin-top: 100px;
+    }
+    100% {
+        scroll-margin-top: 100px;
+    }
+}
+
+.highlight-scroll-target {
+    scroll-margin-top: 100px;
+    animation: scrollToHighlight 0.5s ease-out;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .settings-gear-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .highlight-notification {
+        top: 10px;
+        right: 10px;
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+

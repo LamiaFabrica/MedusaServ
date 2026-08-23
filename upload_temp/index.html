@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFQL Portal - Powered by Medusa</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Portal Header -->
+        <header class="portal-header">
+            <div class="header-brand">
+                <h1>🐍 PFQL Portal</h1>
+                <span class="header-subtitle">Yorkshire Champion Gold Standard</span>
+            </div>
+            <div class="header-status" id="portalStatus">
+                <span class="status-indicator online"></span>
+                <span id="connectionStatus">Connected to PsiForceDB</span>
+            </div>
+            <div class="header-user" id="userInfo">
+                <span id="userRole">MASTER</span>
+                <span id="userName">LamiaFabrica</span>
+            </div>
+        </header>
+
+        <!-- Navigation Sidebar -->
+        <nav class="portal-sidebar" id="portalSidebar">
+            <div class="sidebar-section">
+                <h3>🗄️ Database Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/database-backup-service-thingamabob.lamia" class="service-link">Database Backup</a></li>
+                    <li><a href="/components/database-restore-service-thingamabob.lamia" class="service-link">Database Restore</a></li>
+                    <li><a href="/components/database-migration-service-thingamabob.lamia" class="service-link">Database Migration</a></li>
+                    <li><a href="/components/database-analysis-service-thingamabob.lamia" class="service-link">Database Analysis</a></li>
+                    <li><a href="/components/database-tuning-service-thingamabob.lamia" class="service-link">Database Tuning</a></li>
+                    <li><a href="/components/database-optimizer-service-thingamabob.lamia" class="service-link">Database Optimizer</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>⚙️ System Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/system-health-monitor-service-thingamabob.lamia" class="service-link">Health Monitor</a></li>
+                    <li><a href="/components/system-resource-monitor-service-thingamabob.lamia" class="service-link">Resource Monitor</a></li>
+                    <li><a href="/components/system-service-manager-thingamabob.lamia" class="service-link">Service Manager</a></li>
+                    <li><a href="/components/system-log-viewer-service-thingamabob.lamia" class="service-link">Log Viewer</a></li>
+                    <li><a href="/components/system-update-manager-service-thingamabob.lamia" class="service-link">Update Manager</a></li>
+                    <li><a href="/components/system-configuration-manager-service-thingamabob.lamia" class="service-link">Configuration Manager</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🚀 Performance Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/performance-benchmark-service-thingamabob.lamia" class="service-link">Benchmark Suite</a></li>
+                    <li><a href="/components/performance-profiler-service-thingamabob.lamia" class="service-link">Performance Profiler</a></li>
+                    <li><a href="/components/performance-monitoring-service-thingamabob.lamia" class="service-link">Performance Monitor</a></li>
+                    <li><a href="/components/performance-optimization-service-thingamabob.lamia" class="service-link">Performance Optimizer</a></li>
+                    <li><a href="/components/performance-analytics-service-thingamabob.lamia" class="service-link">Performance Analytics</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🛡️ Security Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/security-vulnerability-scanner-service-thingamabob.lamia" class="service-link">Vulnerability Scanner</a></li>
+                    <li><a href="/components/security-firewall-manager-service-thingamabob.lamia" class="service-link">Firewall Manager</a></li>
+                    <li><a href="/components/security-threat-detection-service-thingamabob.lamia" class="service-link">Threat Detection</a></li>
+                    <li><a href="/components/security-audit-service-thingamabob.lamia" class="service-link">Security Audit</a></li>
+                    <li><a href="/components/security-management-service-thingamabob.lamia" class="service-link">Security Management</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>⚛️ Quantum Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/quantum-optimizer-service-thingamabob.lamia" class="service-link">Quantum Optimizer</a></li>
+                    <li><a href="/components/quantum-healing-service-thingamabob.lamia" class="service-link">Quantum Healing</a></li>
+                    <li><a href="/components/quantum-advanced-service-thingamabob.lamia" class="service-link">Advanced Quantum</a></li>
+                    <li><a href="/components/quantum-transcendence-service-thingamabob.lamia" class="service-link">Quantum Transcendence</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🔥 Chaos Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/chaos-injection-thingamabob.lamia" class="service-link">Chaos Injection</a></li>
+                    <li><a href="/components/chaos-engineering-service-thingamabob.lamia" class="service-link">Chaos Engineering</a></li>
+                    <li><a href="/components/chaos-testing-service-thingamabob.lamia" class="service-link">Chaos Testing</a></li>
+                    <li><a href="/components/chaos-resilience-service-thingamabob.lamia" class="service-link">Resilience Testing</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🧠 Consciousness Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/consciousness-awareness-thingamabob.lamia" class="service-link">Awareness Engine</a></li>
+                    <li><a href="/components/consciousness-meditation-service-thingamabob.lamia" class="service-link">Meditation System</a></li>
+                    <li><a href="/components/consciousness-evolution-service-thingamabob.lamia" class="service-link">Evolution Engine</a></li>
+                    <li><a href="/components/consciousness-transcendence-service-thingamabob.lamia" class="service-link">Transcendence Core</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🤖 AI Services</h3>
+                <ul class="service-list">
+                    <li><a href="/components/ai-ipa-service-thingamabob.lamia" class="service-link">IPA Service</a></li>
+                    <li><a href="/components/ai-code-completion-service-thingamabob.lamia" class="service-link">Code Completion</a></li>
+                    <li><a href="/components/ai-api-integration-service-thingamabob.lamia" class="service-link">API Integration</a></li>
+                    <li><a href="/components/ai-machine-learning-service-thingamabob.lamia" class="service-link">Machine Learning</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="portal-main" id="portalMain">
+            <div class="welcome-section">
+                <h2>🐍 Welcome to PFQL Portal</h2>
+                <p class="welcome-subtitle">Yorkshire Champion Gold Standard System Management</p>
+                
+                <div class="portal-stats">
+                    <div class="stat-card">
+                        <h3>Services Online</h3>
+                        <div class="stat-value" id="servicesOnline">47</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>System Health</h3>
+                        <div class="stat-value health-excellent" id="systemHealth">98.7%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Database Status</h3>
+                        <div class="stat-value db-connected" id="databaseStatus">CONNECTED</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Yorkshire Level</h3>
+                        <div class="stat-value yorkshire-champion" id="yorkshireLevel">CHAMPION</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>🚀 Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-btn" onclick="portalManager.quickBackup()">
+                        🗄️ Quick Backup
+                    </button>
+                    <button class="action-btn" onclick="portalManager.systemHealth()">
+                        ⚙️ System Health
+                    </button>
+                    <button class="action-btn" onclick="portalManager.securityScan()">
+                        🛡️ Security Scan
+                    </button>
+                    <button class="action-btn" onclick="portalManager.performanceTest()">
+                        🚀 Performance Test
+                    </button>
+                    <button class="action-btn" onclick="portalManager.quantumOptimize()">
+                        ⚛️ Quantum Optimize
+                    </button>
+                    <button class="action-btn" onclick="portalManager.chaosTest()">
+                        🔥 Chaos Test
+                    </button>
+                    <button class="action-btn" onclick="portalManager.expandAwareness()">
+                        🧠 Expand Awareness
+                    </button>
+                    <button class="action-btn" onclick="portalManager.aiAssist()">
+                        🤖 AI Assist
+                    </button>
+                </div>
+            </div>
+
+            <div class="service-iframe-container" id="serviceContainer" style="display: none;">
+                <iframe id="serviceFrame" src="" frameborder="0"></iframe>
+            </div>
+        </main>
+    </div>
+
+    <!-- Portal Management JavaScript -->
+    <script src="/js/pfql-auth.js"></script>
+    <script>
+        class PortalManager {
+            constructor() {
+                this.currentService = null;
+                this.services = new Map();
+                this.init();
+            }
+
+            async init() {
+                await this.initializeAuth();
+                this.setupEventListeners();
+                this.startStatusMonitoring();
+                this.loadServiceLinks();
+            }
+
+            async initializeAuth() {
+                // Initialize PFQL authentication
+                if (typeof window.pfqlAuth !== 'undefined') {
+                    await window.pfqlAuth.initialize();
+                } else {
+                    console.warn('PFQL Auth not loaded');
+                }
+            }
+
+            setupEventListeners() {
+                // Service link click handlers
+                document.querySelectorAll('.service-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.loadService(link.href);
+                    });
+                });
+
+                // Sidebar toggle for mobile
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.hideService();
+                    }
+                });
+            }
+
+            loadService(serviceUrl) {
+                const serviceContainer = document.getElementById('serviceContainer');
+                const serviceFrame = document.getElementById('serviceFrame');
+                const welcomeSection = document.querySelector('.welcome-section');
+                const quickActions = document.querySelector('.quick-actions');
+
+                // Hide welcome content
+                welcomeSection.style.display = 'none';
+                quickActions.style.display = 'none';
+
+                // Show service container
+                serviceContainer.style.display = 'block';
+                serviceFrame.src = serviceUrl;
+
+                this.currentService = serviceUrl;
+            }
+
+            hideService() {
+                const serviceContainer = document.getElementById('serviceContainer');
+                const serviceFrame = document.getElementById('serviceFrame');
+                const welcomeSection = document.querySelector('.welcome-section');
+                const quickActions = document.querySelector('.quick-actions');
+
+                // Show welcome content
+                welcomeSection.style.display = 'block';
+                quickActions.style.display = 'block';
+
+                // Hide service container
+                serviceContainer.style.display = 'none';
+                serviceFrame.src = '';
+
+                this.currentService = null;
+            }
+
+            loadServiceLinks() {
+                // Dynamically load available services
+                this.updateServiceCounts();
+            }
+
+            updateServiceCounts() {
+                const serviceLinks = document.querySelectorAll('.service-link');
+                document.getElementById('servicesOnline').textContent = serviceLinks.length;
+            }
+
+            startStatusMonitoring() {
+                // Monitor portal status every 30 seconds
+                setInterval(async () => {
+                    try {
+                        await this.updateSystemStatus();
+                    } catch (error) {
+                        console.error('Status monitoring failed:', error);
+                    }
+                }, 30000);
+            }
+
+            async updateSystemStatus() {
+                try {
+                    // Update connection status
+                    const statusResponse = await fetch('/api/pfql-routes/system/health-monitor/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_main',
+                            masterAccess: true
+                        })
+                    });
+
+                    if (statusResponse.ok) {
+                        const status = await statusResponse.json();
+                        document.getElementById('systemHealth').textContent = status.overallScore + '%';
+                        document.getElementById('connectionStatus').textContent = 'Connected to PsiForceDB';
+                        document.getElementById('portalStatus').querySelector('.status-indicator').className = 'status-indicator online';
+                    } else {
+                        document.getElementById('connectionStatus').textContent = 'Connection Issue';
+                        document.getElementById('portalStatus').querySelector('.status-indicator').className = 'status-indicator error';
+                    }
+                } catch (error) {
+                    document.getElementById('connectionStatus').textContent = 'Offline';
+                    document.getElementById('portalStatus').querySelector('.status-indicator').className = 'status-indicator offline';
+                }
+            }
+
+            // Quick Action Methods
+            async quickBackup() {
+                this.loadService('/components/database-backup-service-thingamabob.lamia');
+            }
+
+            async systemHealth() {
+                this.loadService('/components/system-health-monitor-service-thingamabob.lamia');
+            }
+
+            async securityScan() {
+                this.loadService('/components/security-vulnerability-scanner-service-thingamabob.lamia');
+            }
+
+            async performanceTest() {
+                this.loadService('/components/performance-benchmark-service-thingamabob.lamia');
+            }
+
+            async quantumOptimize() {
+                this.loadService('/components/quantum-optimizer-service-thingamabob.lamia');
+            }
+
+            async chaosTest() {
+                this.loadService('/components/chaos-injection-thingamabob.lamia');
+            }
+
+            async expandAwareness() {
+                this.loadService('/components/consciousness-awareness-thingamabob.lamia');
+            }
+
+            async aiAssist() {
+                this.loadService('/components/ai-ipa-service-thingamabob.lamia');
+            }
+        }
+
+        // Initialize Portal Manager
+        document.addEventListener('DOMContentLoaded', () => {
+            window.portalManager = new PortalManager();
+        });
+    </script>
+
+    <style>
+        /* Portal-specific styles */
+        .portal-container {
+            display: grid;
+            grid-template-areas: 
+                "header header"
+                "sidebar main";
+            grid-template-rows: auto 1fr;
+            grid-template-columns: 300px 1fr;
+            height: 100vh;
+        }
+
+        .portal-header {
+            grid-area: header;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-brand h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .portal-sidebar {
+            grid-area: sidebar;
+            background: #2d3748;
+            padding: 1rem;
+            overflow-y: auto;
+            border-right: 1px solid #4a5568;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section h3 {
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            border-bottom: 1px solid #4a5568;
+            padding-bottom: 0.5rem;
+        }
+
+        .service-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .service-list li {
+            margin-bottom: 0.25rem;
+        }
+
+        .service-link {
+            display: block;
+            color: #cbd5e0;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .service-link:hover {
+            background: #4a5568;
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .portal-main {
+            grid-area: main;
+            padding: 2rem;
+            overflow-y: auto;
+            background: #f7fafc;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .welcome-section h2 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+        }
+
+        .welcome-subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+
+        .portal-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .health-excellent { color: #38a169; }
+        .db-connected { color: #3182ce; }
+        .yorkshire-champion { color: #9f7aea; }
+
+        .quick-actions {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .service-iframe-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: calc(100vh - 200px);
+        }
+
+        .service-iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-user {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-indicator.online { background: #38a169; }
+        .status-indicator.error { background: #e53e3e; }
+        .status-indicator.offline { background: #718096; }
+
+        @media (max-width: 768px) {
+            .portal-container {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header"
+                    "main";
+            }
+            
+            .portal-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</body>
+</html>

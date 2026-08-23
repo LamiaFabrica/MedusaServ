@@ -1,0 +1,74 @@
+<!--
+Purple-Pages.com - Admin Login Page
+Admin authentication for Purple Pages administration
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_admin_login() {
+    include "base.lamia" {
+        title: "Admin Login - Purple Pages"
+        description: "Administrator login for Purple Pages documentation management"
+        keywords: "admin, login, administration, Purple Pages"
+    }
+    
+    main {
+        section(class: "admin-login-section") {
+            div(class: "admin-login-container") {
+                div(class: "admin-login-box") {
+                    h1 {
+                        "🔐 Admin Login"
+                    }
+                    p(class: "login-subtitle") {
+                        "Purple Pages Administration"
+                    }
+                    
+                    form(id: "admin-login-form", class: "admin-login-form") {
+                        div(class: "form-group") {
+                            label(for: "admin-username") {
+                                "Username or Email:"
+                            }
+                            input(type: "text", id: "admin-username", name: "username", required: true, autocomplete: "username", placeholder: "Enter your username or email")
+                        }
+                        
+                        div(class: "form-group") {
+                            label(for: "admin-password") {
+                                "Password:"
+                            }
+                            input(type: "password", id: "admin-password", name: "password", required: true, autocomplete: "current-password", placeholder: "Enter your password")
+                        }
+                        
+                        div(class: "form-group") {
+                            label(for: "admin-remember") {
+                                input(type: "checkbox", id: "admin-remember", name: "remember")
+                                "Remember me"
+                            }
+                        }
+                        
+                        div(class: "form-actions") {
+                            button(type: "submit", class: "btn btn-primary btn-large") {
+                                "Login"
+                            }
+                        }
+                        
+                        div(id: "login-error", class: "error-message hidden") {
+                            ""
+                        }
+                    }
+                    
+                    div(class: "login-footer") {
+                        p {
+                            "Forgot your password? Contact the system administrator."
+                        }
+                        p {
+                            "Using Master Admin Key? "
+                            a(href: "/pages/admin-master.lamia") {
+                                "Master Admin Login"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

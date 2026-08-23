@@ -1,0 +1,28 @@
+{
+  "_note": "KIMI K3 FRONTIER LANE QUEUE \u2014 MOVED to C:/McMaker Projects/Projects/Lamia (2026-08-10, owner directive). ZEROED. Prior cells backed up to agent-flow/runs/queue_backup_*. Rebuild from the example. Scope: Lamia + lamia_clean_final.",
+  "_permitted_dirs": [
+    "C:/McMaker Projects/Projects/Lamia",
+    "C:/McMaker Projects/Projects/lamia_clean_final"
+  ],
+  "_example_cell": {
+    "id": "LAMIA-01-EXAMPLE",
+    "audit_ref": "AUDIT_STUB_DIARY.md LAMIA-01-EXAMPLE",
+    "fix_type": "WRITE",
+    "priority": "P0",
+    "lane": "frontier",
+    "subsystem": "lamia",
+    "title": "EXAMPLE \u2014 replace this cell: scope a real Lamia/lamia_clean_final fix here",
+    "targets": [
+      "C:/McMaker Projects/Projects/Lamia/Lamia-Libs/src/MEDUSASERV_SSL_MANAGER.cpp",
+      "C:/McMaker Projects/Projects/lamia_clean_final/MEDUSASERV_SSL_MANAGER.cpp"
+    ],
+    "harvest_symbols": [
+      "MEDUSASERV_SSL_MANAGER"
+    ],
+    "depends_on": [
+      "G0001"
+    ],
+    "semantics": "MISSION (EXAMPLE FORMAT \u2014 copy and adapt): describe the ONE finding to close, the maths anchor it must hit, and the fail-closed acceptance. FIRST ACTIONS (mandatory or 0%): write the complete // TARGET: block(s) immediately. ACCEPTANCE: compile clean under wsl g++-16 -Wall -Wextra -Werror; the named anchor reproduces byte-for-byte. SELF-VERIFY: a short propup that prints the anchor."
+  },
+  "queue": []
+}

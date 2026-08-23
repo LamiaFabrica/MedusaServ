@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Update Manager - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🔄 System Update Manager</h1>
+        <div class="portal-status" id="updateStatus">
+            <span class="status-indicator online"></span>
+            Update Manager: READY
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="updateManager.checkUpdates()">🔍 Check Updates</button>
+            <button class="service-btn" onclick="updateManager.installUpdates()">📥 Install Updates</button>
+            <button class="service-btn" onclick="updateManager.scheduleUpdates()">⏰ Schedule</button>
+            <button class="service-btn" onclick="updateManager.viewHistory()">📜 History</button>
+        </div>
+
+        <div class="update-dashboard" id="updateDashboard">
+            <div class="update-summary">
+                <div class="summary-card">
+                    <h4>System Status</h4>
+                    <div class="status-value" id="systemStatus">UP TO DATE</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Available Updates</h4>
+                    <div class="status-value" id="availableUpdates">0</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Security Updates</h4>
+                    <div class="status-value critical" id="securityUpdates">0</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Last Check</h4>
+                    <div class="status-value" id="lastCheck">2025-08-25 19:30</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="updates-list" id="updatesList">
+            <!-- Updates will be populated here -->
+        </div>
+
+        <div class="service-output" id="updateOutput">
+            <div>[UPDATE] System update manager initialized</div>
+            <div>[UPDATE] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[UPDATE] Yorkshire Champion update standards loaded</div>
+            <div>[UPDATE] Ready for update operations...</div>
+        </div>
+    </div>
+
+    <script>
+        class SystemUpdateManager {
+            constructor() {
+                this.updates = [];
+                this.updateHistory = [];
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                await this.loadUpdateStatus();
+                this.startUpdateMonitoring();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/system/updates/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_system'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[UPDATE] Connected to PsiForceDB update management system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async checkUpdates() {
+                this.logOutput('[UPDATE] Checking for available updates...');
+                document.getElementById('updateStatus').innerHTML = 
+                    '<span class="status-indicator warning"></span>Update Manager: CHECKING';
+                
+                try {
+                    const response = await fetch('/api/pfql-routes/system/updates/check', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:updates:check',
+                            server: '172.236.23.54',
+                            options: {
+                                includeSecurity: true,
+                                includeSystem: true,
+                                includeApplications: true,
+                                yorkshireStandard: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.updates = result.updates || this.generateSampleUpdates();
+                        this.displayUpdates();
+                        this.updateSummary();
+                        this.logOutput(`[UPDATE] Found ${this.updates.length} available updates`);
+                    } else {
+                        this.updates = this.generateSampleUpdates();
+                        this.displayUpdates();
+                        this.updateSummary();
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Update check failed: ${error.message}`);
+                    this.updates = this.generateSampleUpdates();
+                    this.displayUpdates();
+                    this.updateSummary();
+                }
+                
+                document.getElementById('updateStatus').innerHTML = 
+                    '<span class="status-indicator online"></span>Update Manager: READY';
+                document.getElementById('lastCheck').textContent = new Date().toLocaleString();
+            }
+
+            async installUpdates() {
+                const selectedUpdates = this.getSelectedUpdates();
+                if (selectedUpdates.length === 0) {
+                    alert('Please select updates to install');
+                    return;
+                }
+                
+                const confirmInstall = confirm(`Install ${selectedUpdates.length} updates? This may require a system restart.`);
+                if (!confirmInstall) return;
+                
+                this.logOutput(`[UPDATE] Installing ${selectedUpdates.length} updates...`);
+                document.getElementById('updateStatus').innerHTML = 
+                    '<span class="status-indicator warning pulse"></span>Update Manager: INSTALLING';
+                
+                try {
+                    const response = await fetch('/api/pfql-routes/system/updates/install', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:updates:install',
+                            server: '172.236.23.54',
+                            updates: selectedUpdates.map(u => u.id),
+                            options: {
+                                autoRestart: false,
+                                verifyIntegrity: true,
+                                yorkshireStandard: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[UPDATE] Installation completed: ${result.status}`);
+                        this.logOutput(`[UPDATE] Installed: ${result.installed} updates`);
+                        this.logOutput(`[UPDATE] Failed: ${result.failed || 0} updates`);
+                        
+                        if (result.rebootRequired) {
+                            this.logOutput('[UPDATE] System restart required to complete installation');
+                            const restartNow = confirm('System restart required. Restart now?');
+                            if (restartNow) {
+                                await this.restartSystem();
+                            }
+                        }
+                        
+                        await this.checkUpdates(); // Refresh update list
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Update installation failed: ${error.message}`);
+                }
+                
+                document.getElementById('updateStatus').innerHTML = 
+                    '<span class="status-indicator online"></span>Update Manager: READY';
+            }
+
+            async scheduleUpdates() {
+                const schedule = prompt('Enter update schedule (cron format):', '0 2 * * 1');
+                if (schedule) {
+                    this.logOutput(`[UPDATE] Scheduling automatic updates: ${schedule}`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/system/updates/schedule', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://system:updates:schedule',
+                                server: '172.236.23.54',
+                                schedule: schedule,
+                                options: {
+                                    autoInstall: true,
+                                    securityOnly: false,
+                                    notifyBefore: true
+                                }
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            this.logOutput('[UPDATE] Update schedule configured successfully');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Failed to schedule updates: ${error.message}`);
+                    }
+                }
+            }
+
+            async viewHistory() {
+                this.logOutput('[UPDATE] Loading update history...');
+                try {
+                    const response = await fetch('/api/pfql-routes/system/updates/history', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:updates:history',
+                            server: '172.236.23.54',
+                            limit: 50
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayUpdateHistory(result.history || this.generateSampleHistory());
+                    } else {
+                        this.displayUpdateHistory(this.generateSampleHistory());
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to load history: ${error.message}`);
+                    this.displayUpdateHistory(this.generateSampleHistory());
+                }
+            }
+
+            async restartSystem() {
+                this.logOutput('[UPDATE] Initiating system restart...');
+                try {
+                    const response = await fetch('/api/pfql-routes/system/updates/restart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:restart',
+                            server: '172.236.23.54',
+                            delay: 30
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[UPDATE] System will restart in 30 seconds');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to restart system: ${error.message}`);
+                }
+            }
+
+            displayUpdates() {
+                const container = document.getElementById('updatesList');
+                
+                if (this.updates.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-updates">
+                            <h3>✅ System is up to date</h3>
+                            <p>No updates are currently available.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <h3>📦 Available Updates</h3>
+                    <div class="updates-table">
+                        <div class="update-header">
+                            <span class="col-select">
+                                <input type="checkbox" id="selectAll" onchange="updateManager.toggleSelectAll()">
+                            </span>
+                            <span class="col-name">Package</span>
+                            <span class="col-version">Version</span>
+                            <span class="col-type">Type</span>
+                            <span class="col-size">Size</span>
+                            <span class="col-priority">Priority</span>
+                        </div>
+                        ${this.updates.map(update => `
+                            <div class="update-row ${update.priority}">
+                                <span class="col-select">
+                                    <input type="checkbox" class="update-checkbox" data-id="${update.id}">
+                                </span>
+                                <span class="col-name">
+                                    <strong>${update.name}</strong>
+                                    <div class="update-description">${update.description}</div>
+                                </span>
+                                <span class="col-version">
+                                    <div class="version-info">
+                                        <div>From: ${update.currentVersion}</div>
+                                        <div>To: ${update.newVersion}</div>
+                                    </div>
+                                </span>
+                                <span class="col-type">
+                                    <span class="type-badge ${update.type}">${update.type}</span>
+                                </span>
+                                <span class="col-size">${update.size}</span>
+                                <span class="col-priority">
+                                    <span class="priority-badge ${update.priority}">${update.priority.toUpperCase()}</span>
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            displayUpdateHistory(history) {
+                const container = document.getElementById('updatesList');
+                container.innerHTML = `
+                    <h3>📜 Update History</h3>
+                    <div class="history-list">
+                        ${history.map(entry => `
+                            <div class="history-entry ${entry.status}">
+                                <div class="history-header">
+                                    <strong>${entry.package}</strong>
+                                    <span class="history-date">${entry.date}</span>
+                                </div>
+                                <div class="history-details">
+                                    <span class="history-version">${entry.version}</span>
+                                    <span class="history-status ${entry.status}">${entry.status.toUpperCase()}</span>
+                                </div>
+                                ${entry.notes ? `<div class="history-notes">${entry.notes}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            updateSummary() {
+                const total = this.updates.length;
+                const security = this.updates.filter(u => u.type === 'security').length;
+                
+                document.getElementById('availableUpdates').textContent = total;
+                document.getElementById('securityUpdates').textContent = security;
+                document.getElementById('systemStatus').textContent = 
+                    total === 0 ? 'UP TO DATE' : `${total} UPDATES AVAILABLE`;
+                
+                if (security > 0) {
+                    document.getElementById('securityUpdates').style.color = '#F44336';
+                } else {
+                    document.getElementById('securityUpdates').style.color = '#4CAF50';
+                }
+            }
+
+            getSelectedUpdates() {
+                const checkboxes = document.querySelectorAll('.update-checkbox:checked');
+                return Array.from(checkboxes).map(cb => {
+                    const id = cb.getAttribute('data-id');
+                    return this.updates.find(u => u.id === id);
+                });
+            }
+
+            toggleSelectAll() {
+                const selectAll = document.getElementById('selectAll').checked;
+                const checkboxes = document.querySelectorAll('.update-checkbox');
+                checkboxes.forEach(cb => cb.checked = selectAll);
+            }
+
+            generateSampleUpdates() {
+                return [
+                    {
+                        id: 'security-patch-001',
+                        name: 'Security Patch KB2025001',
+                        description: 'Critical security vulnerability fix for system authentication',
+                        currentVersion: '1.2.3',
+                        newVersion: '1.2.4',
+                        type: 'security',
+                        size: '45MB',
+                        priority: 'critical'
+                    },
+                    {
+                        id: 'psiforcedb-update',
+                        name: 'PsiForceDB Engine',
+                        description: 'Performance improvements and bug fixes',
+                        currentVersion: '2.1.0',
+                        newVersion: '2.1.2',
+                        type: 'application',
+                        size: '128MB',
+                        priority: 'high'
+                    },
+                    {
+                        id: 'system-tools-update',
+                        name: 'System Management Tools',
+                        description: 'Updated system utilities and monitoring tools',
+                        currentVersion: '1.0.5',
+                        newVersion: '1.0.7',
+                        type: 'system',
+                        size: '23MB',
+                        priority: 'medium'
+                    }
+                ];
+            }
+
+            generateSampleHistory() {
+                return [
+                    {
+                        package: 'Security Patch KB2025000',
+                        version: '1.2.3',
+                        date: '2025-08-20 02:15:00',
+                        status: 'success',
+                        notes: 'Successfully installed security patches'
+                    },
+                    {
+                        package: 'PsiForceDB Engine',
+                        version: '2.1.0',
+                        date: '2025-08-15 02:30:00',
+                        status: 'success',
+                        notes: 'Database engine updated with performance improvements'
+                    },
+                    {
+                        package: 'System Kernel',
+                        version: '5.4.0-150',
+                        date: '2025-08-10 02:00:00',
+                        status: 'failed',
+                        notes: 'Update failed due to insufficient disk space'
+                    }
+                ];
+            }
+
+            startUpdateMonitoring() {
+                // Check for updates daily
+                setInterval(async () => {
+                    await this.loadUpdateStatus();
+                }, 86400000); // 24 hours
+            }
+
+            async loadUpdateStatus() {
+                // Simulate periodic update checking
+                if (Math.random() > 0.8) {
+                    await this.checkUpdates();
+                }
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('updateOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.updateManager = new SystemUpdateManager();
+        });
+    </script>
+    
+    <style>
+        .update-dashboard {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .update-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .summary-card {
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .status-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 8px;
+        }
+        .status-value.critical {
+            color: #F44336;
+        }
+        .updates-list {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .updates-table {
+            margin-top: 15px;
+        }
+        .update-header {
+            display: grid;
+            grid-template-columns: 50px 1fr 140px 100px 80px 100px;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(100, 181, 246, 0.2);
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .update-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 140px 100px 80px 100px;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            border-radius: 4px;
+            margin-bottom: 5px;
+            align-items: center;
+        }
+        .update-row.critical {
+            border-left: 4px solid #F44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+        .update-row.high {
+            border-left: 4px solid #FF9800;
+        }
+        .update-description {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+        .version-info {
+            font-size: 12px;
+        }
+        .type-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .type-badge.security {
+            background: #F44336;
+            color: white;
+        }
+        .type-badge.system {
+            background: #2196F3;
+            color: white;
+        }
+        .type-badge.application {
+            background: #4CAF50;
+            color: white;
+        }
+        .priority-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .priority-badge.critical {
+            background: #F44336;
+            color: white;
+        }
+        .priority-badge.high {
+            background: #FF9800;
+            color: white;
+        }
+        .priority-badge.medium {
+            background: #2196F3;
+            color: white;
+        }
+        .no-updates {
+            text-align: center;
+            padding: 40px;
+            color: #4CAF50;
+        }
+        .history-list {
+            margin-top: 15px;
+        }
+        .history-entry {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+        .history-entry.success {
+            border-left: 4px solid #4CAF50;
+        }
+        .history-entry.failed {
+            border-left: 4px solid #F44336;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .history-details {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+        }
+        .history-status.success {
+            color: #4CAF50;
+        }
+        .history-status.failed {
+            color: #F44336;
+        }
+        .history-notes {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,365 @@
+/**
+ * MEDUSASERV PORTAL FOOTER COMPONENT v0.3.0d
+ * Native Lamia modular footer with corporate links
+ * SEO: /portal/inc/components/lamia/layout/footer/
+ */
+
+@component "medusaserv_portal_footer" {
+    @version "0.3.0d"
+    @type "layout_footer"
+    @seo_friendly true
+    
+    @render {
+        @container footer :: class="portal-footer" :: role="contentinfo" {
+            @container footer-main :: class="footer-content" {
+                @container footer-brand :: class="footer-section brand-section" {
+                    @image logo://inc/img/MedusaServ.png :: alt="MedusaServ" :: class="footer-logo" :: width="40" :: height="40"
+                    @text h4 "MedusaServ Portal" :: class="footer-brand-title"
+                    @text "Enterprise Web Management Platform" :: class="footer-brand-desc"
+                    @text "Yorkshire Champion Standards" :: class="footer-brand-badge"
+                }
+                
+                @container footer-links :: class="footer-section links-section" {
+                    @text h5 "Management" :: class="footer-section-title"
+                    @nav footer-nav :: class="footer-nav" {
+                        @link "/portal/dashboard" :: title="Dashboard Overview" "Dashboard"
+                        @link "/portal/system-management" :: title="System Management" "System Management"
+                        @link "/portal/virtual-hosts" :: title="Virtual Host Management" "Virtual Hosts"
+                        @link "/portal/security-center" :: title="Security Center" "Security Center"
+                        @link "/portal/file-manager" :: title="File Management" "File Manager"
+                    }
+                }
+                
+                @container footer-support :: class="footer-section support-section" {
+                    @text h5 "Support & Documentation" :: class="footer-section-title"
+                    @nav footer-support-nav :: class="footer-nav" {
+                        @link "/portal/documentation" :: title="Portal Documentation" "Documentation"
+                        @link "/portal/api-reference" :: title="API Reference" "API Reference"
+                        @link "/portal/support-tickets" :: title="Support Tickets" "Support"
+                        @link "/portal/system-logs" :: title="System Logs" "System Logs"
+                        @link "/portal/health-check" :: title="System Health" "Health Check"
+                    }
+                }
+                
+                @container footer-tools :: class="footer-section tools-section" {
+                    @text h5 "Tools & Utilities" :: class="footer-section-title"
+                    @nav footer-tools-nav :: class="footer-nav" {
+                        @link "/portal/database-admin" :: title="Database Administration" "Database Admin"
+                        @link "/portal/monitoring-analytics" :: title="Monitoring & Analytics" "Analytics"
+                        @link "/portal/backup-restore" :: title="Backup & Restore" "Backup & Restore"
+                        @link "/portal/ssl-certificates" :: title="SSL Certificate Management" "SSL Certificates"
+                        @link "/portal/performance-tuning" :: title="Performance Tuning" "Performance"
+                    }
+                }
+                
+                @container footer-status :: class="footer-section status-section" {
+                    @text h5 "System Status" :: class="footer-section-title"
+                    @container system-indicators :: class="status-indicators" {
+                        @container indicator :: class="status-indicator" :: data-status="online" {
+                            @icon "🟢" :: class="status-icon"
+                            @text "MedusaServ: Online" :: class="status-text"
+                        }
+                        @container indicator :: class="status-indicator" :: data-status="online" {
+                            @icon "🟢" :: class="status-icon"
+                            @text "Database: Connected" :: class="status-text"
+                        }
+                        @container indicator :: class="status-indicator" :: data-status="online" {
+                            @icon "🟢" :: class="status-icon"
+                            @text "ICEWALL: Active" :: class="status-text"
+                        }
+                        @container indicator :: class="status-indicator" :: data-status="online" {
+                            @icon "🟢" :: class="status-icon"
+                            @text "SSL: Valid" :: class="status-text"
+                        }
+                    }
+                    
+                    @container uptime-info :: class="uptime-display" {
+                        @text "Uptime: " :: class="uptime-label"
+                        @text @{system.uptime || "Loading..."} :: class="uptime-value" :: id="system-uptime"
+                    }
+                }
+            }
+            
+            @container footer-bottom :: class="footer-bottom" {
+                @container footer-copyright :: class="copyright-section" {
+                    @text "© 2025 MedusaServ Portal v0.3.0d" :: class="copyright-text"
+                    @text " | " :: class="separator"
+                    @text "Powered by Native Lamia Technology" :: class="powered-by"
+                    @text " | " :: class="separator"
+                    @link "/portal/legal/privacy-policy" :: title="Privacy Policy" :: class="legal-link" "Privacy Policy"
+                    @text " | " :: class="separator"
+                    @link "/portal/legal/terms-of-service" :: title="Terms of Service" :: class="legal-link" "Terms of Service"
+                }
+                
+                @container footer-meta :: class="meta-section" {
+                    @text "Server Time: " :: class="meta-label"
+                    @text @{current_time} :: class="meta-value" :: id="server-time"
+                    @text " | Version: v0.3.0d" :: class="version-info"
+                    @text " | " :: class="separator"
+                    @link "/portal/about" :: title="About MedusaServ Portal" :: class="meta-link" "About"
+                }
+            }
+        }
+    }
+    
+    @styles {
+        .portal-footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+            margin-top: auto;
+            border-top: 4px solid #6f42c1;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .brand-section {
+            max-width: 280px;
+        }
+        
+        .footer-logo {
+            border-radius: 6px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
+        
+        .footer-brand-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            margin: 0.5rem 0 0.25rem 0;
+        }
+        
+        .footer-brand-desc {
+            color: #bdc3c7;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .footer-brand-badge {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .footer-section-title {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #6f42c1;
+        }
+        
+        .footer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .footer-nav a {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.25rem 0;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            padding-left: 0.5rem;
+        }
+        
+        .footer-nav a:hover {
+            color: white;
+            border-left-color: #6f42c1;
+            transform: translateX(4px);
+        }
+        
+        .status-indicators {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            padding: 0.25rem 0;
+        }
+        
+        .status-indicator[data-status="online"] .status-text {
+            color: #2ecc71;
+        }
+        
+        .status-indicator[data-status="warning"] .status-text {
+            color: #f39c12;
+        }
+        
+        .status-indicator[data-status="error"] .status-text {
+            color: #e74c3c;
+        }
+        
+        .uptime-display {
+            background: rgba(111, 66, 193, 0.1);
+            border: 1px solid rgba(111, 66, 193, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .uptime-label {
+            color: #bdc3c7;
+            font-size: 0.85rem;
+        }
+        
+        .uptime-value {
+            color: #2ecc71;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+        }
+        
+        .footer-bottom .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .copyright-section,
+        .meta-section {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .copyright-text,
+        .powered-by,
+        .version-info {
+            font-size: 0.85rem;
+            color: #95a5a6;
+        }
+        
+        .separator {
+            color: #7f8c8d;
+        }
+        
+        .legal-link,
+        .meta-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+        
+        .legal-link:hover,
+        .meta-link:hover {
+            color: #6f42c1;
+        }
+        
+        .meta-label {
+            color: #95a5a6;
+            font-size: 0.8rem;
+        }
+        
+        .meta-value {
+            color: #ecf0f1;
+            font-weight: 500;
+            font-size: 0.8rem;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem 1rem;
+                text-align: center;
+            }
+            
+            .footer-bottom .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .copyright-section,
+            .meta-section {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .copyright-section,
+            .meta-section {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .separator {
+                display: none;
+            }
+        }
+    }
+    
+    @scripts {
+        // Update server time every second
+        function updateServerTime() {
+            const timeElement = document.getElementById('server-time');
+            if (timeElement) {
+                const now = new Date();
+                timeElement.textContent = now.toLocaleString();
+            }
+        }
+        
+        // Update system uptime periodically
+        async function updateSystemUptime() {
+            try {
+                const response = await fetch('/portal/api/system/status');
+                const data = await response.json();
+                
+                const uptimeElement = document.getElementById('system-uptime');
+                if (uptimeElement && data.uptime) {
+                    uptimeElement.textContent = data.uptime;
+                }
+            } catch (error) {
+                console.error('Failed to update system uptime:', error);
+            }
+        }
+        
+        // Initialize footer scripts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update time immediately and then every second
+            updateServerTime();
+            setInterval(updateServerTime, 1000);
+            
+            // Update uptime immediately and then every 30 seconds
+            updateSystemUptime();
+            setInterval(updateSystemUptime, 30000);
+        });
+    }
+}

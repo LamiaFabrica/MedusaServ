@@ -1,0 +1,59 @@
+<!--
+Purple-Pages.com - Scan Markdown Files API
+Scans codebase for MD files
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_scan_md_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify admin access
+    if (!verify_admin_access()) {
+        return response(401, json({
+            "error": "Unauthorized",
+            "message": "Admin access required"
+        }));
+    }
+    
+    // Scan for MD files
+    search_paths = [
+        "../../PsiForceDB_1.0.0/docs/",
+        "../../PsiForceDB_1.0.0/Client/docs/",
+        "../../lamia_clean_final/docs/",
+        "../../MedusaServ Professional Web Server/docs/",
+        "../../PsiForceDB_1.0.0/",
+        "../../lamia_clean_final/"
+    ];
+    
+    md_files = [];
+    
+    for (path in search_paths) {
+        files = find_markdown_files(path);
+        for (file in files) {
+            metadata = extract_file_metadata(file);
+            md_files.push({
+                "path": file,
+                "name": get_filename(file),
+                "size": get_file_size(file),
+                "title": metadata.title || get_filename(file),
+                "category": metadata.category || guess_category(file),
+                "technology": metadata.technology || guess_technology(file),
+                "description": metadata.description || ""
+            });
+        }
+    }
+    
+    return response(200, json({
+        "success": true,
+        "files_found": md_files.length,
+        "files": md_files
+    }));
+}
+

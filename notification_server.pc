@@ -1,0 +1,10 @@
+prefix=C:/Program Files (x86)/NotificationServer
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: NotificationServer
+Description: Notification Server for MedusaServ
+Version: 1.0.0
+Libs: -L${libdir} -lnotification_server
+Cflags: -I${includedir}

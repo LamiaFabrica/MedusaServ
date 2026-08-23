@@ -1,0 +1,29 @@
+117a118,120
+> # LFSSL (Lamia Fabrica SSL) - Sole Cryptographic Substrate (ROLLOUT-MEDUSA-01)
+> set(LFSSL_DIR "${MCMAKER_PROJECTS_DIR}/LFSSL - Lamia Fabrica SSL" CACHE PATH "LFSSL directory path")
+> 
+231c234,235
+<     src/security/LFSSL_Native_Crypto.cpp  # Native C++ crypto (SHA256/384/512, AES256) - zero OpenSSL
+---
+>     # src/security/LFSSL_Native_Crypto.cpp REMOVED (ROLLOUT-MEDUSA-01): hand-rolled
+>     # knockoff replaced by include/security/LFSSL_Native_Crypto.hpp shim -> canonical LFSSL
+376a381,383
+> # LFSSL substrate include (target-scoped; canonical path for the cured crypto seams)
+> target_include_directories(medusaserv PRIVATE "${LFSSL_DIR}/include")
+> 
+395a403,406
+>     # LFSSL substrate static lib for the cured crypto seams (ELF archive; WSL build)
+>     if(EXISTS "${LFSSL_DIR}/build_wsl/liblfssl.a")
+>         target_link_libraries(medusaserv "${LFSSL_DIR}/build_wsl/liblfssl.a")
+>     endif()
+452c463
+<     src/security/LFSSL_Native_Crypto.cpp
+---
+>     # src/security/LFSSL_Native_Crypto.cpp REMOVED (ROLLOUT-MEDUSA-01): shim -> canonical LFSSL
+454a466,467
+> target_include_directories(medusaserv_encrypt PRIVATE "${LFSSL_DIR}/include")
+> 
+463a477,479
+>     if(EXISTS "${LFSSL_DIR}/build_wsl/liblfssl.a")
+>         target_link_libraries(medusaserv_encrypt "${LFSSL_DIR}/build_wsl/liblfssl.a")
+>     endif()

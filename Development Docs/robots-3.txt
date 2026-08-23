@@ -1,0 +1,24 @@
+# Purple-Pages.com Robots.txt
+# Documentation Hub for The Medusa Project Ecosystem
+# © 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://purple-pages.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /pages/admin.lamia
+Disallow: /api/
+
+# Allow all documentation pages
+Allow: /pages/
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /assets/
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+

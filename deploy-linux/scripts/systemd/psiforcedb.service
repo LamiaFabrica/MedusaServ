@@ -1,0 +1,30 @@
+[Unit]
+Description=PsiForceDB Database Server
+Documentation=https://docs.medusaserv.com
+After=network.target
+
+[Service]
+Type=simple
+User=medusaserv
+Group=medusaserv
+WorkingDirectory=/opt/medusaserv
+ExecStart=/opt/medusaserv/bin/psiforcedb --config /opt/medusaserv/config/psiforcedb.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/opt/medusaserv/data/logs/psiforcedb.log
+StandardError=append:/opt/medusaserv/data/logs/psiforcedb-error.log
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/medusaserv/data
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target

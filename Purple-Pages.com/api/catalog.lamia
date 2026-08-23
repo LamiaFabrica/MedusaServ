@@ -1,0 +1,29 @@
+<!--
+Purple-Pages.com - Catalog API Endpoint
+Returns AI-friendly XML catalog for quick navigation
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_catalog_api() {
+    // Set content type to XML
+    header("Content-Type: application/xml; charset=UTF-8");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    // Handle OPTIONS preflight
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Read catalog.xml file
+    catalog_content = read_file("/catalog.xml");
+    
+    if (!catalog_content) {
+        return response(500, "<?xml version=\"1.0\"?><error>Catalog not available</error>");
+    }
+    
+    // Return XML catalog
+    return response(200, catalog_content);
+}
+

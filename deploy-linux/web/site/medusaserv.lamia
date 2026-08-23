@@ -1,0 +1,503 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+MEDUSASERV - HIGH-PERFORMANCE WEB SERVER
+========================================
+
+This page showcases the MedusaServ web server with native C++ integration and military-grade security
+-->
+
+manifest medusaserv_server() {
+    // SEO META TAGS
+    meta {
+        title: "MedusaServ - High-Performance Web Server | Native C++ & Military-Grade Security"
+        description: "MedusaServ - Revolutionary high-performance web server with native C++ integration, military-grade security, ICEWALL protection, and unlimited scalability."
+        keywords: "medusaserv, web server, high performance, native C++, military grade security, icewall, unlimited scalability, revolutionary technology"
+        author: "D Hargreaves AKA Roylepython"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+    }
+
+    // OPEN GRAPH & TWITTER CARDS
+    social {
+        og_title: "MedusaServ - Revolutionary High-Performance Web Server"
+        og_description: "Experience the future of web servers with native C++ integration and military-grade security"
+        og_image: "C:/Build/Medusa_Art/MedusaServ.png"
+        og_url: "https://poweredbymedusa.com/medusaserv"
+        twitter_card: "summary_large_image"
+        twitter_creator: "@Roylepython"
+    }
+
+    // STRUCTURED DATA
+    structured_data {
+        type: "SoftwareApplication"
+        name: "MedusaServ"
+        version: "0.3.0d"
+        description: "High-performance web server with native C++ integration and military-grade security"
+        applicationCategory: "Web Server"
+        operatingSystem: "Cross-platform"
+        author: "D Hargreaves"
+    }
+
+    // INCLUDE HEADER, MENU, FOOTER, COPYRIGHT
+    include "header.lamia"
+    include "menu.lamia"
+
+    // HERO SECTION
+    section hero {
+        background: "linear-gradient(135deg, #8B3F8B 0%, #6B2B6B 100%)"
+        padding: "120px 0 80px"
+        margin_top: "200px"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            badge {
+                text: "⚡ High-Performance Web Server"
+                background: "rgba(255, 255, 255, 0.2)"
+                color: "white"
+                padding: "0.5rem 1rem"
+                border_radius: "25px"
+                margin_bottom: "2rem"
+                animation: "pulse 2s infinite"
+            }
+            
+            title {
+                text: "MedusaServ"
+                size: "4rem"
+                weight: "800"
+                margin_bottom: "1.5rem"
+                gradient: "linear-gradient(45deg, #ff6b00, #ffffff)"
+            }
+            
+            subtitle {
+                text: "Revolutionary high-performance web server with native C++ integration, military-grade security, ICEWALL protection, and unlimited scalability for the modern web."
+                size: "1.4rem"
+                margin_bottom: "3rem"
+                opacity: "0.9"
+                max_width: "900px"
+                margin: "0 auto 3rem"
+            }
+            
+            stats_grid {
+                display: "grid"
+                grid_template_columns: "repeat(4, 1fr)"
+                gap: "1.5rem"
+                margin_bottom: "3rem"
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "1.5rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "∞"
+                    label: "Concurrent Users"
+                    description: "Unlimited scale"
+                }
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "1.5rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "🛡️"
+                    label: "Military Grade"
+                    description: "ICEWALL security"
+                }
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "1.5rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "⚡"
+                    label: "Native C++"
+                    description: "Maximum performance"
+                }
+                
+                stat {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    padding: "1.5rem"
+                    border_radius: "15px"
+                    backdrop_filter: "blur(10px)"
+                    
+                    number: "🚀"
+                    label: "Real-time"
+                    description: "Instant response"
+                }
+            }
+            
+            buttons {
+                button primary {
+                    text: "🚀 Download Now"
+                    link: "medusaserv-download.lamia"
+                    background: "#ff6b00"
+                    color: "white"
+                    padding: "1rem 2rem"
+                    border_radius: "50px"
+                    hover_effect: "translateY(-2px)"
+                }
+                
+                button secondary {
+                    text: "📊 Performance Tests"
+                    link: "medusaserv-benchmarks.lamia"
+                    background: "transparent"
+                    color: "white"
+                    border: "2px solid white"
+                    padding: "1rem 2rem"
+                    border_radius: "50px"
+                    hover_effect: "background: white; color: #8B3F8B"
+                }
+                
+                button secondary {
+                    text: "🛡️ Security Features"
+                    link: "icewall.lamia"
+                    background: "transparent"
+                    color: "white"
+                    border: "2px solid white"
+                    padding: "1rem 2rem"
+                    border_radius: "50px"
+                    hover_effect: "background: white; color: #8B3F8B"
+                }
+            }
+        }
+    }
+
+    // FEATURES SECTION
+    section features {
+        background: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            
+            title {
+                text: "Revolutionary Features"
+                size: "3rem"
+                weight: "700"
+                color: "#8B3F8B"
+                text_align: "center"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Discover the cutting-edge features that make MedusaServ the future of web servers"
+                size: "1.2rem"
+                color: "#666"
+                text_align: "center"
+                max_width: "600px"
+                margin: "0 auto 4rem"
+            }
+            
+            features_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(350px, 1fr))"
+                gap: "2rem"
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "⚡"
+                    title: "Native C++ Integration"
+                    description: "Built from the ground up with native C++ for maximum performance, minimal latency, and optimal resource utilization."
+                    link: "medusaserv-cpp.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "🛡️"
+                    title: "ICEWALL Security"
+                    description: "Military-grade security system with advanced threat detection, DDoS protection, and real-time vulnerability scanning."
+                    link: "icewall.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "🚀"
+                    title: "Unlimited Scalability"
+                    description: "Designed for unlimited concurrent users with intelligent load balancing and automatic resource management."
+                    link: "medusaserv-scalability.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "🎯"
+                    title: "Lamia Integration"
+                    description: "Seamless integration with the Lamia programming language for custom server logic and dynamic content generation."
+                    link: "medusaserv-lamia.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "📊"
+                    title: "Real-time Analytics"
+                    description: "Comprehensive real-time analytics and monitoring with detailed performance metrics and user behavior insights."
+                    link: "medusaserv-analytics.lamia"
+                }
+                
+                feature {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "2.5rem"
+                    box_shadow: "0 5px 20px rgba(139, 63, 139, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 63, 139, 0.15)"
+                    
+                    icon: "🔧"
+                    title: "Advanced Configuration"
+                    description: "Flexible configuration system with hot-reload capabilities and dynamic server parameter adjustment."
+                    link: "medusaserv-config.lamia"
+                }
+            }
+        }
+    }
+
+    // PERFORMANCE SECTION
+    section performance {
+        background: "linear-gradient(135deg, #6B2B6B 0%, #2a1a2a 100%)"
+        color: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            title {
+                text: "Unmatched Performance"
+                size: "3rem"
+                weight: "700"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "MedusaServ delivers performance that traditional web servers can only dream of"
+                size: "1.2rem"
+                margin_bottom: "4rem"
+                opacity: "0.9"
+            }
+            
+            performance_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(250px, 1fr))"
+                gap: "2rem"
+                
+                metric {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    number: "10x"
+                    label: "Faster Response"
+                    description: "vs Apache/Nginx"
+                }
+                
+                metric {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    number: "∞"
+                    label: "Concurrent Users"
+                    description: "Unlimited scale"
+                }
+                
+                metric {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    number: "99.99%"
+                    label: "Uptime"
+                    description: "Fault tolerance"
+                }
+                
+                metric {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    number: "0ms"
+                    label: "Latency"
+                    description: "Real-time processing"
+                }
+            }
+        }
+    }
+
+    // ECOSYSTEM INTEGRATION SECTION
+    section ecosystem_integration {
+        background: "linear-gradient(135deg, #2a1a2a 0%, #1a1a2e 100%)"
+        color: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            title {
+                text: "Ecosystem Integration"
+                size: "3rem"
+                weight: "700"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "MedusaServ powers the entire Medusa ecosystem with seamless integration"
+                size: "1.2rem"
+                margin_bottom: "4rem"
+                opacity: "0.9"
+            }
+            
+            integration_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(300px, 1fr))"
+                gap: "2rem"
+                
+                integration {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "🐍"
+                    title: "Lamia Language"
+                    description: "Native support for Lamia programming language with real-time compilation and execution."
+                    link: "lamia.lamia"
+                }
+                
+                integration {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "🤖"
+                    title: "Lamia Fabrica"
+                    description: "High-performance backend system with digital licensing, 3D models, and auction house."
+                    link: "lamia-fabrica.lamia"
+                }
+                
+                integration {
+                    background: "rgba(255, 255, 255, 0.1)"
+                    border_radius: "15px"
+                    padding: "2rem"
+                    backdrop_filter: "blur(10px)"
+                    border: "1px solid rgba(255, 255, 255, 0.2)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "background: rgba(255, 255, 255, 0.15); transform: translateY(-5px)"
+                    
+                    icon: "📚"
+                    title: "Purple Pages"
+                    description: "Comprehensive documentation system with interactive examples and real-time updates."
+                    link: "purple-pages.lamia"
+                }
+            }
+        }
+    }
+
+    // PATREON SUPPORT SECTION
+    section patreon_support {
+        background: "linear-gradient(135deg, #1a1a2e 0%, #0f0f23 100%)"
+        color: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            text_align: "center"
+            
+            title {
+                text: "Support MedusaServ Development"
+                size: "2.5rem"
+                weight: "700"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Your support makes the difference between life and death for this revolutionary web server"
+                size: "1.2rem"
+                margin_bottom: "3rem"
+                opacity: "0.9"
+            }
+            
+            cta_button {
+                text: "🎯 Support on Patreon"
+                link: "https://www.patreon.com/TheMedusaInitiative"
+                background: "#ff6b00"
+                color: "white"
+                padding: "1rem 3rem"
+                border_radius: "50px"
+                font_size: "1.2rem"
+                font_weight: "600"
+                hover_effect: "transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255, 107, 0, 0.4)"
+            }
+        }
+    }
+
+    include "footer.lamia"
+    include "copyright.lamia"
+}

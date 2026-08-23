@@ -1,0 +1,339 @@
+<!--
+Purple-Pages.com - Documentation Hub for The Medusa Project Ecosystem
+Comprehensive documentation for all Medusa Project technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_homepage() {
+    meta {
+        title: "Purple Pages - Complete Documentation for The Medusa Project Ecosystem"
+        description: "Comprehensive documentation hub for The Medusa Project ecosystem: PsiForceDB, MedusaServ, LFSSL, Lamia, and more. Your complete knowledge base."
+        keywords: "Purple Pages, documentation, Medusa Project, PsiForceDB docs, MedusaServ docs, Lamia docs, knowledge base"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+    }
+    
+    // CSS STYLESHEET
+    link(rel: "stylesheet", href: "/css/main.css")
+    link(rel: "stylesheet", href: "/css/highlight-system.css")
+    link(rel: "stylesheet", href: "/css/settings-panel.css")
+    
+    // JAVASCRIPT
+    script(src: "/js/main.js")
+    script(src: "/js/sso.js")
+    script(src: "/js/catalog.js")
+    script(src: "/js/highlight-system.js")
+    script(src: "/js/settings-panel.js")
+    
+    include "header.lamia"
+    
+    // HERO SECTION
+    section(class: "hero") {
+        div(class: "hero-content") {
+            div(class: "hero-icon") {
+                "🟣"
+            }
+            h1 {
+                "Purple Pages"
+            }
+            p(class: "hero-subtitle") {
+                "Complete Documentation Hub for The Medusa Project Ecosystem"
+            }
+            p(class: "hero-description") {
+                "Your comprehensive knowledge base for PsiForceDB, MedusaServ, LFSSL, Lamia, and all Medusa Project technologies"
+            }
+            div(class: "hero-cta") {
+                a(href: "#ecosystem", class: "btn btn-primary") {
+                    "Explore Documentation"
+                }
+                a(href: "/pages/search.lamia", class: "btn btn-secondary") {
+                    "🔍 Search Documentation"
+                }
+            }
+        }
+    }
+    
+    // Ecosystem Overview
+    section(id: "ecosystem", class: "ecosystem-section") {
+        div(class: "ecosystem-container") {
+            h2 {
+                "The Medusa Project Ecosystem"
+            }
+            p(class: "section-description") {
+                "Purple Pages provides complete documentation for every component of The Medusa Project - a revolutionary 100% Native C++ stack."
+            }
+            
+            div(class: "ecosystem-grid") {
+                // PsiForceDB
+                div(class: "ecosystem-card") {
+                    div(class: "card-icon") {
+                        "🦕"
+                    }
+                    h3 {
+                        "PsiForceDB"
+                    }
+                    p {
+                        "Revolutionary hybrid database combining PostgreSQL, Neo4j, MongoDB, and vector operations."
+                    }
+                    div(class: "card-links") {
+                        a(href: "/pages/psiforcedb/index.lamia", class: "card-link") {
+                            "Documentation"
+                        }
+                        a(href: "/pages/psiforcedb/getting-started.lamia", class: "card-link") {
+                            "Getting Started"
+                        }
+                        a(href: "/pages/psiforcedb/pfql.lamia", class: "card-link") {
+                            "PFQL Guide"
+                        }
+                    }
+                }
+                
+                // MedusaServ
+                div(class: "ecosystem-card") {
+                    div(class: "card-icon") {
+                        "🌐"
+                    }
+                    h3 {
+                        "MedusaServ"
+                    }
+                    p {
+                        "Native C++ web server. No Apache, no Nginx. Our own implementation with TLS 1.3 support."
+                    }
+                    div(class: "card-links") {
+                        a(href: "/pages/medusaserv/index.lamia", class: "card-link") {
+                            "Documentation"
+                        }
+                        a(href: "/pages/medusaserv/installation.lamia", class: "card-link") {
+                            "Installation"
+                        }
+                        a(href: "/pages/medusaserv/api.lamia", class: "card-link") {
+                            "API Reference"
+                        }
+                    }
+                }
+                
+                // LFSSL
+                div(class: "ecosystem-card") {
+                    div(class: "card-icon") {
+                        "🔒"
+                    }
+                    h3 {
+                        "LFSSL"
+                    }
+                    p {
+                        "Native C++ TLS 1.3 implementation. Complete cryptographic stack with quantum-resistant algorithms."
+                    }
+                    div(class: "card-links") {
+                        a(href: "/pages/lfssl/index.lamia", class: "card-link") {
+                            "Documentation"
+                        }
+                        a(href: "/pages/lfssl/security.lamia", class: "card-link") {
+                            "Security Guide"
+                        }
+                    }
+                }
+                
+                // Lamia
+                div(class: "ecosystem-card") {
+                    div(class: "card-icon") {
+                        "📝"
+                    }
+                    h3 {
+                        "Lamia"
+                    }
+                    p {
+                        "Native C++ templating engine. Fast, powerful, flexible. The foundation of our web stack."
+                    }
+                    div(class: "card-links") {
+                        a(href: "/pages/lamia/index.lamia", class: "card-link") {
+                            "Documentation"
+                        }
+                        a(href: "/pages/lamia/templates.lamia", class: "card-link") {
+                            "Template Guide"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Documentation Categories
+    section(class: "categories-section") {
+        div(class: "categories-container") {
+            h2 {
+                "Documentation Categories"
+            }
+            div(class: "categories-grid") {
+                div(class: "category-card") {
+                    h3 {
+                        "🚀 Getting Started"
+                    }
+                    p {
+                        "Quick start guides, installation instructions, and first steps for each technology."
+                    }
+                    a(href: "/pages/category/getting-started.lamia", class: "btn btn-secondary") {
+                        "Browse Guides"
+                    }
+                }
+                
+                div(class: "category-card") {
+                    h3 {
+                        "📚 User Guides"
+                    }
+                    p {
+                        "Comprehensive guides for average users, developers, business users, and advanced users."
+                    }
+                    a(href: "/pages/category/user-guides.lamia", class: "btn btn-secondary") {
+                        "Browse Guides"
+                    }
+                }
+                
+                div(class: "category-card") {
+                    h3 {
+                        "🔌 API Documentation"
+                    }
+                    p {
+                        "Complete API references for all technologies. RESTful APIs, IPA endpoints, and integration guides."
+                    }
+                    a(href: "/pages/category/api.lamia", class: "btn btn-secondary") {
+                        "Browse APIs"
+                    }
+                }
+                
+                div(class: "category-card") {
+                    h3 {
+                        "⚙️ Administration"
+                    }
+                    p {
+                        "System administration, security best practices, backup and restore, performance tuning."
+                    }
+                    a(href: "/pages/category/administration.lamia", class: "btn btn-secondary") {
+                        "Browse Guides"
+                    }
+                }
+                
+                div(class: "category-card") {
+                    h3 {
+                        "🔧 Troubleshooting"
+                    }
+                    p {
+                        "Common issues, error codes, debugging guides, and solutions to frequent problems."
+                    }
+                    a(href: "/pages/category/troubleshooting.lamia", class: "btn btn-secondary") {
+                        "Browse Solutions"
+                    }
+                }
+                
+                div(class: "category-card") {
+                    h3 {
+                        "🏗️ Architecture"
+                    }
+                    p {
+                        "System architecture, design patterns, integration guides, and technical deep-dives."
+                    }
+                    a(href: "/pages/category/architecture.lamia", class: "btn btn-secondary") {
+                        "Browse Docs"
+                    }
+                }
+            }
+        }
+    }
+    
+    // Search Section
+    section(class: "search-section") {
+        div(class: "search-container") {
+            h2 {
+                "Search All Documentation"
+            }
+            p {
+                "Find answers across the entire Medusa Project ecosystem"
+            }
+            div(class: "search-box") {
+                input(type: "text", id: "global-search", class: "search-input", placeholder: "Search Purple Pages...")
+                button(id: "search-btn", class: "btn btn-primary") {
+                    "🔍 Search"
+                }
+            }
+            div(id: "search-results", class: "search-results hidden") {
+                // Search results will appear here
+            }
+        }
+    }
+    
+    // About Purple Pages
+    section(class: "about-section") {
+        div(class: "about-container") {
+            h2 {
+                "About Purple Pages"
+            }
+            div(class: "about-content") {
+                p {
+                    "Purple Pages is the comprehensive documentation hub for The Medusa Project ecosystem. It provides complete, searchable documentation for all our technologies, from beginner guides to advanced administration."
+                }
+                p {
+                    "Built with the same 100% Native C++ stack it documents, Purple Pages demonstrates the power and flexibility of our ecosystem while providing the knowledge you need to succeed."
+                }
+                div(class: "about-features") {
+                    div(class: "about-feature") {
+                        h4 {
+                            "🔍 Full-Text Search"
+                        }
+                        p {
+                            "Search across all documentation instantly"
+                        }
+                    }
+                    div(class: "about-feature") {
+                        h4 {
+                            "📱 Always Updated"
+                        }
+                        p {
+                            "Documentation updated with every release"
+                        }
+                    }
+                    div(class: "about-feature") {
+                        h4 {
+                            "👥 Community Driven"
+                        }
+                        p {
+                            "Contributed by developers and users"
+                        }
+                    }
+                    div(class: "about-feature") {
+                        h4 {
+                            "🟣 Purple Theme"
+                        }
+                        p {
+                            "Distinctive purple branding for easy recognition"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // CTA Section
+    section(class: "cta-section") {
+        div(class: "cta-content") {
+            h2 {
+                "Start Exploring Documentation"
+            }
+            p {
+                "Find the answers you need for The Medusa Project ecosystem"
+            }
+            div(class: "cta-buttons") {
+                a(href: "/pages/search.lamia", class: "btn btn-primary btn-large") {
+                    "🔍 Search Documentation"
+                }
+                a(href: "/pages/category/getting-started.lamia", class: "btn btn-secondary btn-large") {
+                    "Get Started"
+                }
+            }
+        }
+    }
+    
+    include "footer.lamia"
+    
+    // Settings Gear Component
+    include "components/settings-gear.lamia"
+}
+

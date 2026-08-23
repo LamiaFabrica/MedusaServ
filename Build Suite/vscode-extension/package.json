@@ -1,0 +1,329 @@
+{
+  "name": "mcmaker-vscode",
+  "displayName": "McMaker",
+  "description": "McMaker - Integrated build system for MedusaServ and PsiForceDB with project management and resource tracking",
+  "version": "1.0.0",
+  "publisher": "TheMedusaProject",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:cpp",
+    "onCommand:mcmaker.buildProject",
+    "onCommand:mcmaker.cleanProject",
+    "onCommand:mcmaker.configureProject",
+    "onCommand:mcmaker.debugProject",
+    "onCommand:mcmaker.createProject",
+    "onCommand:mcmaker.addDependency",
+    "onCommand:mcmaker.manageLibraries",
+    "onCommand:mcmaker.trackResources",
+    "onCommand:mcmaker.manageIssues",
+    "onCommand:mcmaker.stubTracking",
+    "onCommand:mcmaker.forwardDeclarationTracking",
+    "onCommand:mcmaker.commentTracking",
+    "onView:mcmaker.buildQueue",
+    "onView:mcmaker.projectExplorer",
+    "onView:mcmaker.resourceTracker",
+    "onView:mcmaker.notificationCenter"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "mcmaker.buildProject",
+        "title": "McMaker: Build Project",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.cleanProject",
+        "title": "McMaker: Clean Project",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.configureProject",
+        "title": "McMaker: Configure Project",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.debugProject",
+        "title": "McMaker: Debug Project",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.createProject",
+        "title": "McMaker: Create New Project",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.addDependency",
+        "title": "McMaker: Add Dependency",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.manageLibraries",
+        "title": "McMaker: Manage Libraries",
+        "category": "McMaker"
+      },
+      {
+        "command": "mcmaker.refreshBuildQueue",
+        "title": "McMaker: Refresh Build Queue",
+        "category": "McMaker",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "mcmaker.buildSelected",
+        "title": "McMaker: Build Selected",
+        "category": "McMaker",
+        "icon": "$(play)"
+      },
+      {
+        "command": "mcmaker.trackResources",
+        "title": "McMaker: Track Resources",
+        "category": "McMaker",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "mcmaker.manageIssues",
+        "title": "McMaker: Manage Issues",
+        "category": "McMaker",
+        "icon": "$(issues)"
+      },
+      {
+        "command": "mcmaker.stubTracking",
+        "title": "McMaker: Stub Tracking",
+        "category": "McMaker",
+        "icon": "$(symbol-namespace)"
+      },
+      {
+        "command": "mcmaker.forwardDeclarationTracking",
+        "title": "McMaker: Forward Declaration Tracking",
+        "category": "McMaker",
+        "icon": "$(symbol-interface)"
+      },
+      {
+        "command": "mcmaker.commentTracking",
+        "title": "McMaker: Comment Tracking",
+        "category": "McMaker",
+        "icon": "$(comment)"
+      },
+      {
+        "command": "mcmaker.connectRemote",
+        "title": "McMaker: Connect to Remote Server",
+        "category": "McMaker",
+        "icon": "$(remote)"
+      },
+      {
+        "command": "mcmaker.deployProject",
+        "title": "McMaker: Deploy Project",
+        "category": "McMaker",
+        "icon": "$(cloud-upload)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "mcmaker.buildProject",
+          "when": "resourceLangId == cpp",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "mcmaker.buildProject",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "mcmaker.refreshBuildQueue",
+          "when": "view == mcmaker.buildQueue",
+          "group": "navigation"
+        },
+        {
+          "command": "mcmaker.refreshResourceTracker",
+          "when": "view == mcmaker.resourceTracker",
+          "group": "navigation"
+        },
+        {
+          "command": "mcmaker.refreshNotificationCenter",
+          "when": "view == mcmaker.notificationCenter",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "mcmaker.buildSelected",
+          "when": "view == mcmaker.buildQueue && viewItem == buildItem",
+          "group": "inline"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "mcmaker",
+          "title": "McMaker",
+          "icon": "resources/icon.png"
+        }
+      ]
+    },
+    "views": {
+      "mcmaker": [
+        {
+          "id": "mcmaker.buildQueue",
+          "name": "Build Queue",
+          "icon": "resources/build-queue.svg",
+          "contextualTitle": "McMaker Build Queue"
+        },
+        {
+          "id": "mcmaker.projectExplorer",
+          "name": "Project Explorer",
+          "icon": "resources/project-explorer.svg",
+          "contextualTitle": "McMaker Project Explorer"
+        },
+        {
+          "id": "mcmaker.dependencies",
+          "name": "Dependencies",
+          "icon": "resources/dependencies.svg",
+          "contextualTitle": "McMaker Dependencies"
+        },
+        {
+          "id": "mcmaker.resourceTracker",
+          "name": "Resource Tracker",
+          "icon": "resources/resource-tracker.svg",
+          "contextualTitle": "McMaker Resource Tracker"
+        },
+        {
+          "id": "mcmaker.notificationCenter",
+          "name": "Notification Center",
+          "icon": "resources/notification-center.svg",
+          "contextualTitle": "McMaker Notification Center"
+        },
+        {
+          "id": "mcmaker.issueTracker",
+          "name": "Issue Tracker",
+          "icon": "resources/issue-tracker.svg",
+          "contextualTitle": "McMaker Issue Tracker"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "mcmaker.buildQueue",
+        "contents": "No build tasks found.\n[Build Project](command:mcmaker.buildProject)"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "McMaker",
+      "properties": {
+        "mcmaker.compilerPath": {
+          "type": "string",
+          "default": "lamia_revolutionary_builder_v5_self_reliant.exe",
+          "description": "Path to the LFC++ compiler executable"
+        },
+        "mcmaker.buildDirectory": {
+          "type": "string",
+          "default": "${workspaceFolder}/build",
+          "description": "Build output directory"
+        },
+        "mcmaker.defaultProfile": {
+          "type": "string",
+          "default": "Debug",
+          "description": "Default build profile",
+          "enum": [
+            "Debug",
+            "Release",
+            "Enterprise Release"
+          ]
+        },
+        "mcmaker.parallelJobs": {
+          "type": "number",
+          "default": 8,
+          "description": "Number of parallel build jobs"
+        },
+        "mcmaker.enableFactoryAnimation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Factory-style build animations"
+        },
+        "mcmaker.medusaservUrl": {
+          "type": "string",
+          "default": "http://localhost:8080",
+          "description": "MedusaServ server URL"
+        },
+        "mcmaker.psiforcedbUrl": {
+          "type": "string",
+          "default": "http://localhost:5432",
+          "description": "PsiForceDB server URL"
+        },
+        "mcmaker.enableRemoteSync": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable synchronization with remote servers"
+        }
+      }
+    },
+    "taskDefinitions": [
+      {
+        "type": "mcmaker",
+        "required": [
+          "target"
+        ],
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "The build target"
+          },
+          "profile": {
+            "type": "string",
+            "description": "The build profile to use"
+          }
+        }
+      }
+    ],
+    "problemMatchers": [
+      {
+        "name": "mcmaker",
+        "owner": "cpp",
+        "fileLocation": [
+          "relative",
+          "${workspaceFolder}"
+        ],
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3",
+    "@vscode/test-electron": "^2.2.0"
+  }
+}

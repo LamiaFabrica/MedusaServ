@@ -1,0 +1,183 @@
+<!--
+Purple-Pages.com - Administration Category Page
+All administration guides across technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_category_administration() {
+    include "base.lamia" {
+        title: "Administration Guides - Purple Pages"
+        description: "System administration, security best practices, backup and restore, performance tuning for all Medusa Project technologies"
+        keywords: "administration, admin, security, backup, restore, performance, configuration, system admin"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/category/administration.lamia") {
+                            "Administration"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "category-hero") {
+            div(class: "category-hero-content") {
+                h1 {
+                    "⚙️ Administration"
+                }
+                p(class: "category-description") {
+                    "System administration, security best practices, backup and restore, performance tuning"
+                }
+            }
+        }
+        
+        // Administration Guides by Technology
+        section(class: "category-content") {
+            div(class: "category-container") {
+                // PsiForceDB Administration
+                div(class: "admin-tech-section") {
+                    h2 {
+                        "🦕 PsiForceDB Administration"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/administration/configuration.lamia", class: "guide-card") {
+                            h3 {
+                                "Configuration"
+                            }
+                            p {
+                                "Configure PsiForceDB for production"
+                            }
+                            span(class: "guide-badge") {
+                                "Essential"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/administration/security.lamia", class: "guide-card") {
+                            h3 {
+                                "Security Hardening"
+                            }
+                            p {
+                                "Secure your PsiForceDB installation"
+                            }
+                            span(class: "guide-badge") {
+                                "Security"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/administration/backup-restore.lamia", class: "guide-card") {
+                            h3 {
+                                "Backup & Restore"
+                            }
+                            p {
+                                "Backup and restore procedures"
+                            }
+                            span(class: "guide-badge") {
+                                "Critical"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/administration/performance.lamia", class: "guide-card") {
+                            h3 {
+                                "Performance Tuning"
+                            }
+                            p {
+                                "Optimize PsiForceDB performance"
+                            }
+                            span(class: "guide-badge") {
+                                "Advanced"
+                            }
+                        }
+                    }
+                }
+                
+                // MedusaServ Administration
+                div(class: "admin-tech-section") {
+                    h2 {
+                        "🌐 MedusaServ Administration"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/medusaserv/administration/configuration.lamia", class: "guide-card") {
+                            h3 {
+                                "Server Configuration"
+                            }
+                            p {
+                                "Configure MedusaServ web server"
+                            }
+                            span(class: "guide-badge") {
+                                "Essential"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/administration/ssl-tls.lamia", class: "guide-card") {
+                            h3 {
+                                "SSL/TLS Setup"
+                            }
+                            p {
+                                "Configure TLS 1.3 with LFSSL"
+                            }
+                            span(class: "guide-badge") {
+                                "Security"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/administration/monitoring.lamia", class: "guide-card") {
+                            h3 {
+                                "Monitoring & Logging"
+                            }
+                            p {
+                                "Monitor server performance and logs"
+                            }
+                            span(class: "guide-badge") {
+                                "Operations"
+                            }
+                        }
+                    }
+                }
+                
+                // General Administration
+                div(class: "admin-tech-section") {
+                    h2 {
+                        "🔧 General Administration"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/administration/system-requirements.lamia", class: "guide-card") {
+                            h3 {
+                                "System Requirements"
+                            }
+                            p {
+                                "Hardware and software requirements"
+                            }
+                            span(class: "guide-badge") {
+                                "Planning"
+                            }
+                        }
+                        
+                        a(href: "/pages/administration/deployment.lamia", class: "guide-card") {
+                            h3 {
+                                "Deployment Strategies"
+                            }
+                            p {
+                                "Production deployment best practices"
+                            }
+                            span(class: "guide-badge") {
+                                "Deployment"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

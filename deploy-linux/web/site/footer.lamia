@@ -1,0 +1,213 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+FOOTER COMPONENT - MEDUSA ECOSYSTEM
+===================================
+
+This footer includes contact information and links
+-->
+
+component footer() {
+    revolutionary_footer {
+        background: "linear-gradient(135deg, #6B2B6B 0%, #2a1a2a 100%)"
+        color: "white"
+        padding: "2rem 0 1rem"
+        position: "relative"
+        overflow: "hidden"
+        
+        container {
+            max_width: "1400px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            display: "grid"
+            grid_template_columns: "1fr 2fr"
+            gap: "3rem"
+            margin_bottom: "1rem"
+            
+            // LEFT SIDE - CONTACT ME
+            contact_section {
+                background: "rgba(255, 255, 255, 0.05)"
+                border_radius: "15px"
+                padding: "2.5rem"
+                backdrop_filter: "blur(10px)"
+                border: "1px solid rgba(255, 255, 255, 0.1)"
+                
+                title {
+                    text: "Contact Me"
+                    font_size: "1.8rem"
+                    font_weight: "800"
+                    margin_bottom: "2rem"
+                    color: "#ff6b00"
+                    text_align: "center"
+                    text_shadow: "0 2px 4px rgba(0, 0, 0, 0.3)"
+                }
+                
+                contact_info {
+                    display: "flex"
+                    flex_direction: "column"
+                    gap: "1.5rem"
+                    
+                    item {
+                        display: "flex"
+                        align_items: "center"
+                        gap: "1.2rem"
+                        padding: "1rem 1.5rem"
+                        border_radius: "12px"
+                        background: "rgba(255, 255, 255, 0.08)"
+                        border: "2px solid rgba(255, 255, 255, 0.1)"
+                        transition: "all 0.3s ease"
+                        cursor: "pointer"
+                        hover_effect: "background: rgba(255, 255, 255, 0.15); border-color: #ff6b00; transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(255, 107, 0, 0.3)"
+                        
+                        icon: "👨‍💻"
+                        details {
+                            display: "flex"
+                            flex_direction: "column"
+                            gap: "0.3rem"
+                            
+                            strong {
+                                font_weight: "700"
+                                color: "white"
+                                font_size: "1.1rem"
+                            }
+                            
+                            span, a {
+                                color: "rgba(255, 255, 255, 0.9)"
+                                text_decoration: "none"
+                                font_size: "1rem"
+                                font_weight: "500"
+                                hover_effect: "color: #ff6b00; text-shadow: 0 0 8px rgba(255, 107, 0, 0.5)"
+                            }
+                        }
+                    }
+                    
+                    item {
+                        icon: "📧"
+                        details {
+                            strong: "Email"
+                            a: "hi@poweredbymedusa.com"
+                            href: "mailto:hi@poweredbymedusa.com"
+                        }
+                    }
+                    
+                    item {
+                        icon: "🌐"
+                        details {
+                            strong: "Website"
+                            a: "poweredbymedusa.com"
+                            href: "https://poweredbymedusa.com"
+                        }
+                    }
+                    
+                    item {
+                        icon: "📱"
+                        details {
+                            strong: "GitHub"
+                            a: "The-Medusa-Initiative"
+                            href: "https://github.com/The-Medusa-Initiative"
+                        }
+                    }
+                }
+            }
+            
+            // MIDDLE SECTION - SUPPORT & LINKS WITH PERSONAL LETTER
+            links_section {
+                background: "rgba(255, 255, 255, 0.05)"
+                border_radius: "15px"
+                padding: "2rem"
+                backdrop_filter: "blur(10px)"
+                border: "1px solid rgba(255, 255, 255, 0.1)"
+                
+                footer_links_grid {
+                    display: "grid"
+                    grid_template_columns: "repeat(3, 1fr)"
+                    gap: "2rem"
+                    
+                    link_group {
+                        title: "Support Me"
+                        links: [
+                            { text: "🎯 Patreon Support", url: "https://www.patreon.com/TheMedusaInitiative" },
+                            { text: "💝 Buy Me A Coffee", url: "#" },
+                            { text: "🚀 GitHub Sponsors", url: "#" }
+                        ]
+                    }
+                    
+                    link_group {
+                        title: "Resources"
+                        links: [
+                            { text: "📚 Purple Pages", url: "purple-pages.lamia" },
+                            { text: "⚖️ Legal Framework", url: "#" },
+                            { text: "📖 Documentation", url: "#" }
+                        ]
+                    }
+                    
+                    link_group {
+                        title: "Community"
+                        links: [
+                            { text: "🎮 Join Discord", url: "https://discord.gg/np8gewrg" },
+                            { text: "🐦 Twitter/X", url: "#" },
+                            { text: "📺 YouTube", url: "#" }
+                        ]
+                    }
+                }
+                
+                // SPACER FOR VISUAL SEPARATION
+                letter_spacer {
+                    height: "1.5rem"
+                    margin: "1rem 0"
+                    border_top: "1px solid rgba(255, 255, 255, 0.1)"
+                }
+                
+                // PERSONAL LETTER - FLOWING BELOW LINKS IN SAME SECTION
+                personal_letter {
+                    color: "white"
+                    line_height: "1.6"
+                    font_size: "1.15rem"
+                    font_style: "italic"
+                    
+                    p {
+                        margin_bottom: "1rem"
+                        text_align: "justify"
+                        text: "This EcoShere has been made as a labour of love, with 25 years experiance ALL poured into this one system end to end.. While I'm unable to manage to create as much as I used to this is the last hurrah hoping to create a safer system and hopefully leave a lasting legacy for my children. From writing the Lamia language to building the Native web server solution that holds it then into the 'Big Picture that is Medusa' My vision is only HALF complete i sinserly hope you enjoy.. or can make use of any of the tools and services I put on here and if you enjoy it consider supporting me on patrion"
+                    }
+                    
+                    read_more_link {
+                        color: "#ff6b00"
+                        text_decoration: "none"
+                        font_weight: "600"
+                        transition: "all 0.3s ease"
+                        text: "Read more about me"
+                        url: "about.lamia"
+                        hover_effect: "color: #FF6B9D; text-decoration: underline"
+                    }
+                    
+                    signature {
+                        text_align: "right"
+                        font_size: "1rem"
+                        margin_top: "1.5rem"
+                        margin_bottom: "0"
+                        strong: "- D Hargreaves"
+                        em: true
+                    }
+                }
+            }
+        }
+        
+        // FOOTER BOTTOM
+        footer_bottom {
+            border_top: "1px solid rgba(255, 255, 255, 0.1)"
+            padding_top: "1rem"
+            text_align: "center"
+            
+            footer_copyright {
+                color: "rgba(255, 255, 255, 0.7)"
+                font_size: "0.9rem"
+                
+                p {
+                    margin: "0.5rem 0"
+                    text: "Standing against discrimination, supporting accessibility rights, Different Ability NOT Disability"
+                }
+            }
+        }
+    }
+}

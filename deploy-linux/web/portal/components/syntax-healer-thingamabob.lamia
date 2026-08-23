@@ -1,0 +1,1634 @@
+/*
+ * Component v0.4.0
+ * Yorkshire Champion Standards
+ * 
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    
+<?php
+/**
+ * SYNTAX HEALER THINGAMABOB - Yorkshire Champion Code Correction Interface
+ * =======================================================================
+ * Revolutionary automatic code healing and server-side linting dashboard
+ */
+
+// Security validation
+if (!defined('LAMIA_SECURE') || !LAMIA_SECURE) {
+    http_response_code(403);
+    exit('Access Denied');
+}
+
+// Include MedusaServ core
+require_once __DIR__ . '/../../../include/medusa_core.php';
+require_once __DIR__ . '/../../../include/medusa_auth.php';
+
+// Verify authentication and admin privileges
+if (!MedusaAuth::verify_session() || !MedusaAuth::has_admin_privileges()) {
+    http_response_code(401);
+    exit(json_encode(['error' => 'Unauthorized access']));
+}
+?>
+
+<div id="syntax-healer-thingamabob" class="thingamabob-container yorkshire-champion-container">
+    <div class="thingamabob-header syntax-healer-header">
+        <div class="header-gradient">
+            <h1 class="thingamabob-title">
+                <i class="fas fa-magic syntax-healer-icon"></i>
+                SYNTAX HEALER THINGAMABOB
+                <span class="yorkshire-badge">Yorkshire Champion Code Healing</span>
+            </h1>
+            <p class="thingamabob-subtitle">Revolutionary automatic code correction with AI-powered syntax healing</p>
+        </div>
+        <div class="healing-stats-display">
+            <div class="healing-stat">
+                <div class="stat-value" id="files-healed">1,847</div>
+                <div class="stat-label">Files Healed</div>
+            </div>
+            <div class="healing-stat">
+                <div class="stat-value" id="issues-fixed">12,634</div>
+                <div class="stat-label">Issues Fixed</div>
+            </div>
+            <div class="healing-stat">
+                <div class="stat-value" id="success-rate">98.7%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="healing-stat champion">
+                <div class="stat-value" id="yorkshire-multiplier">15.0x</div>
+                <div class="stat-label">Yorkshire Multiplier</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+        <button class="tab-button active" onclick="showHealerTab('overview')">
+            <i class="fas fa-tachometer-alt"></i> Overview
+        </button>
+        <button class="tab-button" onclick="showHealerTab('upload')">
+            <i class="fas fa-upload"></i> File Upload
+        </button>
+        <button class="tab-button" onclick="showHealerTab('real-time')">
+            <i class="fas fa-heartbeat"></i> Real-time
+        </button>
+        <button class="tab-button" onclick="showHealerTab('batch')">
+            <i class="fas fa-layer-group"></i> Batch Processing
+        </button>
+        <button class="tab-button" onclick="showHealerTab('rules')">
+            <i class="fas fa-cogs"></i> Rules
+        </button>
+        <button class="tab-button" onclick="showHealerTab('reports')">
+            <i class="fas fa-chart-bar"></i> Reports
+        </button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div id="overview-tab" class="tab-content active">
+        <div class="healer-overview">
+            <!-- Language Support Grid -->
+            <div class="language-support-section">
+                <h3><i class="fas fa-code"></i> Supported Languages</h3>
+                <div class="language-grid">
+                    <div class="language-card cpp champion">
+                        <div class="language-icon">🚀</div>
+                        <div class="language-name">C++</div>
+                        <div class="language-status">CHAMPION</div>
+                        <div class="language-stats">
+                            <span>347 files healed</span>
+                            <span>95.8% success</span>
+                        </div>
+                    </div>
+
+                    <div class="language-card javascript excellent">
+                        <div class="language-icon">⚡</div>
+                        <div class="language-name">JavaScript</div>
+                        <div class="language-status">EXCELLENT</div>
+                        <div class="language-stats">
+                            <span>523 files healed</span>
+                            <span>97.2% success</span>
+                        </div>
+                    </div>
+
+                    <div class="language-card php excellent">
+                        <div class="language-icon">🐘</div>
+                        <div class="language-name">PHP</div>
+                        <div class="language-status">EXCELLENT</div>
+                        <div class="language-stats">
+                            <span>289 files healed</span>
+                            <span>96.4% success</span>
+                        </div>
+                    </div>
+
+                    <div class="language-card python good">
+                        <div class="language-icon">🐍</div>
+                        <div class="language-name">Python</div>
+                        <div class="language-status">GOOD</div>
+                        <div class="language-stats">
+                            <span>156 files healed</span>
+                            <span>94.1% success</span>
+                        </div>
+                    </div>
+
+                    <div class="language-card html excellent">
+                        <div class="language-icon">🌐</div>
+                        <div class="language-name">HTML/CSS</div>
+                        <div class="language-status">EXCELLENT</div>
+                        <div class="language-stats">
+                            <span>432 files healed</span>
+                            <span>98.9% success</span>
+                        </div>
+                    </div>
+
+                    <div class="language-card lamia champion">
+                        <div class="language-icon">🎛️</div>
+                        <div class="language-name">LAMIA</div>
+                        <div class="language-status">CHAMPION</div>
+                        <div class="language-stats">
+                            <span>234 files healed</span>
+                            <span>99.7% success</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Healing Activity -->
+            <div class="recent-activity-section">
+                <h3><i class="fas fa-history"></i> Recent Healing Activity</h3>
+                <div class="activity-timeline">
+                    <div class="timeline-item success">
+                        <div class="timeline-icon">✅</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">application.js healed successfully</div>
+                            <div class="timeline-details">Fixed 7 issues including missing semicolons, bracket mismatches</div>
+                            <div class="timeline-time">2 minutes ago</div>
+                        </div>
+                        <div class="timeline-metrics">
+                            <span class="yorkshire-score">15.0x</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item success">
+                        <div class="timeline-icon">🚀</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">database_manager.php optimized</div>
+                            <div class="timeline-details">Yorkshire Champion optimizations applied, performance improved</div>
+                            <div class="timeline-time">5 minutes ago</div>
+                        </div>
+                        <div class="timeline-metrics">
+                            <span class="yorkshire-score">18.2x</span>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item warning">
+                        <div class="timeline-icon">⚠️</div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">legacy_code.cpp partially healed</div>
+                            <div class="timeline-details">3 critical issues fixed, 2 complex issues require manual review</div>
+                            <div class="timeline-time">12 minutes ago</div>
+                        </div>
+                        <div class="timeline-metrics">
+                            <span class="partial-score">12.3x</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Healing Statistics -->
+            <div class="healing-statistics">
+                <h3><i class="fas fa-chart-pie"></i> Healing Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <i class="fas fa-bug"></i>
+                            <h4>Issues by Type</h4>
+                        </div>
+                        <canvas id="issues-by-type-chart"></canvas>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <i class="fas fa-language"></i>
+                            <h4>Languages Processed</h4>
+                        </div>
+                        <canvas id="languages-chart"></canvas>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <i class="fas fa-trophy"></i>
+                            <h4>Yorkshire Champion Scores</h4>
+                        </div>
+                        <canvas id="yorkshire-scores-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Tab -->
+    <div id="upload-tab" class="tab-content">
+        <div class="file-upload-section">
+            <h3>Upload Files for Healing</h3>
+            
+            <!-- Drag & Drop Upload Area -->
+            <div class="upload-area" id="upload-area">
+                <div class="upload-content">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h4>Drag & Drop Files Here</h4>
+                    <p>Or click to select files for automatic healing</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                        <i class="fas fa-folder-open"></i> Select Files
+                    </button>
+                </div>
+                <input type="file" id="file-input" multiple style="display: none;" onchange="handleFileUpload(event)">
+            </div>
+
+            <!-- Upload Configuration -->
+            <div class="upload-config">
+                <h4>Upload Configuration</h4>
+                <div class="config-grid">
+                    <div class="config-section">
+                        <h5>Healing Options</h5>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="auto-healing" checked>
+                            <span>Auto-healing enabled</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="create-backup" checked>
+                            <span>Create backup files</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="yorkshire-optimization" checked>
+                            <span>Yorkshire Champion optimization</span>
+                        </label>
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="security-fixes">
+                            <span>Apply security fixes</span>
+                        </label>
+                    </div>
+
+                    <div class="config-section">
+                        <h5>Quality Settings</h5>
+                        <label>Strictness Level:</label>
+                        <input type="range" id="strictness-level" min="1" max="10" value="7" oninput="updateStrictnessDisplay(this.value)">
+                        <span id="strictness-display">7 (Recommended)</span>
+                        
+                        <label>Confidence Threshold:</label>
+                        <input type="range" id="confidence-threshold" min="0.5" max="1.0" value="0.8" step="0.1" oninput="updateConfidenceDisplay(this.value)">
+                        <span id="confidence-display">0.8 (80%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div class="upload-progress" id="upload-progress" style="display: none;">
+                <div class="progress-header">
+                    <h4>Processing Files...</h4>
+                    <span id="progress-text">Uploading and healing files</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="upload-progress-fill"></div>
+                </div>
+                <div class="progress-details" id="progress-details"></div>
+            </div>
+
+            <!-- Upload Results -->
+            <div class="upload-results" id="upload-results">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-time Tab -->
+    <div id="real-time-tab" class="tab-content">
+        <div class="real-time-monitoring">
+            <h3>Real-time Code Monitoring</h3>
+            
+            <!-- Monitoring Controls -->
+            <div class="monitoring-controls">
+                <div class="control-group">
+                    <label>Watch Directory:</label>
+                    <input type="text" id="watch-directory" value="/var/www/html" placeholder="Directory path to monitor">
+                    <button class="btn btn-success" id="start-monitoring" onclick="toggleMonitoring()">
+                        <i class="fas fa-play"></i> Start Monitoring
+                    </button>
+                </div>
+                
+                <div class="control-group">
+                    <label>File Extensions:</label>
+                    <input type="text" id="watch-extensions" value=".php,.js,.cpp,.py,.html" placeholder="Comma-separated extensions">
+                </div>
+                
+                <div class="control-group">
+                    <label>Validation Delay:</label>
+                    <select id="validation-delay">
+                        <option value="1000">1 second</option>
+                        <option value="2000" selected>2 seconds</option>
+                        <option value="5000">5 seconds</option>
+                        <option value="10000">10 seconds</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Live File Changes -->
+            <div class="live-changes-section">
+                <h4><i class="fas fa-eye"></i> Live File Changes</h4>
+                <div class="changes-feed" id="changes-feed">
+                    <div class="feed-item info">
+                        <div class="feed-icon">👀</div>
+                        <div class="feed-content">
+                            <div class="feed-title">Real-time monitoring ready</div>
+                            <div class="feed-details">Configure directory and start monitoring to see live changes</div>
+                            <div class="feed-time">Ready to start</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Validations -->
+            <div class="active-validations">
+                <h4><i class="fas fa-sync-alt"></i> Active Validations</h4>
+                <div class="validations-list" id="validations-list">
+                    <div class="no-validations">No active validations. Start monitoring to see real-time validations.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Batch Processing Tab -->
+    <div id="batch-tab" class="tab-content">
+        <div class="batch-processing">
+            <h3>Batch File Processing</h3>
+            
+            <!-- Batch Configuration -->
+            <div class="batch-config">
+                <div class="batch-source">
+                    <h4>Source Configuration</h4>
+                    <label>Processing Mode:</label>
+                    <select id="batch-mode">
+                        <option value="directory">Process Directory</option>
+                        <option value="file-list">Process File List</option>
+                        <option value="pattern">Process by Pattern</option>
+                    </select>
+                    
+                    <label id="directory-label">Directory Path:</label>
+                    <input type="text" id="batch-directory" value="/var/www/html" placeholder="Directory to process">
+                    
+                    <label class="checkbox-option">
+                        <input type="checkbox" id="recursive-processing" checked>
+                        <span>Recursive processing (include subdirectories)</span>
+                    </label>
+                </div>
+
+                <div class="batch-filters">
+                    <h4>File Filters</h4>
+                    <label>Include Extensions:</label>
+                    <input type="text" id="include-extensions" value=".php,.js,.cpp,.py,.html,.css" placeholder="Extensions to include">
+                    
+                    <label>Exclude Patterns:</label>
+                    <input type="text" id="exclude-patterns" value="node_modules,vendor,.git" placeholder="Patterns to exclude">
+                    
+                    <label>File Size Limit (MB):</label>
+                    <input type="number" id="file-size-limit" value="10" min="1" max="100">
+                </div>
+
+                <div class="batch-actions">
+                    <button class="btn btn-primary" onclick="startBatchProcessing()">
+                        <i class="fas fa-cog"></i> Start Batch Processing
+                    </button>
+                    <button class="btn btn-secondary" onclick="previewBatchFiles()">
+                        <i class="fas fa-eye"></i> Preview Files
+                    </button>
+                    <button class="btn btn-danger" id="stop-batch" onclick="stopBatchProcessing()" disabled>
+                        <i class="fas fa-stop"></i> Stop Processing
+                    </button>
+                </div>
+            </div>
+
+            <!-- Batch Progress -->
+            <div class="batch-progress" id="batch-progress" style="display: none;">
+                <div class="progress-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Total Files:</span>
+                        <span class="summary-value" id="total-files">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Processed:</span>
+                        <span class="summary-value" id="processed-files">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Success:</span>
+                        <span class="summary-value success" id="success-files">0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Errors:</span>
+                        <span class="summary-value error" id="error-files">0</span>
+                    </div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="batch-progress-fill"></div>
+                </div>
+                
+                <div class="current-processing" id="current-processing">
+                    Processing: <span id="current-file">Initializing...</span>
+                </div>
+            </div>
+
+            <!-- Batch Results -->
+            <div class="batch-results" id="batch-results">
+                <!-- Results will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rules Tab -->
+    <div id="rules-tab" class="tab-content">
+        <div class="rules-management">
+            <h3>Linting Rules Management</h3>
+            
+            <!-- Rule Categories -->
+            <div class="rule-categories">
+                <div class="category-section">
+                    <h4><i class="fas fa-bug"></i> Syntax Rules</h4>
+                    <div class="rules-list">
+                        <div class="rule-item">
+                            <div class="rule-info">
+                                <div class="rule-name">Missing Semicolons</div>
+                                <div class="rule-description">Detect and fix missing semicolons in JavaScript/C++</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="critical">Critical</option>
+                                    <option value="high" selected>High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rule-item">
+                            <div class="rule-info">
+                                <div class="rule-name">Bracket Mismatch</div>
+                                <div class="rule-description">Detect unbalanced brackets, braces, and parentheses</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="critical" selected>Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rule-item">
+                            <div class="rule-info">
+                                <div class="rule-name">Inconsistent Indentation</div>
+                                <div class="rule-description">Fix mixed tabs/spaces and inconsistent indentation</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h4><i class="fas fa-shield-alt"></i> Security Rules</h4>
+                    <div class="rules-list">
+                        <div class="rule-item">
+                            <div class="rule-info">
+                                <div class="rule-name">SQL Injection Prevention</div>
+                                <div class="rule-description">Detect potential SQL injection vulnerabilities</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="critical" selected>Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rule-item">
+                            <div class="rule-info">
+                                <div class="rule-name">XSS Prevention</div>
+                                <div class="rule-description">Detect cross-site scripting vulnerabilities</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="critical" selected>Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <h4><i class="fas fa-trophy"></i> Yorkshire Champion Rules</h4>
+                    <div class="rules-list">
+                        <div class="rule-item yorkshire">
+                            <div class="rule-info">
+                                <div class="rule-name">Performance Optimization</div>
+                                <div class="rule-description">Apply Yorkshire Champion 15.0x performance optimizations</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider champion"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="yorkshire" selected>Yorkshire Champion</option>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="rule-item yorkshire">
+                            <div class="rule-info">
+                                <div class="rule-name">Memory Optimization</div>
+                                <div class="rule-description">Optimize memory usage for Yorkshire Champion standards</div>
+                            </div>
+                            <div class="rule-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider champion"></span>
+                                </label>
+                                <select class="rule-severity">
+                                    <option value="yorkshire" selected>Yorkshire Champion</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Rules -->
+            <div class="custom-rules">
+                <h4><i class="fas fa-plus-circle"></i> Custom Rules</h4>
+                <div class="custom-rule-form">
+                    <div class="form-row">
+                        <label>Rule Name:</label>
+                        <input type="text" id="custom-rule-name" placeholder="Enter rule name">
+                    </div>
+                    <div class="form-row">
+                        <label>Pattern (Regex):</label>
+                        <input type="text" id="custom-rule-pattern" placeholder="Enter regex pattern">
+                    </div>
+                    <div class="form-row">
+                        <label>Message:</label>
+                        <input type="text" id="custom-rule-message" placeholder="Error message template">
+                    </div>
+                    <div class="form-row">
+                        <label>Severity:</label>
+                        <select id="custom-rule-severity">
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addCustomRule()">
+                            <i class="fas fa-plus"></i> Add Rule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reports Tab -->
+    <div id="reports-tab" class="tab-content">
+        <div class="reports-section">
+            <h3>Healing Reports & Analytics</h3>
+            
+            <!-- Report Generation -->
+            <div class="report-generation">
+                <h4>Generate Reports</h4>
+                <div class="report-options">
+                    <div class="report-type">
+                        <label>Report Type:</label>
+                        <select id="report-type">
+                            <option value="summary">Summary Report</option>
+                            <option value="detailed">Detailed Analysis</option>
+                            <option value="performance">Performance Report</option>
+                            <option value="security">Security Report</option>
+                            <option value="yorkshire">Yorkshire Champion Report</option>
+                        </select>
+                    </div>
+                    
+                    <div class="report-period">
+                        <label>Time Period:</label>
+                        <select id="report-period">
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    
+                    <div class="report-format">
+                        <label>Format:</label>
+                        <select id="report-format">
+                            <option value="html">HTML Report</option>
+                            <option value="pdf">PDF Document</option>
+                            <option value="json">JSON Data</option>
+                            <option value="csv">CSV Export</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="generateReport()">
+                        <i class="fas fa-file-alt"></i> Generate Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Reports -->
+            <div class="recent-reports">
+                <h4>Recent Reports</h4>
+                <div class="reports-list">
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-name">Yorkshire Champion Performance Report</div>
+                            <div class="report-details">Monthly analysis - Generated today at 2:34 PM</div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn btn-sm btn-info">View</button>
+                            <button class="btn btn-sm btn-secondary">Download</button>
+                            <button class="btn btn-sm btn-success">Share</button>
+                        </div>
+                    </div>
+
+                    <div class="report-item">
+                        <div class="report-info">
+                            <div class="report-name">Security Analysis Report</div>
+                            <div class="report-details">Weekly security review - Generated yesterday</div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn btn-sm btn-info">View</button>
+                            <button class="btn btn-sm btn-secondary">Download</button>
+                            <button class="btn btn-sm btn-success">Share</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Dashboard -->
+            <div class="analytics-dashboard">
+                <h4>Analytics Dashboard</h4>
+                <div class="analytics-charts">
+                    <div class="chart-container">
+                        <h5>Healing Trends Over Time</h5>
+                        <canvas id="healing-trends-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h5>Error Types Distribution</h5>
+                        <canvas id="error-distribution-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h5>Yorkshire Champion Improvements</h5>
+                        <canvas id="yorkshire-improvements-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.syntax-healer-thingamabob {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid #00BFFF;
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+}
+
+.syntax-healer-icon {
+    color: #00BFFF;
+    text-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+    animation: healerPulse 2s infinite;
+}
+
+.healing-stats-display {
+    display: flex;
+    gap: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.healing-stat {
+    text-align: center;
+    background: rgba(0,0,0,0.3);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 191, 255, 0.3);
+    min-width: 80px;
+}
+
+.healing-stat.champion {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0,0,0,0.3));
+}
+
+.healing-stat .stat-value {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #00BFFF;
+}
+
+.healing-stat.champion .stat-value {
+    color: #FFD700;
+    animation: championGlow 3s infinite;
+}
+
+.healing-stat .stat-label {
+    font-size: 0.8em;
+    color: #ccc;
+    margin-top: 4px;
+}
+
+.language-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.language-card {
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.language-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.language-card.champion {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0,0,0,0.3));
+}
+
+.language-card.excellent {
+    border-color: #4CAF50;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(0,0,0,0.3));
+}
+
+.language-card.good {
+    border-color: #FF9800;
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(0,0,0,0.3));
+}
+
+.language-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.language-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.language-status {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.language-card.champion .language-status {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #000;
+    animation: championPulse 2s infinite;
+}
+
+.language-card.excellent .language-status {
+    background: #4CAF50;
+    color: white;
+}
+
+.language-card.good .language-status {
+    background: #FF9800;
+    color: white;
+}
+
+.language-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.activity-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid transparent;
+}
+
+.timeline-item.success {
+    border-left-color: #4CAF50;
+}
+
+.timeline-item.warning {
+    border-left-color: #FF9800;
+}
+
+.timeline-icon {
+    font-size: 1.5em;
+    width: 40px;
+    text-align: center;
+}
+
+.timeline-content {
+    flex: 1;
+}
+
+.timeline-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.timeline-details {
+    color: #ccc;
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+.timeline-time {
+    color: #888;
+    font-size: 0.8em;
+}
+
+.timeline-metrics {
+    text-align: center;
+}
+
+.yorkshire-score {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+    animation: scoreGlow 3s infinite;
+}
+
+.partial-score {
+    background: #FF9800;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.upload-area {
+    border: 3px dashed rgba(0, 191, 255, 0.5);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    background: rgba(0,0,0,0.2);
+    margin: 20px 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: #00BFFF;
+    background: rgba(0, 191, 255, 0.1);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 4em;
+    color: #00BFFF;
+    margin-bottom: 20px;
+    animation: uploadFloat 3s ease-in-out infinite;
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.config-section {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.upload-progress {
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.progress-bar {
+    height: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00BFFF, #0080FF);
+    width: 0%;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: progressShimmer 2s infinite;
+}
+
+.changes-feed {
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.feed-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+}
+
+.feed-item.info {
+    border-left: 4px solid #00BFFF;
+}
+
+.feed-item.success {
+    border-left: 4px solid #4CAF50;
+}
+
+.feed-item.warning {
+    border-left: 4px solid #FF9800;
+}
+
+.feed-item.error {
+    border-left: 4px solid #f44336;
+}
+
+.batch-config {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.batch-source,
+.batch-filters {
+    margin-bottom: 25px;
+}
+
+.batch-source h4,
+.batch-filters h4 {
+    margin-bottom: 15px;
+    color: #00BFFF;
+}
+
+.batch-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.progress-summary {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-label {
+    display: block;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.summary-value {
+    display: block;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.summary-value.success {
+    color: #4CAF50;
+}
+
+.summary-value.error {
+    color: #f44336;
+}
+
+.rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.rule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.rule-item.yorkshire {
+    border-color: #FFD700;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0,0,0,0.3));
+}
+
+.rule-info {
+    flex: 1;
+}
+
+.rule-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.rule-description {
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.rule-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.toggle-switch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-slider {
+    width: 50px;
+    height: 25px;
+    background: #ccc;
+    border-radius: 25px;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.toggle-slider:before {
+    content: '';
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+}
+
+input:checked + .toggle-slider {
+    background: #4CAF50;
+}
+
+input:checked + .toggle-slider.champion {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(25px);
+}
+
+.rule-severity {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.3);
+    color: white;
+}
+
+.custom-rule-form {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.form-row label {
+    min-width: 120px;
+    font-weight: bold;
+}
+
+.form-row input,
+.form-row select {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.3);
+    color: white;
+}
+
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.report-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.report-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.analytics-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.chart-container {
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Animations */
+@keyframes healerPulse {
+    0%, 100% { text-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
+    50% { text-shadow: 0 0 20px rgba(0, 191, 255, 0.8), 0 0 30px rgba(0, 191, 255, 0.6); }
+}
+
+@keyframes championGlow {
+    0%, 100% { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    50% { color: #FFA500; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 152, 0, 0.6); }
+}
+
+@keyframes championPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes scoreGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+    50% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 0 0 25px rgba(255, 152, 0, 0.6); }
+}
+
+@keyframes uploadFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes progressShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+</style>
+
+<script>
+// Syntax Healer JavaScript Functions
+let monitoringActive = false;
+let batchProcessingActive = false;
+
+function showHealerTab(tabName) {
+    // Hide all tab contents
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(content => content.classList.remove('active'));
+    
+    // Remove active from all buttons
+    const buttons = document.querySelectorAll('.tab-button');
+    buttons.forEach(button => button.classList.remove('active'));
+    
+    // Show selected tab and mark button as active
+    document.getElementById(tabName + '-tab').classList.add('active');
+    event.target.classList.add('active');
+    
+    // Initialize tab-specific functionality
+    initializeHealerTab(tabName);
+}
+
+function initializeHealerTab(tabName) {
+    switch(tabName) {
+        case 'overview':
+            updateHealingStats();
+            break;
+        case 'upload':
+            setupUploadArea();
+            break;
+        case 'real-time':
+            // Real-time tab initialization
+            break;
+        case 'reports':
+            // Initialize charts
+            break;
+    }
+}
+
+function updateHealingStats() {
+    // Simulate stat updates
+    const filesHealed = 1847 + Math.floor(Math.random() * 10);
+    const issuesFixed = 12634 + Math.floor(Math.random() * 50);
+    const successRate = (98.5 + Math.random() * 1.0).toFixed(1);
+    const yorkshireMultiplier = (14.5 + Math.random() * 1.0).toFixed(1);
+    
+    document.getElementById('files-healed').textContent = filesHealed.toLocaleString();
+    document.getElementById('issues-fixed').textContent = issuesFixed.toLocaleString();
+    document.getElementById('success-rate').textContent = successRate + '%';
+    document.getElementById('yorkshire-multiplier').textContent = yorkshireMultiplier + 'x';
+}
+
+function setupUploadArea() {
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('file-input');
+    
+    // Drag and drop event handlers
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        handleFileUpload({ target: { files: e.dataTransfer.files } });
+    });
+}
+
+function handleFileUpload(event) {
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
+    
+    console.log(`Processing ${files.length} files for healing...`);
+    
+    // Show progress
+    const progressContainer = document.getElementById('upload-progress');
+    const progressFill = document.getElementById('upload-progress-fill');
+    const progressDetails = document.getElementById('progress-details');
+    
+    progressContainer.style.display = 'block';
+    
+    // Simulate file processing
+    let processedFiles = 0;
+    const totalFiles = files.length;
+    
+    const processFile = (file, index) => {
+        setTimeout(() => {
+            processedFiles++;
+            const progress = (processedFiles / totalFiles) * 100;
+            
+            progressFill.style.width = progress + '%';
+            progressDetails.innerHTML = `Processing ${file.name}... (${processedFiles}/${totalFiles})`;
+            
+            // Simulate healing result
+            const healingResult = {
+                filename: file.name,
+                success: Math.random() > 0.1,
+                issuesFound: Math.floor(Math.random() * 15 + 1),
+                issuesFixed: Math.floor(Math.random() * 12 + 1),
+                yorkshireScore: (12.0 + Math.random() * 6.0).toFixed(1)
+            };
+            
+            displayUploadResult(healingResult);
+            
+            if (processedFiles === totalFiles) {
+                setTimeout(() => {
+                    progressContainer.style.display = 'none';
+                    alert(`File processing complete!\n${processedFiles} files processed with Yorkshire Champion healing.`);
+                }, 1000);
+            }
+        }, index * 500 + 500);
+    };
+    
+    files.forEach((file, index) => {
+        processFile(file, index);
+    });
+}
+
+function displayUploadResult(result) {
+    const resultsContainer = document.getElementById('upload-results');
+    
+    const resultElement = document.createElement('div');
+    resultElement.className = `upload-result ${result.success ? 'success' : 'error'}`;
+    resultElement.innerHTML = `
+        <div class="result-header">
+            <span class="result-icon">${result.success ? '✅' : '❌'}</span>
+            <span class="result-filename">${result.filename}</span>
+            <span class="result-status">${result.success ? 'HEALED' : 'FAILED'}</span>
+        </div>
+        <div class="result-details">
+            Issues found: ${result.issuesFound}, Fixed: ${result.issuesFixed}
+            ${result.success ? `| Yorkshire Score: ${result.yorkshireScore}x` : ''}
+        </div>
+    `;
+    
+    resultsContainer.appendChild(resultElement);
+    
+    // Auto-scroll to show latest result
+    resultElement.scrollIntoView({ behavior: 'smooth' });
+}
+
+function updateStrictnessDisplay(value) {
+    const display = document.getElementById('strictness-display');
+    const levels = {
+        1: '1 (Very Lenient)', 2: '2 (Lenient)', 3: '3 (Relaxed)',
+        4: '4 (Moderate)', 5: '5 (Balanced)', 6: '6 (Thorough)',
+        7: '7 (Recommended)', 8: '8 (Strict)', 9: '9 (Very Strict)', 10: '10 (Maximum)'
+    };
+    display.textContent = levels[value] || `${value} (Custom)`;
+}
+
+function updateConfidenceDisplay(value) {
+    document.getElementById('confidence-display').textContent = `${value} (${Math.round(value * 100)}%)`;
+}
+
+function toggleMonitoring() {
+    monitoringActive = !monitoringActive;
+    const btn = document.getElementById('start-monitoring');
+    
+    if (monitoringActive) {
+        btn.innerHTML = '<i class="fas fa-stop"></i> Stop Monitoring';
+        btn.className = 'btn btn-danger';
+        startRealTimeMonitoring();
+    } else {
+        btn.innerHTML = '<i class="fas fa-play"></i> Start Monitoring';
+        btn.className = 'btn btn-success';
+        stopRealTimeMonitoring();
+    }
+}
+
+function startRealTimeMonitoring() {
+    const changesFeed = document.getElementById('changes-feed');
+    
+    // Simulate file changes
+    const simulateChanges = () => {
+        if (!monitoringActive) return;
+        
+        const changes = [
+            { type: 'success', file: 'index.php', action: 'Fixed 3 syntax errors' },
+            { type: 'info', file: 'app.js', action: 'Validated successfully' },
+            { type: 'warning', file: 'legacy.cpp', action: 'Performance issues detected' },
+            { type: 'success', file: 'styles.css', action: 'Formatting improved' }
+        ];
+        
+        const change = changes[Math.floor(Math.random() * changes.length)];
+        const timestamp = new Date().toLocaleTimeString();
+        
+        const feedItem = document.createElement('div');
+        feedItem.className = `feed-item ${change.type}`;
+        feedItem.innerHTML = `
+            <div class="feed-icon">${change.type === 'success' ? '✅' : change.type === 'warning' ? '⚠️' : 'ℹ️'}</div>
+            <div class="feed-content">
+                <div class="feed-title">${change.file}</div>
+                <div class="feed-details">${change.action}</div>
+                <div class="feed-time">${timestamp}</div>
+            </div>
+        `;
+        
+        changesFeed.appendChild(feedItem);
+        feedItem.scrollIntoView({ behavior: 'smooth' });
+        
+        // Keep only last 20 items
+        while (changesFeed.children.length > 20) {
+            changesFeed.removeChild(changesFeed.firstChild);
+        }
+        
+        setTimeout(simulateChanges, 3000 + Math.random() * 5000);
+    };
+    
+    simulateChanges();
+}
+
+function stopRealTimeMonitoring() {
+    // Real-time monitoring stopped
+    console.log('Real-time monitoring stopped');
+}
+
+function startBatchProcessing() {
+    if (batchProcessingActive) return;
+    
+    batchProcessingActive = true;
+    const progressContainer = document.getElementById('batch-progress');
+    const progressFill = document.getElementById('batch-progress-fill');
+    const currentFile = document.getElementById('current-file');
+    
+    progressContainer.style.display = 'block';
+    document.getElementById('stop-batch').disabled = false;
+    
+    // Simulate batch processing
+    const totalFiles = 150 + Math.floor(Math.random() * 50);
+    let processedFiles = 0;
+    let successFiles = 0;
+    let errorFiles = 0;
+    
+    document.getElementById('total-files').textContent = totalFiles;
+    
+    const processBatchFile = () => {
+        if (!batchProcessingActive || processedFiles >= totalFiles) {
+            completeBatchProcessing();
+            return;
+        }
+        
+        processedFiles++;
+        const success = Math.random() > 0.1;
+        
+        if (success) {
+            successFiles++;
+        } else {
+            errorFiles++;
+        }
+        
+        // Update progress
+        const progress = (processedFiles / totalFiles) * 100;
+        progressFill.style.width = progress + '%';
+        
+        document.getElementById('processed-files').textContent = processedFiles;
+        document.getElementById('success-files').textContent = successFiles;
+        document.getElementById('error-files').textContent = errorFiles;
+        
+        currentFile.textContent = `file_${processedFiles}.${['php', 'js', 'cpp', 'py', 'html'][Math.floor(Math.random() * 5)]}`;
+        
+        setTimeout(processBatchFile, 50 + Math.random() * 100);
+    };
+    
+    processBatchFile();
+}
+
+function stopBatchProcessing() {
+    batchProcessingActive = false;
+    document.getElementById('stop-batch').disabled = true;
+    document.getElementById('current-file').textContent = 'Processing stopped by user';
+}
+
+function completeBatchProcessing() {
+    batchProcessingActive = false;
+    document.getElementById('stop-batch').disabled = true;
+    document.getElementById('current-file').textContent = 'Batch processing completed!';
+    
+    setTimeout(() => {
+        document.getElementById('batch-progress').style.display = 'none';
+        alert('Batch processing completed successfully!');
+    }, 2000);
+}
+
+function previewBatchFiles() {
+    alert('Preview would show list of files to be processed based on current filters');
+}
+
+function addCustomRule() {
+    const name = document.getElementById('custom-rule-name').value;
+    const pattern = document.getElementById('custom-rule-pattern').value;
+    const message = document.getElementById('custom-rule-message').value;
+    const severity = document.getElementById('custom-rule-severity').value;
+    
+    if (!name || !pattern || !message) {
+        alert('Please fill in all fields for the custom rule');
+        return;
+    }
+    
+    alert(`Custom rule "${name}" added successfully!`);
+    
+    // Clear form
+    document.getElementById('custom-rule-name').value = '';
+    document.getElementById('custom-rule-pattern').value = '';
+    document.getElementById('custom-rule-message').value = '';
+}
+
+function generateReport() {
+    const reportType = document.getElementById('report-type').value;
+    const period = document.getElementById('report-period').value;
+    const format = document.getElementById('report-format').value;
+    
+    alert(`Generating ${reportType} report for ${period} in ${format} format...`);
+    
+    setTimeout(() => {
+        alert('Report generated successfully! Download will start shortly.');
+    }, 3000);
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Start with overview tab
+    initializeHealerTab('overview');
+    
+    // Update stats every 10 seconds
+    setInterval(updateHealingStats, 10000);
+});
+</script>}

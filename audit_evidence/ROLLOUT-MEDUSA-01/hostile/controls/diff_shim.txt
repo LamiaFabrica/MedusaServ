@@ -1,0 +1,398 @@
+0a1,3
+> #ifndef MEDUSASERV_SECURITY_LFSSL_NATIVE_CRYPTO_SHIM_HPP
+> #define MEDUSASERV_SECURITY_LFSSL_NATIVE_CRYPTO_SHIM_HPP
+> 
+2,14c5,6
+<  * @file LFSSL_Native_Crypto.hpp
+<  * @brief LamiaFabrica SSL - Pure Native Cryptography Implementation
+<  *
+<  * NO OpenSSL dependency - 100% native implementation
+<  * Military-Grade: TLS_AES_256_GCM_SHA384
+<  * Backward Compatible: TLS 1.2/1.3
+<  *
+<  * CRITICAL FEATURES:
+<  * ✅ Native SHA256/384/512 (SHA-2 Family)
+<  * ✅ Native AES-256-GCM (NIST-approved AEAD cipher)
+<  * ✅ TLS 1.2 & 1.3 Protocol Stack
+<  * ✅ X.509 Certificate Handling
+<  * ✅ Perfect Forward Secrecy (ECDHE)
+---
+>  * @file LFSSL_Native_Crypto.hpp  (MedusaServ security shim)
+>  * @brief Canonical LFSSL crypto substrate for MedusaServ — no local primitives.
+16,17c8,11
+<  * © 2025 The Medusa Project | Yorkshire Champion Standards
+<  * "We guarantee our own system - Zero external crypto dependencies"
+---
+>  * The hand-rolled SHA256/384/512 + AES-256-GCM knockoff that previously lived
+>  * in this header (and src/security/LFSSL_Native_Crypto.cpp) is removed.
+>  * All cryptography now resolves to the LFSSL (Lamia Fabrica SSL) substrate,
+>  * whose include directory is already on the MedusaServ build path.
+20c14,15
+< #ifdef PSIFORCEDB_CLIENT_AVAILABLE
+---
+> // Canonical LFSSL master header: SHA256/384/512, AES-256-GCM, HMAC, HKDF,
+> // PBKDF2, SecureRandom, X25519, Kyber KEM, Dilithium, Falcon.
+22,32d16
+< #else
+< 
+< #ifndef LFSSL_NATIVE_CRYPTO_HPP
+< #define LFSSL_NATIVE_CRYPTO_HPP
+< 
+< #include <cstdint>
+< #include <cstring>
+< #include <string>
+< #include <vector>
+< #include <array>
+< #include <memory>
+33a18,30
+> // BLAKE3 — used by medusaserv_vhost_manager.cpp (vhost IDs, cert fingerprints)
+> // and LFCS_MS_Encrypted_Config_Manager.cpp (vault key derivation). The LFSSL
+> // master header does not pull BLAKE3, so the shim includes it explicitly via
+> // its canonical path.
+> #include <lfssl/crypto/blake3/blake3.hpp>
+> 
+> // Compat forwarders: existing MedusaServ call sites spell the one-shot helper
+> // as LFSSL::Crypto::BLAKE3::hash(...) (e.g. medusaserv_vhost_manager.cpp:120,
+> // :591, :1452 and LFCS_MS_Encrypted_Config_Manager.cpp:32), while canonical
+> // LFSSL exposes it as the static BLAKE3::Hasher::hash(...) (definitions:
+> // LFSSL src/lfssl/crypto/blake3/blake3.cpp:499/505/509). These thin inline
+> // forwarders keep the call-site spelling working over the canonical
+> // implementation — no second BLAKE3 implementation is introduced.
+35a33
+> namespace BLAKE3 {
+37,350c35,46
+< // ============================================================================
+< // SHA-2 FAMILY - Native Implementation (FIPS 180-4 compliant)
+< // ============================================================================
+< 
+< /**
+<  * SHA256 Native Implementation
+<  * Pure C++ with zero external dependencies
+<  */
+< class SHA256 {
+< private:
+<     static constexpr uint32_t K[64] = {
+<         0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+<         0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+<         0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+<         0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+<         0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+<         0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+<         0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+<         0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+<         0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+<         0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+<         0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
+<         0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+<         0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
+<         0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+<         0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+<         0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+<     };
+< 
+<     uint32_t state[8];
+<     uint64_t count;
+<     uint8_t buffer[64];
+< 
+<     inline uint32_t rotr(uint32_t x, uint32_t n) const {
+<         return (x >> n) | (x << (32 - n));
+<     }
+< 
+<     inline uint32_t ch(uint32_t x, uint32_t y, uint32_t z) const {
+<         return (x & y) ^ (~x & z);
+<     }
+< 
+<     inline uint32_t maj(uint32_t x, uint32_t y, uint32_t z) const {
+<         return (x & y) ^ (x & z) ^ (y & z);
+<     }
+< 
+<     inline uint32_t sigma0(uint32_t x) const {
+<         return rotr(x, 2) ^ rotr(x, 13) ^ rotr(x, 22);
+<     }
+< 
+<     inline uint32_t sigma1(uint32_t x) const {
+<         return rotr(x, 6) ^ rotr(x, 11) ^ rotr(x, 25);
+<     }
+< 
+<     inline uint32_t gamma0(uint32_t x) const {
+<         return rotr(x, 7) ^ rotr(x, 18) ^ (x >> 3);
+<     }
+< 
+<     inline uint32_t gamma1(uint32_t x) const {
+<         return rotr(x, 17) ^ rotr(x, 19) ^ (x >> 10);
+<     }
+< 
+<     void transform(const uint8_t block[64]) {
+<         uint32_t W[64];
+<         uint32_t a, b, c, d, e, f, g, h;
+<         uint32_t T1, T2;
+< 
+<         // Prepare message schedule
+<         for (int i = 0; i < 16; ++i) {
+<             W[i] = (block[i * 4] << 24) | (block[i * 4 + 1] << 16) |
+<                    (block[i * 4 + 2] << 8) | (block[i * 4 + 3]);
+<         }
+<         for (int i = 16; i < 64; ++i) {
+<             W[i] = gamma1(W[i - 2]) + W[i - 7] + gamma0(W[i - 15]) + W[i - 16];
+<         }
+< 
+<         // Initialize working variables
+<         a = state[0];
+<         b = state[1];
+<         c = state[2];
+<         d = state[3];
+<         e = state[4];
+<         f = state[5];
+<         g = state[6];
+<         h = state[7];
+< 
+<         // Main loop
+<         for (int i = 0; i < 64; ++i) {
+<             T1 = h + sigma1(e) + ch(e, f, g) + K[i] + W[i];
+<             T2 = sigma0(a) + maj(a, b, c);
+<             h = g;
+<             g = f;
+<             f = e;
+<             e = d + T1;
+<             d = c;
+<             c = b;
+<             b = a;
+<             a = T1 + T2;
+<         }
+< 
+<         // Update state
+<         state[0] += a;
+<         state[1] += b;
+<         state[2] += c;
+<         state[3] += d;
+<         state[4] += e;
+<         state[5] += f;
+<         state[6] += g;
+<         state[7] += h;
+<     }
+< 
+< public:
+<     static constexpr size_t DIGEST_SIZE = 32;
+< 
+<     SHA256() {
+<         reset();
+<     }
+< 
+<     void reset() {
+<         // SHA-256 initial hash values (first 32 bits of fractional parts of square roots of first 8 primes)
+<         state[0] = 0x6a09e667;
+<         state[1] = 0xbb67ae85;
+<         state[2] = 0x3c6ef372;
+<         state[3] = 0xa54ff53a;
+<         state[4] = 0x510e527f;
+<         state[5] = 0x9b05688c;
+<         state[6] = 0x1f83d9ab;
+<         state[7] = 0x5be0cd19;
+<         count = 0;
+<         std::memset(buffer, 0, sizeof(buffer));
+<     }
+< 
+<     void update(const uint8_t* data, size_t length) {
+<         size_t buffer_space = 64 - (count % 64);
+< 
+<         count += length;
+< 
+<         if (length >= buffer_space) {
+<             std::memcpy(buffer + (64 - buffer_space), data, buffer_space);
+<             transform(buffer);
+<             data += buffer_space;
+<             length -= buffer_space;
+< 
+<             while (length >= 64) {
+<                 transform(data);
+<                 data += 64;
+<                 length -= 64;
+<             }
+< 
+<             buffer_space = 64;
+<         }
+< 
+<         std::memcpy(buffer + (64 - buffer_space), data, length);
+<     }
+< 
+<     void finalize(uint8_t digest[DIGEST_SIZE]) {
+<         uint8_t padding[64];
+<         uint64_t bit_length = count * 8;
+<         size_t padding_length;
+< 
+<         // Pad message
+<         padding[0] = 0x80;
+<         if ((count % 64) < 56) {
+<             padding_length = 56 - (count % 64);
+<         } else {
+<             padding_length = 64 + 56 - (count % 64);
+<         }
+< 
+<         std::memset(padding + 1, 0, padding_length - 1);
+<         update(padding, padding_length);
+< 
+<         // Append length
+<         for (int i = 0; i < 8; ++i) {
+<             padding[7 - i] = (bit_length >> (i * 8)) & 0xFF;
+<         }
+<         update(padding, 8);
+< 
+<         // Output digest
+<         for (int i = 0; i < 8; ++i) {
+<             digest[i * 4] = (state[i] >> 24) & 0xFF;
+<             digest[i * 4 + 1] = (state[i] >> 16) & 0xFF;
+<             digest[i * 4 + 2] = (state[i] >> 8) & 0xFF;
+<             digest[i * 4 + 3] = state[i] & 0xFF;
+<         }
+<     }
+< 
+<     // Convenience function
+<     static std::string hash(const uint8_t* data, size_t length) {
+<         SHA256 sha;
+<         uint8_t digest[DIGEST_SIZE];
+<         sha.update(data, length);
+<         sha.finalize(digest);
+< 
+<         std::string result;
+<         result.reserve(DIGEST_SIZE * 2);
+<         for (size_t i = 0; i < DIGEST_SIZE; ++i) {
+<             char hex[3];
+<             snprintf(hex, sizeof(hex), "%02x", digest[i]);
+<             result += hex;
+<         }
+<         return result;
+<     }
+< 
+<     static std::string hash(const std::string& data) {
+<         return hash(reinterpret_cast<const uint8_t*>(data.c_str()), data.length());
+<     }
+< };
+< 
+< /**
+<  * SHA384 Native Implementation
+<  * Uses SHA-512 with truncated output
+<  */
+< class SHA384 {
+< public:
+<     static constexpr size_t DIGEST_SIZE = 48;
+< 
+<     // SHA-384 uses SHA-512 internally with different initial values and truncated output
+<     // Implementation follows same pattern as SHA256 but with 64-bit words
+< 
+<     void reset();
+<     void update(const uint8_t* data, size_t length);
+<     void finalize(uint8_t digest[DIGEST_SIZE]);
+< 
+<     static std::string hash(const uint8_t* data, size_t length);
+<     static std::string hash(const std::string& data);
+< };
+< 
+< /**
+<  * SHA512 Native Implementation
+<  * 64-bit word version of SHA-2
+<  */
+< class SHA512 {
+< public:
+<     static constexpr size_t DIGEST_SIZE = 64;
+< 
+<     void reset();
+<     void update(const uint8_t* data, size_t length);
+<     void finalize(uint8_t digest[DIGEST_SIZE]);
+< 
+<     static std::string hash(const uint8_t* data, size_t length);
+<     static std::string hash(const std::string& data);
+< };
+< 
+< // ============================================================================
+< // AES-256-GCM - Native Implementation (NIST SP 800-38D)
+< // ============================================================================
+< 
+< /**
+<  * AES-256 Block Cipher
+<  * Pure native implementation - no external dependencies
+<  */
+< class AES256 {
+< private:
+<     static constexpr size_t KEY_SIZE = 32;
+<     static constexpr size_t BLOCK_SIZE = 16;
+<     static constexpr size_t ROUNDS = 14;
+< 
+<     uint8_t round_keys[(ROUNDS + 1) * BLOCK_SIZE];
+< 
+<     void key_expansion(const uint8_t key[KEY_SIZE]);
+<     void add_round_key(uint8_t state[BLOCK_SIZE], int round);
+<     void sub_bytes(uint8_t state[BLOCK_SIZE]);
+<     void shift_rows(uint8_t state[BLOCK_SIZE]);
+<     void mix_columns(uint8_t state[BLOCK_SIZE]);
+< 
+< public:
+<     AES256(const uint8_t key[KEY_SIZE]);
+<     void encrypt_block(const uint8_t plaintext[BLOCK_SIZE], uint8_t ciphertext[BLOCK_SIZE]);
+<     void decrypt_block(const uint8_t ciphertext[BLOCK_SIZE], uint8_t plaintext[BLOCK_SIZE]);
+< };
+< 
+< /**
+<  * GCM (Galois/Counter Mode) - AEAD Cipher
+<  * Provides both confidentiality and authenticity
+<  */
+< class AES256GCM {
+< private:
+<     std::unique_ptr<AES256> aes;
+< 
+<     void gcm_multiply(uint8_t* x, const uint8_t* y);
+<     void increment_counter(uint8_t* counter);
+< 
+< public:
+<     static constexpr size_t KEY_SIZE = 32;
+<     static constexpr size_t NONCE_SIZE = 12;
+<     static constexpr size_t TAG_SIZE = 16;
+< 
+<     AES256GCM(const uint8_t key[KEY_SIZE]);
+< 
+<     /**
+<      * Encrypt and authenticate data
+<      * @param plaintext Input data
+<      * @param plaintext_len Length of plaintext
+<      * @param aad Additional authenticated data (can be NULL)
+<      * @param aad_len Length of AAD
+<      * @param nonce 12-byte nonce
+<      * @param ciphertext Output buffer (must be >= plaintext_len)
+<      * @param tag 16-byte authentication tag output
+<      */
+<     void encrypt(const uint8_t* plaintext, size_t plaintext_len,
+<                  const uint8_t* aad, size_t aad_len,
+<                  const uint8_t nonce[NONCE_SIZE],
+<                  uint8_t* ciphertext,
+<                  uint8_t tag[TAG_SIZE]);
+< 
+<     /**
+<      * Decrypt and verify data
+<      * @return true if authentication succeeds, false otherwise
+<      */
+<     bool decrypt(const uint8_t* ciphertext, size_t ciphertext_len,
+<                  const uint8_t* aad, size_t aad_len,
+<                  const uint8_t nonce[NONCE_SIZE],
+<                  const uint8_t tag[TAG_SIZE],
+<                  uint8_t* plaintext);
+< };
+---
+> [[nodiscard]] inline std::vector<uint8_t> hash(const uint8_t* data, size_t len,
+>                                                size_t out_len = OUT_LEN) {
+>     return Hasher::hash(data, len, out_len);
+> }
+> [[nodiscard]] inline std::vector<uint8_t> hash(const std::vector<uint8_t>& data,
+>                                                size_t out_len = OUT_LEN) {
+>     return Hasher::hash(data, out_len);
+> }
+> [[nodiscard]] inline std::vector<uint8_t> hash(std::string_view data,
+>                                                size_t out_len = OUT_LEN) {
+>     return Hasher::hash(data, out_len);
+> }
+351a48
+> } // namespace BLAKE3
+355,357c52
+< #endif // LFSSL_NATIVE_CRYPTO_HPP
+< #endif // PSIFORCEDB_CLIENT_AVAILABLE
+< 
+---
+> #endif // MEDUSASERV_SECURITY_LFSSL_NATIVE_CRYPTO_SHIM_HPP

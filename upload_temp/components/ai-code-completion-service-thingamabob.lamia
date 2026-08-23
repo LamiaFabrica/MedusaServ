@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Completion Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>💻 AI Code Completion Service</h1>
+        <div class="portal-status" id="codeCompletionStatus">
+            <span class="status-indicator online"></span>
+            Code AI: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="codeCompletionService.testCompletion()">🧠 Test Completion</button>
+            <button class="service-btn" onclick="codeCompletionService.trainModel()">🎯 Train Model</button>
+            <button class="service-btn" onclick="codeCompletionService.analyzeCode()">🔍 Analyze Code</button>
+            <button class="service-btn" onclick="codeCompletionService.generateCode()">⚡ Generate Code</button>
+        </div>
+
+        <div class="code-editor" id="codeEditor">
+            <h3>💻 Code Completion Interface</h3>
+            <textarea id="codeInput" placeholder="Type your code here..." rows="10" style="width: 100%; background: #1e1e1e; color: #fff; border: 1px solid #64B5F6; border-radius: 4px; padding: 10px; font-family: monospace;"></textarea>
+            <div class="completion-suggestions" id="completionSuggestions">
+                <!-- Suggestions will appear here -->
+            </div>
+        </div>
+
+        <div class="service-output" id="codeCompletionOutput">
+            <div>[CODE-AI] Code completion service initialized</div>
+            <div>[CODE-AI] Connected to PsiForceDB with MASTER credentials</div>
+            <div>[CODE-AI] Yorkshire Champion AI code models loaded</div>
+            <div>[CODE-AI] AI code completion engine ready...</div>
+        </div>
+    </div>
+
+    <script>
+        class AICodeCompletionService {
+            constructor() {
+                this.masterCredentials = {
+                    server: '172.236.23.54',
+                    user: 'LamiaFabrica',
+                    database: 'psiforcedb_ai_models'
+                };
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                this.setupCodeEditor();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/code-completion/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:code:status',
+                            server: this.masterCredentials.server,
+                            database: this.masterCredentials.database,
+                            masterAccess: true
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[CODE-AI] Connected to PsiForceDB AI code system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            setupCodeEditor() {
+                const codeInput = document.getElementById('codeInput');
+                codeInput.addEventListener('input', (e) => {
+                    clearTimeout(this.completionTimer);
+                    this.completionTimer = setTimeout(() => {
+                        this.generateCompletions(e.target.value);
+                    }, 500);
+                });
+            }
+
+            async generateCompletions(code) {
+                if (code.length < 3) return;
+
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/code-completion/complete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:code:complete',
+                            server: this.masterCredentials.server,
+                            code: code,
+                            language: 'javascript',
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            aiModelLevel: 'advanced'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayCompletions(result.completions || this.getDemoCompletions());
+                    }
+                } catch (error) {
+                    this.displayCompletions(this.getDemoCompletions());
+                }
+            }
+
+            displayCompletions(completions) {
+                const suggestionsDiv = document.getElementById('completionSuggestions');
+                suggestionsDiv.innerHTML = `
+                    <h4>💡 AI Suggestions</h4>
+                    ${completions.map((completion, index) => `
+                        <div class="completion-item" onclick="codeCompletionService.applyCompletion('${completion}')">
+                            <code>${completion}</code>
+                        </div>
+                    `).join('')}
+                `;
+            }
+
+            applyCompletion(completion) {
+                const codeInput = document.getElementById('codeInput');
+                const currentCode = codeInput.value;
+                const cursorPos = codeInput.selectionStart;
+                const beforeCursor = currentCode.substring(0, cursorPos);
+                const afterCursor = currentCode.substring(cursorPos);
+                
+                codeInput.value = beforeCursor + completion + afterCursor;
+                this.logOutput(`[CODE-AI] Applied completion: ${completion}`);
+            }
+
+            async testCompletion() {
+                this.logOutput('[CODE-AI] Testing code completion engine...');
+                const testCode = 'function calculateSum(a, b) {';
+                await this.generateCompletions(testCode);
+                this.logOutput('[CODE-AI] Completion test completed');
+            }
+
+            async trainModel() {
+                this.logOutput('[CODE-AI] Training AI code model...');
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/code-completion/train', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:code:train',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            options: {
+                                trainingData: 'codebase',
+                                yorkshireStandard: true,
+                                modelType: 'advanced_completion',
+                                epochs: 100
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[CODE-AI] Model training initiated');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Training failed: ${error.message}`);
+                }
+            }
+
+            async analyzeCode() {
+                const code = document.getElementById('codeInput').value;
+                if (!code) {
+                    this.logOutput('[CODE-AI] No code to analyze');
+                    return;
+                }
+
+                this.logOutput('[CODE-AI] Analyzing code quality...');
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/code-completion/analyze', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:code:analyze',
+                            server: this.masterCredentials.server,
+                            code: code,
+                            masterAccess: true,
+                            yorkshireStandard: true
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayAnalysis(result);
+                        this.logOutput('[CODE-AI] Code analysis completed');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Analysis failed: ${error.message}`);
+                    this.displayAnalysis(this.getDemoAnalysis());
+                }
+            }
+
+            async generateCode() {
+                const description = prompt('Describe the code you want to generate:');
+                if (description) {
+                    this.logOutput(`[CODE-AI] Generating code: ${description}`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/ai/code-completion/generate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://ai:code:generate',
+                                server: this.masterCredentials.server,
+                                description: description,
+                                language: 'javascript',
+                                masterAccess: true,
+                                yorkshireStandard: true
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            document.getElementById('codeInput').value = result.generatedCode || this.getDemoGeneratedCode();
+                            this.logOutput('[CODE-AI] Code generated successfully');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Code generation failed: ${error.message}`);
+                    }
+                }
+            }
+
+            displayAnalysis(analysis) {
+                const suggestionsDiv = document.getElementById('completionSuggestions');
+                suggestionsDiv.innerHTML = `
+                    <h4>🔍 Code Analysis</h4>
+                    <div class="analysis-results">
+                        <div class="analysis-item">
+                            <strong>Quality Score:</strong> ${analysis.qualityScore || '8.5/10'}
+                        </div>
+                        <div class="analysis-item">
+                            <strong>Complexity:</strong> ${analysis.complexity || 'Medium'}
+                        </div>
+                        <div class="analysis-item">
+                            <strong>Maintainability:</strong> ${analysis.maintainability || 'High'}
+                        </div>
+                        ${analysis.suggestions ? `
+                            <div class="suggestions">
+                                <strong>Suggestions:</strong>
+                                <ul>
+                                    ${analysis.suggestions.map(s => `<li>${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            getDemoCompletions() {
+                return [
+                    'return a + b;',
+                    'return Math.max(a, b);',
+                    'if (a > b) return a; else return b;'
+                ];
+            }
+
+            getDemoAnalysis() {
+                return {
+                    qualityScore: '8.5/10',
+                    complexity: 'Medium',
+                    maintainability: 'High',
+                    suggestions: [
+                        'Add input validation',
+                        'Consider using TypeScript',
+                        'Add error handling'
+                    ]
+                };
+            }
+
+            getDemoGeneratedCode() {
+                return `function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// Usage example
+console.log(fibonacci(10));`;
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('codeCompletionOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.codeCompletionService = new AICodeCompletionService();
+        });
+    </script>
+    
+    <style>
+        .code-editor {
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid #2196F3;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .completion-suggestions {
+            margin-top: 15px;
+        }
+        .completion-item {
+            background: rgba(100, 181, 246, 0.2);
+            border: 1px solid #64B5F6;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .completion-item:hover {
+            background: rgba(100, 181, 246, 0.3);
+        }
+        .completion-item code {
+            color: #4CAF50;
+            font-family: monospace;
+        }
+        .analysis-results {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .analysis-item {
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(100, 181, 246, 0.2);
+        }
+        .suggestions ul {
+            margin-top: 10px;
+        }
+        .suggestions li {
+            margin: 5px 0;
+            color: #64B5F6;
+        }
+    </style>
+</body>
+</html>

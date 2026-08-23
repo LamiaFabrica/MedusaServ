@@ -1,0 +1,166 @@
+<!--
+Purple-Pages.com - Lamia Documentation Landing Page
+Main documentation hub for Lamia
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_lamia_index() {
+    include "base.lamia" {
+        title: "Lamia Documentation - Purple Pages"
+        description: "Complete documentation for Lamia - Native C++ templating engine for fast, powerful web development"
+        keywords: "Lamia, templating, template engine, native C++, web development, documentation"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/lamia/index.lamia") {
+                            "Lamia"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "tech-hero") {
+            div(class: "tech-hero-content") {
+                div(class: "tech-icon") {
+                    "📝"
+                }
+                h1 {
+                    "Lamia Documentation"
+                }
+                p(class: "tech-description") {
+                    "Native C++ templating engine for fast, powerful web development. The foundation of our web stack."
+                }
+            }
+        }
+        
+        // Quick Links
+        section(class: "quick-links-section") {
+            div(class: "quick-links-container") {
+                h2 {
+                    "Quick Start"
+                }
+                div(class: "quick-links-grid") {
+                    a(href: "/pages/lamia/getting-started.lamia", class: "quick-link-card") {
+                        h3 {
+                            "🚀 Getting Started"
+                        }
+                        p {
+                            "Create your first Lamia template"
+                        }
+                    }
+                    
+                    a(href: "/pages/lamia/templates.lamia", class: "quick-link-card") {
+                        h3 {
+                            "📝 Template Guide"
+                        }
+                        p {
+                            "Learn Lamia template syntax"
+                        }
+                    }
+                    
+                    a(href: "/pages/lamia/syntax.lamia", class: "quick-link-card") {
+                        h3 {
+                            "📖 Syntax Reference"
+                        }
+                        p {
+                            "Complete syntax documentation"
+                        }
+                    }
+                    
+                    a(href: "/pages/lamia/examples.lamia", class: "quick-link-card") {
+                        h3 {
+                            "💡 Examples"
+                        }
+                        p {
+                            "Template examples and patterns"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Documentation Sections
+        section(class: "docs-sections") {
+            div(class: "docs-container") {
+                div(class: "docs-grid") {
+                    div(class: "docs-category") {
+                        h3 {
+                            "📚 User Guides"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/lamia/guides/beginner.lamia") {
+                                    "Beginner's Guide"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lamia/guides/advanced.lamia") {
+                                    "Advanced Guide"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lamia/guides/best-practices.lamia") {
+                                    "Best Practices"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "docs-category") {
+                        h3 {
+                            "🔧 Technical"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/lamia/architecture.lamia") {
+                                    "Architecture"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lamia/functions.lamia") {
+                                    "Built-in Functions"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lamia/integration.lamia") {
+                                    "MedusaServ Integration"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "docs-category") {
+                        h3 {
+                            "🆘 Support"
+                        }
+                        ul(class: "docs-list") {
+                            li {
+                                a(href: "/pages/lamia/troubleshooting.lamia") {
+                                    "Troubleshooting"
+                                }
+                            }
+                            li {
+                                a(href: "/pages/lamia/faq.lamia") {
+                                    "FAQ"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,537 @@
+<!--
+ ╔══════════════════════════════════════════════════════════════════════════════════════╗
+ ║                         PFQL AUTHENTICATION THINGAMABOB                             ║
+ ║                        MedusaServ v0.4.0 Universal Edition                          ║
+ ║              User Authentication & Permission Management Interface                   ║
+ ║                       Yorkshire Champion Gold Standard                              ║
+ ║                © 2025 The Medusa Project | Roylepython | D Hargreaves              ║
+ ╚══════════════════════════════════════════════════════════════════════════════════════╝
+-->
+
+<div id="pfql-auth-thingamabob" class="thingamabob-container">
+    <style>
+        .pfql-auth-container {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0f1f 50%, #2a1a2f 100%);
+            border: 3px solid #00ff00;
+            border-radius: 15px;
+            padding: 25px;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .auth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #00ff00;
+            padding-bottom: 20px;
+        }
+
+        .auth-title {
+            color: #00ff00;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0, 255, 0, 0.5);
+            animation: authGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes authGlow {
+            from { text-shadow: 0 0 20px #00ff00, 0 0 40px rgba(0, 255, 0, 0.5); }
+            to { text-shadow: 0 0 30px #00ff00, 0 0 60px rgba(0, 255, 0, 0.8); }
+        }
+
+        .auth-status {
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: #00ff00;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #333;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #00ff00;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #333;
+            border-radius: 8px;
+            color: #00ff00;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00ff00, #00cc00);
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-button:hover {
+            background: linear-gradient(135deg, #00cc00, #00ff00);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 0, 0.4);
+        }
+
+        .auth-button:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .user-session {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .user-role {
+            background: rgba(0, 255, 0, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .sudo-indicator {
+            background: linear-gradient(135deg, #ff0000, #ff6600);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        .quick-login {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .quick-login-btn {
+            padding: 8px 16px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 20px;
+            color: #00ff00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .quick-login-btn:hover {
+            background: rgba(0, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .sudo-form {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff6600;
+            border-radius: 15px;
+        }
+
+        .sudo-button {
+            background: linear-gradient(135deg, #ff6600, #ff0000);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .permission-denied {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 15px;
+            color: #ff0000;
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+        }
+    </style>
+
+    <div class="pfql-auth-container">
+        <div class="auth-header">
+            <div class="auth-title">🔐 PFQL Authentication</div>
+            <div class="auth-status" id="auth-status">Guest Access</div>
+        </div>
+
+        <!-- Login Form (shown when not authenticated) -->
+        <div id="login-section" class="login-form">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input type="text" id="username" class="form-input" placeholder="Enter username (root, admin, user, guest)" autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" id="password" class="form-input" placeholder="Enter password" autocomplete="current-password">
+            </div>
+            
+            <button class="auth-button" onclick="login()" id="login-btn">Login</button>
+            
+            <div class="quick-login">
+                <button class="quick-login-btn" onclick="quickLogin('root')">Root</button>
+                <button class="quick-login-btn" onclick="quickLogin('admin')">Admin</button>
+                <button class="quick-login-btn" onclick="quickLogin('user')">User</button>
+                <button class="quick-login-btn" onclick="quickLogin('guest')">Guest</button>
+            </div>
+        </div>
+
+        <!-- User Session (shown when authenticated) -->
+        <div id="session-section" style="display: none;">
+            <div class="user-session">
+                <div class="user-info">
+                    <span id="current-user">guest</span>
+                    <span class="user-role" id="current-role">guest</span>
+                    <span id="sudo-indicator" class="sudo-indicator" style="display: none;">SUDO</span>
+                </div>
+                <div>
+                    <button class="auth-button" onclick="logout()" style="width: auto; padding: 8px 16px;">Logout</button>
+                </div>
+            </div>
+
+            <!-- Sudo Elevation Form -->
+            <div id="sudo-section" class="sudo-form" style="display: none;">
+                <h4 style="color: #ff6600; margin-top: 0;">🚨 Sudo Elevation Required</h4>
+                <div class="form-group">
+                    <label class="form-label" for="sudo-password">Enter Password for Elevation</label>
+                    <input type="password" id="sudo-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <button class="sudo-button" onclick="elevatePrivileges()">Elevate to Sudo</button>
+            </div>
+
+            <!-- Permission Denied Display -->
+            <div id="permission-denied" class="permission-denied" style="display: none;">
+                <div id="permission-error"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PFQLAuthManager {
+            constructor() {
+                this.sessionToken = localStorage.getItem('pfql_session_token');
+                this.currentSession = null;
+                this.init();
+            }
+
+            async init() {
+                await this.checkSession();
+                this.updateUI();
+            }
+
+            async checkSession() {
+                try {
+                    const response = await fetch('/api/pfql-auth/session', {
+                        headers: {
+                            'Authorization': this.sessionToken ? `Bearer ${this.sessionToken}` : ''
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.currentSession = data.session;
+                    } else {
+                        this.currentSession = null;
+                        this.sessionToken = null;
+                        localStorage.removeItem('pfql_session_token');
+                    }
+                } catch (error) {
+                    console.error('Session check failed:', error);
+                    this.currentSession = null;
+                }
+            }
+
+            updateUI() {
+                const loginSection = document.getElementById('login-section');
+                const sessionSection = document.getElementById('session-section');
+                const authStatus = document.getElementById('auth-status');
+                
+                if (this.currentSession && this.currentSession.authenticated) {
+                    // Show session, hide login
+                    loginSection.style.display = 'none';
+                    sessionSection.style.display = 'block';
+                    
+                    // Update session info
+                    document.getElementById('current-user').textContent = this.currentSession.username;
+                    document.getElementById('current-role').textContent = this.currentSession.role;
+                    
+                    // Update auth status
+                    const statusText = this.currentSession.sudoElevated ? 
+                        `${this.currentSession.role.toUpperCase()} (SUDO)` : 
+                        this.currentSession.role.toUpperCase();
+                    authStatus.textContent = statusText;
+                    
+                    // Show sudo indicator if elevated
+                    const sudoIndicator = document.getElementById('sudo-indicator');
+                    sudoIndicator.style.display = this.currentSession.sudoElevated ? 'inline' : 'none';
+                    
+                    // Show sudo section if user can elevate but isn't elevated
+                    const sudoSection = document.getElementById('sudo-section');
+                    const canSudo = ['root', 'admin'].includes(this.currentSession.role);
+                    sudoSection.style.display = (canSudo && !this.currentSession.sudoElevated) ? 'block' : 'none';
+                    
+                } else {
+                    // Show login, hide session
+                    loginSection.style.display = 'block';
+                    sessionSection.style.display = 'none';
+                    authStatus.textContent = 'Guest Access';
+                }
+            }
+
+            async login(username, password) {
+                try {
+                    const response = await fetch('/api/pfql-auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.sessionToken = data.session.token;
+                        localStorage.setItem('pfql_session_token', this.sessionToken);
+                        this.currentSession = data.session;
+                        this.currentSession.authenticated = true;
+                        this.updateUI();
+                        
+                        // Show success message
+                        this.showMessage(data.message, 'success');
+                        
+                        // Notify other components
+                        window.dispatchEvent(new CustomEvent('pfqlAuthChanged', { 
+                            detail: this.currentSession 
+                        }));
+                        
+                    } else {
+                        this.showMessage(data.error, 'error');
+                    }
+                } catch (error) {
+                    this.showMessage('Login failed: ' + error.message, 'error');
+                }
+            }
+
+            async logout() {
+                try {
+                    if (this.sessionToken) {
+                        await fetch('/api/pfql-auth/logout', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${this.sessionToken}`
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+
+                this.sessionToken = null;
+                this.currentSession = null;
+                localStorage.removeItem('pfql_session_token');
+                this.updateUI();
+                
+                this.showMessage('Logged out successfully', 'success');
+                
+                // Notify other components
+                window.dispatchEvent(new CustomEvent('pfqlAuthChanged', { 
+                    detail: null 
+                }));
+            }
+
+            async elevatePrivileges(password) {
+                try {
+                    const response = await fetch('/api/pfql-auth/sudo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${this.sessionToken}`
+                        },
+                        body: JSON.stringify({ password })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.currentSession.sudoElevated = true;
+                        this.currentSession.sudoExpires = data.sudoExpires;
+                        this.updateUI();
+                        this.showMessage(data.message, 'success');
+                        
+                        // Notify other components
+                        window.dispatchEvent(new CustomEvent('pfqlAuthChanged', { 
+                            detail: this.currentSession 
+                        }));
+                    } else {
+                        this.showMessage(data.error, 'error');
+                    }
+                } catch (error) {
+                    this.showMessage('Sudo elevation failed: ' + error.message, 'error');
+                }
+            }
+
+            showMessage(message, type) {
+                // You could implement a toast notification system here
+                if (type === 'error') {
+                    console.error(message);
+                    alert('❌ ' + message);
+                } else {
+                    console.log(message);
+                    alert('✅ ' + message);
+                }
+            }
+
+            showPermissionDenied(error, command) {
+                const permissionSection = document.getElementById('permission-denied');
+                const errorElement = document.getElementById('permission-error');
+                
+                errorElement.innerHTML = `
+                    <strong>Permission Denied</strong><br>
+                    Command: ${command}<br>
+                    Current User: ${error.currentUser}<br>
+                    Required: ${error.requiredPermission}<br>
+                    <em>${error.suggestion}</em>
+                `;
+                
+                permissionSection.style.display = 'block';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    permissionSection.style.display = 'none';
+                }, 5000);
+            }
+
+            getAuthHeaders() {
+                return this.sessionToken ? {
+                    'Authorization': `Bearer ${this.sessionToken}`
+                } : {};
+            }
+        }
+
+        // Global functions for the UI
+        let pfqlAuth = new PFQLAuthManager();
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (!username) {
+                alert('Please enter a username');
+                return;
+            }
+            
+            await pfqlAuth.login(username, password);
+        }
+
+        async function logout() {
+            await pfqlAuth.logout();
+        }
+
+        async function elevatePrivileges() {
+            const password = document.getElementById('sudo-password').value;
+            
+            if (!password) {
+                alert('Please enter your password');
+                return;
+            }
+            
+            await pfqlAuth.elevatePrivileges(password);
+        }
+
+        function quickLogin(username) {
+            document.getElementById('username').value = username;
+            
+            // Set default passwords for quick login
+            const passwords = {
+                'root': 'aAB9drHKjqfRORhGnAvpEbVJpo31',
+                'admin': 'admin123',
+                'user': 'user123',
+                'guest': ''
+            };
+            
+            document.getElementById('password').value = passwords[username] || '';
+            
+            // Auto-login for guest
+            if (username === 'guest') {
+                login();
+            }
+        }
+
+        // Handle Enter key in forms
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (document.getElementById('login-section').style.display !== 'none') {
+                    login();
+                } else if (document.getElementById('sudo-section').style.display === 'block') {
+                    elevatePrivileges();
+                }
+            }
+        });
+
+        // Make pfqlAuth globally available
+        window.pfqlAuth = pfqlAuth;
+    </script>
+</div>

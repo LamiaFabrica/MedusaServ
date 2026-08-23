@@ -1,0 +1,372 @@
+<!--
+Purple-Pages.com - Ecosystem Overview Page
+Complete overview of The Medusa Project ecosystem
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_ecosystem() {
+    meta {
+        title: "Ecosystem Overview - Purple Pages | The Medusa Project"
+        description: "Complete overview of The Medusa Project ecosystem: PsiForceDB, MedusaServ, LFSSL, Lamia, and all revolutionary native C++ software."
+        keywords: "Medusa Project ecosystem, PsiForceDB, MedusaServ, LFSSL, Lamia, native C++ stack"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+    }
+    
+    // CSS STYLESHEET
+    link(rel: "stylesheet", href: "/css/main.css")
+    
+    // JAVASCRIPT
+    script(src: "/js/main.js")
+    
+    include "header.lamia"
+    
+    section(class: "ecosystem-hero") {
+        div(class: "hero-content") {
+            h1 {
+                "The Medusa Project Ecosystem"
+            }
+            p(class: "hero-subtitle") {
+                "100% Native C++ Stack - Zero External Dependencies"
+            }
+            p(class: "hero-description") {
+                "A complete ecosystem of revolutionary software built from the ground up with native C++. No compromises, no shortcuts, no external dependencies."
+            }
+        }
+    }
+    
+    // Ecosystem Stack Visualization
+    section(class: "stack-visualization") {
+        div(class: "stack-container") {
+            h2 {
+                "The Complete Stack"
+            }
+            div(class: "stack-diagram") {
+                div(class: "stack-layer") {
+                    h3 {
+                        "🌐 MedusaServ"
+                    }
+                    p(class: "layer-description") {
+                        "Native C++ Web Server"
+                    }
+                    p {
+                        "Professional web server built from scratch. No Apache, no Nginx. Complete control over every aspect of HTTP/HTTPS handling."
+                    }
+                    div(class: "layer-features") {
+                        ul {
+                            li {
+                                "Custom HTTP parser (C++26)"
+                            }
+                            li {
+                                "Native TLS 1.3 support"
+                            }
+                            li {
+                                "Virtual host management"
+                            }
+                            li {
+                                "API routing system"
+                            }
+                            li {
+                                "Lamia template engine integration"
+                            }
+                        }
+                    }
+                    a(href: "/pages/medusaserv.lamia", class: "btn btn-primary") {
+                        "View MedusaServ Docs →"
+                    }
+                }
+                
+                div(class: "stack-arrow") {
+                    "↓"
+                }
+                
+                div(class: "stack-layer") {
+                    h3 {
+                        "🔒 LFSSL"
+                    }
+                    p(class: "layer-description") {
+                        "Native C++ TLS 1.3 Implementation"
+                    }
+                    p {
+                        "Complete cryptographic stack without OpenSSL. Built for performance and security."
+                    }
+                    div(class: "layer-features") {
+                        ul {
+                            li {
+                                "TLS 1.3 full support"
+                            }
+                            li {
+                                "Post-quantum cryptography ready"
+                            }
+                            li {
+                                "Zero external crypto dependencies"
+                            }
+                            li {
+                                "Optimized for performance"
+                            }
+                        }
+                    }
+                    a(href: "/pages/lfssl.lamia", class: "btn btn-primary") {
+                        "View LFSSL Docs →"
+                    }
+                }
+                
+                div(class: "stack-arrow") {
+                    "↓"
+                }
+                
+                div(class: "stack-layer") {
+                    h3 {
+                        "🦕 PsiForceDB"
+                    }
+                    p(class: "layer-description") {
+                        "Revolutionary Hybrid Database Engine"
+                    }
+                    p {
+                        "The heart of the ecosystem. Combines PostgreSQL, Neo4j, MongoDB, and vector operations in one unified system."
+                    }
+                    div(class: "layer-features") {
+                        ul {
+                            li {
+                                "Hybrid database (Relational + Graph + Document + Vector)"
+                            }
+                            li {
+                                "PFQL query language"
+                            }
+                            li {
+                                "NO middleware architecture"
+                            }
+                            li {
+                                "AI-first design"
+                            }
+                            li {
+                                "Professional Windows GUI"
+                            }
+                        }
+                    }
+                    a(href: "https://psiforcedb.com", target: "_blank", class: "btn btn-primary") {
+                        "Visit PsiForceDB.com →"
+                    }
+                    a(href: "/pages/psiforcedb.lamia", class: "btn btn-secondary") {
+                        "View PsiForceDB Docs →"
+                    }
+                }
+                
+                div(class: "stack-arrow") {
+                    "↓"
+                }
+                
+                div(class: "stack-layer") {
+                    h3 {
+                        "📝 Lamia"
+                    }
+                    p(class: "layer-description") {
+                        "Native C++ Templating Engine"
+                    }
+                    p {
+                        "Fast, powerful, flexible template system. No external template libraries needed."
+                    }
+                    div(class: "layer-features") {
+                        ul {
+                            li {
+                                "Native C++ template parsing"
+                            }
+                            li {
+                                "Component-based architecture"
+                            }
+                            li {
+                                "Server-side rendering"
+                            }
+                            li {
+                                "Fast compilation and rendering"
+                            }
+                        }
+                    }
+                    a(href: "/pages/lamia.lamia", class: "btn btn-primary") {
+                        "View Lamia Docs →"
+                    }
+                }
+            }
+        }
+    }
+    
+    // Component Details
+    section(class: "components-section") {
+        div(class: "components-container") {
+            h2 {
+                "Ecosystem Components"
+            }
+            
+            div(class: "components-grid") {
+                // PsiForceDB
+                div(class: "component-card", id: "psiforcedb") {
+                    div(class: "component-header") {
+                        span(class: "component-icon") {
+                            "🦕"
+                        }
+                        div(class: "component-title") {
+                            h3 {
+                                "PsiForceDB"
+                            }
+                            span(class: "component-badge") {
+                                "Database Engine"
+                            }
+                        }
+                    }
+                    p {
+                        "Revolutionary hybrid database combining the best of PostgreSQL, Neo4j, MongoDB, and vector operations."
+                    }
+                    div(class: "component-links") {
+                        a(href: "https://psiforcedb.com", target: "_blank", class: "btn btn-primary") {
+                            "Website"
+                        }
+                        a(href: "/pages/psiforcedb.lamia", class: "btn btn-secondary") {
+                            "Documentation"
+                        }
+                    }
+                }
+                
+                // MedusaServ
+                div(class: "component-card", id: "medusaserv") {
+                    div(class: "component-header") {
+                        span(class: "component-icon") {
+                            "🌐"
+                        }
+                        div(class: "component-title") {
+                            h3 {
+                                "MedusaServ"
+                            }
+                            span(class: "component-badge") {
+                                "Web Server"
+                            }
+                        }
+                    }
+                    p {
+                        "Native C++ web server with complete HTTP/HTTPS handling, virtual hosts, and API routing."
+                    }
+                    div(class: "component-links") {
+                        a(href: "/pages/medusaserv.lamia", class: "btn btn-primary") {
+                            "Documentation"
+                        }
+                    }
+                }
+                
+                // LFSSL
+                div(class: "component-card", id: "lfssl") {
+                    div(class: "component-header") {
+                        span(class: "component-icon") {
+                            "🔒"
+                        }
+                        div(class: "component-title") {
+                            h3 {
+                                "LFSSL"
+                            }
+                            span(class: "component-badge") {
+                                "TLS 1.3"
+                            }
+                        }
+                    }
+                    p {
+                        "Native C++ TLS 1.3 implementation with post-quantum cryptography support."
+                    }
+                    div(class: "component-links") {
+                        a(href: "/pages/lfssl.lamia", class: "btn btn-primary") {
+                            "Documentation"
+                        }
+                    }
+                }
+                
+                // Lamia
+                div(class: "component-card", id: "lamia") {
+                    div(class: "component-header") {
+                        span(class: "component-icon") {
+                            "📝"
+                        }
+                        div(class: "component-title") {
+                            h3 {
+                                "Lamia"
+                            }
+                            span(class: "component-badge") {
+                                "Templating"
+                            }
+                        }
+                    }
+                    p {
+                        "Native C++ templating engine for fast, flexible server-side rendering."
+                    }
+                    div(class: "component-links") {
+                        a(href: "/pages/lamia.lamia", class: "btn btn-primary") {
+                            "Documentation"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Benefits Section
+    section(class: "benefits-section") {
+        div(class: "benefits-container") {
+            h2 {
+                "Why Native C++ Stack?"
+            }
+            div(class: "benefits-grid") {
+                div(class: "benefit-card") {
+                    h3 {
+                        "⚡ Performance"
+                    }
+                    p {
+                        "Native C++ delivers maximum performance. No interpreter overhead, no virtual machine delays."
+                    }
+                }
+                div(class: "benefit-card") {
+                    h3 {
+                        "🔒 Security"
+                    }
+                    p {
+                        "Complete control over security. No hidden dependencies, no third-party vulnerabilities."
+                    }
+                }
+                div(class: "benefit-card") {
+                    h3 {
+                        "🎯 Control"
+                    }
+                    p {
+                        "Every component is yours. Customize, optimize, and extend without limitations."
+                    }
+                }
+                div(class: "benefit-card") {
+                    h3 {
+                        "📦 Zero Dependencies"
+                    }
+                    p {
+                        "No external libraries in production. Everything is compiled and self-contained."
+                    }
+                }
+            }
+        }
+    }
+    
+    // CTA
+    section(class: "ecosystem-cta") {
+        div(class: "cta-content") {
+            h2 {
+                "Explore the Ecosystem"
+            }
+            p {
+                "Start with PsiForceDB or dive deep into any component"
+            }
+            div(class: "cta-buttons") {
+                a(href: "https://psiforcedb.com", target: "_blank", class: "btn btn-primary btn-large") {
+                    "Visit PsiForceDB.com"
+                }
+                a(href: "/pages/browse.lamia", class: "btn btn-secondary btn-large") {
+                    "Browse All Documentation"
+                }
+            }
+        }
+    }
+    
+    include "footer.lamia"
+}
+

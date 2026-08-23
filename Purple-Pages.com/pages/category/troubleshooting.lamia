@@ -1,0 +1,159 @@
+<!--
+Purple-Pages.com - Troubleshooting Category Page
+All troubleshooting guides across technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_category_troubleshooting() {
+    include "base.lamia" {
+        title: "Troubleshooting Guides - Purple Pages"
+        description: "Common issues, error codes, debugging guides, and solutions to frequent problems across all Medusa Project technologies"
+        keywords: "troubleshooting, errors, debugging, problems, solutions, fix, help, support"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/category/troubleshooting.lamia") {
+                            "Troubleshooting"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "category-hero") {
+            div(class: "category-hero-content") {
+                h1 {
+                    "🆘 Troubleshooting"
+                }
+                p(class: "category-description") {
+                    "Common issues, error codes, debugging guides, and solutions to frequent problems"
+                }
+            }
+        }
+        
+        // Troubleshooting by Technology
+        section(class: "category-content") {
+            div(class: "category-container") {
+                // PsiForceDB Troubleshooting
+                div(class: "troubleshoot-tech-section") {
+                    h2 {
+                        "🦕 PsiForceDB Troubleshooting"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/troubleshooting/common-errors.lamia", class: "guide-card") {
+                            h3 {
+                                "Common Errors"
+                            }
+                            p {
+                                "Frequently encountered errors and solutions"
+                            }
+                            span(class: "guide-badge") {
+                                "Common"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/troubleshooting/connection-issues.lamia", class: "guide-card") {
+                            h3 {
+                                "Connection Issues"
+                            }
+                            p {
+                                "Troubleshoot database connection problems"
+                            }
+                            span(class: "guide-badge") {
+                                "Network"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/troubleshooting/performance-issues.lamia", class: "guide-card") {
+                            h3 {
+                                "Performance Issues"
+                            }
+                            p {
+                                "Diagnose and fix performance problems"
+                            }
+                            span(class: "guide-badge") {
+                                "Performance"
+                            }
+                        }
+                    }
+                }
+                
+                // MedusaServ Troubleshooting
+                div(class: "troubleshoot-tech-section") {
+                    h2 {
+                        "🌐 MedusaServ Troubleshooting"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/medusaserv/troubleshooting/startup-errors.lamia", class: "guide-card") {
+                            h3 {
+                                "Startup Errors"
+                            }
+                            p {
+                                "Fix server startup problems"
+                            }
+                            span(class: "guide-badge") {
+                                "Startup"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/troubleshooting/request-errors.lamia", class: "guide-card") {
+                            h3 {
+                                "Request Handling Errors"
+                            }
+                            p {
+                                "Troubleshoot HTTP request issues"
+                            }
+                            span(class: "guide-badge") {
+                                "HTTP"
+                            }
+                        }
+                    }
+                }
+                
+                // General Troubleshooting
+                div(class: "troubleshoot-tech-section") {
+                    h2 {
+                        "🔧 General Troubleshooting"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/troubleshooting/error-codes.lamia", class: "guide-card") {
+                            h3 {
+                                "Error Code Reference"
+                            }
+                            p {
+                                "Complete error code reference"
+                            }
+                            span(class: "guide-badge") {
+                                "Reference"
+                            }
+                        }
+                        
+                        a(href: "/pages/troubleshooting/debugging-guide.lamia", class: "guide-card") {
+                            h3 {
+                                "Debugging Guide"
+                            }
+                            p {
+                                "General debugging techniques"
+                            }
+                            span(class: "guide-badge") {
+                                "Guide"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

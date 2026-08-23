@@ -1,0 +1,190 @@
+<!--
+Purple-Pages.com - Admin Dashboard
+Main admin dashboard for Purple Pages management
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_admin_dashboard() {
+    include "base.lamia" {
+        title: "Admin Dashboard - Purple Pages"
+        description: "Administration dashboard for Purple Pages documentation management"
+        keywords: "admin, dashboard, administration, management"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/admin.lamia") {
+                            "Admin"
+                        }
+                    }
+                    li(class: "active") {
+                        "Dashboard"
+                    }
+                }
+            }
+        }
+        
+        // Dashboard Content
+        section(class: "admin-section") {
+            div(class: "admin-container") {
+                h1 {
+                    "🔐 Admin Dashboard"
+                }
+                p(class: "admin-description") {
+                    "Manage Purple Pages documentation and settings"
+                }
+                
+                // Quick Stats
+                div(class: "dashboard-stats") {
+                    div(class: "stat-card") {
+                        h3 {
+                            "📄 Total Pages"
+                        }
+                        div(class: "stat-value", id: "stat-total-pages") {
+                            "Loading..."
+                        }
+                    }
+                    
+                    div(class: "stat-card") {
+                        h3 {
+                            "🔍 Search Queries"
+                        }
+                        div(class: "stat-value", id: "stat-search-queries") {
+                            "Loading..."
+                        }
+                    }
+                    
+                    div(class: "stat-card") {
+                        h3 {
+                            "👥 Active Users"
+                        }
+                        div(class: "stat-value", id: "stat-active-users") {
+                            "Loading..."
+                        }
+                    }
+                    
+                    div(class: "stat-card") {
+                        h3 {
+                            "📚 Documentation Files"
+                        }
+                        div(class: "stat-value", id: "stat-doc-files") {
+                            "Loading..."
+                        }
+                    }
+                }
+                
+                // Quick Actions
+                div(class: "dashboard-actions") {
+                    h2 {
+                        "Quick Actions"
+                    }
+                    div(class: "action-cards") {
+                        a(href: "/pages/admin/import-docs.lamia", class: "action-card") {
+                            h3 {
+                                "📥 Import Documentation"
+                            }
+                            p {
+                                "Import Markdown files into Purple Pages"
+                            }
+                        }
+                        
+                        a(href: "/pages/admin/manage-content.lamia", class: "action-card") {
+                            h3 {
+                                "📝 Manage Content"
+                            }
+                            p {
+                                "Edit and manage documentation pages"
+                            }
+                        }
+                        
+                        a(href: "/pages/admin/catalog.lamia", class: "action-card") {
+                            h3 {
+                                "📋 Manage Catalog"
+                            }
+                            p {
+                                "Update XML catalog and navigation"
+                            }
+                        }
+                        
+                        a(href: "/pages/admin/settings.lamia", class: "action-card") {
+                            h3 {
+                                "⚙️ Settings"
+                            }
+                            p {
+                                "Configure Purple Pages settings"
+                            }
+                        }
+                    }
+                }
+                
+                // Recent Activity
+                div(class: "dashboard-activity") {
+                    h2 {
+                        "Recent Activity"
+                    }
+                    div(id: "activity-list", class: "activity-list") {
+                        // Activity will be loaded here
+                    }
+                }
+            }
+        }
+    }
+    
+    script {
+        raw {
+            // Load dashboard stats
+            async function loadDashboardStats() {
+                try {
+                    const response = await fetch('/api/admin/stats.lamia');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        document.getElementById('stat-total-pages').textContent = data.stats.total_pages || '0';
+                        document.getElementById('stat-search-queries').textContent = data.stats.search_queries || '0';
+                        document.getElementById('stat-active-users').textContent = data.stats.active_users || '0';
+                        document.getElementById('stat-doc-files').textContent = data.stats.doc_files || '0';
+                    }
+                } catch (error) {
+                    console.error('Error loading stats:', error);
+                }
+            }
+            
+            // Load recent activity
+            async function loadRecentActivity() {
+                try {
+                    const response = await fetch('/api/admin/activity.lamia');
+                    const data = await response.json();
+                    
+                    if (data.success && data.activity) {
+                        const activityList = document.getElementById('activity-list');
+                        activityList.innerHTML = data.activity.map(item => `
+                            <div class="activity-item">
+                                <span class="activity-time">${item.time}</span>
+                                <span class="activity-action">${item.action}</span>
+                                <span class="activity-details">${item.details}</span>
+                            </div>
+                        `).join('');
+                    }
+                } catch (error) {
+                    console.error('Error loading activity:', error);
+                }
+            }
+            
+            // Load on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                loadDashboardStats();
+                loadRecentActivity();
+            });
+        }
+    }
+}
+

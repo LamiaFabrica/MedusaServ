@@ -1,0 +1,71 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(BertieBotDemonstration VERSION 1.0 LANGUAGES CXX)
+
+# Set the LFC++ compiler
+set(LFC_COMPILER "C:/Build/PsiForceDB/Build Suite/RELEASE/LFC++_Compiler/lamia_cxx_compiler.exe")
+
+if(WIN32)
+    if(EXISTS "${LFC_COMPILER}")
+        message(STATUS "✅ LFC++ Compiler found: ${LFC_COMPILER}")
+        set(CMAKE_CXX_COMPILER "${LFC_COMPILER}")
+        message(STATUS "✅ Using LFC++ Compiler as CMAKE_CXX_COMPILER")
+    else()
+        message(FATAL_ERROR "LFC++ Compiler not found at ${LFC_COMPILER}")
+    endif()
+endif()
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Add compile options
+if(MSVC)
+    add_compile_options(/W4 /WX-)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-O2)  # Optimization
+endif()
+
+# LFSSL Library paths
+set(LFSSL_INCLUDE_DIR "C:/Build/PsiForceDB/Build Suite/RELEASE/LFSSL_Library/include")
+
+# Add include directories
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${LFSSL_INCLUDE_DIR}
+)
+
+# Add LFSSL include directory
+if(EXISTS "${LFSSL_INCLUDE_DIR}/LFSSL_Native_Crypto.hpp")
+    message(STATUS "✅ LFSSL include directory added: ${LFSSL_INCLUDE_DIR}")
+else()
+    message(FATAL_ERROR "LFSSL Library headers not found at ${LFSSL_INCLUDE_DIR}")
+endif()
+
+# Source files
+set(BERTIEBOT_SOURCES
+    src/bertiebot_autocomplete_bridge.cpp
+    src/bertiebot_controller_impl.cpp
+    src/bertiebot_integrated_processor.cpp
+)
+
+# Add executable
+add_executable(bertiebot_demonstration 
+    bertiebot_demonstration.cpp
+    ${BERTIEBOT_SOURCES}
+)
+
+# Platform-specific libraries
+if(WIN32)
+    target_link_libraries(bertiebot_demonstration ws2_32)
+endif()
+
+message(STATUS "========================================")
+message(STATUS "LFC++ Compiler & BertieBot AI Demonstration")
+message(STATUS "========================================")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
+message(STATUS "LFSSL Include Directory: ${LFSSL_INCLUDE_DIR}")
+message(STATUS "BertieBot Sources: ${BERTIEBOT_SOURCES}")
+message(STATUS "========================================")

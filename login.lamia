@@ -1,0 +1,35 @@
+/**
+ * MEDUSASERV LOGIN PAGE
+ * Authentication Gateway - Yorkshire Champion Standards
+ * © 2025 D Hargreaves
+ */
+
+@title "MedusaServ - Secure Login"
+
+@render {
+    @container login-container :: center :: glass-container {
+        @image logo://MedusaServ.png :: alt="MedusaServ" :: size="120px" :: center :: admin-glow
+
+        @text h1 "🔒 MedusaServ Secure Access" :: gradient-text :: shadow :: size="2.5rem"
+
+        @text p "Administrative Control Panel Login" :: size="1.1rem" :: color="#a78bfa"
+
+        @emotion focus :: intensity="0.7" :: duration="15s" :: coordinates="[0.5, 0.5, 0.7]"
+
+        @container login-form :: center {
+            @text p "Enter your credentials to access the control panel" :: size="0.9rem"
+        }
+
+        @container security-notice :: center {
+            @text p "🛡️ ICEWALL Security: ACTIVE" :: color="#10b981" :: size="0.9rem"
+            @text p "⚡ Military-Grade Protection" :: color="#f59e0b" :: size="0.9rem"
+            @text p "🔐 Character-Precise SSL Monitoring" :: color="#ef4444" :: size="0.9rem"
+        }
+
+        @emotion contentment :: intensity="0.6" :: duration="20s" :: coordinates="[0.3, 0.6, 0.5]"
+
+        @container footer :: center {
+            @text p "© 2025 D Hargreaves | Yorkshire Champion Standards" :: size="0.8rem" :: color="#666"
+        }
+    }
+}

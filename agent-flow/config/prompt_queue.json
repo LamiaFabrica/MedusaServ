@@ -1,0 +1,573 @@
+{
+  "_note": "DeepSeek lane queue \u2014 MedusaServ. Startup + first tranche of fake-to-real cells (changelog order). Maths model: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths.",
+  "_permitted_dirs": [
+    "C:/McMaker Projects/Projects/MedusaServ Professional Web Server",
+    "C:/McMaker Projects/Fake Dev Web Root"
+  ],
+  "queue": [
+    {
+      "id": "MSERV-000-GATE",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-000-GATE",
+      "fix_type": "WRITE",
+      "priority": "P0",
+      "lane": "gate",
+      "subsystem": "medusaserv",
+      "title": "Establish the MedusaServ build lane + compiled quality gate (LFSSL toolchain)",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/CMakeLists.txt",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/build_wsl/",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/build_standalone/"
+      ],
+      "harvest_symbols": [
+        "quality_gate_cli",
+        "g++-16"
+      ],
+      "depends_on": [],
+      "status": "PENDING",
+      "semantics": "MISSION: stand up the WSL g++-16 + Windows build lanes at MedusaServ (mirroring LFSSL's build_wsl_26/build_standalone) and the compiled quality gate (tools/quality_gate/quality_gate.cpp). OWN build config; no external crypto. FIRST ACTIONS (mandatory or 0%): create the build dirs + a CMakeLists target that compiles the quality gate; run `wsl g++-16 -std=c++26 -Wall -Wextra -Werror` clean. ACCEPTANCE: the gate binary builds at MedusaServ and the pipeline self-test reports 'gate compiled'. SELF-VERIFY: run the built gate against a known-banned payload and a clean payload."
+    },
+    {
+      "id": "MSERV-001-LFSSL-BIND",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-001-LFSSL-BIND",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "lfssl-binding",
+      "title": "Verify + complete the LFSSL substrate binding (no local primitives, no knockoffs)",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/security/LFSSL_Native_Crypto.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/security/LFSSL_TLS13_Protocol.hpp"
+      ],
+      "harvest_symbols": [
+        "LFSSL_Native_Crypto",
+        "LFSSL_TLS13_Protocol"
+      ],
+      "depends_on": [
+        "MSERV-000-GATE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the shim header resolves every crypto call to the LFSSL substrate. Audit EVERY MedusaServ consumer (vhost_manager, LFCS_MS_Encrypted_Config_Manager, crypto_engine_*, TLS paths) and confirm none calls a local/hand-rolled primitive, none uses std::random for secrets, and the LFSSL include dir is on the build path. The maths model (authoritative) is at C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths \u2014 every crypto body must hit its anchors. FIRST ACTIONS (mandatory or 0%): rg_root for 'std::random', 'rand(', 'RAND_', 'EVP_' and 'SHA256' hand-rolled bodies across C:/McMaker Projects/Projects/MedusaServ Professional Web Server; list every unbound consumer. ACCEPTANCE: zero local crypto bodies remain; every consumer binds the LFSSL substrate; compiles clean under wsl g++-16. SELF-VERIFY: rg_root shows zero hits for the banned patterns in production TUs."
+    },
+    {
+      "id": "MSERV-002-CRYPTO-ENGINE",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-002-CRYPTO-ENGINE",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "crypto-engine",
+      "title": "Rebuild crypto_engine.hpp interface + its implementation set against LFSSL",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/crypto_engine.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/crypto_engine_production_implementation.cpp"
+      ],
+      "harvest_symbols": [
+        "crypto_engine",
+        "AES256GCM",
+        "KyberKEM",
+        "Dilithium"
+      ],
+      "depends_on": [
+        "MSERV-001-LFSSL-BIND"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the crypto engine interface (include/crypto_engine.hpp) and its implementations are the central crypto surface. Rebuild it so every primitive resolves to the LFSSL substrate (AES-256-GCM, HKDF, HMAC, X25519, Kyber KEM, Dilithium/Falcon) with NO locally-invented algorithms. Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths (notes 13/14/14b for AES-GCM, 15/15b for ML-DSA, 01-06 for ML-KEM, 21 for X25519, 17 for Keccak). FIRST ACTIONS (mandatory or 0%): rg_root + read the interface; write the complete // TARGET: blocks early. ACCEPTANCE: the engine calls ONLY LFSSL-backed primitives; a known-answer round-trip (encrypt/decrypt, sign/verify, KEM encaps/decaps) reproduces the model anchor; compiles clean. SELF-VERIFY: a propup that exercises each engine operation against the LFSSL KAT."
+    },
+    {
+      "id": "MSERV-003-TLS-BOOT",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-003-TLS-BOOT",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "tls",
+      "title": "Wire TLS 1.3 into the server boot via the LFSSL TLS13 protocol",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/security/LFSSL_TLS13_Protocol.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/main.cpp"
+      ],
+      "harvest_symbols": [
+        "TLS13",
+        "handshake",
+        "server_hello"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the server's TLS path must boot through LFSSL_TLS13_Protocol (no OpenSSL, no hand-rolled handshake). Audit main.cpp + the webserver boot for where TLS terminates and rewire onto the LFSSL TLS13 surface. Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/18_TLS13_Key_Schedule.md. FIRST ACTIONS (mandatory or 0%): write the // TARGET: block(s) early. ACCEPTANCE: a TLS 1.3 handshake over a loopback socket completes with the LFSSL cipher suite; no EVP_/SSL_ symbols in the boot path. SELF-VERIFY: loopback handshake propup."
+    },
+    {
+      "id": "MSERV-004-SERVER-BOOT",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-004-SERVER-BOOT",
+      "fix_type": "BUG",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "startup",
+      "title": "Startup sequence: fail-closed boot order (config -> crypto -> TLS -> vhosts -> services)",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/main.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/src/lamia_server.cpp"
+      ],
+      "harvest_symbols": [
+        "main",
+        "boot",
+        "service"
+      ],
+      "depends_on": [
+        "MSERV-003-TLS-BOOT"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the startup sequence must initialise in a safe order and fail closed if any stage (config vault decrypt, crypto engine, TLS, vhost manager, services) fails \u2014 no silent continue, no 'best effort'. FIRST ACTIONS (mandatory or 0%): read main.cpp + lamia_server.cpp; write the // TARGET: block early. ACCEPTANCE: a forced failure at each stage aborts the boot with a clear error and non-zero exit. SELF-VERIFY: a boot-order propup that injects a failure at each stage."
+    },
+    {
+      "id": "MSERV-010-HYBRID",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-010-HYBRID",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "crypto-engine",
+      "title": "crypto_engine_hybrid_encryption_implementation.cpp \u2014 real hybrid (X25519 + ML-KEM) via LFSSL",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/crypto_engine_hybrid_encryption_implementation.cpp"
+      ],
+      "harvest_symbols": [
+        "hybrid",
+        "X25519",
+        "MLKEM"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the hybrid encryption implementation is AI-faked. Rebuild it as a real X-Wing-style hybrid (X25519 ECDH + ML-KEM-1024, combined via the LFSSL combiner). Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/09_Hybrid_Combiner.md (BLAKE3 derive-key, zeroise every secret copy). FIRST ACTIONS (mandatory or 0%): write the complete // TARGET: block early. ACCEPTANCE: hybrid encaps/decaps round-trips; no local ECDH/KEM code (LFSSL-backed only); every secret path zeroised; compiles clean. SELF-VERIFY: round-trip + failure-path leak check."
+    },
+    {
+      "id": "MSERV-011-JWT",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-011-JWT",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "crypto-engine",
+      "title": "crypto_engine_jwt_rbac_implementation.cpp \u2014 real JWT (Dilithium5-AES256GCM PSITOKEN) via LFSSL",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/crypto_engine_jwt_rbac_implementation.cpp"
+      ],
+      "harvest_symbols": [
+        "JWT",
+        "PSITOKEN",
+        "Dilithium"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the JWT/RBAC implementation is AI-faked. Rebuild it against the LFSSL encrypted-JWT surface (verify ML-DSA-87 signature BEFORE decrypt, fail closed). Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/15_ML_DSA87_NTT_Constants.md + 14_AES256GCM_KAT_Anchors.md. FIRST ACTIONS (mandatory or 0%): write the // TARGET: block early. ACCEPTANCE: token sign/verify + encrypt/decrypt round-trips; signature verified before any decrypt; no local JWT crypto. SELF-VERIFY: round-trip + a tampered-signature rejection test."
+    },
+    {
+      "id": "MSERV-012-SESSION",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-012-SESSION",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "crypto-engine",
+      "title": "crypto_engine_session_auth_implementation.cpp \u2014 real session auth (HKDF-SHA384, secure random) via LFSSL",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/crypto_engine_session_auth_implementation.cpp"
+      ],
+      "harvest_symbols": [
+        "session",
+        "HKDF",
+        "SecureRandom"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the session-auth implementation is AI-faked. Rebuild it on LFSSL SecureRandom (fail-closed CSPRNG) + HKDF-SHA-384, no std::random, no timestamps-as-entropy. Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/29_SHA2_HKDF_PBKDF2.md. FIRST ACTIONS (mandatory or 0%): write the // TARGET: block early. ACCEPTANCE: session tokens are CSPRNG-derived via LFSSL; no weak-RNG path; fail closed on RNG failure. SELF-VERIFY: a CSPRNG-fail-injection test."
+    },
+    {
+      "id": "MSERV-013-RBAC",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-013-RBAC",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "crypto-engine",
+      "title": "crypto_engine_rbac_user_management_implementation.cpp \u2014 real credential handling",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/crypto_engine_rbac_user_management_implementation.cpp"
+      ],
+      "harvest_symbols": [
+        "RBAC",
+        "PBKDF2",
+        "Argon2"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the RBAC/user-management implementation is AI-faked. Rebuild credential handling on LFSSL Argon2/PBKDF2 (no plaintext, no trivially-hashed passwords, constant-time compare). Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/22_Argon2_PBKDF2.md. FIRST ACTIONS (mandatory or 0%): write the // TARGET: block early. ACCEPTANCE: password hashing uses the LFSSL KDF; verification is constant-time; no plaintext storage. SELF-VERIFY: hash/verify round-trip + wrong-password rejection."
+    },
+    {
+      "id": "MSERV-014-PQC",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-014-PQC",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "crypto-engine",
+      "title": "crypto_engine_advanced_pqc_implementation.cpp \u2014 real PQC (ML-KEM-1024 + ML-DSA-87) via LFSSL",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/crypto_engine_advanced_pqc_implementation.cpp"
+      ],
+      "harvest_symbols": [
+        "MLKEM",
+        "MLDSA",
+        "pqc"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the advanced-PQC implementation is AI-faked (likely wraps nothing or fake tables). Rebuild it on the LFSSL ML-KEM-1024 + ML-DSA-87 lanes. Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/01-06 (ML-KEM) + 10/15/15b (ML-DSA). FIRST ACTIONS (mandatory or 0%): write the // TARGET: block early. ACCEPTANCE: keygen/encaps/decaps + sign/verify round-trips reproduce the model ACVP anchors; no vendored/ref wrapping. SELF-VERIFY: KAT propup against the model digests."
+    },
+    {
+      "id": "MSERV-020-CONFIG-VAULT",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-020-CONFIG-VAULT",
+      "fix_type": "BUG",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "config-security",
+      "title": "LFCS_MS_Encrypted_Config_Manager.cpp \u2014 CSPRNG fail-closed vault key derivation",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/src/security/LFCS_MS_Encrypted_Config_Manager.cpp"
+      ],
+      "harvest_symbols": [
+        "LFCS_MS_Encrypted_Config_Manager",
+        "std::random"
+      ],
+      "depends_on": [
+        "MSERV-001-LFSSL-BIND"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the encrypted-config vault uses std::random (weak entropy) for key/salt derivation. Replace with LFSSL SecureRandom fail-closed (CSPRNG), derive the vault key via LFSSL HKDF/PBKDF2, and audit every caller. FIRST ACTIONS (mandatory or 0%): rg_root for std::random in C:/McMaker Projects/Projects/MedusaServ Professional Web Server; write the // TARGET: block early. ACCEPTANCE: zero std::random/rand in production TUs; vault encrypt/decrypt round-trips; a CSPRNG-failure propagates as an error (never silent zero). SELF-VERIFY: CSPRNG-fail-injection propup + rg_root shows zero weak-RNG hits."
+    },
+    {
+      "id": "MSERV-030-MEDUSA-STUBS",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-030-MEDUSA-STUBS",
+      "fix_type": "VERIFY",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "medusa-stubs",
+      "title": "Audit the Medusa_* 'MedusaLibraryGenerator' stub headers \u2014 real surface or dead aspirational",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/medusa/"
+      ],
+      "harvest_symbols": [
+        "Medusa_Security_System",
+        "Medusa_Communication",
+        "Medusa_Database_System"
+      ],
+      "depends_on": [
+        "MSERV-001-LFSSL-BIND"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the include/medusa/* family are 'GENERATED: MedusaLibraryGenerator v1.0.0' 3KB stubs. For EACH, determine: (a) is it referenced by any production TU (rg_root)? (b) does it expose a real security/crypto/network surface that must be implemented, or is it dead aspirational? Produce a verdict table; cells are then built ONLY for the surfaces that are real and reachable. FIRST ACTIONS (mandatory or 0%): rg_root each stub symbol across C:/McMaker Projects/Projects/MedusaServ Professional Web Server; document the verdict. ACCEPTANCE: every stub is classified reachable/implementable vs dead; the verdict lists which need follow-on WRITE cells. SELF-VERIFY: the rg_root evidence is in the DECISION block."
+    },
+    {
+      "id": "MSERV-021-STUB-HYGIENE",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-021-STUB-HYGIENE",
+      "fix_type": "REWRITE",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "stub-hygiene",
+      "title": "Replace the tiny fake/stub files with real surfaces or delete if dead",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/security/ssl/ssl_mechanism.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/logging/logging_system.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/processors/executable/executable_processor.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/mechanisms/executable/executable_mechanism.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/core/gif3d/libultimate_gif3d_revolution.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/network/network_components.cpp"
+      ],
+      "harvest_symbols": [
+        "SSLMechanism",
+        "ExecutableProcessor",
+        "gif3d_revolution"
+      ],
+      "depends_on": [
+        "MSERV-001-LFSSL-BIND"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: six files are fake or corrupted: ssl_mechanism.hpp (24B class decl only), logging_system.hpp (48B enums only), executable_processor.hpp (31B), executable_mechanism.hpp (120B), libultimate_gif3d_revolution.cpp (519B \u2014 every fn is `return 1;`), and network_components.cpp (587B of BINARY GARBAGE with embedded URLs \u2014 not even valid code). For each: if the surface is real and reachable, implement it properly (SSL mechanism must resolve to the LFSSL TLS13 surface; logging must route to the real logging system; the gif3d functions must either work or be removed). If the file is dead/unreachable, delete it (rg_root first). FIRST ACTIONS (mandatory or 0%): rg_root each symbol across C:/McMaker Projects/Projects/MedusaServ Professional Web Server; write the // TARGET: blocks early. ACCEPTANCE: zero hardcoded-return-1 bodies; zero binary-garbage files; every remaining surface compiles clean under wsl g++-16. SELF-VERIFY: rg_root for the garbage URLs and return-1 bodies returns zero hits in production."
+    },
+    {
+      "id": "MSERV-022-ICEWALL-CORE",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-022-ICEWALL-CORE",
+      "fix_type": "REBUILD",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "icewall",
+      "title": "ICEWALL firewall core \u2014 real filtering engine (no fake tables, no canned blocks)",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/medusa_icewall_firewall_daddy.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/security/icewall_firewall_daddy.hpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/include/medusaserv_icewall_manager.hpp"
+      ],
+      "harvest_symbols": [
+        "ICEWALL",
+        "firewall",
+        "packet_filter"
+      ],
+      "depends_on": [
+        "MSERV-001-LFSSL-BIND"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the ICEWALL firewall headers (70KB + 15KB + 10KB) are AI-faked. Rebuild the firewall core as a real, testable filtering engine: rule model, connection tracking, allow/deny decision path with a deterministic test suite. Crypto touchpoints (TLS interception, fingerprint hashing) must use LFSSL (BLAKE3 primary). Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths (08 zeroisation, 17 Keccak). FIRST ACTIONS (mandatory or 0%): read the headers; write the // TARGET: blocks early. ACCEPTANCE: a rule set enforces allow/deny deterministically; every decision path is unit-tested; no canned/demo output; compiles clean. SELF-VERIFY: a rule-enforcement propup (deny-all, allow-list, port-block each verified)."
+    },
+    {
+      "id": "MSERV-023-ICEWALL-PQC",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-023-ICEWALL-PQC",
+      "fix_type": "REBUILD",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "icewall",
+      "title": "ICEWALL PQC framework \u2014 real ML-KEM/ML-DSA integration via LFSSL, no fake quantum",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/security/icewall/pqc_framework.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/security/icewall/pqc_framework.hpp"
+      ],
+      "harvest_symbols": [
+        "pqc_framework",
+        "MLKEM",
+        "MLDSA"
+      ],
+      "depends_on": [
+        "MSERV-002-CRYPTO-ENGINE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the ICEWALL PQC framework is AI-faked (quantum-sounding names over nothing real). Rebuild it so any 'quantum' claim is backed by the LFSSL ML-KEM-1024 + ML-DSA-87 lanes, or is removed. Maths anchor: C:/McMaker Projects/Projects/LFSSL - Lamia Fabrica SSL/Cyptography Maths/research/01-06 + 10/15/15b. FIRST ACTIONS (mandatory or 0%): rg_root every pqc symbol; write the // TARGET: block early. ACCEPTANCE: every exposed PQC operation round-trips against the LFSSL KAT; no symbolic/no-op 'quantum' routines remain. SELF-VERIFY: keygen/encaps/decaps + sign/verify propup."
+    },
+    {
+      "id": "MSERV-024-ICEWALL-ML",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-024-ICEWALL-ML",
+      "fix_type": "VERIFY",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "icewall",
+      "title": "ICEWALL ML/self-healing components \u2014 classify real vs aspirational, rebuild reachable ones",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/security/icewall/ml_security_components.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/security/icewall/ai_threat_intelligence.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/security/icewall/self_healing_mesh.cpp"
+      ],
+      "harvest_symbols": [
+        "ml_security",
+        "ai_threat",
+        "self_healing"
+      ],
+      "depends_on": [
+        "MSERV-022-ICEWALL-CORE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: three 37-52KB ICEWALL components (ML security, AI threat intelligence, self-healing mesh) are likely AI-faked. For each: (a) is it reachable from a production TU (rg_root)? (b) does it contain real logic or canned/vacuous bodies? Produce a verdict; reachable ones get WRITE cells, dead ones are removed. FIRST ACTIONS (mandatory or 0%): rg_root + sample each file's decision paths; write the // TARGET: verdict block early. ACCEPTANCE: every reachable component is real and compiles; every dead/canned component is removed with the rg_root evidence. SELF-VERIFY: the verdict table is the deliverable."
+    },
+    {
+      "id": "MSERV-025-NETWORK",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-025-NETWORK",
+      "fix_type": "REBUILD",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "network",
+      "title": "Network layer \u2014 FCCP IPC + domain manager + network components real implementations",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/ipc/fccp.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/networking/domain_manager.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/network/network_components.cpp"
+      ],
+      "harvest_symbols": [
+        "FCCP",
+        "domain_manager",
+        "network_components"
+      ],
+      "depends_on": [
+        "MSERV-004-SERVER-BOOT"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the network layer has a real FCCP IPC attempt but network_components.cpp is binary garbage and domain_manager needs verification. Rebuild FCCP into a deterministic message protocol (framing, checksum via BLAKE3, timeout) with a test harness; rebuild domain manager around the vhost config (no shell-outs, no injection). FIRST ACTIONS (mandatory or 0%): read fccp.cpp; write the // TARGET: blocks early. ACCEPTANCE: FCCP round-trips N messages with corruption detection; domain manager resolves vhosts deterministically; no binary-garbage file remains. SELF-VERIFY: FCCP propup + domain resolution test."
+    },
+    {
+      "id": "MSERV-026-PURPLE-PAGES",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-026-PURPLE-PAGES",
+      "fix_type": "VERIFY",
+      "priority": "P2",
+      "lane": "core",
+      "subsystem": "purple-pages",
+      "title": "Purple Pages backend \u2014 real API gateway or AI-faked surface",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/Purple-Pages.com/src/api_gateway_native.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/inc/purple_pages_backend.cpp"
+      ],
+      "harvest_symbols": [
+        "api_gateway",
+        "purple_pages"
+      ],
+      "depends_on": [
+        "MSERV-004-SERVER-BOOT"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: verify the Purple Pages API gateway + backend are real implementations (routing, auth, templating) not AI-faked. Any crypto/auth path must resolve to LFSSL. FIRST ACTIONS (mandatory or 0%): rg_root + read the dispatch paths; write the // TARGET: verdict early. ACCEPTANCE: reachable handlers are real and compile; fake paths are listed for WRITE cells or removed. SELF-VERIFY: a route-dispatch propup."
+    },
+    {
+      "id": "MSERV-027-DATABASE",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-027-DATABASE",
+      "fix_type": "VERIFY",
+      "priority": "P2",
+      "lane": "core",
+      "subsystem": "database",
+      "title": "Database layer \u2014 real connection/persistence, no fake query engine",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/database/database_connector.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/database/pfql_query_builder.cpp",
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/managers/database_manager.cpp"
+      ],
+      "harvest_symbols": [
+        "database_connector",
+        "pfql",
+        "database_manager"
+      ],
+      "depends_on": [
+        "MSERV-004-SERVER-BOOT"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: verify the database connector + PFQL query builder + database manager are real. Any SQL/PFQL generation must be parameterised (no injection); no fake in-memory stand-ins for persistence. FIRST ACTIONS (mandatory or 0%): read the query-builder paths; write the // TARGET: verdict early. ACCEPTANCE: real connector/query paths compile and pass a round-trip; fake surfaces are listed or removed. SELF-VERIFY: a query round-trip + injection guard test."
+    },
+    {
+      "id": "MSERV-028-VHOST",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-028-VHOST",
+      "fix_type": "VERIFY",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "vhost",
+      "title": "Verify medusaserv_vhost_manager - real virtual-host resolution, no fake SSL/domain logic",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/managers/medusaserv_vhost_manager.cpp"
+      ],
+      "harvest_symbols": [
+        "vhost_manager",
+        "vhost"
+      ],
+      "depends_on": [
+        "MSERV-004-SERVER-BOOT"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the 54KB vhost manager is the virtual-host + SSL resolution surface. Verify its routing, cert fingerprinting (must use LFSSL BLAKE3), and config loading are real; no fake SSL/domain logic. FIRST ACTIONS (mandatory or 0%): read the manager + rg_root its symbols; write the // TARGET: verdict early. ACCEPTANCE: real resolution paths compile and resolve a test vhost; fake paths listed or removed. SELF-VERIFY: vhost resolution + fingerprint propup."
+    },
+    {
+      "id": "MSERV-029-MODULE",
+      "audit_ref": "AUDIT_STUB_DIARY.md MSERV-029-MODULE",
+      "fix_type": "VERIFY",
+      "priority": "P2",
+      "lane": "core",
+      "subsystem": "module",
+      "title": "Verify module_manager - real plugin loading, no fake/auto-generated module bodies",
+      "targets": [
+        "C:/McMaker Projects/Projects/MedusaServ Professional Web Server/MedusaServ/src/webserver/managers/module_manager.cpp"
+      ],
+      "harvest_symbols": [
+        "module_manager",
+        "plugin"
+      ],
+      "depends_on": [
+        "MSERV-004-SERVER-BOOT"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: verify module_manager loads/executes real modules and the shipped modules are not auto-generated fakes. FIRST ACTIONS (mandatory or 0%): read module_manager + rg_root module symbols; write the // TARGET: verdict early. ACCEPTANCE: load/unload round-trips; fake module bodies are listed for WRITE cells or removed. SELF-VERIFY: module load/unload propup."
+    },
+    {
+      "id": "FDVR-001-AUTH-CONFIG",
+      "audit_ref": "AUDIT_STUB_DIARY.md FDVR-001-AUTH-CONFIG",
+      "fix_type": "BUG",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "web-auth",
+      "title": "unified_auth_config.php - purge hardcoded credentials, secure defaults, real auth via LFSSL",
+      "targets": [
+        "C:/McMaker Projects/Fake Dev Web Root/portal/config/unified_auth_config.php"
+      ],
+      "harvest_symbols": [
+        "unified_auth",
+        "credential"
+      ],
+      "depends_on": [
+        "MSERV-000-GATE"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the unified auth config (13KB) is the Fake Dev Web Root auth surface - likely hardcoded credentials/insecure defaults. Purge any embedded secrets, enforce secure defaults (fail closed), and bind every auth/encryption call to LFSSL (no PHP crypto fakes). FIRST ACTIONS (mandatory or 0%): rg_root for hardcoded keys/passwords across C:/McMaker Projects/Fake Dev Web Root; write the // TARGET: block early. ACCEPTANCE: zero hardcoded secrets; auth config fails closed on missing/malformed values; no plaintext secrets in the tree. SELF-VERIFY: rg_root shows zero credential literals in production config."
+    },
+    {
+      "id": "FDVR-002-SECURE-AUTH",
+      "audit_ref": "AUDIT_STUB_DIARY.md FDVR-002-SECURE-AUTH",
+      "fix_type": "REBUILD",
+      "priority": "P0",
+      "lane": "core",
+      "subsystem": "web-auth",
+      "title": "secure_auth_handler + security_audit_system - real authentication/audit, no AI-fake security",
+      "targets": [
+        "C:/McMaker Projects/Fake Dev Web Root/portal/api/secure_auth_handler.php",
+        "C:/McMaker Projects/Fake Dev Web Root/portal/api/security_audit_system.php"
+      ],
+      "harvest_symbols": [
+        "secure_auth",
+        "security_audit"
+      ],
+      "depends_on": [
+        "FDVR-001-AUTH-CONFIG"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the secure-auth handler (14KB) and security-audit system (33KB) are the auth+audit surface. Rebuild real session auth (fail closed, constant-time compare, CSPRNG tokens via LFSSL) and a real audit log (append-only, integrity-chained via BLAKE3). FIRST ACTIONS (mandatory or 0%): read both files; write the // TARGET: blocks early. ACCEPTANCE: auth rejects invalid/tampered credentials deterministically; audit entries are tamper-evident; no canned security output. SELF-VERIFY: auth-failure + audit-chain propups."
+    },
+    {
+      "id": "FDVR-003-EMPTY-STUBS",
+      "audit_ref": "AUDIT_STUB_DIARY.md FDVR-003-EMPTY-STUBS",
+      "fix_type": "REWRITE",
+      "priority": "P1",
+      "lane": "core",
+      "subsystem": "web-stubs",
+      "title": "Remove/implement empty stub files (lamia_status.php is 0 bytes) + verify the API sweep",
+      "targets": [
+        "C:/McMaker Projects/Fake Dev Web Root/portal/api/lamia_status.php",
+        "C:/McMaker Projects/Fake Dev Web Root/admin/api/domains.php",
+        "C:/McMaker Projects/Fake Dev Web Root/admin/api/subdomains.php"
+      ],
+      "harvest_symbols": [
+        "lamia_status",
+        "DomainAPI"
+      ],
+      "depends_on": [
+        "FDVR-002-SECURE-AUTH"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: lamia_status.php is 0 bytes (empty stub) - implement it or delete it. The cPanel-style domains/subdomains APIs claim AI-command integration and SSL management: verify those paths are real (no command injection, no fake SSL) and that auth is enforced on every route. FIRST ACTIONS (mandatory or 0%): read the files; write the // TARGET: blocks early. ACCEPTANCE: no empty files; domain/subdomain APIs enforce auth + validate input (no injection); SSL paths resolve to LFSSL. SELF-VERIFY: route-auth + injection-guard propups."
+    },
+    {
+      "id": "FDVR-004-API-SWEEP",
+      "audit_ref": "AUDIT_STUB_DIARY.md FDVR-004-API-SWEEP",
+      "fix_type": "VERIFY",
+      "priority": "P2",
+      "lane": "core",
+      "subsystem": "web-api",
+      "title": "Sweep the portal/api PHP handlers - real logic or AI-fake wrappers",
+      "targets": [
+        "C:/McMaker Projects/Fake Dev Web Root/portal/api/"
+      ],
+      "harvest_symbols": [
+        "repository_api",
+        "user_management",
+        "moderator_applications"
+      ],
+      "depends_on": [
+        "FDVR-002-SECURE-AUTH"
+      ],
+      "status": "PENDING",
+      "semantics": "MISSION: the remaining portal/api PHP handlers (autonomous_update, developer_applications, library_*, moderator_applications, ppa_repository, repository_dashboard, repository_notification, user_management) are wrappers with AI-command claims. For each: reachable + real, or fake? Produce a verdict; real ones stay, fake ones get WRITE cells or removal. FIRST ACTIONS (mandatory or 0%): rg_root + sample each handler; write the // TARGET: verdict early. ACCEPTANCE: every reachable handler is real and enforces auth; fake ones are listed. SELF-VERIFY: the verdict table is the deliverable."
+    }
+  ]
+}

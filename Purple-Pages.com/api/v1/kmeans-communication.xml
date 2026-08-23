@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Purple-Pages.com - kMeans XML Communication System
+Efficient server-to-server communication via VPC using kMeans clustering
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+<kmeans_communication xmlns="https://purple-pages.com/schema/kmeans/1.0">
+    <metadata>
+        <version>1.0</version>
+        <protocol>VPC_OPTIMIZED</protocol>
+        <compression>gzip</compression>
+        <encryption>vpc_none</encryption>
+        <timestamp>2025-01-27T00:00:00Z</timestamp>
+    </metadata>
+    
+    <!-- kMeans Clusters for Error Logging -->
+    <cluster id="error_logs" name="Error Logs" type="primary" priority="1.0">
+        <message id="error_log_single" weight="0.9">
+            <source>
+                <server_id>main</server_id>
+                <server_vpc>10.0.0.2</server_vpc>
+                <application>LamiaFabrica</application>
+            </source>
+            <target>
+                <server_id>dev</server_id>
+                <server_vpc>10.0.0.5</server_vpc>
+                <endpoint>/api/v1/errors</endpoint>
+            </target>
+            <payload>
+                <error_id type="uuid_v7">018c3e2a-9f7a-7b3c-8d1e-f2a4c6b8d0e2</error_id>
+                <timestamp>1731636323456</timestamp>
+                <error_level>ERROR</error_level>
+                <error_code>LF_AUTH_001</error_code>
+                <error_message>Failed to authenticate user session</error_message>
+                <error_context>
+                    <endpoint>/api/customers/login</endpoint>
+                    <attempt_count>3</attempt_count>
+                </error_context>
+            </payload>
+            <routing>
+                <route_type>vpc_direct</route_type>
+                <vpc_path>10.0.0.2 → 10.0.0.5</vpc_path>
+                <priority>high</priority>
+                <retry_policy>exponential_backoff</retry_policy>
+            </routing>
+        </message>
+        
+        <message id="error_log_batch" weight="1.0">
+            <source>
+                <server_id>main</server_id>
+                <server_vpc>10.0.0.2</server_vpc>
+            </source>
+            <target>
+                <server_id>dev</server_id>
+                <server_vpc>10.0.0.5</server_vpc>
+                <endpoint>/api/v1/errors</endpoint>
+            </target>
+            <payload>
+                <batch_size>1000</batch_size>
+                <errors>
+                    <error>
+                        <error_id type="uuid_v7">018c3e2a-...</error_id>
+                        <timestamp>1731636323456</timestamp>
+                        <error_level>ERROR</error_level>
+                        <error_message>Error 1</error_message>
+                    </error>
+                    <!-- Up to 1000 errors in batch -->
+                </errors>
+            </payload>
+            <routing>
+                <route_type>vpc_direct</route_type>
+                <vpc_path>10.0.0.2 → 10.0.0.5</vpc_path>
+                <priority>high</priority>
+                <batch_optimized>true</batch_optimized>
+            </routing>
+        </message>
+    </cluster>
+    
+    <!-- kMeans Clusters for Server Communication -->
+    <cluster id="server_communication" name="Server Communication" type="primary" priority="1.0">
+        <message id="database_query" weight="0.9">
+            <source>
+                <server_id>main</server_id>
+                <server_vpc>10.0.0.2</server_vpc>
+                <application>LamiaFabrica</application>
+            </source>
+            <target>
+                <server_id>db</server_id>
+                <server_vpc>10.0.0.4</server_vpc>
+                <endpoint>/pfql/execute</endpoint>
+            </target>
+            <payload>
+                <query_id type="uuid_v7">018c3e2b-1234-5678-9abc-def012345678</query_id>
+                <database>lamiafabrica_prod</database>
+                <query_type>PFQL</query_type>
+                <query>SELECT * FROM customers WHERE active = true</query>
+                <query_params/>
+                <timeout_ms>10000</timeout_ms>
+            </payload>
+            <routing>
+                <route_type>vpc_direct</route_type>
+                <vpc_path>10.0.0.2 → 10.0.0.4</vpc_path>
+                <priority>high</priority>
+                <connection_pool>high_priority</connection_pool>
+            </routing>
+        </message>
+        
+        <message id="metrics_sync" weight="0.8">
+            <source>
+                <server_id>db</server_id>
+                <server_vpc>10.0.0.4</server_vpc>
+            </source>
+            <target>
+                <server_id>dev</server_id>
+                <server_vpc>10.0.0.5</server_vpc>
+                <endpoint>/api/v1/metrics</endpoint>
+            </target>
+            <payload>
+                <metric_id type="uuid_v7">018c3e2c-abcd-ef01-2345-67890abcdef0</metric_id>
+                <cpu_usage_percent>45.3</cpu_usage_percent>
+                <memory_usage_mb>8192</memory_usage_mb>
+                <active_connections>127</active_connections>
+                <queries_per_second>1234.5</queries_per_second>
+            </payload>
+            <routing>
+                <route_type>vpc_direct</route_type>
+                <vpc_path>10.0.0.4 → 10.0.0.5</vpc_path>
+                <priority>normal</priority>
+                <frequency>every_60_seconds</frequency>
+            </routing>
+        </message>
+        
+        <message id="health_check" weight="0.7">
+            <source>
+                <server_id>backoffice</server_id>
+                <server_vpc>10.0.0.4</server_vpc>
+            </source>
+            <target>
+                <server_id>all</server_id>
+                <endpoint>/health</endpoint>
+            </target>
+            <payload>
+                <check_id type="uuid_v7">018c3e2d-...</check_id>
+                <check_type>health</check_type>
+                <timestamp>1731636323456</timestamp>
+            </payload>
+            <routing>
+                <route_type>vpc_broadcast</route_type>
+                <vpc_paths>
+                    <path>10.0.0.4 → 10.0.0.2</path>
+                    <path>10.0.0.4 → 10.0.0.5</path>
+                </vpc_paths>
+                <priority>normal</priority>
+                <frequency>every_30_seconds</frequency>
+            </routing>
+        </message>
+    </cluster>
+    
+    <!-- kMeans Clusters for API Gateway Routing -->
+    <cluster id="api_gateway" name="API Gateway" type="primary" priority="1.0">
+        <message id="external_callback" weight="1.0">
+            <source>
+                <server_id>external</server_id>
+                <client_ip>203.0.113.45</client_ip>
+            </source>
+            <target>
+                <server_id>backoffice</server_id>
+                <server_vpc>10.0.0.4</server_vpc>
+                <endpoint>/callback/route</endpoint>
+            </target>
+            <payload>
+                <callback_id type="uuid_v7">550e8400-e29b-41d4-a716-446655440000</callback_id>
+                <callback_type>api</callback_type>
+                <target_server>main</target_server>
+                <target_service>lamiafabrica</target_service>
+                <method>POST</method>
+                <endpoint>/api/customers/create</endpoint>
+                <body>
+                    <name>John Doe</name>
+                    <email>john@example.com</email>
+                </body>
+            </payload>
+            <routing>
+                <route_type>callback</route_type>
+                <external_path>203.0.113.45 → 172.236.28.155:443</external_path>
+                <internal_path>10.0.0.4 → 10.0.0.2:8080</internal_path>
+                <encryption>lfssl</encryption>
+                <priority>high</priority>
+            </routing>
+        </message>
+        
+        <message id="gui_callback" weight="0.9">
+            <source>
+                <server_id>external</server_id>
+                <gui_application>PsiForceDB_Main</gui_application>
+                <machine_id>WIN-DESKTOP-12345</machine_id>
+            </source>
+            <target>
+                <server_id>backoffice</server_id>
+                <server_vpc>10.0.0.4</server_vpc>
+                <endpoint>/callback/gui</endpoint>
+            </target>
+            <payload>
+                <callback_id type="uuid_v7">gui_550e8400-...</callback_id>
+                <action>query_execute</action>
+                <target_database>lamiafabrica_prod</target_database>
+                <query>SELECT * FROM customers WHERE active = true</query>
+            </payload>
+            <routing>
+                <route_type>callback</route_type>
+                <external_path>GUI → 172.236.28.155:8443</external_path>
+                <internal_path>10.0.0.4 → 10.0.0.4:5432</internal_path>
+                <encryption>lfssl</encryption>
+                <priority>high</priority>
+            </routing>
+        </message>
+    </cluster>
+    
+    <!-- Routing Intelligence (kMeans Clustering) -->
+    <routing_intelligence>
+        <vpc_optimization>
+            <strategy>maximize_vpc_usage</strategy>
+            <rules>
+                <rule>
+                    <condition>source_vpc AND target_vpc</condition>
+                    <action>route_vpc_direct</action>
+                    <encryption>none</encryption>
+                    <priority>highest</priority>
+                </rule>
+                <rule>
+                    <condition>external_source</condition>
+                    <action>route_via_callback</action>
+                    <encryption>lfssl</encryption>
+                    <gateway>10.0.0.4:443</gateway>
+                </rule>
+            </rules>
+        </vpc_optimization>
+        
+        <data_compression>
+            <enabled>true</enabled>
+            <algorithm>gzip</algorithm>
+            <threshold_bytes>1024</threshold_bytes>
+            <vpc_compression>true</vpc_compression>
+        </data_compression>
+        
+        <batch_optimization>
+            <enabled>true</enabled>
+            <max_batch_size>1000</max_batch_size>
+            <batch_timeout_ms>100</batch_timeout_ms>
+            <vpc_batching>true</vpc_batching>
+        </batch_optimization>
+    </routing_intelligence>
+    
+    <!-- Server Registry (kMeans Clustered) -->
+    <server_registry>
+        <server id="db" cluster="database">
+            <public_ip>172.236.28.155</public_ip>
+            <vpc_ip>10.0.0.4</vpc_ip>
+            <services>
+                <service name="database" port="5432" protocol="PFQL"/>
+                <service name="api" port="8080" protocol="HTTP"/>
+            </services>
+            <connection_pool>
+                <size>100</size>
+                <vpc_connections>100</vpc_connections>
+            </connection_pool>
+        </server>
+        
+        <server id="dev" cluster="development">
+            <public_ip>172.236.22.79</public_ip>
+            <vpc_ip>10.0.0.5</vpc_ip>
+            <services>
+                <service name="purple_pages" port="8080" protocol="HTTP"/>
+                <service name="error_logging" port="8081" protocol="HTTP"/>
+            </services>
+            <connection_pool>
+                <size>20</size>
+                <vpc_connections>20</vpc_connections>
+            </connection_pool>
+        </server>
+        
+        <server id="main" cluster="production">
+            <public_ip>172.236.20.28</public_ip>
+            <vpc_ip>10.0.0.2</vpc_ip>
+            <services>
+                <service name="lamiafabrica_backend" port="8080" protocol="HTTP"/>
+                <service name="lamiafabrica_frontend" port="3000" protocol="HTTP"/>
+                <service name="customer_portal" port="8082" protocol="HTTP"/>
+            </services>
+            <connection_pool>
+                <size>50</size>
+                <vpc_connections>50</vpc_connections>
+            </connection_pool>
+        </server>
+        
+        <server id="backoffice" cluster="gateway">
+            <public_ip>172.236.28.155</public_ip>
+            <vpc_ip>10.0.0.4</vpc_ip>
+            <services>
+                <service name="api_gateway" port="443" protocol="HTTPS/LFSSL"/>
+                <service name="callback_manager" port="8443" protocol="HTTPS/LFSSL"/>
+            </services>
+            <connection_pool>
+                <size>220</size>
+                <vpc_connections>220</vpc_connections>
+            </connection_pool>
+        </server>
+    </server_registry>
+</kmeans_communication>
+

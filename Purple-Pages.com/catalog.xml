@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Purple-Pages.com - AI-Friendly Documentation Catalog
+kMeans-style clustering for quick AI navigation and understanding
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+<catalog xmlns="https://purple-pages.com/schema/catalog/1.0">
+    <metadata>
+        <title>Purple Pages Documentation Catalog</title>
+        <description>Complete documentation catalog for The Medusa Project ecosystem</description>
+        <version>1.0</version>
+        <lastUpdated>2025-01-27T00:00:00Z</lastUpdated>
+        <totalDocuments>0</totalDocuments>
+        <clusters>
+            <cluster id="tech" name="Technology" count="4"/>
+            <cluster id="category" name="Category" count="6"/>
+            <cluster id="user-type" name="User Type" count="4"/>
+        </clusters>
+    </metadata>
+    
+    <!-- Technology Cluster: Primary technology documentation -->
+    <cluster id="tech" name="Technology" type="primary">
+        <document id="tech-psiforcedb" technology="PsiForceDB" priority="1.0">
+            <title>PsiForceDB Documentation</title>
+            <description>Revolutionary hybrid database combining PostgreSQL, Neo4j, MongoDB, and vector operations</description>
+            <url>https://purple-pages.com/pages/psiforcedb/index.lamia</url>
+            <categories>
+                <category>database</category>
+                <category>hybrid</category>
+                <category>vector</category>
+                <category>graph</category>
+                <category>document</category>
+            </categories>
+            <sections>
+                <section id="psiforcedb-getting-started" url="/pages/psiforcedb/getting-started.lamia" title="Getting Started"/>
+                <section id="psiforcedb-pfql" url="/pages/psiforcedb/pfql.lamia" title="PFQL Query Language"/>
+                <section id="psiforcedb-api" url="/pages/psiforcedb/api.lamia" title="API Reference"/>
+                <section id="psiforcedb-admin" url="/pages/psiforcedb/administration.lamia" title="Administration"/>
+            </sections>
+        </document>
+        
+        <document id="tech-medusaserv" technology="MedusaServ" priority="1.0">
+            <title>MedusaServ Documentation</title>
+            <description>Native C++ web server with TLS 1.3 support. No Apache, no Nginx.</description>
+            <url>https://purple-pages.com/pages/medusaserv/index.lamia</url>
+            <categories>
+                <category>webserver</category>
+                <category>http</category>
+                <category>tls</category>
+                <category>native</category>
+            </categories>
+            <sections>
+                <section id="medusaserv-install" url="/pages/medusaserv/installation.lamia" title="Installation"/>
+                <section id="medusaserv-config" url="/pages/medusaserv/configuration.lamia" title="Configuration"/>
+                <section id="medusaserv-api" url="/pages/medusaserv/api.lamia" title="API Reference"/>
+            </sections>
+        </document>
+        
+        <document id="tech-lfssl" technology="LFSSL" priority="1.0">
+            <title>LFSSL Documentation</title>
+            <description>Native C++ TLS 1.3 implementation with quantum-resistant algorithms</description>
+            <url>https://purple-pages.com/pages/lfssl/index.lamia</url>
+            <categories>
+                <category>security</category>
+                <category>tls</category>
+                <category>cryptography</category>
+                <category>quantum-resistant</category>
+            </categories>
+            <sections>
+                <section id="lfssl-overview" url="/pages/lfssl/index.lamia" title="Overview"/>
+                <section id="lfssl-security" url="/pages/lfssl/security.lamia" title="Security Guide"/>
+            </sections>
+        </document>
+        
+        <document id="tech-lamia" technology="Lamia" priority="1.0">
+            <title>Lamia Documentation</title>
+            <description>Native C++ templating engine for fast, powerful web development</description>
+            <url>https://purple-pages.com/pages/lamia/index.lamia</url>
+            <categories>
+                <category>templating</category>
+                <category>web</category>
+                <category>native</category>
+            </categories>
+            <sections>
+                <section id="lamia-templates" url="/pages/lamia/templates.lamia" title="Template Guide"/>
+                <section id="lamia-syntax" url="/pages/lamia/syntax.lamia" title="Syntax Reference"/>
+            </sections>
+        </document>
+    </cluster>
+    
+    <!-- Category Cluster: Documentation by category -->
+    <cluster id="category" name="Category" type="secondary">
+        <document id="cat-getting-started" category="Getting Started" priority="0.9">
+            <title>Getting Started Guides</title>
+            <description>Quick start guides, installation instructions, and first steps</description>
+            <url>https://purple-pages.com/pages/category/getting-started.lamia</url>
+            <technologies>
+                <tech>PsiForceDB</tech>
+                <tech>MedusaServ</tech>
+                <tech>LFSSL</tech>
+                <tech>Lamia</tech>
+            </technologies>
+            <keywords>
+                <keyword>installation</keyword>
+                <keyword>setup</keyword>
+                <keyword>quickstart</keyword>
+                <keyword>beginner</keyword>
+                <keyword>tutorial</keyword>
+            </keywords>
+        </document>
+        
+        <document id="cat-user-guides" category="User Guides" priority="0.9">
+            <title>User Guides</title>
+            <description>Comprehensive guides for average users, developers, business users, and advanced users</description>
+            <url>https://purple-pages.com/pages/category/user-guides.lamia</url>
+            <userTypes>
+                <userType>beginner</userType>
+                <userType>developer</userType>
+                <userType>business</userType>
+                <userType>advanced</userType>
+            </userTypes>
+            <keywords>
+                <keyword>guide</keyword>
+                <keyword>tutorial</keyword>
+                <keyword>how-to</keyword>
+                <keyword>walkthrough</keyword>
+            </keywords>
+        </document>
+        
+        <document id="cat-api" category="API Documentation" priority="0.9">
+            <title>API Documentation</title>
+            <description>Complete API references, RESTful APIs, IPA endpoints, and integration guides</description>
+            <url>https://purple-pages.com/pages/category/api.lamia</url>
+            <apiTypes>
+                <apiType>REST</apiType>
+                <apiType>IPA</apiType>
+                <apiType>GraphQL</apiType>
+            </apiTypes>
+            <keywords>
+                <keyword>api</keyword>
+                <keyword>endpoint</keyword>
+                <keyword>integration</keyword>
+                <keyword>reference</keyword>
+            </keywords>
+        </document>
+        
+        <document id="cat-administration" category="Administration" priority="0.8">
+            <title>Administration Guides</title>
+            <description>System administration, security best practices, backup and restore, performance tuning</description>
+            <url>https://purple-pages.com/pages/category/administration.lamia</url>
+            <keywords>
+                <keyword>admin</keyword>
+                <keyword>security</keyword>
+                <keyword>backup</keyword>
+                <keyword>performance</keyword>
+                <keyword>configuration</keyword>
+            </keywords>
+        </document>
+        
+        <document id="cat-troubleshooting" category="Troubleshooting" priority="0.8">
+            <title>Troubleshooting Guides</title>
+            <description>Common issues, error codes, debugging guides, and solutions to frequent problems</description>
+            <url>https://purple-pages.com/pages/category/troubleshooting.lamia</url>
+            <keywords>
+                <keyword>troubleshoot</keyword>
+                <keyword>error</keyword>
+                <keyword>debug</keyword>
+                <keyword>fix</keyword>
+                <keyword>solution</keyword>
+            </keywords>
+        </document>
+        
+        <document id="cat-architecture" category="Architecture" priority="0.8">
+            <title>Architecture Documentation</title>
+            <description>System architecture, design patterns, integration guides, and technical deep-dives</description>
+            <url>https://purple-pages.com/pages/category/architecture.lamia</url>
+            <keywords>
+                <keyword>architecture</keyword>
+                <keyword>design</keyword>
+                <keyword>pattern</keyword>
+                <keyword>integration</keyword>
+                <keyword>technical</keyword>
+            </keywords>
+        </document>
+    </cluster>
+    
+    <!-- User Type Cluster: Documentation by user expertise -->
+    <cluster id="user-type" name="User Type" type="secondary">
+        <document id="user-beginner" userType="Beginner" priority="0.9">
+            <title>Beginner Documentation</title>
+            <description>Documentation for users new to The Medusa Project ecosystem</description>
+            <url>https://purple-pages.com/pages/user-type/beginner.lamia</url>
+            <technologies>
+                <tech>PsiForceDB</tech>
+                <tech>MedusaServ</tech>
+                <tech>Lamia</tech>
+            </technologies>
+            <prerequisites>
+                <prerequisite>Basic computer skills</prerequisite>
+                <prerequisite>Understanding of databases (helpful)</prerequisite>
+            </prerequisites>
+        </document>
+        
+        <document id="user-developer" userType="Developer" priority="0.9">
+            <title>Developer Documentation</title>
+            <description>Technical documentation for software developers</description>
+            <url>https://purple-pages.com/pages/user-type/developer.lamia</url>
+            <technologies>
+                <tech>PsiForceDB</tech>
+                <tech>MedusaServ</tech>
+                <tech>LFSSL</tech>
+                <tech>Lamia</tech>
+            </technologies>
+            <prerequisites>
+                <prerequisite>C++ programming knowledge</prerequisite>
+                <prerequisite>Database concepts</prerequisite>
+                <prerequisite>Web development experience</prerequisite>
+            </prerequisites>
+        </document>
+        
+        <document id="user-business" userType="Business" priority="0.8">
+            <title>Business User Documentation</title>
+            <description>Documentation for business users and decision makers</description>
+            <url>https://purple-pages.com/pages/user-type/business.lamia</url>
+            <focus>
+                <focus>ROI</focus>
+                <focus>features</focus>
+                <focus>use-cases</focus>
+                <focus>comparisons</focus>
+            </focus>
+        </document>
+        
+        <document id="user-advanced" userType="Advanced" priority="0.8">
+            <title>Advanced Documentation</title>
+            <description>Advanced topics for experienced users and system administrators</description>
+            <url>https://purple-pages.com/pages/user-type/advanced.lamia</url>
+            <topics>
+                <topic>performance-tuning</topic>
+                <topic>custom-integrations</topic>
+                <topic>architecture-deep-dive</topic>
+                <topic>security-hardening</topic>
+            </topics>
+        </document>
+    </cluster>
+    
+    <!-- Quick Navigation Map for AI -->
+    <navigation>
+        <quickLinks>
+            <link query="install" target="cat-getting-started" weight="1.0"/>
+            <link query="api" target="cat-api" weight="1.0"/>
+            <link query="database" target="tech-psiforcedb" weight="1.0"/>
+            <link query="webserver" target="tech-medusaserv" weight="1.0"/>
+            <link query="security" target="tech-lfssl" weight="1.0"/>
+            <link query="template" target="tech-lamia" weight="1.0"/>
+            <link query="error" target="cat-troubleshooting" weight="0.9"/>
+            <link query="admin" target="cat-administration" weight="0.9"/>
+            <link query="beginner" target="user-beginner" weight="0.9"/>
+            <link query="developer" target="user-developer" weight="0.9"/>
+        </quickLinks>
+        
+        <relationships>
+            <relationship from="tech-psiforcedb" to="cat-getting-started" type="contains" weight="0.8"/>
+            <relationship from="tech-psiforcedb" to="cat-api" type="contains" weight="0.9"/>
+            <relationship from="tech-medusaserv" to="cat-getting-started" type="contains" weight="0.8"/>
+            <relationship from="tech-medusaserv" to="cat-api" type="contains" weight="0.9"/>
+            <relationship from="cat-getting-started" to="user-beginner" type="recommended-for" weight="0.9"/>
+            <relationship from="cat-api" to="user-developer" type="recommended-for" weight="0.9"/>
+        </relationships>
+    </navigation>
+    
+    <!-- Search Index Hints for AI -->
+    <searchIndex>
+        <commonQueries>
+            <query text="how to install" cluster="cat-getting-started" weight="1.0"/>
+            <query text="api reference" cluster="cat-api" weight="1.0"/>
+            <query text="getting started" cluster="cat-getting-started" weight="1.0"/>
+            <query text="troubleshooting" cluster="cat-troubleshooting" weight="0.9"/>
+            <query text="configuration" cluster="cat-administration" weight="0.9"/>
+            <query text="pfql" cluster="tech-psiforcedb" weight="1.0"/>
+            <query text="lamia templates" cluster="tech-lamia" weight="1.0"/>
+        </commonQueries>
+        
+        <synonyms>
+            <synonym term="database" terms="psiforcedb, database, db"/>
+            <synonym term="server" terms="medusaserv, webserver, server"/>
+            <synonym term="security" terms="lfssl, tls, ssl, security"/>
+            <synonym term="template" terms="lamia, template, templating"/>
+            <synonym term="guide" terms="tutorial, guide, how-to, walkthrough"/>
+            <synonym term="api" terms="endpoint, api, rest, ipa"/>
+        </synonyms>
+    </searchIndex>
+</catalog>
+

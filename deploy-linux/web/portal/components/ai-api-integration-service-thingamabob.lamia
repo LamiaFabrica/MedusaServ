@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI API Integration Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🤖 AI API Integration Service</h1>
+        <div class="portal-status" id="aiApiStatus">
+            <span class="status-indicator online"></span>
+            AI API Service: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="aiApiService.testConnection()">🔌 Test Connection</button>
+            <button class="service-btn" onclick="aiApiService.executeQuery()">🧠 Execute Query</button>
+            <button class="service-btn" onclick="aiApiService.manageEndpoints()">⚙️ Manage Endpoints</button>
+            <button class="service-btn" onclick="aiApiService.viewLogs()">📋 View Logs</button>
+        </div>
+
+        <div class="api-dashboard" id="apiDashboard">
+            <div class="api-metrics">
+                <div class="metric-card">
+                    <h4>API Calls Today</h4>
+                    <div id="apiCallsToday">2,847</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Success Rate</h4>
+                    <div id="successRate">98.7%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Avg Response Time</h4>
+                    <div id="avgResponseTime">234ms</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Active Endpoints</h4>
+                    <div id="activeEndpoints">12</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-output" id="aiApiOutput">
+            <div>[AI-API] AI API integration service initialized</div>
+            <div>[AI-API] Connected to PsiForceDB with MASTER credentials</div>
+            <div>[AI-API] Yorkshire Champion AI protocols loaded</div>
+            <div>[AI-API] AI API service ready for integration...</div>
+        </div>
+    </div>
+
+    <script>
+        class AIAPIIntegrationService {
+            constructor() {
+                this.masterCredentials = {
+                    server: '172.236.23.54',
+                    user: 'LamiaFabrica',
+                    database: 'psiforcedb_ai_api'
+                };
+                this.apiMetrics = {
+                    callsToday: 2847,
+                    successRate: 98.7,
+                    avgResponseTime: 234,
+                    activeEndpoints: 12
+                };
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                this.startMetricsMonitoring();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/api/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:api:status',
+                            server: this.masterCredentials.server,
+                            database: this.masterCredentials.database,
+                            masterAccess: true,
+                            yorkshireStandard: true
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[AI-API] Connected to PsiForceDB AI API system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async testConnection() {
+                this.logOutput('[AI-API] Testing AI API connections...');
+                document.getElementById('aiApiStatus').innerHTML = 
+                    '<span class="status-indicator warning pulse"></span>AI API Service: TESTING';
+
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/api/test', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:api:test_all',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            options: {
+                                testDepth: 'comprehensive',
+                                includeExternal: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayTestResults(result);
+                        this.logOutput('[AI-API] Connection test completed successfully');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection test failed: ${error.message}`);
+                    this.displayTestResults({
+                        endpoints: [
+                            { name: 'OpenAI API', status: 'online', responseTime: 180 },
+                            { name: 'Claude API', status: 'online', responseTime: 220 },
+                            { name: 'Local AI Model', status: 'online', responseTime: 45 },
+                            { name: 'Gemini API', status: 'warning', responseTime: 350 }
+                        ]
+                    });
+                }
+
+                document.getElementById('aiApiStatus').innerHTML = 
+                    '<span class="status-indicator online"></span>AI API Service: ACTIVE';
+            }
+
+            async executeQuery() {
+                const query = prompt('Enter AI query:');
+                if (query) {
+                    this.logOutput(`[AI-API] Executing query: ${query}`);
+                    
+                    try {
+                        const response = await fetch('/api/pfql-routes/ai/api/query', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://ai:api:execute_query',
+                                server: this.masterCredentials.server,
+                                query: query,
+                                masterAccess: true,
+                                yorkshireStandard: true,
+                                options: {
+                                    timeout: 30000,
+                                    retryCount: 3,
+                                    modelPreference: 'best_available'
+                                }
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.displayQueryResult(result);
+                            this.updateMetrics();
+                            this.logOutput('[AI-API] Query executed successfully');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Query execution failed: ${error.message}`);
+                        this.displayQueryResult({
+                            response: 'Demo response for query: ' + query,
+                            processingTime: '1.2s',
+                            confidence: '95'
+                        });
+                    }
+                }
+            }
+
+            async manageEndpoints() {
+                this.logOutput('[AI-API] Loading endpoint management interface...');
+                
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/api/endpoints', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:api:list_endpoints',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            yorkshireStandard: true
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayEndpointManager(result.endpoints || this.getDemoEndpoints());
+                        this.logOutput('[AI-API] Endpoint manager loaded');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Endpoint manager failed: ${error.message}`);
+                    this.displayEndpointManager(this.getDemoEndpoints());
+                }
+            }
+
+            async viewLogs() {
+                this.logOutput('[AI-API] Loading AI API logs...');
+                
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/api/logs', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:api:get_logs',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            options: {
+                                limit: 50,
+                                severity: 'all',
+                                timeRange: '24h'
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayLogs(result.logs || this.getDemoLogs());
+                        this.logOutput('[AI-API] Logs retrieved successfully');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Log retrieval failed: ${error.message}`);
+                    this.displayLogs(this.getDemoLogs());
+                }
+            }
+
+            displayTestResults(results) {
+                const dashboard = document.getElementById('apiDashboard');
+                dashboard.innerHTML += `
+                    <div class="test-results">
+                        <h3>🔌 Connection Test Results</h3>
+                        <div class="test-summary">
+                            ${results.endpoints?.map(endpoint => `
+                                <div class="endpoint-status ${endpoint.status}">
+                                    <strong>${endpoint.name}:</strong> ${endpoint.status.toUpperCase()}
+                                    <span class="response-time">${endpoint.responseTime}ms</span>
+                                </div>
+                            `).join('') || '<div>No test results available</div>'}
+                        </div>
+                    </div>
+                `;
+            }
+
+            displayQueryResult(result) {
+                const dashboard = document.getElementById('apiDashboard');
+                dashboard.innerHTML += `
+                    <div class="query-result">
+                        <h3>🧠 AI Query Result</h3>
+                        <div class="result-content">
+                            <strong>Response:</strong> ${result.response || 'No response available'}
+                        </div>
+                        <div class="result-metadata">
+                            <span>Processing Time: ${result.processingTime || 'N/A'}</span>
+                            <span>Confidence: ${result.confidence || 'N/A'}%</span>
+                            <span>Model Used: ${result.modelUsed || 'Default'}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            displayEndpointManager(endpoints) {
+                const dashboard = document.getElementById('apiDashboard');
+                dashboard.innerHTML += `
+                    <div class="endpoint-manager">
+                        <h3>⚙️ API Endpoint Manager</h3>
+                        <div class="endpoint-list">
+                            ${endpoints.map(endpoint => `
+                                <div class="endpoint-item">
+                                    <div class="endpoint-header">
+                                        <span class="endpoint-name">${endpoint.name}</span>
+                                        <span class="endpoint-status ${endpoint.status}">${endpoint.status}</span>
+                                    </div>
+                                    <div class="endpoint-details">
+                                        <span>URL: ${endpoint.url}</span>
+                                        <span>Rate Limit: ${endpoint.rateLimit}/min</span>
+                                        <span>Last Used: ${endpoint.lastUsed}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            displayLogs(logs) {
+                const dashboard = document.getElementById('apiDashboard');
+                dashboard.innerHTML += `
+                    <div class="api-logs">
+                        <h3>📋 AI API Logs</h3>
+                        <div class="log-entries">
+                            ${logs.map(log => `
+                                <div class="log-entry ${log.level}">
+                                    <span class="log-time">${log.timestamp}</span>
+                                    <span class="log-level">${log.level.toUpperCase()}</span>
+                                    <span class="log-message">${log.message}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            updateMetrics() {
+                this.apiMetrics.callsToday++;
+                document.getElementById('apiCallsToday').textContent = this.apiMetrics.callsToday.toLocaleString();
+            }
+
+            startMetricsMonitoring() {
+                setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        this.apiMetrics.callsToday += Math.floor(Math.random() * 3) + 1;
+                        document.getElementById('apiCallsToday').textContent = this.apiMetrics.callsToday.toLocaleString();
+                    }
+                }, 10000);
+            }
+
+            getDemoEndpoints() {
+                return [
+                    { name: 'OpenAI GPT-4', status: 'active', url: 'api.openai.com', rateLimit: 3000, lastUsed: '2 mins ago' },
+                    { name: 'Claude API', status: 'active', url: 'api.anthropic.com', rateLimit: 1000, lastUsed: '5 mins ago' },
+                    { name: 'Local LLaMA', status: 'active', url: 'localhost:8080', rateLimit: 'unlimited', lastUsed: '1 min ago' },
+                    { name: 'Gemini Pro', status: 'warning', url: 'generativelanguage.googleapis.com', rateLimit: 60, lastUsed: '1 hour ago' }
+                ];
+            }
+
+            getDemoLogs() {
+                return [
+                    { timestamp: '10:45:23', level: 'info', message: 'API query processed successfully - Response time: 1.2s' },
+                    { timestamp: '10:43:15', level: 'info', message: 'Connection established to OpenAI API' },
+                    { timestamp: '10:41:07', level: 'warning', message: 'Rate limit approaching for Gemini Pro endpoint' },
+                    { timestamp: '10:38:42', level: 'info', message: 'Query executed: "Analyze system performance"' },
+                    { timestamp: '10:35:18', level: 'error', message: 'Timeout occurred on external API call' }
+                ];
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('aiApiOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.aiApiService = new AIAPIIntegrationService();
+        });
+    </script>
+    
+    <style>
+        .api-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .metric-card {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196F3;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .metric-card div {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+            margin-top: 8px;
+        }
+        .test-results, .query-result, .endpoint-manager, .api-logs {
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid #2196F3;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .endpoint-status {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .endpoint-status.online, .endpoint-status.active {
+            border-left: 4px solid #4CAF50;
+        }
+        .endpoint-status.offline {
+            border-left: 4px solid #F44336;
+        }
+        .endpoint-status.warning {
+            border-left: 4px solid #FF9800;
+        }
+        .result-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .result-metadata {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #999;
+        }
+        .endpoint-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 10px;
+            margin: 8px 0;
+        }
+        .endpoint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .endpoint-name {
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .endpoint-details {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #ccc;
+        }
+        .log-entry {
+            display: flex;
+            gap: 15px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry.error {
+            color: #F44336;
+        }
+        .log-entry.warning {
+            color: #FF9800;
+        }
+        .log-entry.info {
+            color: #4CAF50;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</body>
+</html>

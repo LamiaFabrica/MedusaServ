@@ -1,0 +1,5 @@
+{
+  "_readme": "FRONTIER queue — Kimi K3 only, consumed by NO automated lane. Entries arrive via tools/escalate_to_frontier.py after the K2.7 kimi lane exhausts 3 kickbacks at 0%. Hostile quality bar: 97.5/100 (owner ruling 2026-08-09) — K3 is reserved for the eye-wateringly difficult maths and logic.",
+  "bar": "97.5/100 hostile",
+  "queue": []
+}

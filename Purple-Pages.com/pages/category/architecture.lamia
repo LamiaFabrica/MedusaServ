@@ -1,0 +1,159 @@
+<!--
+Purple-Pages.com - Architecture Category Page
+All architecture documentation across technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_category_architecture() {
+    include "base.lamia" {
+        title: "Architecture Documentation - Purple Pages"
+        description: "System architecture, design patterns, integration guides, and technical deep-dives for all Medusa Project technologies"
+        keywords: "architecture, design, patterns, integration, technical, deep-dive, system design"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/category/architecture.lamia") {
+                            "Architecture"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "category-hero") {
+            div(class: "category-hero-content") {
+                h1 {
+                    "🏗️ Architecture"
+                }
+                p(class: "category-description") {
+                    "System architecture, design patterns, integration guides, and technical deep-dives"
+                }
+            }
+        }
+        
+        // Architecture Documentation by Technology
+        section(class: "category-content") {
+            div(class: "category-container") {
+                // PsiForceDB Architecture
+                div(class: "arch-tech-section") {
+                    h2 {
+                        "🦕 PsiForceDB Architecture"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/architecture/overview.lamia", class: "guide-card") {
+                            h3 {
+                                "System Architecture"
+                            }
+                            p {
+                                "Complete PsiForceDB architecture overview"
+                            }
+                            span(class: "guide-badge") {
+                                "Overview"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/architecture/hybrid-design.lamia", class: "guide-card") {
+                            h3 {
+                                "Hybrid Database Design"
+                            }
+                            p {
+                                "How PostgreSQL, Neo4j, MongoDB integrate"
+                            }
+                            span(class: "guide-badge") {
+                                "Design"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/architecture/vector-operations.lamia", class: "guide-card") {
+                            h3 {
+                                "Vector Operations"
+                            }
+                            p {
+                                "Vector database architecture"
+                            }
+                            span(class: "guide-badge") {
+                                "Advanced"
+                            }
+                        }
+                    }
+                }
+                
+                // MedusaServ Architecture
+                div(class: "arch-tech-section") {
+                    h2 {
+                        "🌐 MedusaServ Architecture"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/medusaserv/architecture/overview.lamia", class: "guide-card") {
+                            h3 {
+                                "Server Architecture"
+                            }
+                            p {
+                                "MedusaServ architecture and design"
+                            }
+                            span(class: "guide-badge") {
+                                "Overview"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/architecture/request-flow.lamia", class: "guide-card") {
+                            h3 {
+                                "Request Flow"
+                            }
+                            p {
+                                "How requests are processed"
+                            }
+                            span(class: "guide-badge") {
+                                "Flow"
+                            }
+                        }
+                    }
+                }
+                
+                // Stack Architecture
+                div(class: "arch-tech-section") {
+                    h2 {
+                        "🔗 Stack Integration"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/architecture/stack-overview.lamia", class: "guide-card") {
+                            h3 {
+                                "100% Native C++ Stack"
+                            }
+                            p {
+                                "Complete stack architecture"
+                            }
+                            span(class: "guide-badge") {
+                                "Stack"
+                            }
+                        }
+                        
+                        a(href: "/pages/architecture/integration-patterns.lamia", class: "guide-card") {
+                            h3 {
+                                "Integration Patterns"
+                            }
+                            p {
+                                "How components integrate"
+                            }
+                            span(class: "guide-badge") {
+                                "Patterns"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

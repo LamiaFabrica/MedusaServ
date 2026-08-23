@@ -1,0 +1,47 @@
+20a21
+> #include <iostream>
+21a23,24
+> #include <lfssl/crypto/random.hpp>   // secure_random_bytes — CSPRNG password draws
+> #include <lfssl/crypto/sha256.hpp>   // SHA256::hash_hex — canonical hex digest
+35c38,39
+<     // Generate cryptographically secure random password
+---
+>     // Generate cryptographically secure random password via LFSSL CSPRNG.
+>     // Rejection sampling keeps the 84-character alphabet unbiased.
+37c41
+<         const char charset[] =
+---
+>         static const char charset[] =
+42,45c46,47
+< 
+<         std::random_device rd;
+<         std::mt19937 gen(rd());
+<         std::uniform_int_distribution<> dis(0, sizeof(charset) - 2);
+---
+>         constexpr size_t CHARSET_SIZE = sizeof(charset) - 1;          // 84
+>         constexpr unsigned LIMIT = 256 - (256 % CHARSET_SIZE);        // 252
+48,50c50,59
+<         password.reserve(length);
+<         for (int i = 0; i < length; i++) {
+<             password += charset[dis(gen)];
+---
+>         password.reserve(static_cast<size_t>(length));
+>         while (password.size() < static_cast<size_t>(length)) {
+>             // Fail-closed: throws if the system CSPRNG cannot provide bytes.
+>             const std::vector<uint8_t> draw = LFSSL::Crypto::secure_random_bytes(32);
+>             for (uint8_t b : draw) {
+>                 if (password.size() >= static_cast<size_t>(length)) break;
+>                 if (b < LIMIT) {
+>                     password += charset[b % CHARSET_SIZE];
+>                 }
+>             }
+55c64
+<     // SHA-256 hash with salt using LFSSL (no OpenSSL)
+---
+>     // SHA-256 hash with salt using canonical LFSSL (hex digest, unchanged format)
+58,60c67
+<         // Use LFSSL SHA256 instead of OpenSSL
+<         std::string hash_hex = LFSSL::Crypto::SHA256::hash(salted);
+<         return hash_hex;
+---
+>         return LFSSL::Crypto::SHA256::hash_hex(salted);

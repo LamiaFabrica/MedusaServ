@@ -1,0 +1,13 @@
+[VirtualHost]
+name=default_https
+server_name=example.com
+document_root=/var/www/html
+port=443
+enabled=true
+
+[SSL]
+enabled=true
+certificate=
+private_key=
+ca_certificate=
+force_https=true

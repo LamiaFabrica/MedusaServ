@@ -1,0 +1,100 @@
+# Installable Portal Virtual Host Configuration
+# © 2025 D Hargreaves (Roylepython) - The Medusa Project
+
+<VirtualHost *:8080>
+    ServerName portal.local
+    ServerAlias localhost
+    DocumentRoot /opt/medusaserv/web/installable-portal/web/portal
+    
+    # Lamia template engine
+    AddHandler lamia-handler .lamia
+    
+    # Portal-specific routing
+    <LocationMatch "^/portal/">
+        SetHandler portal-handler
+        PortalHandler installable_portal
+    </LocationMatch>
+    
+    # PFQL API
+    <LocationMatch "^/api/pfql">
+        SetHandler pfql-handler
+        PFQLHandler pfql-handler.cpp
+    </LocationMatch>
+    
+    # Admin panel
+    <LocationMatch "^/panel/">
+        SetHandler portal-handler
+        PortalHandler installable_portal
+        Require auth
+    </LocationMatch>
+    
+    # Static files
+    <Directory "/opt/medusaserv/web/installable-portal/web/portal">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Assets
+    <Directory "/opt/medusaserv/web/installable-portal/web/assets">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Logging
+    ErrorLog /var/log/medusaserv/portal.local_error.log
+    CustomLog /var/log/medusaserv/portal.local_access.log combined
+</VirtualHost>
+
+<VirtualHost *:8443>
+    ServerName portal.local
+    ServerAlias localhost
+    DocumentRoot /opt/medusaserv/web/installable-portal/web/portal
+    
+    # LFSSL Configuration
+    SSLEngine on
+    SSLCertificateFile /opt/medusaserv/config/ssl/portal.local.crt
+    SSLCertificateKeyFile /opt/medusaserv/config/ssl/portal.local.key
+    SSLProtocol TLSv1.3
+    SSLCipherSuite TLS_AES_256_GCM_SHA384
+    
+    # Lamia template engine
+    AddHandler lamia-handler .lamia
+    
+    # Portal-specific routing
+    <LocationMatch "^/portal/">
+        SetHandler portal-handler
+        PortalHandler installable_portal
+    </LocationMatch>
+    
+    # PFQL API
+    <LocationMatch "^/api/pfql">
+        SetHandler pfql-handler
+        PFQLHandler pfql-handler.cpp
+    </LocationMatch>
+    
+    # Admin panel
+    <LocationMatch "^/panel/">
+        SetHandler portal-handler
+        PortalHandler installable_portal
+        Require auth
+    </LocationMatch>
+    
+    # Static files
+    <Directory "/opt/medusaserv/web/installable-portal/web/portal">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Security headers
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Logging
+    ErrorLog /var/log/medusaserv/portal.local_ssl_error.log
+    CustomLog /var/log/medusaserv/portal.local_ssl_access.log combined
+</VirtualHost>
+

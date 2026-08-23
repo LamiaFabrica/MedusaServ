@@ -1,0 +1,41 @@
+<!--
+Purple-Pages.com - Admin Stats API
+Returns dashboard statistics
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_admin_stats_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify admin access
+    if (!verify_admin_access()) {
+        return response(401, json({
+            "error": "Unauthorized",
+            "message": "Admin access required"
+        }));
+    }
+    
+    // Calculate stats
+    total_pages = count_lamia_pages();
+    search_queries = get_search_query_count();
+    active_users = get_active_user_count();
+    doc_files = count_documentation_files();
+    
+    return response(200, json({
+        "success": true,
+        "stats": {
+            "total_pages": total_pages,
+            "search_queries": search_queries,
+            "active_users": active_users,
+            "doc_files": doc_files
+        }
+    }));
+}
+

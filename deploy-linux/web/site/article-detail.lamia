@@ -1,0 +1,807 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+ARTICLE DETAIL TEMPLATE - DYNAMIC CONTENT RENDERING
+==================================================
+
+This template provides a dynamic article detail page with rich content, related articles, and interactive features
+-->
+
+manifest article_detail_template() {
+    // SEO META TAGS
+    meta {
+        title: "{{article.title}} | Medusa Ecosystem Blog"
+        description: "{{article.excerpt}}"
+        keywords: "{{article.tags}}, lamia, medusaserv, lamia fabrica, programming, technology"
+        author: "{{article.author}}"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+    }
+
+    // OPEN GRAPH & TWITTER CARDS
+    social {
+        og_title: "{{article.title}}"
+        og_description: "{{article.excerpt}}"
+        og_image: "{{article.featured_image}}"
+        og_url: "https://poweredbymedusa.com/articles/{{article.slug}}"
+        twitter_card: "summary_large_image"
+        twitter_creator: "@Roylepython"
+    }
+
+    // STRUCTURED DATA
+    structured_data {
+        type: "Article"
+        name: "{{article.title}}"
+        description: "{{article.excerpt}}"
+        url: "https://poweredbymedusa.com/articles/{{article.slug}}"
+        author: "{{article.author}}"
+        date_published: "{{article.published_date}}"
+        date_modified: "{{article.modified_date}}"
+        image: "{{article.featured_image}}"
+    }
+
+    // INCLUDE HEADER, MENU, FOOTER, COPYRIGHT
+    include "header.lamia"
+    include "menu.lamia"
+
+    // ARTICLE HERO SECTION
+    section article_hero {
+        background: "linear-gradient(135deg, #8B3F8B 0%, #6B2B6B 100%)"
+        padding: "120px 0 80px"
+        margin_top: "200px"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            
+            breadcrumb {
+                display: "flex"
+                align_items: "center"
+                gap: "0.5rem"
+                margin_bottom: "2rem"
+                color: "white"
+                opacity: "0.8"
+                
+                link {
+                    color: "white"
+                    text_decoration: "none"
+                    hover: "opacity: 0.7"
+                    text: "Home"
+                    url: "index.lamia"
+                }
+                
+                separator: "→"
+                
+                link {
+                    text: "Articles"
+                    url: "articles.lamia"
+                }
+                
+                separator: "→"
+                
+                current: "{{article.title}}"
+            }
+            
+            article_header {
+                text_align: "center"
+                margin_bottom: "3rem"
+                
+                category_badge {
+                    display: "inline-block"
+                    background: "rgba(255, 255, 255, 0.2)"
+                    color: "white"
+                    padding: "0.5rem 1.5rem"
+                    border_radius: "25px"
+                    font_size: "0.9rem"
+                    font_weight: "600"
+                    margin_bottom: "2rem"
+                    text: "{{article.category}}"
+                }
+                
+                title {
+                    text: "{{article.title}}"
+                    size: "3.5rem"
+                    weight: "800"
+                    margin_bottom: "2rem"
+                    line_height: "1.2"
+                    color: "white"
+                }
+                
+                excerpt {
+                    text: "{{article.excerpt}}"
+                    size: "1.3rem"
+                    margin_bottom: "2rem"
+                    opacity: "0.9"
+                    max_width: "800px"
+                    margin: "0 auto 2rem"
+                    color: "white"
+                }
+                
+                article_meta {
+                    display: "flex"
+                    justify_content: "center"
+                    align_items: "center"
+                    gap: "2rem"
+                    flex_wrap: "wrap"
+                    
+                    author {
+                        display: "flex"
+                        align_items: "center"
+                        gap: "1rem"
+                        
+                        avatar {
+                            width: "50px"
+                            height: "50px"
+                            border_radius: "50%"
+                            background: "rgba(255, 255, 255, 0.2)"
+                            display: "flex"
+                            align_items: "center"
+                            justify_content: "center"
+                            font_size: "1.5rem"
+                            color: "white"
+                        }
+                        
+                        info {
+                            display: "flex"
+                            flex_direction: "column"
+                            gap: "0.25rem"
+                            
+                            name {
+                                font_weight: "600"
+                                color: "white"
+                                font_size: "1.1rem"
+                                text: "{{article.author}}"
+                            }
+                            
+                            date {
+                                color: "white"
+                                opacity: "0.8"
+                                font_size: "0.9rem"
+                                text: "{{article.published_date}}"
+                            }
+                        }
+                    }
+                    
+                    reading_stats {
+                        display: "flex"
+                        gap: "1.5rem"
+                        
+                        stat {
+                            display: "flex"
+                            align_items: "center"
+                            gap: "0.5rem"
+                            color: "white"
+                            opacity: "0.8"
+                            
+                            reading_time: "⏱️ {{article.reading_time}} min read"
+                            views: "👁️ {{article.views}} views"
+                            likes: "❤️ {{article.likes}} likes"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ARTICLE CONTENT SECTION
+    section article_content {
+        background: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "900px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            
+            content_wrapper {
+                display: "grid"
+                grid_template_columns: "1fr 300px"
+                gap: "3rem"
+                
+                main_content {
+                    article_body {
+                        font_size: "1.1rem"
+                        line_height: "1.8"
+                        color: "#333"
+                        
+                        // Dynamic content rendering
+                        content: "{{article.content}}"
+                        
+                        // Example content structure
+                        paragraph {
+                            margin_bottom: "1.5rem"
+                            text: "This is where the dynamic article content will be rendered. The content can include rich formatting, code blocks, images, and interactive elements."
+                        }
+                        
+                        heading {
+                            size: "2rem"
+                            weight: "700"
+                            color: "#8B3F8B"
+                            margin: "3rem 0 1.5rem"
+                            text: "Getting Started"
+                        }
+                        
+                        code_block {
+                            background: "#f8f9fa"
+                            border: "2px solid #e9ecef"
+                            border_radius: "10px"
+                            padding: "1.5rem"
+                            margin: "2rem 0"
+                            font_family: "monospace"
+                            overflow_x: "auto"
+                            
+                            language: "lamia"
+                            code: "manifest hello_world() {\n    print('Hello, World!');\n}"
+                        }
+                        
+                        image {
+                            width: "100%"
+                            border_radius: "10px"
+                            margin: "2rem 0"
+                            box_shadow: "0 5px 15px rgba(0, 0, 0, 0.1)"
+                            src: "{{article.featured_image}}"
+                            alt: "{{article.title}}"
+                        }
+                        
+                        blockquote {
+                            background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)"
+                            border_left: "4px solid #8B3F8B"
+                            padding: "1.5rem"
+                            margin: "2rem 0"
+                            font_style: "italic"
+                            font_size: "1.1rem"
+                            color: "#666"
+                            text: "This is an important quote or highlight from the article that deserves special attention."
+                        }
+                    }
+                    
+                    article_tags {
+                        display: "flex"
+                        flex_wrap: "wrap"
+                        gap: "0.75rem"
+                        margin: "3rem 0"
+                        padding: "2rem 0"
+                        border_top: "2px solid #f0f0f0"
+                        border_bottom: "2px solid #f0f0f0"
+                        
+                        tag {
+                            background: "#f8f9fa"
+                            color: "#666"
+                            padding: "0.5rem 1rem"
+                            border_radius: "20px"
+                            font_size: "0.9rem"
+                            text_decoration: "none"
+                            transition: "all 0.3s ease"
+                            hover: "background: #8B3F8B; color: white"
+                            
+                            lamia: "Lamia"
+                            programming: "Programming"
+                            tutorial: "Tutorial"
+                            featured: "Featured"
+                        }
+                    }
+                    
+                    article_actions {
+                        display: "flex"
+                        justify_content: "space-between"
+                        align_items: "center"
+                        margin: "3rem 0"
+                        
+                        share_buttons {
+                            display: "flex"
+                            gap: "1rem"
+                            
+                            button {
+                                display: "flex"
+                                align_items: "center"
+                                gap: "0.5rem"
+                                padding: "0.75rem 1.5rem"
+                                border: "2px solid #e9ecef"
+                                background: "white"
+                                border_radius: "25px"
+                                cursor: "pointer"
+                                transition: "all 0.3s ease"
+                                font_size: "0.9rem"
+                                
+                                hover: "border-color: #8B3F8B; background: rgba(139, 63, 139, 0.1)"
+                                
+                                twitter: "🐦 Twitter"
+                                facebook: "📘 Facebook"
+                                linkedin: "💼 LinkedIn"
+                                copy: "📋 Copy Link"
+                            }
+                        }
+                        
+                        like_button {
+                            display: "flex"
+                            align_items: "center"
+                            gap: "0.5rem"
+                            padding: "0.75rem 1.5rem"
+                            background: "#ff6b00"
+                            color: "white"
+                            border: "none"
+                            border_radius: "25px"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            font_size: "0.9rem"
+                            font_weight: "600"
+                            hover: "background: #e55a00; transform: translateY(-2px)"
+                            
+                            icon: "❤️"
+                            text: "Like Article"
+                            count: "({{article.likes}})"
+                        }
+                    }
+                }
+                
+                sidebar {
+                    position: "sticky"
+                    top: "2rem"
+                    height: "fit-content"
+                    
+                    table_of_contents {
+                        background: "#f8f9fa"
+                        border_radius: "15px"
+                        padding: "2rem"
+                        margin_bottom: "2rem"
+                        
+                        title {
+                            font_size: "1.2rem"
+                            font_weight: "600"
+                            color: "#333"
+                            margin_bottom: "1.5rem"
+                            text: "Table of Contents"
+                        }
+                        
+                        toc_list {
+                            display: "flex"
+                            flex_direction: "column"
+                            gap: "0.75rem"
+                            
+                            link {
+                                display: "block"
+                                padding: "0.5rem 0"
+                                color: "#666"
+                                text_decoration: "none"
+                                border_bottom: "1px solid #e9ecef"
+                                transition: "color 0.3s ease"
+                                hover: "color: #8B3F8B"
+                                
+                                introduction: "Introduction"
+                                getting_started: "Getting Started"
+                                installation: "Installation"
+                                basic_usage: "Basic Usage"
+                                advanced_features: "Advanced Features"
+                                conclusion: "Conclusion"
+                            }
+                        }
+                    }
+                    
+                    author_card {
+                        background: "white"
+                        border: "2px solid #e9ecef"
+                        border_radius: "15px"
+                        padding: "2rem"
+                        margin_bottom: "2rem"
+                        
+                        author_info {
+                            display: "flex"
+                            align_items: "center"
+                            gap: "1rem"
+                            margin_bottom: "1.5rem"
+                            
+                            avatar {
+                                width: "60px"
+                                height: "60px"
+                                border_radius: "50%"
+                                background: "#8B3F8B"
+                                display: "flex"
+                                align_items: "center"
+                                justify_content: "center"
+                                font_size: "1.5rem"
+                                color: "white"
+                            }
+                            
+                            details {
+                                name {
+                                    font_size: "1.1rem"
+                                    font_weight: "600"
+                                    color: "#333"
+                                    margin_bottom: "0.25rem"
+                                    text: "{{article.author}}"
+                                }
+                                
+                                role {
+                                    font_size: "0.9rem"
+                                    color: "#666"
+                                    text: "Lead Developer"
+                                }
+                            }
+                        }
+                        
+                        bio {
+                            color: "#666"
+                            line_height: "1.6"
+                            margin_bottom: "1.5rem"
+                            text: "Passionate developer and creator of the Medusa ecosystem. Dedicated to revolutionizing programming and web development."
+                        }
+                        
+                        social_links {
+                            display: "flex"
+                            gap: "1rem"
+                            
+                            link {
+                                display: "flex"
+                                align_items: "center"
+                                justify_content: "center"
+                                width: "40px"
+                                height: "40px"
+                                background: "#f8f9fa"
+                                border_radius: "50%"
+                                color: "#666"
+                                text_decoration: "none"
+                                transition: "all 0.3s ease"
+                                hover: "background: #8B3F8B; color: white"
+                                
+                                twitter: "🐦"
+                                github: "🐙"
+                                linkedin: "💼"
+                            }
+                        }
+                    }
+                    
+                    related_articles {
+                        background: "#f8f9fa"
+                        border_radius: "15px"
+                        padding: "2rem"
+                        
+                        title {
+                            font_size: "1.2rem"
+                            font_weight: "600"
+                            color: "#333"
+                            margin_bottom: "1.5rem"
+                            text: "Related Articles"
+                        }
+                        
+                        article_list {
+                            display: "flex"
+                            flex_direction: "column"
+                            gap: "1rem"
+                            
+                            article_item {
+                                display: "block"
+                                padding: "1rem"
+                                background: "white"
+                                border_radius: "10px"
+                                text_decoration: "none"
+                                transition: "all 0.3s ease"
+                                hover: "transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1)"
+                                
+                                title {
+                                    font_size: "0.9rem"
+                                    font_weight: "600"
+                                    color: "#333"
+                                    margin_bottom: "0.5rem"
+                                    line_height: "1.3"
+                                    text: "Getting Started with Lamia Programming"
+                                }
+                                
+                                date {
+                                    font_size: "0.8rem"
+                                    color: "#999"
+                                    text: "2 days ago"
+                                }
+                            }
+                            
+                            article_item {
+                                title: "MedusaServ Performance Optimization Guide"
+                                date: "1 week ago"
+                            }
+                            
+                            article_item {
+                                title: "Advanced 3D GIF Creation Techniques"
+                                date: "2 weeks ago"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // COMMENTS SECTION
+    section comments {
+        background: "#f8f9fa"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "900px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            
+            title {
+                text: "Comments & Discussion"
+                size: "2rem"
+                weight: "700"
+                color: "#333"
+                margin_bottom: "2rem"
+            }
+            
+            comment_form {
+                background: "white"
+                border_radius: "15px"
+                padding: "2rem"
+                margin_bottom: "3rem"
+                box_shadow: "0 5px 15px rgba(0, 0, 0, 0.1)"
+                
+                form_title {
+                    font_size: "1.2rem"
+                    font_weight: "600"
+                    color: "#333"
+                    margin_bottom: "1.5rem"
+                    text: "Join the Discussion"
+                }
+                
+                form {
+                    display: "flex"
+                    flex_direction: "column"
+                    gap: "1.5rem"
+                    
+                    textarea {
+                        width: "100%"
+                        min_height: "120px"
+                        padding: "1rem"
+                        border: "2px solid #e9ecef"
+                        border_radius: "10px"
+                        font_size: "1rem"
+                        font_family: "inherit"
+                        resize: "vertical"
+                        placeholder: "Share your thoughts, ask questions, or provide feedback..."
+                        transition: "border-color 0.3s ease"
+                        focus: "border-color: #8B3F8B; outline: none"
+                    }
+                    
+                    submit_button {
+                        align_self: "flex-start"
+                        background: "#8B3F8B"
+                        color: "white"
+                        padding: "1rem 2rem"
+                        border: "none"
+                        border_radius: "25px"
+                        font_size: "1rem"
+                        font_weight: "600"
+                        cursor: "pointer"
+                        transition: "all 0.3s ease"
+                        hover: "background: #6B2B6B; transform: translateY(-2px)"
+                        text: "Post Comment"
+                    }
+                }
+            }
+            
+            comments_list {
+                display: "flex"
+                flex_direction: "column"
+                gap: "1.5rem"
+                
+                comment {
+                    background: "white"
+                    border_radius: "15px"
+                    padding: "1.5rem"
+                    box_shadow: "0 2px 10px rgba(0, 0, 0, 0.05)"
+                    
+                    comment_header {
+                        display: "flex"
+                        justify_content: "space-between"
+                        align_items: "center"
+                        margin_bottom: "1rem"
+                        
+                        author {
+                            display: "flex"
+                            align_items: "center"
+                            gap: "0.75rem"
+                            
+                            avatar {
+                                width: "40px"
+                                height: "40px"
+                                border_radius: "50%"
+                                background: "#8B3F8B"
+                                display: "flex"
+                                align_items: "center"
+                                justify_content: "center"
+                                color: "white"
+                                font_weight: "600"
+                            }
+                            
+                            info {
+                                name {
+                                    font_weight: "600"
+                                    color: "#333"
+                                    font_size: "1rem"
+                                    text: "John Developer"
+                                }
+                                
+                                date {
+                                    font_size: "0.8rem"
+                                    color: "#999"
+                                    text: "2 hours ago"
+                                }
+                            }
+                        }
+                        
+                        actions {
+                            display: "flex"
+                            gap: "0.5rem"
+                            
+                            button {
+                                background: "none"
+                                border: "none"
+                                color: "#666"
+                                cursor: "pointer"
+                                font_size: "0.8rem"
+                                transition: "color 0.3s ease"
+                                hover: "color: #8B3F8B"
+                                
+                                reply: "Reply"
+                                like: "Like"
+                            }
+                        }
+                    }
+                    
+                    content {
+                        color: "#333"
+                        line_height: "1.6"
+                        margin_bottom: "1rem"
+                        text: "This is an excellent article! The explanations are clear and the examples are very helpful. I'm excited to try out these new features."
+                    }
+                    
+                    likes {
+                        display: "flex"
+                        align_items: "center"
+                        gap: "0.5rem"
+                        font_size: "0.8rem"
+                        color: "#666"
+                        
+                        count: "5 likes"
+                    }
+                }
+                
+                comment {
+                    comment_header {
+                        author {
+                            info {
+                                name: "Sarah Coder"
+                                date: "1 day ago"
+                            }
+                        }
+                    }
+                    
+                    content: "Great tutorial! I've been looking for something like this. The step-by-step approach makes it easy to follow along."
+                    
+                    likes {
+                        count: "3 likes"
+                    }
+                }
+            }
+        }
+    }
+
+    // RELATED ARTICLES SECTION
+    section related_articles {
+        background: "white"
+        padding: "4rem 0"
+        
+        container {
+            max_width: "1200px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            
+            title {
+                text: "Related Articles"
+                size: "2.5rem"
+                weight: "700"
+                color: "#8B3F8B"
+                text_align: "center"
+                margin_bottom: "1rem"
+            }
+            
+            subtitle {
+                text: "Continue your learning journey with these related articles"
+                size: "1.1rem"
+                color: "#666"
+                text_align: "center"
+                max_width: "600px"
+                margin: "0 auto 3rem"
+            }
+            
+            articles_grid {
+                display: "grid"
+                grid_template_columns: "repeat(auto-fit, minmax(300px, 1fr))"
+                gap: "2rem"
+                
+                article_card {
+                    background: "white"
+                    border_radius: "15px"
+                    overflow: "hidden"
+                    box_shadow: "0 5px 15px rgba(0, 0, 0, 0.1)"
+                    transition: "all 0.3s ease"
+                    hover_effect: "transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15)"
+                    
+                    image {
+                        width: "100%"
+                        height: "200px"
+                        object_fit: "cover"
+                        background: "linear-gradient(135deg, #6B2B6B 0%, #2a1a2a 100%)"
+                    }
+                    
+                    content {
+                        padding: "1.5rem"
+                        
+                        category {
+                            background: "#ff6b00"
+                            color: "white"
+                            padding: "0.25rem 0.75rem"
+                            border_radius: "15px"
+                            font_size: "0.8rem"
+                            font_weight: "600"
+                            display: "inline-block"
+                            margin_bottom: "1rem"
+                            text: "Tutorial"
+                        }
+                        
+                        title {
+                            font_size: "1.2rem"
+                            font_weight: "600"
+                            color: "#333"
+                            margin_bottom: "1rem"
+                            line_height: "1.3"
+                            text: "Advanced Lamia Programming Techniques"
+                        }
+                        
+                        excerpt {
+                            color: "#666"
+                            line_height: "1.5"
+                            margin_bottom: "1rem"
+                            font_size: "0.9rem"
+                            text: "Master advanced programming concepts and techniques in the Lamia language."
+                        }
+                        
+                        read_more {
+                            display: "inline-block"
+                            color: "#8B3F8B"
+                            text_decoration: "none"
+                            font_weight: "600"
+                            font_size: "0.9rem"
+                            transition: "color 0.3s ease"
+                            hover: "color: #6B2B6B"
+                            text: "Read More →"
+                        }
+                    }
+                }
+                
+                article_card {
+                    category {
+                        background: "#28a745"
+                        text: "Guide"
+                    }
+                    
+                    title: "MedusaServ Security Best Practices"
+                    excerpt: "Learn the essential security practices for deploying MedusaServ in production environments."
+                }
+                
+                article_card {
+                    category {
+                        background: "#17a2b8"
+                        text: "API"
+                    }
+                    
+                    title: "Building RESTful APIs with Lamia"
+                    excerpt: "Create robust and scalable RESTful APIs using Lamia's native manufacturing protocols."
+                }
+            }
+        }
+    }
+
+    include "footer.lamia"
+    include "copyright.lamia"
+}

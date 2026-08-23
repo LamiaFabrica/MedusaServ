@@ -1,0 +1,61 @@
+<!--
+Purple-Pages.com - Base Template
+Base template with settings gear for all pages
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_base(title: string, description: string, keywords: string = "") {
+    meta {
+        title: title + " | Purple Pages"
+        description: description
+        keywords: keywords + ", Purple Pages, documentation, Medusa Project"
+        viewport: "width=device-width, initial-scale=1.0"
+        charset: "UTF-8"
+        robots: "index, follow"
+    }
+    
+    // CSS STYLESHEETS
+    link(rel: "stylesheet", href: "/css/main.css")
+    link(rel: "stylesheet", href: "/css/highlight-system.css")
+    link(rel: "stylesheet", href: "/css/settings-panel.css")
+    
+    // JAVASCRIPT
+    script(src: "/js/main.js")
+    script(src: "/js/sso.js")
+    script(src: "/js/catalog.js")
+    script(src: "/js/highlight-system.js")
+    script(src: "/js/settings-panel.js")
+    
+    // Structured Data for SEO
+    script(type: "application/ld+json") {
+        raw {
+            {
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": title,
+                "description": description,
+                "url": "https://purple-pages.com" + request.path,
+                "isPartOf": {
+                    "@type": "WebSite",
+                    "name": "Purple Pages",
+                    "url": "https://purple-pages.com"
+                }
+            }
+        }
+    }
+    
+    body {
+        include "header.lamia"
+        
+        // Page Content (injected by child templates)
+        main(class: "main-content") {
+            // Content goes here
+        }
+        
+        include "footer.lamia"
+        
+        // Settings Gear Component (on every page)
+        include "components/settings-gear.lamia"
+    }
+}
+

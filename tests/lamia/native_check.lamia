@@ -1,0 +1,13 @@
+// MedusaServ native Lamia verification page
+// Exercises: @title, @theme, @render, @container, @text, @image,
+// protocol URLs (logo://), and server variables @{title} @{version}
+@title "@{title} Native Lamia"
+@theme "medusa-dark"
+
+@render {
+    @container main class="glass-container" center {
+        @text h1 gradient-text shadow "MedusaServ v@{version} serves Lamia natively"
+        @text "Ergonomic engine: directives, variables, and protocol URLs in one pass."
+        @image logo://MedusaServ.png :: alt="MedusaServ Logo" size="wide" center rounded admin-glow
+    }
+}

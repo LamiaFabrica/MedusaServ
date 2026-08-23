@@ -1,0 +1,4 @@
+{
+  "tasks": [],
+  "note": "Mirror of agent-flow/config/prompt_queue.json; records per-cell run history, artifacts and approvals. The pipeline updates this as cells move IN_PROGRESS / DONE / KICKED_BACK. See agent-flow/config/QUEUE_MANIFEST.md for lane/dependency governance."
+}

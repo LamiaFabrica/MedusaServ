@@ -1,0 +1,198 @@
+<!--
+Purple-Pages.com - About Page
+Information about Purple Pages documentation hub
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_about() {
+    include "base.lamia" {
+        title: "About Purple Pages"
+        description: "Learn about Purple Pages - the comprehensive documentation hub for The Medusa Project ecosystem"
+        keywords: "about, documentation, Medusa Project, Purple Pages"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li(class: "active") {
+                        "About"
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "page-hero") {
+            div(class: "hero-content") {
+                h1 {
+                    "About Purple Pages"
+                }
+                p(class: "hero-subtitle") {
+                    "The Complete Documentation Hub for The Medusa Project Ecosystem"
+                }
+            }
+        }
+        
+        // Main Content
+        section(class: "content-section") {
+            div(class: "content-container") {
+                div(class: "content-block") {
+                    h2 {
+                        "What is Purple Pages?"
+                    }
+                    p {
+                        "Purple Pages is the comprehensive documentation hub for The Medusa Project ecosystem. It provides complete, searchable documentation for all our technologies, from beginner guides to advanced administration."
+                    }
+                    p {
+                        "Built with the same 100% Native C++ stack it documents, Purple Pages demonstrates the power and flexibility of our ecosystem while providing the knowledge you need to succeed."
+                    }
+                }
+                
+                div(class: "content-block") {
+                    h2 {
+                        "Our Mission"
+                    }
+                    p {
+                        "Our mission is to democratize technology and empower developers everywhere. Purple Pages ensures that rich or poor should never be a barrier to unleashing your technological dreams."
+                    }
+                    p {
+                        "We believe in comprehensive, accessible documentation that helps developers of all skill levels succeed with The Medusa Project technologies."
+                    }
+                }
+                
+                div(class: "content-block") {
+                    h2 {
+                        "Key Features"
+                    }
+                    div(class: "features-grid") {
+                        div(class: "feature-item") {
+                            h3 {
+                                "🔍 Full-Text Search"
+                            }
+                            p {
+                                "Search across all documentation instantly with our advanced search system."
+                            }
+                        }
+                        
+                        div(class: "feature-item") {
+                            h3 {
+                                "📱 Always Updated"
+                            }
+                            p {
+                                "Documentation updated with every release to ensure accuracy."
+                            }
+                        }
+                        
+                        div(class: "feature-item") {
+                            h3 {
+                                "👥 Community Driven"
+                            }
+                            p {
+                                "Contributed by developers and users from around the world."
+                            }
+                        }
+                        
+                        div(class: "feature-item") {
+                            h3 {
+                                "🟣 Purple Theme"
+                            }
+                            p {
+                                "Distinctive purple branding for easy recognition as the documentation hub."
+                            }
+                        }
+                        
+                        div(class: "feature-item") {
+                            h3 {
+                                "⚡ Mission Impossible Highlights"
+                            }
+                            p {
+                                "Eye-catching highlight system for 'can you show me...' queries."
+                            }
+                        }
+                        
+                        div(class: "feature-item") {
+                            h3 {
+                                "🌐 CDN Ready"
+                            }
+                            p {
+                                "Optimized for Namecheap CDN with performance settings."
+                            }
+                        }
+                    }
+                }
+                
+                div(class: "content-block") {
+                    h2 {
+                        "The Medusa Project Ecosystem"
+                    }
+                    p {
+                        "Purple Pages documents the complete Medusa Project stack:"
+                    }
+                    ul(class: "ecosystem-list") {
+                        li {
+                            strong {
+                                "🦕 PsiForceDB"
+                            }
+                            " - Revolutionary hybrid database combining PostgreSQL, Neo4j, MongoDB, and vector operations"
+                        }
+                        li {
+                            strong {
+                                "🌐 MedusaServ"
+                            }
+                            " - Native C++ web server with TLS 1.3 support. No Apache, no Nginx."
+                        }
+                        li {
+                            strong {
+                                "🔒 LFSSL"
+                            }
+                            " - Native C++ TLS 1.3 implementation with quantum-resistant algorithms"
+                        }
+                        li {
+                            strong {
+                                "📝 Lamia"
+                            }
+                            " - Native C++ templating engine for fast, powerful web development"
+                        }
+                    }
+                }
+                
+                div(class: "content-block") {
+                    h2 {
+                        "Contact & Support"
+                    }
+                    p {
+                        "For questions, suggestions, or contributions to Purple Pages:"
+                    }
+                    ul(class: "contact-list") {
+                        li {
+                            "X/Twitter: "
+                            a(href: "https://x.com/Medusainit", target: "_blank") {
+                                "@Medusainit"
+                            }
+                        }
+                        li {
+                            "Discord: "
+                            a(href: "https://discord.gg/cGV8bMS3Jy", target: "_blank") {
+                                "Join our Discord community"
+                            }
+                        }
+                        li {
+                            "Patreon: "
+                            a(href: "https://www.patreon.com/TheMedusaInitiative", target: "_blank") {
+                                "Support The Medusa Project"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

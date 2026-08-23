@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI IPA Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🎭 AI IPA Service (Innocuous Protocol Adapter)</h1>
+        <div class="portal-status" id="ipaStatus">
+            <span class="status-indicator online"></span>
+            IPA Engine: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="ipaService.activateIPA()">🎭 Activate IPA</button>
+            <button class="service-btn" onclick="ipaService.obfuscateEndpoint()">🔀 Obfuscate Endpoint</button>
+            <button class="service-btn" onclick="ipaService.generateMutation()">🧬 Generate Mutation</button>
+            <button class="service-btn" onclick="ipaService.testInnocuousMode()">🕵️ Test Innocuous Mode</button>
+        </div>
+
+        <div class="ipa-dashboard" id="ipaDashboard">
+            <div class="ipa-metrics">
+                <div class="metric-card">
+                    <h4>Obfuscation Level</h4>
+                    <div id="obfuscationLevel">96%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Mutation Rate</h4>
+                    <div id="mutationRate">2.3/min</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Stealth Factor</h4>
+                    <div id="stealthFactor">94%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Protocol Variants</h4>
+                    <div id="protocolVariants">247</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ipa-protocols" id="ipaProtocols">
+            <h3>🔀 Active IPA Protocols</h3>
+            <div class="protocol-list" id="protocolList">
+                <!-- Active protocols will be populated here -->
+            </div>
+        </div>
+
+        <div class="service-output" id="ipaOutput">
+            <div>[IPA] Innocuous Protocol Adapter initialized</div>
+            <div>[IPA] Connected to PsiForceDB with MASTER credentials</div>
+            <div>[IPA] Yorkshire Champion stealth protocols loaded</div>
+            <div>[IPA] IPA mutation algorithms active...</div>
+        </div>
+    </div>
+
+    <script>
+        class AIIPAService {
+            constructor() {
+                this.masterCredentials = {
+                    server: '172.236.23.54',
+                    user: 'LamiaFabrica',
+                    database: 'psiforcedb_main'
+                };
+                this.activeProtocols = [];
+                this.mutationTimer = null;
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                this.startMutationCycle();
+                this.loadActiveProtocols();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/ipa/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: this.masterCredentials.server,
+                            database: this.masterCredentials.database,
+                            masterAccess: true
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[IPA] Connected to PsiForceDB IPA system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async activateIPA() {
+                this.logOutput('[IPA] Activating Innocuous Protocol Adapter...');
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/ipa/activate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:ipa:activate',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            options: {
+                                stealthLevel: 'maximum',
+                                yorkshireStandard: true,
+                                mutationEnabled: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayIPAResults(result);
+                        this.logOutput('[IPA] IPA activation completed');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] IPA activation failed: ${error.message}`);
+                }
+            }
+
+            async obfuscateEndpoint() {
+                const endpoint = prompt('Enter endpoint to obfuscate:', '/api/sensitive-data');
+                if (endpoint) {
+                    this.logOutput(`[IPA] Obfuscating endpoint: ${endpoint}`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/ai/ipa/obfuscate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://ai:ipa:obfuscate',
+                                server: this.masterCredentials.server,
+                                endpoint: endpoint,
+                                masterAccess: true
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            const obfuscatedEndpoint = result.obfuscatedEndpoint || this.generateObfuscatedEndpoint();
+                            this.logOutput(`[IPA] Endpoint obfuscated: ${obfuscatedEndpoint}`);
+                            this.addProtocol('Endpoint Obfuscation', obfuscatedEndpoint);
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Obfuscation failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async generateMutation() {
+                this.logOutput('[IPA] Generating protocol mutation...');
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/ipa/mutate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:ipa:mutate',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            options: {
+                                mutationType: 'advanced',
+                                complexity: 'high'
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        const mutation = result.mutation || this.generateDemoMutation();
+                        this.logOutput(`[IPA] Mutation generated: ${mutation.name}`);
+                        this.addProtocol('Protocol Mutation', mutation.description);
+                        this.updateMutationRate();
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Mutation generation failed: ${error.message}`);
+                }
+            }
+
+            async testInnocuousMode() {
+                this.logOutput('[IPA] Testing innocuous mode effectiveness...');
+                try {
+                    const response = await fetch('/api/pfql-routes/ai/ipa/test', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://ai:ipa:test',
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            testType: 'stealth_effectiveness'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayTestResults(result);
+                        this.logOutput('[IPA] Innocuous mode test completed');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Test failed: ${error.message}`);
+                }
+            }
+
+            displayIPAResults(results) {
+                this.updateMetrics(results);
+                
+                const dashboard = document.getElementById('ipaDashboard');
+                dashboard.innerHTML += `
+                    <div class="ipa-report">
+                        <h3>🎭 IPA Activation Results</h3>
+                        <div class="ipa-summary">
+                            <div class="summary-item">
+                                <strong>Stealth Status:</strong> ${results.stealthStatus || 'ACTIVE'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Obfuscation Methods:</strong> ${results.obfuscationMethods || 12}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Detection Probability:</strong> ${results.detectionProbability || '< 0.01%'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Protocol Variants:</strong> ${results.protocolVariants || 247}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            displayTestResults(results) {
+                const dashboard = document.getElementById('ipaDashboard');
+                dashboard.innerHTML += `
+                    <div class="test-report">
+                        <h3>🕵️ Stealth Test Results</h3>
+                        <div class="test-metrics">
+                            <div class="test-metric">
+                                <strong>Stealth Effectiveness:</strong> ${results.stealthEffectiveness || '98.7%'}
+                            </div>
+                            <div class="test-metric">
+                                <strong>Camouflage Quality:</strong> ${results.camouflageQuality || 'EXCELLENT'}
+                            </div>
+                            <div class="test-metric">
+                                <strong>Detection Resistance:</strong> ${results.detectionResistance || 'MAXIMUM'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            addProtocol(type, description) {
+                this.activeProtocols.push({
+                    id: Date.now(),
+                    type: type,
+                    description: description,
+                    timestamp: new Date().toLocaleTimeString()
+                });
+                this.updateProtocolList();
+            }
+
+            updateProtocolList() {
+                const protocolList = document.getElementById('protocolList');
+                protocolList.innerHTML = this.activeProtocols.map(protocol => `
+                    <div class="protocol-item">
+                        <div class="protocol-header">
+                            <span class="protocol-type">${protocol.type}</span>
+                            <span class="protocol-time">${protocol.timestamp}</span>
+                        </div>
+                        <div class="protocol-description">${protocol.description}</div>
+                    </div>
+                `).join('');
+            }
+
+            loadActiveProtocols() {
+                // Load some default protocols
+                this.addProtocol('Header Obfuscation', 'User-Agent rotation active');
+                this.addProtocol('Traffic Camouflage', 'Legitimate traffic pattern mimicry');
+                this.addProtocol('Endpoint Mutation', 'Dynamic endpoint generation');
+            }
+
+            startMutationCycle() {
+                this.mutationTimer = setInterval(() => {
+                    if (Math.random() > 0.7) {
+                        this.generateAutoMutation();
+                    }
+                }, 30000); // Every 30 seconds
+            }
+
+            generateAutoMutation() {
+                const mutations = [
+                    'Header scrambling pattern updated',
+                    'Request signature randomized',
+                    'Protocol timing variance applied',
+                    'Response format obfuscation active'
+                ];
+                
+                const randomMutation = mutations[Math.floor(Math.random() * mutations.length)];
+                this.addProtocol('Auto Mutation', randomMutation);
+                this.updateMutationRate();
+            }
+
+            updateMutationRate() {
+                const currentRate = parseFloat(document.getElementById('mutationRate').textContent);
+                const newRate = Math.min(5.0, currentRate + 0.1);
+                document.getElementById('mutationRate').textContent = newRate.toFixed(1) + '/min';
+            }
+
+            updateMetrics(results) {
+                if (results.obfuscationLevel) {
+                    document.getElementById('obfuscationLevel').textContent = results.obfuscationLevel + '%';
+                }
+                if (results.stealthFactor) {
+                    document.getElementById('stealthFactor').textContent = results.stealthFactor + '%';
+                }
+                if (results.protocolVariants) {
+                    document.getElementById('protocolVariants').textContent = results.protocolVariants;
+                }
+            }
+
+            generateObfuscatedEndpoint() {
+                const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '/api/';
+                for (let i = 0; i < 12; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+
+            generateDemoMutation() {
+                return {
+                    name: 'Advanced Protocol Variant Alpha-' + Math.floor(Math.random() * 1000),
+                    description: 'Dynamic request structure with variable header injection'
+                };
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('ipaOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.ipaService = new AIIPAService();
+        });
+    </script>
+    
+    <style>
+        .ipa-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .metric-card {
+            background: rgba(156, 39, 176, 0.2);
+            border: 1px solid #9C27B0;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .metric-card div {
+            font-size: 24px;
+            font-weight: bold;
+            color: #9C27B0;
+            margin-top: 8px;
+        }
+        .ipa-protocols {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid #9C27B0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .protocol-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            border-radius: 4px;
+            padding: 10px;
+            margin: 8px 0;
+        }
+        .protocol-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .protocol-type {
+            font-weight: bold;
+            color: #9C27B0;
+        }
+        .protocol-time {
+            font-size: 12px;
+            color: #999;
+        }
+        .protocol-description {
+            font-size: 14px;
+            color: #ccc;
+        }
+        .ipa-report, .test-report {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid #9C27B0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .ipa-summary, .test-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .summary-item, .test-metric {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</body>
+</html>

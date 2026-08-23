@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Backup Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>💾 Database Backup Service</h1>
+        <div class="portal-status" id="backupStatus">
+            <span class="status-indicator online"></span>
+            Backup Engine: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="backupService.fullBackup()">🔄 Full Backup</button>
+            <button class="service-btn" onclick="backupService.incrementalBackup()">📈 Incremental</button>
+            <button class="service-btn" onclick="backupService.restoreBackup()">🔙 Restore</button>
+            <button class="service-btn" onclick="backupService.scheduleBackup()">⏰ Schedule</button>
+        </div>
+
+        <div class="service-metrics">
+            <div class="metric-card">
+                <h4>Last Backup</h4>
+                <div id="lastBackup">2025-08-25 19:30:15</div>
+            </div>
+            <div class="metric-card">
+                <h4>Backup Size</h4>
+                <div id="backupSize">2.3GB</div>
+            </div>
+            <div class="metric-card">
+                <h4>Success Rate</h4>
+                <div id="successRate">100%</div>
+            </div>
+        </div>
+
+        <div class="service-output" id="backupOutput">
+            <div>[BACKUP] Database backup service initialized</div>
+            <div>[BACKUP] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[BACKUP] Ready for backup operations...</div>
+        </div>
+    </div>
+
+    <script>
+        class DatabaseBackupService {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/database/backup/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_main'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[BACKUP] Connected to PsiForceDB backup engine');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async fullBackup() {
+                this.logOutput('[BACKUP] Starting full database backup...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/backup/full', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:backup:full',
+                            server: '172.236.23.54',
+                            params: {
+                                compression: true,
+                                encryption: true,
+                                verify: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput('[BACKUP] Full backup completed successfully');
+                        this.updateMetrics(result);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Full backup failed: ${error.message}`);
+                }
+            }
+
+            async incrementalBackup() {
+                this.logOutput('[BACKUP] Starting incremental backup...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/backup/incremental', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:backup:incremental',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[BACKUP] Incremental backup completed');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Incremental backup failed: ${error.message}`);
+                }
+            }
+
+            async restoreBackup() {
+                const backupId = prompt('Enter backup ID to restore:');
+                if (backupId) {
+                    this.logOutput(`[BACKUP] Restoring backup ${backupId}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/backup/restore', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:restore',
+                                server: '172.236.23.54',
+                                backupId: backupId
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            this.logOutput('[BACKUP] Database restored successfully');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Restore failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async scheduleBackup() {
+                const schedule = prompt('Enter backup schedule (cron format):', '0 2 * * *');
+                if (schedule) {
+                    this.logOutput(`[BACKUP] Scheduling backup: ${schedule}`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/backup/schedule', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:backup:schedule',
+                                server: '172.236.23.54',
+                                schedule: schedule
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            this.logOutput('[BACKUP] Backup scheduled successfully');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Scheduling failed: ${error.message}`);
+                    }
+                }
+            }
+
+            updateMetrics(result) {
+                if (result.lastBackup) {
+                    document.getElementById('lastBackup').textContent = result.lastBackup;
+                }
+                if (result.backupSize) {
+                    document.getElementById('backupSize').textContent = result.backupSize;
+                }
+                if (result.successRate) {
+                    document.getElementById('successRate').textContent = result.successRate + '%';
+                }
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('backupOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.backupService = new DatabaseBackupService();
+        });
+    </script>
+</body>
+</html>

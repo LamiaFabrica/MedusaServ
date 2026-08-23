@@ -1,0 +1,99 @@
+========================================
+SSH KEY SETUP FOR MEDUSADB SERVER
+========================================
+
+Step 1: Your NEW SSH Public Key
+---------------------------------
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBj9+OcZD481mDG4OszE66ZN8GVujYO0schgnjipRIX9 medusadb-deployment-key
+
+
+Step 2: Add This Key to Your Server
+------------------------------------
+
+METHOD 1: Via Linode LISH Console (RECOMMENDED)
+1. Log into Linode dashboard at https://cloud.linode.com
+2. Click on your server (172.236.23.54)
+3. Click "Launch LISH Console" (web-based terminal)
+4. Log in with your root password (whatever it is currently)
+5. Run these commands:
+
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBj9+OcZD481mDG4OszE66ZN8GVujYO0schgnjipRIX9 medusadb-deployment-key" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+echo "SSH key added successfully!"
+
+6. Exit LISH console
+
+
+METHOD 2: Via Linode Dashboard (SSH Keys Section)
+1. Log into Linode dashboard
+2. Go to Profile → SSH Keys
+3. Click "Add SSH Key"
+4. Paste: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBj9+OcZD481mDG4OszE66ZN8GVujYO0schgnjipRIX9 medusadb-deployment-key
+5. Label it "MedusaDB Deployment Key"
+6. Rebuild or access your server to apply
+
+
+Step 3: Test Connection from Windows
+-------------------------------------
+
+After adding the key, test from your local machine:
+
+ssh medusadb
+
+Or:
+
+ssh root@172.236.23.54
+
+This should connect WITHOUT asking for a password!
+
+
+Step 4: Deploy MedusaServ Package
+----------------------------------
+
+Once passwordless SSH works, you can deploy:
+
+# Upload deployment package
+scp -r deploy-linux/* medusadb:/opt/medusaserv/
+
+# SSH to server
+ssh medusadb
+
+# Install
+cd /opt/medusaserv
+sudo ./scripts/install.sh
+
+# Start services
+sudo ./scripts/start.sh
+
+# Check health
+sudo ./scripts/health-check.sh
+
+
+========================================
+SSH KEY LOCATIONS
+========================================
+
+Private Key (KEEP SECRET!): C:\Users\david\.ssh\medusadb_key
+Public Key (Share freely):  C:\Users\david\.ssh\medusadb_key.pub
+SSH Config:                 C:\Users\david\.ssh\config
+
+Your SSH config is already set up to use this key automatically when you type:
+ssh medusadb
+
+========================================
+TROUBLESHOOTING
+========================================
+
+If connection still asks for password:
+1. Make sure you ran the commands in LISH console
+2. Check file permissions on server: ls -la ~/.ssh/
+3. Try: ssh -v medusadb (verbose mode shows what's happening)
+
+If you're completely locked out:
+1. Use Linode's "Reset Root Password" feature
+2. Reboot server
+3. Then add the SSH key via LISH console
+
+========================================

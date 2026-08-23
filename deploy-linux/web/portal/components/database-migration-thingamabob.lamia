@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Migration Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🚀 Database Migration Service</h1>
+        <div class="portal-status" id="migrationStatus">
+            <span class="status-indicator online"></span>
+            Migration Engine: READY
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="migrationService.checkMigrations()">📋 Check Migrations</button>
+            <button class="service-btn" onclick="migrationService.runMigration()">▶️ Run Migration</button>
+            <button class="service-btn" onclick="migrationService.rollbackMigration()">⏪ Rollback</button>
+            <button class="service-btn" onclick="migrationService.createMigration()">➕ Create Migration</button>
+        </div>
+
+        <div class="migration-list" id="migrationList">
+            <!-- Migration list will be populated here -->
+        </div>
+
+        <div class="service-output" id="migrationOutput">
+            <div>[MIGRATION] Database migration service initialized</div>
+            <div>[MIGRATION] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[MIGRATION] Ready for migration operations...</div>
+        </div>
+    </div>
+
+    <script>
+        class DatabaseMigrationService {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                await this.loadMigrationStatus();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/database/migration/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_main'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[MIGRATION] Connected to PsiForceDB migration engine');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async checkMigrations() {
+                this.logOutput('[MIGRATION] Checking migration status...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/migration/check', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:migration:status',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayMigrationList(result.migrations);
+                        this.logOutput('[MIGRATION] Migration status loaded');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to check migrations: ${error.message}`);
+                }
+            }
+
+            async runMigration() {
+                const migrationId = prompt('Enter migration ID to run (or "all" for all pending):');
+                if (migrationId) {
+                    this.logOutput(`[MIGRATION] Running migration: ${migrationId}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/migration/run', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:migration:run',
+                                server: '172.236.23.54',
+                                migrationId: migrationId
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.logOutput(`[MIGRATION] Migration completed: ${result.status}`);
+                            this.logOutput(`[MIGRATION] Applied ${result.changesApplied} changes`);
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Migration failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async rollbackMigration() {
+                const migrationId = prompt('Enter migration ID to rollback:');
+                const confirmRollback = confirm('This will undo the migration changes. Continue?');
+                
+                if (migrationId && confirmRollback) {
+                    this.logOutput(`[MIGRATION] Rolling back migration: ${migrationId}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/migration/rollback', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:migration:rollback',
+                                server: '172.236.23.54',
+                                migrationId: migrationId
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.logOutput(`[MIGRATION] Rollback completed: ${result.status}`);
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Rollback failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async createMigration() {
+                const migrationName = prompt('Enter migration name:');
+                const migrationSQL = prompt('Enter SQL commands for migration:');
+                
+                if (migrationName && migrationSQL) {
+                    this.logOutput(`[MIGRATION] Creating migration: ${migrationName}...`);
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/migration/create', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:migration:create',
+                                server: '172.236.23.54',
+                                name: migrationName,
+                                sql: migrationSQL
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.logOutput(`[MIGRATION] Migration created: ${result.migrationId}`);
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Failed to create migration: ${error.message}`);
+                    }
+                }
+            }
+
+            async loadMigrationStatus() {
+                await this.checkMigrations();
+            }
+
+            displayMigrationList(migrations) {
+                const listContainer = document.getElementById('migrationList');
+                if (migrations && migrations.length > 0) {
+                    listContainer.innerHTML = '<h3>Migration Status:</h3>' + 
+                        migrations.map(migration => `
+                            <div class="migration-item ${migration.status}">
+                                <strong>${migration.id}</strong> - ${migration.name}
+                                <span class="migration-status ${migration.status}">${migration.status}</span>
+                                <div class="migration-date">${migration.date}</div>
+                                <button onclick="migrationService.selectMigration('${migration.id}')" class="service-btn-small">Select</button>
+                            </div>
+                        `).join('');
+                } else {
+                    listContainer.innerHTML = '<div class="no-migrations">No migrations found</div>';
+                }
+            }
+
+            selectMigration(migrationId) {
+                this.logOutput(`[MIGRATION] Selected migration: ${migrationId}`);
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('migrationOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.migrationService = new DatabaseMigrationService();
+        });
+    </script>
+    
+    <style>
+        .migration-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #64B5F6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .migration-item.pending {
+            border-color: #FF9800;
+        }
+        .migration-item.applied {
+            border-color: #4CAF50;
+        }
+        .migration-item.failed {
+            border-color: #F44336;
+        }
+        .migration-status {
+            float: right;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .migration-status.pending {
+            background: #FF9800;
+        }
+        .migration-status.applied {
+            background: #4CAF50;
+        }
+        .migration-status.failed {
+            background: #F44336;
+        }
+        .migration-date {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</body>
+</html>

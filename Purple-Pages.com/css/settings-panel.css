@@ -1,0 +1,314 @@
+/**
+ * Purple-Pages.com - Settings Panel Styles
+ * Settings gear and panel styling
+ * © 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+ */
+
+/* ============================================================================
+   SETTINGS PANEL OVERLAY
+   ============================================================================ */
+
+.settings-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.3s ease;
+}
+
+.settings-panel-overlay.hidden {
+    display: none;
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ============================================================================
+   SETTINGS PANEL CONTAINER
+   ============================================================================ */
+
+.settings-panel-container {
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+    border: 3px solid var(--primary-purple);
+    border-radius: 16px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px var(--purple-glow);
+    animation: panelSlideUp 0.4s ease;
+    overflow: hidden;
+}
+
+@keyframes panelSlideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================================================
+   SETTINGS PANEL HEADER
+   ============================================================================ */
+
+.settings-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-bottom: 2px solid var(--primary-purple);
+    background: rgba(155, 89, 182, 0.1);
+}
+
+.settings-panel-header h2 {
+    color: var(--primary-purple-light);
+    margin: 0;
+    font-size: var(--font-size-xl);
+    text-shadow: 0 0 10px var(--purple-glow);
+}
+
+.settings-close-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--primary-purple);
+    border-radius: 50%;
+    background: rgba(155, 89, 182, 0.2);
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-close-btn:hover {
+    background: var(--purple-glow);
+    border-color: var(--primary-purple-light);
+    transform: rotate(90deg);
+}
+
+/* ============================================================================
+   SETTINGS PANEL CONTENT
+   ============================================================================ */
+
+.settings-panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-md);
+}
+
+.settings-panel-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-panel-content::-webkit-scrollbar-track {
+    background: rgba(155, 89, 182, 0.1);
+    border-radius: 4px;
+}
+
+.settings-panel-content::-webkit-scrollbar-thumb {
+    background: var(--primary-purple);
+    border-radius: 4px;
+}
+
+.settings-panel-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-purple-light);
+}
+
+/* ============================================================================
+   SETTINGS SECTIONS
+   ============================================================================ */
+
+.settings-section {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(155, 89, 182, 0.3);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+}
+
+.settings-section h3 {
+    color: var(--primary-purple-light);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-lg);
+    text-shadow: 0 0 10px var(--purple-glow);
+}
+
+.settings-note {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-style: italic;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: rgba(155, 89, 182, 0.1);
+    border-left: 3px solid var(--primary-purple);
+    border-radius: 4px;
+}
+
+/* ============================================================================
+   SETTING ITEMS
+   ============================================================================ */
+
+.setting-item {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.setting-item label {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.setting-control input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-purple);
+}
+
+.setting-control input[type="range"] {
+    flex: 1;
+    min-width: 200px;
+    height: 6px;
+    background: rgba(155, 89, 182, 0.2);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.setting-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary-purple);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--purple-glow);
+}
+
+.setting-control input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: var(--primary-purple);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 10px var(--purple-glow);
+}
+
+.setting-control select {
+    flex: 1;
+    min-width: 200px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 2px solid var(--primary-purple);
+    border-radius: 6px;
+    background: rgba(155, 89, 182, 0.1);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.setting-control select:focus {
+    outline: none;
+    border-color: var(--primary-purple-light);
+    box-shadow: 0 0 15px var(--purple-glow);
+}
+
+.setting-description {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-style: italic;
+    width: 100%;
+}
+
+.setting-value {
+    color: var(--primary-purple-light);
+    font-weight: 600;
+    min-width: 80px;
+    text-align: right;
+}
+
+.setting-status {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-style: italic;
+    margin-left: var(--spacing-sm);
+}
+
+/* ============================================================================
+   SETTINGS PANEL FOOTER
+   ============================================================================ */
+
+.settings-panel-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border-top: 2px solid var(--primary-purple);
+    background: rgba(155, 89, 182, 0.1);
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .settings-panel-container {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .setting-control {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .setting-control input[type="range"],
+    .setting-control select {
+        width: 100%;
+    }
+    
+    .settings-panel-footer {
+        flex-direction: column;
+    }
+    
+    .settings-panel-footer .btn {
+        width: 100%;
+    }
+}
+

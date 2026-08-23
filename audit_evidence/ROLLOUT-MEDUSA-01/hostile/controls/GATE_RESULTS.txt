@@ -1,0 +1,51 @@
+T3A4 HOSTILE CONTROLS — GATE RESULTS (all run by T3A4 independently, WSL g++-16 16.0.1, -std=c++26 -Wall -Wextra -Werror)
+Date: 2026-08-10 ~01:00-03:20 +0100
+
+GATE-0a SHA256 PARITY (old knockoff vs canonical LFSSL, 7 vectors incl. empty/abc/56B/64B/1000B/embedded-NUL/salted-credential form):
+  diff empty => MATCH 7/7. Canonical "abc" = ba7816bf... (FIPS 180-4 KAT). PASS
+GATE-0b HMAC PARITY (old hand-rolled ipad/opad vs LFSSL::Crypto::HMAC_SHA256::compute):
+  parity sweep 40 cases (key lens 0,1,16,32,63,64,65,100,255 + NUL-key x 4 msgs): 0 fails
+  RFC 4231 ground truth 5 vectors: 0 fails on NEW, 0 fails on OLD. PASS
+GATE-1 GENUINE USE (REAL merged shim header, probe linked ONLY against liblfssl.a):
+  SHA256("abc") KAT ok; BLAKE3 forwarder hash("abc") = 6437b3ac... (official KAT); HMAC RFC4231 case1 ok;
+  secure_random_bytes(32) x2 differ. 4/4 PASS => includes are REAL USE, not include-theater.
+GATE-2 SYMBOL PROVENANCE: nm -C on linked probe: 11 canonical T symbols resolved from liblfssl.a
+  (SHA256::hash x3, secure_random_bytes x2, BLAKE3::Hasher::hash x3, hash_32 x3). PASS
+GATE-3R MERGED portal_api_handler.cpp STRICT SYNTAX (canonical include context incl. PsiForceDB paths,
+  -DPSIFORCEDB_CLIENT_AVAILABLE etc.): exit=0, stderr 0 bytes. PASS
+  (Without PsiForceDB -I paths the TU fails on pre-existing missing pfql_connector.hpp — IDENTICAL pre/post merge; merge-neutral.)
+GATE-4 MERGED-REGION EXTRACTION (exact hmac_sha256 text lifted from merged portal TU):
+  compiles strict vs LFSSL only; HMAC("key","The quick brown fox...") = f7bc83f4... (RFC 4231 TC-style KAT);
+  RFC4231 case2 ok. PASS
+GATE-5 REAL MERGED maintenance_db.hpp RUNTIME: hashPassword == SHA256::hash_hex(salt+pw+salt) on 5 vectors
+  (incl. empty, 200-char, embedded NUL); 64-hex format preserved (stored credentials remain valid);
+  2000 generated passwords: exact length 32, charset-only, 2000/2000 unique (CSPRNG live). PASS
+GATE-6 RAW-POINTER TRAP: grep -E "aes256_gcm_(encrypt|decrypt)\s*\(" over merged files AND whole src/+include/:
+  ZERO hits. No undefined-API calls. PASS
+GATE-7 INDEPENDENT RE-RUN of T3A3 merge/gates.sh (7 TUs): ALL exit=0, OVERALL: 0. PASS
+MERGE SCOPE (find -newer sentinel): exactly 7 production files touched — CMakeLists.txt,
+  include/security/LFSSL_Native_Crypto.hpp, include/LFCS_MS_Encrypted_Config_Manager.hpp,
+  src/api/portal_api_handler.cpp, src/maintenance_db.hpp,
+  src/security/LFCS_MS_Encrypted_Config_Manager.cpp, src/webserver/medusaserv_vhost_manager.cpp. All disclosed. PASS
+KNOCKOFF REMOVAL: src/security/LFSSL_Native_Crypto.cpp deleted from disk; removed from CMakeLists.txt
+  SECURITY_SOURCES (:234) and medusaserv_encrypt (:463) with explanatory comments. PASS
+SETTLE: MedusaServ merged tree sha256 stable across 2 checks 80s apart; LFSSL fold tree stable 75s apart. PASS
+NO COMMITS: both repos at pre-cell HEADs (MedusaServ 514cdc7, LFSSL 35cfb8b). PASS
+
+FOLD CONTROLS (LFSSL, claim set B):
+F-1 old dir "Cyptography Maths" GONE; "Cyptography Model" present, 108 files. PASS
+F-2 content integrity: pre-fold sha256 snapshot (107 files) vs post-fold: 107/107 paths present,
+  104 byte-identical, 3 changed — research/tables/{domekey,qed}/run_anchor.sh + jwt/note35_anchor_build.py —
+  diff vs git HEAD shows SOLE change is self-referential path string Maths->Model (chain-recorded
+  CHAIN_OF_EVIDENCE.md:164-171). +1 added: MODEL.md (37 lines, substantive model-doctrine doc). PASS
+F-3 CRITICAL SELF-TEST: python tools/refresh_maths_baseline.py --check run by T3A4 three times
+  (pre-fold, post-fold, post-settle): "BASELINE INTACT" exit=0 every time (88 zip entries, 0 differing, 0 missing).
+  Tool correctly re-pointed to "Cyptography Model" (lines 49,69,91,99-100). PASS
+F-4 LIVE REFS: grep -rln "Cyptography Maths" over repo (excl .git): 54 residual files, ALL historical/append-only
+  (agent-flow/runs/** archives, bus logs, past audit_evidence reports, CHAIN_OF_EVIDENCE rename record,
+  MODEL.md rename sentence, this cell's bus). ZERO live functional refs: pipeline.py (both copies),
+  prompt_queue.json configs, refresh tool, sources (mlkem.cpp, aes_siv.cpp, test_keccak_kat.cpp) all updated;
+  maths_roots read-only guard re-pointed (pipeline.py:347). PASS
+F-5 maths zip untouched (sha256 ee7561f6... unchanged) — correct: the 3 in-tree edited files are NOT zip entries;
+  no re-pin was required. NOTE: CHAIN_OF_EVIDENCE.md:167-171 says "baseline zip re-pinned" as the reason text —
+  mechanism overstated (nothing was re-pinned); harmless documentation inaccuracy.

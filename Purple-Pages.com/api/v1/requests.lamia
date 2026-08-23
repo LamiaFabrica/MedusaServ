@@ -1,0 +1,220 @@
+<!--
+Purple-Pages.com - Request Logging API v1
+Performance tracking for all requests
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_request_logging_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-API-Key, X-Server-ID");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify authentication
+    auth_result = verify_api_authentication();
+    if (!auth_result.authenticated) {
+        return response(401, json({
+            "error": "Unauthorized"
+        }));
+    }
+    
+    if (request.method == "POST") {
+        return handle_log_request(parse_json(request.body), auth_result);
+    }
+    
+    if (request.method == "GET") {
+        return handle_query_requests(request.query, auth_result);
+    }
+    
+    return response(405, json({
+        "error": "Method not allowed"
+    }));
+}
+
+// Log request
+function handle_log_request(request_data, auth) {
+    request_id = generate_uuid_v7();
+    server_id = request_data.get("server_id") || auth.server_id || "unknown";
+    
+    request_log = {
+        "request_id": request_id,
+        "timestamp": now(),
+        "epoch_ms": get_epoch_ms(),
+        "server_id": server_id,
+        "server_vpc_ip": request_data.get("server_vpc_ip") || get_server_vpc_ip(server_id),
+        "client_ip": request_data.get("client_ip") || get_client_ip(),
+        "method": request_data.get("method", "GET"),
+        "endpoint": request_data.get("endpoint", ""),
+        "query_params": request_data.get("query_params", {}),
+        "request_body": request_data.get("request_body", {}),
+        "status_code": request_data.get("status_code", 200),
+        "response_time_ms": request_data.get("response_time_ms", 0),
+        "response_size_bytes": request_data.get("response_size_bytes", 0),
+        "db_query_time_ms": request_data.get("db_query_time_ms"),
+        "cache_hit": request_data.get("cache_hit", false)
+    };
+    
+    db_result = insert_request_log_vpc(request_log);
+    
+    if (db_result.success) {
+        return response(200, json({
+            "success": true,
+            "request_id": request_id
+        }));
+    } else {
+        return response(500, json({
+            "success": false,
+            "error": db_result.error
+        }));
+    }
+}
+
+// Query requests
+function handle_query_requests(query_params, auth) {
+    filters = build_request_filters(query_params);
+    db_result = query_requests_vpc(filters);
+    
+    if (db_result.success) {
+        return response(200, json({
+            "success": true,
+            "total": db_result.total,
+            "requests": db_result.requests,
+            "query_time_ms": db_result.query_time_ms
+        }));
+    } else {
+        return response(500, json({
+            "success": false,
+            "error": db_result.error
+        }));
+    }
+}
+
+// Database functions
+function insert_request_log_vpc(request_log) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        query = "INSERT INTO purple_pages_request_logs (
+            request_id, timestamp, epoch_ms, server_id, server_vpc_ip, client_ip,
+            method, endpoint, query_params, request_body, status_code,
+            response_time_ms, response_size_bytes, db_query_time_ms, cache_hit
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)";
+        
+        result = db_connection.execute_prepared(query, [
+            request_log.request_id,
+            request_log.timestamp,
+            request_log.epoch_ms,
+            request_log.server_id,
+            request_log.server_vpc_ip,
+            request_log.client_ip,
+            request_log.method,
+            request_log.endpoint,
+            json_encode(request_log.query_params),
+            json_encode(request_log.request_body),
+            request_log.status_code,
+            request_log.response_time_ms,
+            request_log.response_size_bytes,
+            request_log.db_query_time_ms,
+            request_log.cache_hit
+        ]);
+        
+        return {"success": true};
+        
+    } catch (error) {
+        return {"success": false, "error": error.message};
+    } finally {
+        db_connection.close();
+    }
+}
+
+function query_requests_vpc(filters) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        where_clauses = [];
+        params = [];
+        param_index = 1;
+        
+        if (filters.server_id) {
+            where_clauses.push("server_id = $" + param_index);
+            params.push(filters.server_id);
+            param_index++;
+        }
+        
+        if (filters.start_time) {
+            where_clauses.push("epoch_ms >= $" + param_index);
+            params.push(filters.start_time);
+            param_index++;
+        }
+        
+        if (filters.end_time) {
+            where_clauses.push("epoch_ms <= $" + param_index);
+            params.push(filters.end_time);
+            param_index++;
+        }
+        
+        if (filters.status_code) {
+            where_clauses.push("status_code = $" + param_index);
+            params.push(filters.status_code);
+            param_index++;
+        }
+        
+        where_clause = where_clauses.length > 0 ? "WHERE " + join(where_clauses, " AND ") : "";
+        
+        limit = filters.limit || 100;
+        offset = filters.offset || 0;
+        
+        query = "SELECT * FROM purple_pages_request_logs " + where_clause + " ORDER BY epoch_ms DESC LIMIT $" + param_index + " OFFSET $" + (param_index + 1);
+        params.push(limit);
+        params.push(offset);
+        
+        start_time = get_epoch_ms();
+        result = db_connection.execute_prepared(query, params);
+        query_time = get_epoch_ms() - start_time;
+        
+        count_query = "SELECT COUNT(*) as total FROM purple_pages_request_logs " + where_clause;
+        count_result = db_connection.execute_prepared(count_query, params.slice(0, -2));
+        total = count_result.rows[0].total;
+        
+        requests = [];
+        for (row in result.rows) {
+            requests.push({
+                "request_id": row.request_id,
+                "timestamp": row.timestamp,
+                "server_id": row.server_id,
+                "method": row.method,
+                "endpoint": row.endpoint,
+                "status_code": row.status_code,
+                "response_time_ms": row.response_time_ms
+            });
+        }
+        
+        return {
+            "success": true,
+            "total": total,
+            "requests": requests,
+            "query_time_ms": query_time
+        };
+        
+    } catch (error) {
+        return {"success": false, "error": error.message};
+    } finally {
+        db_connection.close();
+    }
+}
+
+function build_request_filters(query_params) {
+    return {
+        "server_id": query_params.get("server_id"),
+        "start_time": query_params.get("start_time") ? parse_timestamp(query_params.get("start_time")) : null,
+        "end_time": query_params.get("end_time") ? parse_timestamp(query_params.get("end_time")) : null,
+        "status_code": query_params.get("status_code") ? parse_int(query_params.get("status_code")) : null,
+        "limit": min(parse_int(query_params.get("limit", "100")), 10000),
+        "offset": parse_int(query_params.get("offset", "0"))
+    };
+}
+

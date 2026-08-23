@@ -1,0 +1,311 @@
+# ============================================================================
+# MedusaServ CMakeLists.txt - With PsiForceDB.com API Handlers
+# ============================================================================
+# Complete build configuration for MedusaServ with all API handlers
+# © 2025 D Hargreaves (Roylepython) - The Medusa Project
+# ============================================================================
+
+cmake_minimum_required(VERSION 3.20)
+project(MedusaServ VERSION 0.4.1 LANGUAGES CXX)
+
+# C++26 ENFORCED - NO COMPROMISES
+set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Set build type
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Compiler flags with proper MSVC version checking
+if(MSVC)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.40.0)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /W4 /permissive-")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od /Zi")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /DNDEBUG")
+    else()
+        message(FATAL_ERROR "MSVC compiler version ${CMAKE_CXX_COMPILER_VERSION} does not support C++26. Requires MSVC 19.40+")
+    endif()
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++26")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -march=native")
+endif()
+
+# Find required packages
+find_package(Threads REQUIRED)
+# OpenSSL removed - using LFSSL (LamiaFabrica SSL) instead
+# find_package(OpenSSL REQUIRED)
+find_package(PkgConfig)
+
+# PsiForceDB include path (adjust as needed)
+set(PSIFORCEDB_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/../../PsiForceDB_1.0.0/include" CACHE PATH "PsiForceDB include path")
+set(PSIFORCEDB_LIB_PATH "${CMAKE_SOURCE_DIR}/../../PsiForceDB_1.0.0/lib" CACHE PATH "PsiForceDB library path")
+set(PSIFORCEDB_CLIENT_INCLUDE_PATH "${CMAKE_SOURCE_DIR}/../../PsiForceDB_1.0.0/Client/include" CACHE PATH "PsiForceDB Client include path")
+set(PSIFORCEDB_CLIENT_SOURCE_PATH "${CMAKE_SOURCE_DIR}/../../PsiForceDB_1.0.0/Client/src" CACHE PATH "PsiForceDB Client source path")
+
+# Verify PsiForceDB path
+if(NOT EXISTS "${PSIFORCEDB_INCLUDE_PATH}/master_licensing_system.hpp")
+    message(FATAL_ERROR "PsiForceDB headers not found at: ${PSIFORCEDB_INCLUDE_PATH}")
+endif()
+
+# Option to enable Collaboration Hub integration
+option(ENABLE_COLLABORATION_HUB "Enable Collaboration Hub integration in Portal API" OFF)
+
+if(ENABLE_COLLABORATION_HUB)
+    # Check if Collaboration Hub header exists
+    if(EXISTS "${PSIFORCEDB_CLIENT_INCLUDE_PATH}/core/collaboration_hub.hpp")
+        add_definitions(-DPSIFORCEDB_CLIENT_AVAILABLE)
+        message(STATUS "Collaboration Hub integration enabled")
+        message(STATUS "  Client Include: ${PSIFORCEDB_CLIENT_INCLUDE_PATH}")
+        message(STATUS "  Client Source: ${PSIFORCEDB_CLIENT_SOURCE_PATH}")
+    else()
+        message(WARNING "Collaboration Hub header not found at: ${PSIFORCEDB_CLIENT_INCLUDE_PATH}/core/collaboration_hub.hpp")
+        message(WARNING "Collaboration Hub integration will be disabled")
+    endif()
+else()
+    message(STATUS "Collaboration Hub integration disabled (use -DENABLE_COLLABORATION_HUB=ON to enable)")
+endif()
+
+# Include directories
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/api
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/security  # LFSSL headers
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${PSIFORCEDB_INCLUDE_PATH}
+    # ${OPENSSL_INCLUDE_DIR}  # Removed - using LFSSL instead
+)
+
+# Add Collaboration Hub include path if enabled
+if(ENABLE_COLLABORATION_HUB)
+    include_directories(${PSIFORCEDB_CLIENT_INCLUDE_PATH})
+endif()
+
+# MedusaServ core sources (adjust paths as needed)
+set(MEDUSASERV_CORE_SOURCES
+    lamia_server.cpp
+    lamia_ergonomic_processor.cpp
+    handlers/concrete_request_handlers.cpp
+    utils/logging_system.cpp
+    utils/exception_system.cpp
+)
+
+# API Handler sources
+set(API_HANDLER_SOURCES
+    src/api/purple_pages_api_handler.cpp
+    src/api/purple_pages_medusaserv_integration.cpp
+    src/api/psiforcedb_website_api_handlers.cpp
+    src/api/medusaserv_api_router.cpp
+    src/api/portal_api_handler.cpp
+)
+
+# Web Server sources (vHost Manager with LFSSL encryption)
+set(WEBSERVER_SOURCES
+    src/webserver/medusaserv_vhost_manager.cpp
+)
+
+# API Handler headers
+set(API_HANDLER_HEADERS
+    include/api/purple_pages_api_handler.hpp
+    include/api/psiforcedb_website_api_handlers.hpp
+    include/api/medusaserv_api_router.hpp
+    include/api/portal_api_handler.hpp
+)
+
+# All sources
+set(ALL_SOURCES
+    ${MEDUSASERV_CORE_SOURCES}
+    ${API_HANDLER_SOURCES}
+    ${WEBSERVER_SOURCES}
+)
+
+# Create MedusaServ executable
+add_executable(medusaserv ${ALL_SOURCES})
+
+# Link libraries
+target_link_libraries(medusaserv
+    ${CMAKE_THREAD_LIBS_INIT}
+    # ${OPENSSL_LIBRARIES}  # Removed - using LFSSL instead
+    # ssl  # Removed - using LFSSL instead
+    # crypto  # Removed - using LFSSL instead
+)
+
+# Platform-specific libraries
+if(UNIX AND NOT APPLE)
+    # Linux-specific
+    target_link_libraries(medusaserv
+        dl
+        pthread
+    )
+elseif(APPLE)
+    # macOS-specific
+    target_link_libraries(medusaserv
+        pthread
+    )
+elseif(WIN32)
+    # Windows-specific
+    target_link_libraries(medusaserv
+        ws2_32
+        winhttp
+    )
+endif()
+
+# Compiler definitions
+target_compile_definitions(medusaserv
+    PRIVATE
+    PURPLE_PAGES_ENABLED=1
+    PSIFORCEDB_INTEGRATION=1
+    BUILD_API_HANDLERS=1
+    USE_LFSSL=1  # Using LFSSL (LamiaFabrica SSL) instead of OpenSSL
+    # USE_OPENSSL=1  # Removed - using LFSSL instead
+)
+
+# Set output directory
+set_target_properties(medusaserv PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+# ============================================================================
+# CLI Tools
+# ============================================================================
+
+# MedusaServ Encryption Tool
+add_executable(medusaserv_encrypt
+    src/tools/medusaserv_encrypt.cpp
+)
+
+target_link_libraries(medusaserv_encrypt
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_compile_definitions(medusaserv_encrypt
+    PRIVATE
+    USE_LFSSL=1
+)
+
+set_target_properties(medusaserv_encrypt PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+# MedusaServ CLI Tool (ms) - Basic version
+add_executable(medusaserv_cli
+    src/tools/medusaserv_cli.cpp
+)
+
+# MedusaServ Ultimate CLI Tool (ms) - Comprehensive version matching PsiForceDB
+add_executable(medusaserv_ultimate_cli
+    src/tools/medusaserv_ultimate_cli.cpp
+)
+
+target_link_libraries(medusaserv_cli
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(medusaserv_cli
+        dl
+        pthread
+        readline
+    )
+elseif(APPLE)
+    target_link_libraries(medusaserv_cli
+        pthread
+        readline
+    )
+elseif(WIN32)
+    target_link_libraries(medusaserv_cli
+        ws2_32
+        winhttp
+    )
+endif()
+
+set_target_properties(medusaserv_cli PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+# Ultimate CLI linking
+target_link_libraries(medusaserv_ultimate_cli
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(medusaserv_ultimate_cli
+        dl
+        pthread
+        readline
+    )
+elseif(APPLE)
+    target_link_libraries(medusaserv_ultimate_cli
+        pthread
+        readline
+    )
+elseif(WIN32)
+    target_link_libraries(medusaserv_ultimate_cli
+        ws2_32
+        winhttp
+    )
+endif()
+
+set_target_properties(medusaserv_ultimate_cli PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+# Install CLI tools
+install(TARGETS medusaserv_encrypt medusaserv_cli medusaserv_ultimate_cli
+    RUNTIME DESTINATION bin
+)
+
+# Create symlink/alias for 'ms' command (Unix only) - points to ultimate CLI
+if(UNIX AND NOT APPLE)
+    install(CODE "
+        execute_process(
+            COMMAND ${CMAKE_COMMAND} -E create_symlink
+            medusaserv_ultimate_cli
+            ms
+            WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/bin
+            ERROR_QUIET
+        )
+    ")
+endif()
+
+# Install rules
+install(TARGETS medusaserv
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+# Install website files
+install(DIRECTORY web/PsiForceDB.com
+    DESTINATION /var/www/psiforcedb.com
+    FILES_MATCHING
+    PATTERN "*.lamia"
+    PATTERN "*.html"
+    PATTERN "*.css"
+    PATTERN "*.js"
+    PATTERN "*.md"
+)
+
+# Install configuration
+install(DIRECTORY config
+    DESTINATION /etc/medusaserv
+    FILES_MATCHING
+    PATTERN "*.conf"
+    PATTERN "*.ini"
+)
+
+# Print configuration summary
+message(STATUS "")
+message(STATUS "==========================================")
+message(STATUS "MedusaServ Build Configuration")
+message(STATUS "==========================================")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "Cryptography: LFSSL (LamiaFabrica SSL) - Zero OpenSSL dependencies")
+message(STATUS "PsiForceDB Include: ${PSIFORCEDB_INCLUDE_PATH}")
+message(STATUS "API Handlers: Enabled")
+message(STATUS "==========================================")
+message(STATUS "")
+

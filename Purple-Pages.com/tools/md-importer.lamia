@@ -1,0 +1,382 @@
+<!--
+Purple-Pages.com - Markdown Documentation Importer
+Scans for MD files and converts them to Lamia pages
+Uses BertieBot's documentation system integration
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_md_importer() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    action = request.query.get("action", "scan");
+    
+    if (action == "scan") {
+        // Scan for MD files
+        md_files = scan_markdown_files();
+        return response(200, json({
+            "success": true,
+            "files_found": md_files.length,
+            "files": md_files
+        }));
+    }
+    
+    if (action == "import") {
+        file_path = request.body.get("file_path");
+        target_category = request.body.get("category", "general");
+        target_technology = request.body.get("technology", "");
+        
+        if (!file_path) {
+            return response(400, json({
+                "error": "file_path required"
+            }));
+        }
+        
+        // Import MD file and convert to Lamia
+        result = import_markdown_file(file_path, target_category, target_technology);
+        
+        if (result.success) {
+            return response(200, json({
+                "success": true,
+                "message": "File imported successfully",
+                "lamia_path": result.lamia_path,
+                "metadata": result.metadata
+            }));
+        } else {
+            return response(500, json({
+                "error": result.error
+            }));
+        }
+    }
+    
+    if (action == "batch_import") {
+        files = request.body.get("files", []);
+        category = request.body.get("category", "general");
+        technology = request.body.get("technology", "");
+        
+        results = [];
+        for (file in files) {
+            result = import_markdown_file(file.path, category, technology);
+            results.push({
+                "file": file.path,
+                "success": result.success,
+                "lamia_path": result.lamia_path,
+                "error": result.error
+            });
+        }
+        
+        return response(200, json({
+            "success": true,
+            "imported": results.filter(r => r.success).length,
+            "failed": results.filter(r => !r.success).length,
+            "results": results
+        }));
+    }
+    
+    return response(400, json({
+        "error": "Invalid action",
+        "valid_actions": ["scan", "import", "batch_import"]
+    }));
+}
+
+// Scan for markdown files in common locations
+function scan_markdown_files() {
+    search_paths = [
+        "../PsiForceDB_1.0.0/docs/",
+        "../PsiForceDB_1.0.0/Client/docs/",
+        "../lamia_clean_final/docs/",
+        "../MedusaServ Professional Web Server/docs/",
+        "../PsiForceDB_1.0.0/",
+        "../lamia_clean_final/"
+    ];
+    
+    md_files = [];
+    
+    for (path in search_paths) {
+        files = find_files(path, "*.md");
+        for (file in files) {
+            metadata = extract_markdown_metadata(file);
+            md_files.push({
+                "path": file,
+                "name": get_filename(file),
+                "size": get_file_size(file),
+                "title": metadata.title || get_filename(file),
+                "category": metadata.category || "general",
+                "technology": metadata.technology || "",
+                "description": metadata.description || ""
+            });
+        }
+    }
+    
+    return md_files;
+}
+
+// Import markdown file and convert to Lamia
+function import_markdown_file(file_path, category, technology) {
+    try {
+        // Read markdown file
+        md_content = read_file(file_path);
+        
+        if (!md_content) {
+            return {
+                "success": false,
+                "error": "File not found or cannot be read"
+            };
+        }
+        
+        // Parse markdown
+        parsed = parse_markdown(md_content);
+        
+        // Extract metadata
+        metadata = parsed.metadata || {};
+        metadata.category = category || metadata.category || "general";
+        metadata.technology = technology || metadata.technology || "";
+        
+        // Convert to Lamia
+        lamia_content = convert_markdown_to_lamia(parsed.content, metadata);
+        
+        // Determine output path
+        output_path = determine_output_path(file_path, metadata);
+        
+        // Write Lamia file
+        write_file(output_path, lamia_content);
+        
+        // Update catalog.xml
+        update_catalog(metadata, output_path);
+        
+        return {
+            "success": true,
+            "lamia_path": output_path,
+            "metadata": metadata
+        };
+        
+    } catch (error) {
+        return {
+            "success": false,
+            "error": error.message
+        };
+    }
+}
+
+// Parse markdown with frontmatter support
+function parse_markdown(content) {
+    // Extract frontmatter
+    frontmatter_match = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/);
+    
+    metadata = {};
+    body = content;
+    
+    if (frontmatter_match) {
+        frontmatter = frontmatter_match[1];
+        body = frontmatter_match[2];
+        
+        // Parse YAML-like frontmatter
+        for (line in frontmatter.split("\n")) {
+            if (line.contains(":")) {
+                parts = line.split(":", 2);
+                key = parts[0].trim();
+                value = parts[1].trim().replace(/^["']|["']$/g, "");
+                metadata[key] = value;
+            }
+        }
+    }
+    
+    // Convert markdown to HTML
+    html_content = markdown_to_html(body);
+    
+    return {
+        "metadata": metadata,
+        "content": html_content,
+        "raw_markdown": body
+    };
+}
+
+// Convert markdown to HTML (basic implementation)
+function markdown_to_html(markdown) {
+    html = markdown;
+    
+    // Headers
+    html = html.replace(/^### (.*$)/gim, "<h3>$1</h3>");
+    html = html.replace(/^## (.*$)/gim, "<h2>$1</h2>");
+    html = html.replace(/^# (.*$)/gim, "<h1>$1</h1>");
+    
+    // Bold
+    html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    
+    // Italic
+    html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    
+    // Code blocks
+    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, "<pre><code class=\"language-$1\">$2</code></pre>");
+    html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+    
+    // Links
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "<a href=\"$2\">$1</a>");
+    
+    // Lists
+    html = html.replace(/^\* (.*$)/gim, "<li>$1</li>");
+    html = html.replace(/^(\d+)\. (.*$)/gim, "<li>$2</li>");
+    
+    // Paragraphs
+    html = html.replace(/\n\n/g, "</p><p>");
+    html = "<p>" + html + "</p>";
+    
+    // Wrap lists
+    html = html.replace(/(<li>.*<\/li>)/s, "<ul>$1</ul>");
+    
+    return html;
+}
+
+// Convert HTML content to Lamia template
+function convert_markdown_to_lamia(html_content, metadata) {
+    title = metadata.title || "Documentation";
+    description = metadata.description || "";
+    keywords = metadata.keywords || "";
+    category = metadata.category || "general";
+    technology = metadata.technology || "";
+    
+    // Determine page path
+    page_path = determine_page_path(metadata);
+    
+    lamia_template = `<!--
+Purple-Pages.com - Imported Documentation
+Source: ${metadata.source || "Markdown Import"}
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_doc_${sanitize_id(title)}() {
+    include "base.lamia" {
+        title: "${title}"
+        description: "${description}"
+        keywords: "${keywords}"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    ${category != "general" ? `li {
+                        a(href: "/pages/category/${category}.lamia") {
+                            "${category}"
+                        }
+                    }` : ""}
+                    ${technology ? `li {
+                        a(href: "/pages/${technology}/index.lamia") {
+                            "${technology}"
+                        }
+                    }` : ""}
+                    li(class: "active") {
+                        "${title}"
+                    }
+                }
+            }
+        }
+        
+        // Content Section
+        section(class: "doc-content-section") {
+            div(class: "doc-container") {
+                article(class: "doc-article") {
+                    ${html_content}
+                }
+            }
+        }
+    }
+}`;
+    
+    return lamia_template;
+}
+
+// Determine output path based on metadata
+function determine_output_path(original_path, metadata) {
+    category = metadata.category || "general";
+    technology = metadata.technology || "";
+    filename = sanitize_filename(metadata.title || get_filename(original_path));
+    
+    if (technology) {
+        return "pages/${technology}/${filename}.lamia";
+    } else if (category != "general") {
+        return "pages/category/${category}/${filename}.lamia";
+    } else {
+        return "pages/docs/${filename}.lamia";
+    }
+}
+
+// Determine page path for breadcrumbs
+function determine_page_path(metadata) {
+    technology = metadata.technology || "";
+    category = metadata.category || "general";
+    
+    if (technology) {
+        return "/pages/${technology}/";
+    } else if (category != "general") {
+        return "/pages/category/${category}/";
+    } else {
+        return "/pages/docs/";
+    }
+}
+
+// Extract metadata from markdown file
+function extract_markdown_metadata(file_path) {
+    content = read_file(file_path);
+    if (!content) return {};
+    
+    // Try to extract frontmatter
+    frontmatter_match = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+    if (frontmatter_match) {
+        metadata = {};
+        frontmatter = frontmatter_match[1];
+        for (line in frontmatter.split("\n")) {
+            if (line.contains(":")) {
+                parts = line.split(":", 2);
+                key = parts[0].trim();
+                value = parts[1].trim().replace(/^["']|["']$/g, "");
+                metadata[key] = value;
+            }
+        }
+        return metadata;
+    }
+    
+    // Try to extract from first heading
+    heading_match = content.match(/^#\s+(.+)$/m);
+    if (heading_match) {
+        return {
+            "title": heading_match[1].trim()
+        };
+    }
+    
+    return {
+        "title": get_filename(file_path)
+    };
+}
+
+// Update catalog.xml with new documentation
+function update_catalog(metadata, lamia_path) {
+    // This would update catalog.xml to include the new page
+    // Implementation would parse XML, add entry, and save
+}
+
+// Utility functions
+function sanitize_id(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, "_");
+}
+
+function sanitize_filename(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+}
+
+function get_filename(path) {
+    return path.split("/").pop().replace(/\.md$/, "");
+}
+

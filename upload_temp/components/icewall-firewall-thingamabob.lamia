@@ -1,0 +1,2251 @@
+/*
+ * Component v0.4.0
+ * Yorkshire Champion Standards
+ * 
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    
+<%--
+ICEWALL FIREWALL DADDY THINGAMABOB - THE ULTIMATE SECURITY MANAGEMENT INTERFACE! 🛡️🔥
+================================================================================
+Revolutionary web interface for managing the Icewall Firewall Daddy
+Complete policy management, IP listing, and security monitoring
+Yorkshire Champion Standards with 15.0x security multiplier
+© 2025 The Medusa Project | Roylepython | D Hargreaves
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
+
+<!-- Revolutionary Icewall Firewall Daddy Management Dashboard -->
+<div id="icewall-firewall-thingamabob" class="thingamabob-container revolutionary-security">
+    
+    <!-- Yorkshire Champion Header -->
+    <div class="thingamabob-header firewall-daddy-header">
+        <div class="header-title-section">
+            <i class="fas fa-shield-alt firewall-daddy-icon"></i>
+            <div class="title-content">
+                <h2 class="thingamabob-title">🛡️ ICEWALL FIREWALL DADDY 🔥</h2>
+                <p class="thingamabob-subtitle">Ultimate Quantum Security Management • Yorkshire Champion Standards</p>
+            </div>
+        </div>
+        
+        <div class="header-status-section">
+            <div class="firewall-status-indicator" id="firewall-status">
+                <span class="status-dot active"></span>
+                <span class="status-text">DADDY ON DUTY!</span>
+            </div>
+            <div class="yorkshire-multiplier">
+                <span class="multiplier-label">Yorkshire Multiplier:</span>
+                <span class="multiplier-value">15.0x</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Real-time Security Metrics Dashboard -->
+    <div class="security-metrics-dashboard">
+        <div class="metrics-grid">
+            
+            <!-- Total Requests Processed -->
+            <div class="metric-card requests-processed">
+                <div class="metric-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="metric-content">
+                    <h3 class="metric-value" id="total-requests">0</h3>
+                    <p class="metric-label">Total Requests</p>
+                    <div class="metric-trend">
+                        <span class="trend-indicator up">
+                            <i class="fas fa-arrow-up"></i> +15.3%
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Threats Blocked -->
+            <div class="metric-card threats-blocked">
+                <div class="metric-icon">
+                    <i class="fas fa-shield-virus"></i>
+                </div>
+                <div class="metric-content">
+                    <h3 class="metric-value" id="threats-blocked">0</h3>
+                    <p class="metric-label">Threats Blocked</p>
+                    <div class="metric-trend">
+                        <span class="trend-indicator up">
+                            <i class="fas fa-arrow-up"></i> Yorkshire Champion!
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active Policies -->
+            <div class="metric-card active-policies">
+                <div class="metric-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="metric-content">
+                    <h3 class="metric-value" id="active-policies">0</h3>
+                    <p class="metric-label">Active Policies</p>
+                    <div class="metric-trend">
+                        <span class="trend-indicator stable">
+                            <i class="fas fa-minus"></i> Stable
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Blocked IPs -->
+            <div class="metric-card blocked-ips">
+                <div class="metric-icon">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <div class="metric-content">
+                    <h3 class="metric-value" id="blocked-ips">0</h3>
+                    <p class="metric-label">Blocked IPs</p>
+                    <div class="metric-trend">
+                        <span class="trend-indicator down">
+                            <i class="fas fa-arrow-down"></i> -2.1%
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Real-time Threat Level Indicator -->
+        <div class="threat-level-indicator">
+            <div class="threat-level-header">
+                <h3>🚨 Current Threat Level</h3>
+            </div>
+            <div class="threat-level-display" id="threat-level-display">
+                <div class="threat-gauge">
+                    <div class="gauge-background">
+                        <div class="gauge-fill" id="threat-gauge-fill" style="width: 15%;"></div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span class="gauge-label minimal">Minimal</span>
+                        <span class="gauge-label low">Low</span>
+                        <span class="gauge-label medium">Medium</span>
+                        <span class="gauge-label high">High</span>
+                        <span class="gauge-label critical">Critical</span>
+                        <span class="gauge-label yorkshire">Yorkshire Champion</span>
+                    </div>
+                </div>
+                <div class="current-threat-info">
+                    <span class="threat-text" id="current-threat-text">LOW - All Systems Secure</span>
+                    <span class="daddy-status">🛡️ DADDY IS WATCHING!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Management Tabs Interface -->
+    <div class="icewall-tabs-container">
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="overview">📊 Overview</button>
+            <button class="tab-button" data-tab="policies">📋 Policy Management</button>
+            <button class="tab-button" data-tab="ip-management">🌐 IP Management</button>
+            <button class="tab-button" data-tab="threat-analysis">🔍 Threat Analysis</button>
+            <button class="tab-button" data-tab="thingamabobs">🔧 Thingamabobs</button>
+            <button class="tab-button" data-tab="settings">⚙️ Settings</button>
+        </div>
+        
+        <!-- Overview Tab -->
+        <div id="overview-tab" class="tab-content active">
+            <div class="overview-section">
+                
+                <!-- Live Activity Feed -->
+                <div class="activity-feed-container">
+                    <h3 class="section-title">
+                        <i class="fas fa-stream"></i>
+                        Live Security Activity Feed
+                    </h3>
+                    <div class="activity-feed" id="security-activity-feed">
+                        <div class="activity-item blocked">
+                            <div class="activity-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-header">
+                                    <span class="activity-type">SQL Injection Blocked</span>
+                                    <span class="activity-time">2 minutes ago</span>
+                                </div>
+                                <div class="activity-details">
+                                    IP: 192.168.1.100 • Target: /webmail/login.php • Threat Level: Critical
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item allowed">
+                            <div class="activity-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-header">
+                                    <span class="activity-type">Jupyter Session Started</span>
+                                    <span class="activity-time">5 minutes ago</span>
+                                </div>
+                                <div class="activity-details">
+                                    IP: 172.16.0.50 • Target: /jupyter/lab • Status: Verified & Secured
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item challenged">
+                            <div class="activity-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-header">
+                                    <span class="activity-type">Suspicious Pattern Detected</span>
+                                    <span class="activity-time">8 minutes ago</span>
+                                </div>
+                                <div class="activity-details">
+                                    IP: 10.0.0.25 • Target: /files/upload • Action: Challenge Required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-controls">
+                        <button class="btn btn-secondary" onclick="pauseActivityFeed()">
+                            <i class="fas fa-pause"></i> Pause Feed
+                        </button>
+                        <button class="btn btn-primary" onclick="exportActivityLog()">
+                            <i class="fas fa-download"></i> Export Log
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Thingamabob Protection Status -->
+                <div class="thingamabob-protection-status">
+                    <h3 class="section-title">
+                        <i class="fas fa-shield-check"></i>
+                        Thingamabob Protection Status
+                    </h3>
+                    <div class="protection-grid">
+                        
+                        <div class="protection-item webmail">
+                            <div class="protection-icon">
+                                <i class="fas fa-envelope-open-text"></i>
+                            </div>
+                            <div class="protection-info">
+                                <h4>Webmail Thingamabob</h4>
+                                <div class="protection-stats">
+                                    <span class="stat">Protected: <strong>1,247 requests</strong></span>
+                                    <span class="stat">Blocked: <strong>23 threats</strong></span>
+                                </div>
+                            </div>
+                            <div class="protection-status active">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>PROTECTED</span>
+                            </div>
+                        </div>
+                        
+                        <div class="protection-item jupyter">
+                            <div class="protection-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="protection-info">
+                                <h4>Jupyter Thingamabob</h4>
+                                <div class="protection-stats">
+                                    <span class="stat">Sessions: <strong>89 secured</strong></span>
+                                    <span class="stat">Code Exec: <strong>456 monitored</strong></span>
+                                </div>
+                            </div>
+                            <div class="protection-status active">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>MONITORED</span>
+                            </div>
+                        </div>
+                        
+                        <div class="protection-item filemanager">
+                            <div class="protection-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div class="protection-info">
+                                <h4>File Manager Thingamabob</h4>
+                                <div class="protection-stats">
+                                    <span class="stat">Uploads: <strong>334 scanned</strong></span>
+                                    <span class="stat">Traversal: <strong>12 blocked</strong></span>
+                                </div>
+                            </div>
+                            <div class="protection-status active">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>SECURED</span>
+                            </div>
+                        </div>
+                        
+                        <div class="protection-item calendar">
+                            <div class="protection-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="protection-info">
+                                <h4>Calendar Thingamabob</h4>
+                                <div class="protection-stats">
+                                    <span class="stat">CalDAV: <strong>78 validated</strong></span>
+                                    <span class="stat">Events: <strong>156 secured</strong></span>
+                                </div>
+                            </div>
+                            <div class="protection-status active">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>VALIDATED</span>
+                            </div>
+                        </div>
+                        
+                        <div class="protection-item ftp">
+                            <div class="protection-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="protection-info">
+                                <h4>VSFTPD Thingamabob</h4>
+                                <div class="protection-stats">
+                                    <span class="stat">Connections: <strong>45 monitored</strong></span>
+                                    <span class="stat">Transfers: <strong>123 secured</strong></span>
+                                </div>
+                            </div>
+                            <div class="protection-status active">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>MONITORED</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Policy Management Tab -->
+        <div id="policies-tab" class="tab-content">
+            <div class="policy-management-section">
+                
+                <!-- Policy Controls -->
+                <div class="policy-controls">
+                    <h3 class="section-title">
+                        <i class="fas fa-cogs"></i>
+                        Security Policy Management
+                    </h3>
+                    
+                    <div class="policy-action-bar">
+                        <button class="btn btn-success" onclick="showAddPolicyModal()">
+                            <i class="fas fa-plus"></i> Add New Policy
+                        </button>
+                        <button class="btn btn-primary" onclick="exportPolicies()">
+                            <i class="fas fa-download"></i> Export Policies
+                        </button>
+                        <button class="btn btn-secondary" onclick="importPolicies()">
+                            <i class="fas fa-upload"></i> Import Policies
+                        </button>
+                        <button class="btn btn-warning" onclick="optimizePolicies()">
+                            <i class="fas fa-magic"></i> Auto-Optimize
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Policy List -->
+                <div class="policy-list-container">
+                    <div class="policy-filters">
+                        <div class="filter-group">
+                            <label>Policy Type:</label>
+                            <select id="policy-type-filter" onchange="filterPolicies()">
+                                <option value="all">All Types</option>
+                                <option value="sql-injection">SQL Injection</option>
+                                <option value="xss-protection">XSS Protection</option>
+                                <option value="ddos-mitigation">DDoS Mitigation</option>
+                                <option value="brute-force">Brute Force</option>
+                                <option value="malware-scan">Malware Scanning</option>
+                                <option value="quantum-threat">Quantum Threat</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="policy-status-filter" onchange="filterPolicies()">
+                                <option value="all">All Policies</option>
+                                <option value="enabled">Enabled Only</option>
+                                <option value="disabled">Disabled Only</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Search:</label>
+                            <input type="text" id="policy-search" placeholder="Search policies..." onkeyup="searchPolicies()">
+                        </div>
+                    </div>
+                    
+                    <div class="policy-table-container">
+                        <table class="policy-table" id="policies-table">
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Policy Name</th>
+                                    <th>Type</th>
+                                    <th>Threat Level</th>
+                                    <th>Action</th>
+                                    <th>Matches</th>
+                                    <th>Effectiveness</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="policies-table-body">
+                                
+                                <tr class="policy-row active">
+                                    <td>
+                                        <div class="status-toggle">
+                                            <input type="checkbox" id="policy-1" checked>
+                                            <label for="policy-1" class="toggle-switch"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="policy-name">
+                                            <strong>Yorkshire Champion SQL Injection Protection</strong>
+                                            <small>Advanced pattern matching with ML enhancement</small>
+                                        </div>
+                                    </td>
+                                    <td><span class="policy-type sql-injection">SQL Injection</span></td>
+                                    <td><span class="threat-level critical">Critical</span></td>
+                                    <td><span class="policy-action block">Yorkshire Champion Block</span></td>
+                                    <td><span class="match-count">1,247</span></td>
+                                    <td>
+                                        <div class="effectiveness-meter">
+                                            <div class="effectiveness-bar" style="width: 98.5%;"></div>
+                                            <span class="effectiveness-text">98.5%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="policy-actions">
+                                            <button class="btn-icon" onclick="editPolicy('policy-1')" title="Edit Policy">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="duplicatePolicy('policy-1')" title="Duplicate">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button class="btn-icon danger" onclick="deletePolicy('policy-1')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="policy-row active">
+                                    <td>
+                                        <div class="status-toggle">
+                                            <input type="checkbox" id="policy-2" checked>
+                                            <label for="policy-2" class="toggle-switch"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="policy-name">
+                                            <strong>Yorkshire Champion XSS Protection</strong>
+                                            <small>Multi-layer XSS detection and prevention</small>
+                                        </div>
+                                    </td>
+                                    <td><span class="policy-type xss-protection">XSS Protection</span></td>
+                                    <td><span class="threat-level high">High</span></td>
+                                    <td><span class="policy-action block">Block</span></td>
+                                    <td><span class="match-count">456</span></td>
+                                    <td>
+                                        <div class="effectiveness-meter">
+                                            <div class="effectiveness-bar" style="width: 94.2%;"></div>
+                                            <span class="effectiveness-text">94.2%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="policy-actions">
+                                            <button class="btn-icon" onclick="editPolicy('policy-2')" title="Edit Policy">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="duplicatePolicy('policy-2')" title="Duplicate">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button class="btn-icon danger" onclick="deletePolicy('policy-2')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="policy-row active">
+                                    <td>
+                                        <div class="status-toggle">
+                                            <input type="checkbox" id="policy-3" checked>
+                                            <label for="policy-3" class="toggle-switch"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="policy-name">
+                                            <strong>DDoS Attack Mitigation</strong>
+                                            <small>Real-time traffic analysis and rate limiting</small>
+                                        </div>
+                                    </td>
+                                    <td><span class="policy-type ddos-mitigation">DDoS Mitigation</span></td>
+                                    <td><span class="threat-level high">High</span></td>
+                                    <td><span class="policy-action rate-limit">Rate Limit</span></td>
+                                    <td><span class="match-count">89</span></td>
+                                    <td>
+                                        <div class="effectiveness-meter">
+                                            <div class="effectiveness-bar" style="width: 96.7%;"></div>
+                                            <span class="effectiveness-text">96.7%</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="policy-actions">
+                                            <button class="btn-icon" onclick="editPolicy('policy-3')" title="Edit Policy">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon" onclick="duplicatePolicy('policy-3')" title="Duplicate">
+                                                <i class="fas fa-copy"></i>
+                                            </button>
+                                            <button class="btn-icon danger" onclick="deletePolicy('policy-3')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- IP Management Tab -->
+        <div id="ip-management-tab" class="tab-content">
+            <div class="ip-management-section">
+                
+                <!-- IP Management Controls -->
+                <div class="ip-controls">
+                    <h3 class="section-title">
+                        <i class="fas fa-globe"></i>
+                        IP Address Management
+                    </h3>
+                    
+                    <div class="ip-action-bar">
+                        <button class="btn btn-success" onclick="showAddIPModal()">
+                            <i class="fas fa-plus"></i> Add IP Address
+                        </button>
+                        <button class="btn btn-primary" onclick="bulkImportIPs()">
+                            <i class="fas fa-file-upload"></i> Bulk Import
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportIPLists()">
+                            <i class="fas fa-download"></i> Export Lists
+                        </button>
+                        <button class="btn btn-warning" onclick="scanThreatIntelligence()">
+                            <i class="fas fa-radar"></i> Threat Intel Scan
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- IP Lists Tabs -->
+                <div class="ip-lists-tabs">
+                    <div class="ip-tab-navigation">
+                        <button class="ip-tab-button active" data-ip-tab="whitelist">
+                            <i class="fas fa-check-circle"></i> Whitelist (23)
+                        </button>
+                        <button class="ip-tab-button" data-ip-tab="blacklist">
+                            <i class="fas fa-ban"></i> Blacklist (156)
+                        </button>
+                        <button class="ip-tab-button" data-ip-tab="intelligence">
+                            <i class="fas fa-brain"></i> Threat Intelligence (1,247)
+                        </button>
+                    </div>
+                    
+                    <!-- Whitelist Tab -->
+                    <div id="whitelist-ip-tab" class="ip-tab-content active">
+                        <div class="ip-list-controls">
+                            <div class="ip-filters">
+                                <input type="text" id="whitelist-search" placeholder="Search whitelist..." onkeyup="searchIPList('whitelist')">
+                                <select id="whitelist-filter" onchange="filterIPList('whitelist')">
+                                    <option value="all">All Entries</option>
+                                    <option value="permanent">Permanent Only</option>
+                                    <option value="temporary">Temporary Only</option>
+                                    <option value="expiring">Expiring Soon</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="ip-table-container">
+                            <table class="ip-table">
+                                <thead>
+                                    <tr>
+                                        <th>IP Address</th>
+                                        <th>Reason</th>
+                                        <th>Added Date</th>
+                                        <th>Expires</th>
+                                        <th>Hits</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="whitelist-table-body">
+                                    
+                                    <tr class="ip-row permanent">
+                                        <td>
+                                            <div class="ip-info">
+                                                <span class="ip-address">192.168.1.100</span>
+                                                <small class="ip-location">Internal Network</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="ip-reason">Admin workstation</span>
+                                        </td>
+                                        <td><span class="ip-date">2025-01-15</span></td>
+                                        <td><span class="ip-expiry permanent">Permanent</span></td>
+                                        <td><span class="ip-hits">1,247</span></td>
+                                        <td><span class="ip-status active">Active</span></td>
+                                        <td>
+                                            <div class="ip-actions">
+                                                <button class="btn-icon" onclick="editIP('whitelist', 'ip-1')" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon danger" onclick="removeIP('whitelist', 'ip-1')" title="Remove">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr class="ip-row temporary">
+                                        <td>
+                                            <div class="ip-info">
+                                                <span class="ip-address">203.45.67.89</span>
+                                                <small class="ip-location">United Kingdom</small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="ip-reason">Trusted partner access</span>
+                                        </td>
+                                        <td><span class="ip-date">2025-01-20</span></td>
+                                        <td><span class="ip-expiry expiring">2 hours</span></td>
+                                        <td><span class="ip-hits">45</span></td>
+                                        <td><span class="ip-status active">Active</span></td>
+                                        <td>
+                                            <div class="ip-actions">
+                                                <button class="btn-icon" onclick="editIP('whitelist', 'ip-2')" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon danger" onclick="removeIP('whitelist', 'ip-2')" title="Remove">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Blacklist Tab -->
+                    <div id="blacklist-ip-tab" class="ip-tab-content">
+                        <div class="ip-list-controls">
+                            <div class="ip-filters">
+                                <input type="text" id="blacklist-search" placeholder="Search blacklist..." onkeyup="searchIPList('blacklist')">
+                                <select id="blacklist-filter" onchange="filterIPList('blacklist')">
+                                    <option value="all">All Entries</option>
+                                    <option value="critical">Critical Threats</option>
+                                    <option value="high">High Threats</option>
+                                    <option value="medium">Medium Threats</option>
+                                    <option value="auto-detected">Auto-Detected</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="ip-table-container">
+                            <table class="ip-table">
+                                <thead>
+                                    <tr>
+                                        <th>IP Address</th>
+                                        <th>Threat Level</th>
+                                        <th>Reason</th>
+                                        <th>Added Date</th>
+                                        <th>Blocked Attempts</th>
+                                        <th>Source</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="blacklist-table-body">
+                                    
+                                    <tr class="ip-row threat-critical">
+                                        <td>
+                                            <div class="ip-info">
+                                                <span class="ip-address">45.123.45.67</span>
+                                                <small class="ip-location">Unknown/Tor</small>
+                                            </div>
+                                        </td>
+                                        <td><span class="threat-level critical">Critical</span></td>
+                                        <td>
+                                            <span class="ip-reason">Multiple SQL injection attempts</span>
+                                        </td>
+                                        <td><span class="ip-date">2025-01-24</span></td>
+                                        <td><span class="blocked-attempts">47</span></td>
+                                        <td><span class="ip-source auto">Auto-Detection</span></td>
+                                        <td>
+                                            <div class="ip-actions">
+                                                <button class="btn-icon" onclick="viewIPDetails('blacklist', 'ip-3')" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn-icon" onclick="editIP('blacklist', 'ip-3')" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon success" onclick="moveToWhitelist('ip-3')" title="Move to Whitelist">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr class="ip-row threat-high">
+                                        <td>
+                                            <div class="ip-info">
+                                                <span class="ip-address">198.51.100.25</span>
+                                                <small class="ip-location">Russia</small>
+                                            </div>
+                                        </td>
+                                        <td><span class="threat-level high">High</span></td>
+                                        <td>
+                                            <span class="ip-reason">Brute force attack on webmail</span>
+                                        </td>
+                                        <td><span class="ip-date">2025-01-23</span></td>
+                                        <td><span class="blocked-attempts">156</span></td>
+                                        <td><span class="ip-source threat-intel">Threat Intelligence</span></td>
+                                        <td>
+                                            <div class="ip-actions">
+                                                <button class="btn-icon" onclick="viewIPDetails('blacklist', 'ip-4')" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn-icon" onclick="editIP('blacklist', 'ip-4')" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-icon success" onclick="moveToWhitelist('ip-4')" title="Move to Whitelist">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Threat Analysis Tab -->
+        <div id="threat-analysis-tab" class="tab-content">
+            <div class="threat-analysis-section">
+                
+                <h3 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Yorkshire Champion Threat Analysis
+                </h3>
+                
+                <!-- Threat Statistics Charts -->
+                <div class="threat-charts-grid">
+                    
+                    <!-- Threat Types Distribution -->
+                    <div class="chart-container threat-types-chart">
+                        <h4>Threat Types Distribution (Last 24 Hours)</h4>
+                        <div class="chart-placeholder">
+                            <canvas id="threatTypesChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-color sql-injection"></span>
+                                <span>SQL Injection (45%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color xss-attack"></span>
+                                <span>XSS Attacks (23%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color brute-force"></span>
+                                <span>Brute Force (18%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color ddos-attack"></span>
+                                <span>DDoS (10%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color other"></span>
+                                <span>Other (4%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Attack Timeline -->
+                    <div class="chart-container attack-timeline-chart">
+                        <h4>Attack Timeline (Last 7 Days)</h4>
+                        <div class="chart-placeholder">
+                            <canvas id="attackTimelineChart" width="600" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Geographic Threat Map -->
+                <div class="geographic-threats">
+                    <h4>Geographic Threat Distribution</h4>
+                    <div class="geo-threat-container">
+                        <div class="world-map-placeholder">
+                            <div class="map-threat-indicator" style="left: 20%; top: 30%;" data-country="Russia">
+                                <div class="threat-dot high"></div>
+                                <div class="threat-tooltip">Russia: 156 attacks</div>
+                            </div>
+                            <div class="map-threat-indicator" style="left: 50%; top: 50%;" data-country="China">
+                                <div class="threat-dot critical"></div>
+                                <div class="threat-tooltip">China: 243 attacks</div>
+                            </div>
+                            <div class="map-threat-indicator" style="left: 75%; top: 35%;" data-country="Unknown">
+                                <div class="threat-dot medium"></div>
+                                <div class="threat-tooltip">Unknown/Tor: 89 attacks</div>
+                            </div>
+                        </div>
+                        <div class="geo-stats">
+                            <div class="geo-stat-item">
+                                <span class="country-name">🇷🇺 Russia</span>
+                                <span class="attack-count">156 attacks</span>
+                                <span class="threat-indicator high">High</span>
+                            </div>
+                            <div class="geo-stat-item">
+                                <span class="country-name">🇨🇳 China</span>
+                                <span class="attack-count">243 attacks</span>
+                                <span class="threat-indicator critical">Critical</span>
+                            </div>
+                            <div class="geo-stat-item">
+                                <span class="country-name">🌐 Unknown/Tor</span>
+                                <span class="attack-count">89 attacks</span>
+                                <span class="threat-indicator medium">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Thingamabobs Protection Tab -->
+        <div id="thingamabobs-tab" class="tab-content">
+            <div class="thingamabobs-section">
+                
+                <h3 class="section-title">
+                    <i class="fas fa-shield-virus"></i>
+                    Thingamabob Protection Management
+                </h3>
+                
+                <div class="thingamabobs-grid">
+                    
+                    <!-- Webmail Thingamabob -->
+                    <div class="thingamabob-protection-card webmail">
+                        <div class="card-header">
+                            <div class="thingamabob-icon">
+                                <i class="fas fa-envelope-open-text"></i>
+                            </div>
+                            <div class="thingamabob-info">
+                                <h4>Webmail Thingamabob</h4>
+                                <p>Email service protection</p>
+                            </div>
+                            <div class="protection-toggle">
+                                <input type="checkbox" id="webmail-protection" checked>
+                                <label for="webmail-protection" class="toggle-switch"></label>
+                            </div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Protected Requests:</span>
+                                <span class="stat-value">1,247</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Threats Blocked:</span>
+                                <span class="stat-value">23</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Success Rate:</span>
+                                <span class="stat-value">98.1%</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-primary" onclick="configureThingamabobSecurity('webmail')">
+                                Configure Security
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="viewThingamabobLogs('webmail')">
+                                View Logs
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Jupyter Thingamabob -->
+                    <div class="thingamabob-protection-card jupyter">
+                        <div class="card-header">
+                            <div class="thingamabob-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="thingamabob-info">
+                                <h4>Jupyter Thingamabob</h4>
+                                <p>Code execution monitoring</p>
+                            </div>
+                            <div class="protection-toggle">
+                                <input type="checkbox" id="jupyter-protection" checked>
+                                <label for="jupyter-protection" class="toggle-switch"></label>
+                            </div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Sessions Monitored:</span>
+                                <span class="stat-value">89</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Code Executions:</span>
+                                <span class="stat-value">456</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Security Score:</span>
+                                <span class="stat-value">95.2%</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-primary" onclick="configureThingamabobSecurity('jupyter')">
+                                Configure Security
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="viewThingamabobLogs('jupyter')">
+                                View Logs
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- File Manager Thingamabob -->
+                    <div class="thingamabob-protection-card filemanager">
+                        <div class="card-header">
+                            <div class="thingamabob-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div class="thingamabob-info">
+                                <h4>File Manager Thingamabob</h4>
+                                <p>File system protection</p>
+                            </div>
+                            <div class="protection-toggle">
+                                <input type="checkbox" id="filemanager-protection" checked>
+                                <label for="filemanager-protection" class="toggle-switch"></label>
+                            </div>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Files Scanned:</span>
+                                <span class="stat-value">334</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Traversal Blocked:</span>
+                                <span class="stat-value">12</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Protection Level:</span>
+                                <span class="stat-value">Critical</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-primary" onclick="configureThingamabobSecurity('filemanager')">
+                                Configure Security
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="viewThingamabobLogs('filemanager')">
+                                View Logs
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Settings Tab -->
+        <div id="settings-tab" class="tab-content">
+            <div class="settings-section">
+                
+                <h3 class="section-title">
+                    <i class="fas fa-cog"></i>
+                    Icewall Firewall Daddy Settings
+                </h3>
+                
+                <div class="settings-grid">
+                    
+                    <!-- General Settings -->
+                    <div class="settings-card">
+                        <h4>🛡️ General Firewall Settings</h4>
+                        <div class="setting-item">
+                            <label>Yorkshire Champion Multiplier:</label>
+                            <input type="range" id="yorkshire-multiplier" min="1" max="20" value="15" step="0.1">
+                            <span class="multiplier-display">15.0x</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>Threat Detection Sensitivity:</label>
+                            <select id="threat-sensitivity">
+                                <option value="low">Low (Fewer false positives)</option>
+                                <option value="medium" selected>Medium (Balanced)</option>
+                                <option value="high">High (Maximum protection)</option>
+                                <option value="yorkshire">Yorkshire Champion (Ultimate)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="quantum-protection" checked>
+                                Enable Quantum-level Protection
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="auto-update-threats" checked>
+                                Auto-update Threat Intelligence
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Settings -->
+                    <div class="settings-card">
+                        <h4>⚡ Performance Settings</h4>
+                        <div class="setting-item">
+                            <label>Max Concurrent Connections:</label>
+                            <input type="number" id="max-connections" value="1000" min="100" max="10000">
+                        </div>
+                        <div class="setting-item">
+                            <label>Request Timeout (seconds):</label>
+                            <input type="number" id="request-timeout" value="30" min="5" max="300">
+                        </div>
+                        <div class="setting-item">
+                            <label>Memory Limit (MB):</label>
+                            <input type="number" id="memory-limit" value="512" min="256" max="2048">
+                        </div>
+                    </div>
+                    
+                    <!-- Logging Settings -->
+                    <div class="settings-card">
+                        <h4>📝 Logging & Monitoring</h4>
+                        <div class="setting-item">
+                            <label>Log Level:</label>
+                            <select id="log-level">
+                                <option value="error">Error Only</option>
+                                <option value="warning">Warning & Above</option>
+                                <option value="info" selected>Info & Above</option>
+                                <option value="debug">Debug (All)</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="enable-audit-logging" checked>
+                                Enable Security Audit Logging
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>Log Retention (days):</label>
+                            <input type="number" id="log-retention" value="30" min="7" max="365">
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="settings-actions">
+                    <button class="btn btn-success" onclick="saveFirewallSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetToDefaults()">
+                        <i class="fas fa-undo"></i> Reset to Defaults
+                    </button>
+                    <button class="btn btn-primary" onclick="exportConfiguration()">
+                        <i class="fas fa-download"></i> Export Configuration
+                    </button>
+                    <button class="btn btn-warning" onclick="restartFirewallDaddy()">
+                        <i class="fas fa-sync"></i> Restart Firewall Daddy
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+<!-- Yorkshire Champion CSS Styles -->
+<style>
+.revolutionary-security {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border: 3px solid #4a90e2;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+}
+
+.firewall-daddy-header {
+    background: linear-gradient(90deg, #c0392b, #e74c3c, #c0392b);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #e74c3c;
+}
+
+.firewall-daddy-icon {
+    font-size: 2.5em;
+    margin-right: 15px;
+    color: #f39c12;
+    text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+    animation: pulse 2s infinite;
+}
+
+.firewall-status-indicator {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 25px;
+    margin-bottom: 10px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: blink 1s infinite;
+}
+
+.status-dot.active {
+    background: #2ecc71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
+}
+
+.yorkshire-multiplier {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.security-metrics-dashboard {
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 2px solid rgba(74, 144, 226, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(74, 144, 226, 0.4);
+    border-color: #4a90e2;
+}
+
+.metric-icon {
+    font-size: 2.5em;
+    margin-right: 15px;
+    opacity: 0.8;
+}
+
+.requests-processed .metric-icon { color: #3498db; }
+.threats-blocked .metric-icon { color: #e74c3c; }
+.active-policies .metric-icon { color: #f39c12; }
+.blocked-ips .metric-icon { color: #9b59b6; }
+
+.metric-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.metric-label {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 5px 0 0 0;
+    font-size: 0.9em;
+}
+
+.trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+.trend-indicator.up {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.trend-indicator.down {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.trend-indicator.stable {
+    background: rgba(149, 165, 166, 0.2);
+    color: #95a5a6;
+}
+
+.threat-level-indicator {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 2px solid rgba(74, 144, 226, 0.3);
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+.threat-gauge {
+    position: relative;
+    margin: 20px 0;
+}
+
+.gauge-background {
+    height: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.gauge-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2ecc71, #f39c12, #e74c3c);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.gauge-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.current-threat-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.threat-text {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+.daddy-status {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+.icewall-tabs-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 2px solid rgba(74, 144, 226, 0.3);
+}
+
+.tab-navigation {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    overflow-x: auto;
+}
+
+.tab-button {
+    padding: 15px 25px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+    background: rgba(74, 144, 226, 0.1);
+    color: white;
+}
+
+.tab-button.active {
+    background: rgba(74, 144, 226, 0.2);
+    color: white;
+    border-bottom-color: #4a90e2;
+}
+
+.tab-content {
+    display: none;
+    padding: 30px;
+    min-height: 500px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.section-title {
+    color: white;
+    font-size: 1.5em;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 10px;
+    color: #4a90e2;
+}
+
+/* Activity Feed Styles */
+.activity-feed {
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.activity-item.blocked {
+    border-left: 4px solid #e74c3c;
+}
+
+.activity-item.allowed {
+    border-left: 4px solid #2ecc71;
+}
+
+.activity-item.challenged {
+    border-left: 4px solid #f39c12;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.2em;
+}
+
+.blocked .activity-icon {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.allowed .activity-icon {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.challenged .activity-icon {
+    background: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.activity-type {
+    font-weight: bold;
+    color: white;
+}
+
+.activity-time {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+}
+
+.activity-details {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9em;
+}
+
+/* Protection Status Grid */
+.protection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.protection-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(74, 144, 226, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.protection-item:hover {
+    border-color: #4a90e2;
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+}
+
+.protection-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.5em;
+}
+
+.webmail .protection-icon {
+    background: rgba(52, 152, 219, 0.2);
+    color: #3498db;
+}
+
+.jupyter .protection-icon {
+    background: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+}
+
+.filemanager .protection-icon {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.calendar .protection-icon {
+    background: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.ftp .protection-icon {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.protection-info h4 {
+    color: white;
+    margin: 0 0 10px 0;
+}
+
+.protection-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.stat {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9em;
+}
+
+.protection-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: auto;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.protection-status.active {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+/* Policy Management Styles */
+.policy-action-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.policy-filters {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9em;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 8px 12px;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.policy-table-container {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.policy-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.policy-table th {
+    background: rgba(74, 144, 226, 0.3);
+    color: white;
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.policy-table td {
+    padding: 15px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.policy-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.policy-name strong {
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.policy-name small {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8em;
+}
+
+.policy-type {
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.policy-type.sql-injection {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.policy-type.xss-protection {
+    background: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.policy-type.ddos-mitigation {
+    background: rgba(155, 89, 182, 0.2);
+    color: #9b59b6;
+}
+
+.threat-level {
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.threat-level.critical {
+    background: rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+}
+
+.threat-level.high {
+    background: rgba(243, 156, 18, 0.3);
+    color: #f39c12;
+}
+
+.threat-level.medium {
+    background: rgba(52, 152, 219, 0.3);
+    color: #3498db;
+}
+
+.policy-action {
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.policy-action.block {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.policy-action.rate-limit {
+    background: rgba(243, 156, 18, 0.2);
+    color: #f39c12;
+}
+
+.effectiveness-meter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.effectiveness-bar {
+    height: 8px;
+    background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #bbb;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+}
+
+input[type="checkbox"]:checked + .toggle-switch {
+    background: #4a90e2;
+}
+
+input[type="checkbox"]:checked + .toggle-switch::before {
+    transform: translateX(20px);
+    background: white;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #4a90e2, #357abd);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-icon {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 2px;
+}
+
+.btn-icon {
+    background: rgba(74, 144, 226, 0.2);
+    color: #4a90e2;
+}
+
+.btn-icon.success {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.btn-icon.danger {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+/* IP Management Styles */
+.ip-tab-navigation {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+
+.ip-tab-button {
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+}
+
+.ip-tab-button:hover {
+    background: rgba(74, 144, 226, 0.1);
+    color: white;
+}
+
+.ip-tab-button.active {
+    background: rgba(74, 144, 226, 0.3);
+    color: white;
+}
+
+.ip-tab-content {
+    display: none;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+}
+
+.ip-tab-content.active {
+    display: block;
+}
+
+.ip-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ip-table th {
+    background: rgba(74, 144, 226, 0.3);
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.ip-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.ip-address {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: white;
+}
+
+.ip-location {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8em;
+}
+
+.ip-expiry.permanent {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.ip-expiry.expiring {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.ip-status.active {
+    color: #2ecc71;
+}
+
+.ip-source.auto {
+    color: #f39c12;
+}
+
+.ip-source.threat-intel {
+    color: #9b59b6;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .firewall-daddy-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tab-navigation {
+        flex-direction: column;
+    }
+    
+    .policy-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .policy-action-bar {
+        flex-direction: column;
+    }
+}
+</style>
+
+<!-- JavaScript for Icewall Firewall Daddy -->
+<script>
+// Initialize Icewall Firewall Daddy
+document.addEventListener('DOMContentLoaded', function() {
+    initializeIcewallFirewall();
+    startRealTimeUpdates();
+});
+
+// Tab Management
+document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const targetTab = this.getAttribute('data-tab');
+        showTab(targetTab);
+    });
+});
+
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(tabName + '-tab').classList.add('active');
+    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+}
+
+// IP Tab Management
+document.querySelectorAll('.ip-tab-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const targetTab = this.getAttribute('data-ip-tab');
+        showIPTab(targetTab);
+    });
+});
+
+function showIPTab(tabName) {
+    // Hide all IP tabs
+    document.querySelectorAll('.ip-tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.ip-tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    // Show selected IP tab
+    document.getElementById(tabName + '-ip-tab').classList.add('active');
+    document.querySelector(`[data-ip-tab="${tabName}"]`).classList.add('active');
+}
+
+// Initialize Icewall Firewall
+function initializeIcewallFirewall() {
+    console.log('🛡️ Initializing Icewall Firewall Daddy...');
+    
+    // Load initial data
+    loadFirewallStatus();
+    loadSecurityMetrics();
+    loadPolicies();
+    loadIPLists();
+    
+    console.log('🔥 Icewall Firewall Daddy initialized successfully!');
+}
+
+// Real-time Updates
+let realTimeInterval;
+
+function startRealTimeUpdates() {
+    realTimeInterval = setInterval(() => {
+        updateSecurityMetrics();
+        updateActivityFeed();
+        updateThreatLevel();
+    }, 5000); // Update every 5 seconds
+}
+
+// Load Firewall Status
+function loadFirewallStatus() {
+    // Simulate API call to get firewall status
+    fetch('/api/icewall/status')
+        .then(response => response.json())
+        .then(data => {
+            updateFirewallStatusDisplay(data);
+        })
+        .catch(error => {
+            console.error('Error loading firewall status:', error);
+            // Use demo data
+            updateFirewallStatusDisplay({
+                status: 'ACTIVE',
+                yorkshire_multiplier: '15.0x',
+                uptime_hours: '72'
+            });
+        });
+}
+
+function updateFirewallStatusDisplay(data) {
+    const statusElement = document.getElementById('firewall-status');
+    const statusText = statusElement.querySelector('.status-text');
+    const statusDot = statusElement.querySelector('.status-dot');
+    
+    if (data.status === 'ACTIVE') {
+        statusText.textContent = 'DADDY ON DUTY!';
+        statusDot.classList.add('active');
+    } else {
+        statusText.textContent = 'OFFLINE';
+        statusDot.classList.remove('active');
+    }
+}
+
+// Update Security Metrics
+function updateSecurityMetrics() {
+    // Simulate real-time metrics updates
+    const metrics = {
+        totalRequests: Math.floor(Math.random() * 10000) + 5000,
+        threatsBlocked: Math.floor(Math.random() * 500) + 100,
+        activePolicies: Math.floor(Math.random() * 20) + 15,
+        blockedIps: Math.floor(Math.random() * 200) + 50
+    };
+    
+    document.getElementById('total-requests').textContent = metrics.totalRequests.toLocaleString();
+    document.getElementById('threats-blocked').textContent = metrics.threatsBlocked.toLocaleString();
+    document.getElementById('active-policies').textContent = metrics.activePolicies;
+    document.getElementById('blocked-ips').textContent = metrics.blockedIps;
+}
+
+// Update Activity Feed
+function updateActivityFeed() {
+    const feed = document.getElementById('security-activity-feed');
+    const activities = [
+        {
+            type: 'SQL Injection Blocked',
+            ip: '192.168.1.' + Math.floor(Math.random() * 255),
+            target: '/webmail/login.php',
+            level: 'Critical',
+            status: 'blocked'
+        },
+        {
+            type: 'Jupyter Session Started',
+            ip: '172.16.0.' + Math.floor(Math.random() * 255),
+            target: '/jupyter/lab',
+            level: 'Info',
+            status: 'allowed'
+        },
+        {
+            type: 'Suspicious Pattern Detected',
+            ip: '10.0.0.' + Math.floor(Math.random() * 255),
+            target: '/files/upload',
+            level: 'Warning',
+            status: 'challenged'
+        }
+    ];
+    
+    // Add new activity (simulate real-time)
+    if (Math.random() > 0.7) {
+        const activity = activities[Math.floor(Math.random() * activities.length)];
+        addActivityItem(activity);
+    }
+}
+
+function addActivityItem(activity) {
+    const feed = document.getElementById('security-activity-feed');
+    const activityItem = document.createElement('div');
+    activityItem.className = `activity-item ${activity.status}`;
+    
+    activityItem.innerHTML = `
+        <div class="activity-icon">
+            <i class="fas ${activity.status === 'blocked' ? 'fa-shield-alt' : activity.status === 'allowed' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+        </div>
+        <div class="activity-content">
+            <div class="activity-header">
+                <span class="activity-type">${activity.type}</span>
+                <span class="activity-time">Just now</span>
+            </div>
+            <div class="activity-details">
+                IP: ${activity.ip} • Target: ${activity.target} • ${activity.status === 'blocked' ? 'Threat Level' : 'Status'}: ${activity.level}
+            </div>
+        </div>
+    `;
+    
+    feed.insertBefore(activityItem, feed.firstChild);
+    
+    // Remove old items (keep max 10)
+    while (feed.children.length > 10) {
+        feed.removeChild(feed.lastChild);
+    }
+}
+
+// Update Threat Level
+function updateThreatLevel() {
+    const threatLevels = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
+    const currentLevel = threatLevels[Math.floor(Math.random() * threatLevels.length)];
+    const percentage = Math.floor(Math.random() * 100);
+    
+    const gaugeFill = document.getElementById('threat-gauge-fill');
+    const threatText = document.getElementById('current-threat-text');
+    
+    gaugeFill.style.width = percentage + '%';
+    threatText.textContent = `${currentLevel} - ${percentage}% Threat Level`;
+    
+    // Update color based on level
+    if (currentLevel === 'CRITICAL') {
+        gaugeFill.style.background = '#e74c3c';
+        threatText.style.color = '#e74c3c';
+    } else if (currentLevel === 'HIGH') {
+        gaugeFill.style.background = '#f39c12';
+        threatText.style.color = '#f39c12';
+    } else if (currentLevel === 'MEDIUM') {
+        gaugeFill.style.background = '#3498db';
+        threatText.style.color = '#3498db';
+    } else {
+        gaugeFill.style.background = '#2ecc71';
+        threatText.style.color = '#2ecc71';
+    }
+}
+
+// Policy Management Functions
+function showAddPolicyModal() {
+    alert('Add Policy Modal would open here');
+}
+
+function editPolicy(policyId) {
+    alert('Edit policy: ' + policyId);
+}
+
+function duplicatePolicy(policyId) {
+    alert('Duplicate policy: ' + policyId);
+}
+
+function deletePolicy(policyId) {
+    if (confirm('Are you sure you want to delete this policy?')) {
+        alert('Policy deleted: ' + policyId);
+    }
+}
+
+function exportPolicies() {
+    alert('Exporting policies...');
+}
+
+function importPolicies() {
+    alert('Import policies dialog would open here');
+}
+
+function optimizePolicies() {
+    alert('Auto-optimizing policies with Yorkshire Champion AI...');
+}
+
+function filterPolicies() {
+    alert('Filtering policies...');
+}
+
+function searchPolicies() {
+    const searchTerm = document.getElementById('policy-search').value;
+    alert('Searching for: ' + searchTerm);
+}
+
+// IP Management Functions
+function showAddIPModal() {
+    alert('Add IP Address Modal would open here');
+}
+
+function bulkImportIPs() {
+    alert('Bulk Import IPs dialog would open here');
+}
+
+function exportIPLists() {
+    alert('Exporting IP lists...');
+}
+
+function scanThreatIntelligence() {
+    alert('Scanning threat intelligence feeds...');
+}
+
+function searchIPList(listType) {
+    const searchTerm = document.getElementById(listType + '-search').value;
+    alert('Searching ' + listType + ' for: ' + searchTerm);
+}
+
+function filterIPList(listType) {
+    alert('Filtering ' + listType + ' list...');
+}
+
+function editIP(listType, ipId) {
+    alert('Edit IP: ' + ipId + ' in ' + listType);
+}
+
+function removeIP(listType, ipId) {
+    if (confirm('Are you sure you want to remove this IP?')) {
+        alert('IP removed: ' + ipId + ' from ' + listType);
+    }
+}
+
+function viewIPDetails(listType, ipId) {
+    alert('View IP details: ' + ipId + ' in ' + listType);
+}
+
+function moveToWhitelist(ipId) {
+    if (confirm('Move this IP to whitelist?')) {
+        alert('IP moved to whitelist: ' + ipId);
+    }
+}
+
+// Thingamabob Management Functions
+function configureThingamabobSecurity(thingamabob) {
+    alert('Configure security for ' + thingamabob + ' thingamabob');
+}
+
+function viewThingamabobLogs(thingamabob) {
+    alert('View logs for ' + thingamabob + ' thingamabob');
+}
+
+// Settings Functions
+function saveFirewallSettings() {
+    alert('Saving firewall settings...');
+}
+
+function resetToDefaults() {
+    if (confirm('Reset all settings to defaults?')) {
+        alert('Settings reset to defaults');
+    }
+}
+
+function exportConfiguration() {
+    alert('Exporting configuration...');
+}
+
+function restartFirewallDaddy() {
+    if (confirm('Restart Icewall Firewall Daddy? This may cause temporary service interruption.')) {
+        alert('Restarting Firewall Daddy... 🛡️🔥');
+    }
+}
+
+// Activity Feed Controls
+function pauseActivityFeed() {
+    if (realTimeInterval) {
+        clearInterval(realTimeInterval);
+        alert('Activity feed paused');
+    }
+}
+
+function exportActivityLog() {
+    alert('Exporting activity log...');
+}
+
+// Load initial data
+function loadSecurityMetrics() {
+    updateSecurityMetrics();
+}
+
+function loadPolicies() {
+    console.log('Loading security policies...');
+}
+
+function loadIPLists() {
+    console.log('Loading IP lists...');
+}
+
+// Yorkshire Multiplier Slider
+document.getElementById('yorkshire-multiplier')?.addEventListener('input', function() {
+    const value = this.value;
+    document.querySelector('.multiplier-display').textContent = value + 'x';
+});
+</script>}

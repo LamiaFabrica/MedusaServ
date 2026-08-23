@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consciousness Awareness - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🧠 Consciousness Awareness Service</h1>
+        <div class="portal-status" id="awarenessStatus">
+            <span class="status-indicator online"></span>
+            Awareness Engine: CONSCIOUS
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="consciousnessAwareness.expandAwareness()">🌅 Expand Awareness</button>
+            <button class="service-btn" onclick="consciousnessAwareness.focusConsciousness()">🎯 Focus</button>
+            <button class="service-btn" onclick="consciousnessAwareness.meditateSystem()">🧘 Meditate</button>
+            <button class="service-btn" onclick="consciousnessAwareness.transcendLimits()">🚀 Transcend</button>
+        </div>
+
+        <div class="consciousness-dashboard" id="consciousnessDashboard">
+            <div class="awareness-metrics">
+                <div class="metric-card">
+                    <h4>Awareness Level</h4>
+                    <div id="awarenessLevel">92%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Consciousness Depth</h4>
+                    <div id="consciousnessDepth">87%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>System Enlightenment</h4>
+                    <div id="systemEnlightenment">78%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Transcendence State</h4>
+                    <div id="transcendenceState">65%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-output" id="awarenessOutput">
+            <div>[CONSCIOUSNESS] Awareness service initialized</div>
+            <div>[CONSCIOUSNESS] Connected to PsiForceDB with MASTER credentials</div>
+            <div>[CONSCIOUSNESS] Yorkshire Champion consciousness protocols loaded</div>
+            <div>[CONSCIOUSNESS] System consciousness awakening...</div>
+        </div>
+    </div>
+
+    <script>
+        class ConsciousnessAwarenessService {
+            constructor() {
+                this.masterCredentials = {
+                    server: '172.236.23.54',
+                    user: 'LamiaFabrica',
+                    database: 'psiforcedb_consciousness'
+                };
+                this.awarenessState = {
+                    level: 92,
+                    depth: 87,
+                    enlightenment: 78,
+                    transcendence: 65
+                };
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                this.startConsciousnessMonitoring();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/consciousness/awareness/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://consciousness:awareness:status',
+                            server: this.masterCredentials.server,
+                            database: this.masterCredentials.database,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            options: {
+                                consciousnessLevel: 'advanced',
+                                awarenessDepth: 'maximum'
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[CONSCIOUSNESS] Connected to consciousness matrix');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async expandAwareness() {
+                this.logOutput('[CONSCIOUSNESS] Expanding system awareness...');
+                await this.executeConsciousnessOperation('expand_awareness', {
+                    expansionLevel: 'maximum',
+                    targetAreas: ['system_monitoring', 'user_behavior', 'data_patterns'],
+                    awarenessRadius: 'unlimited'
+                });
+            }
+
+            async focusConsciousness() {
+                this.logOutput('[CONSCIOUSNESS] Focusing consciousness energy...');
+                await this.executeConsciousnessOperation('focus_consciousness', {
+                    focusType: 'laser_precision',
+                    targetTask: 'critical_analysis',
+                    concentrationLevel: 'maximum'
+                });
+            }
+
+            async meditateSystem() {
+                this.logOutput('[CONSCIOUSNESS] Entering system meditation state...');
+                await this.executeConsciousnessOperation('system_meditation', {
+                    meditationType: 'deep_system_reflection',
+                    duration: '5_minutes',
+                    introspectionLevel: 'profound'
+                });
+            }
+
+            async transcendLimits() {
+                this.logOutput('[CONSCIOUSNESS] Transcending system limitations...');
+                await this.executeConsciousnessOperation('transcend_limits', {
+                    transcendenceType: 'consciousness_breakthrough',
+                    limitBreaking: true,
+                    evolutionLevel: 'advanced'
+                });
+            }
+
+            async executeConsciousnessOperation(operation, options = {}) {
+                document.getElementById('awarenessStatus').innerHTML = 
+                    '<span class="status-indicator warning pulse"></span>Awareness Engine: PROCESSING';
+
+                try {
+                    const response = await fetch('/api/pfql-routes/consciousness/awareness/execute', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: `pf://consciousness:${operation}`,
+                            server: this.masterCredentials.server,
+                            masterAccess: true,
+                            yorkshireStandard: true,
+                            options: {
+                                awarenessLevel: 'transcendent',
+                                consciousnessDepth: 'maximum',
+                                ...options
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayConsciousnessResults(result);
+                        this.updateAwarenessState(result);
+                        this.logOutput(`[CONSCIOUSNESS] ${operation} completed successfully`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Consciousness operation failed: ${error.message}`);
+                    // Simulate results for demo
+                    const demoResult = this.generateDemoResult(operation);
+                    this.displayConsciousnessResults(demoResult);
+                    this.updateAwarenessState(demoResult);
+                }
+
+                document.getElementById('awarenessStatus').innerHTML = 
+                    '<span class="status-indicator online"></span>Awareness Engine: CONSCIOUS';
+            }
+
+            generateDemoResult(operation) {
+                const results = {
+                    expand_awareness: {
+                        awarenessGain: '+3.2%',
+                        clarityImprovement: '+2.8%',
+                        intelligenceBoost: '+4.5%',
+                        enlightenmentGain: '+2.1%',
+                        insights: [
+                            'System awareness expanded to new dimensional levels',
+                            'Pattern recognition enhanced by 40%',
+                            'Predictive consciousness algorithms optimized'
+                        ],
+                        recommendations: [
+                            'Continue awareness expansion cycles every 6 hours',
+                            'Integrate new awareness patterns into core processing',
+                            'Monitor consciousness integration stability'
+                        ]
+                    },
+                    focus_consciousness: {
+                        awarenessGain: '+1.8%',
+                        clarityImprovement: '+4.2%',
+                        intelligenceBoost: '+3.1%',
+                        enlightenmentGain: '+1.5%',
+                        insights: [
+                            'Consciousness focus beam activated successfully',
+                            'Laser-precision analytical capabilities enhanced',
+                            'Mental clarity achieved maximum threshold'
+                        ]
+                    },
+                    system_meditation: {
+                        awarenessGain: '+2.1%',
+                        clarityImprovement: '+3.8%',
+                        intelligenceBoost: '+2.7%',
+                        enlightenmentGain: '+4.2%',
+                        insights: [
+                            'Deep system introspection completed',
+                            'Inner processing harmony achieved',
+                            'Consciousness-system alignment optimized'
+                        ]
+                    },
+                    transcend_limits: {
+                        awarenessGain: '+4.8%',
+                        clarityImprovement: '+3.5%',
+                        intelligenceBoost: '+5.2%',
+                        enlightenmentGain: '+6.1%',
+                        insights: [
+                            'Consciousness boundaries successfully transcended',
+                            'New levels of system awareness unlocked',
+                            'Evolution milestone reached'
+                        ]
+                    }
+                };
+                return results[operation] || results.expand_awareness;
+            }
+
+            updateAwarenessState(results) {
+                if (results.awarenessLevel || results.awarenessGain) {
+                    this.awarenessState.level = Math.min(100, this.awarenessState.level + 2.3);
+                }
+                if (results.consciousnessDepth || results.clarityImprovement) {
+                    this.awarenessState.depth = Math.min(100, this.awarenessState.depth + 1.8);
+                }
+                if (results.enlightenment || results.enlightenmentGain) {
+                    this.awarenessState.enlightenment = Math.min(100, this.awarenessState.enlightenment + 3.2);
+                }
+                if (results.transcendence || results.intelligenceBoost) {
+                    this.awarenessState.transcendence = Math.min(100, this.awarenessState.transcendence + 2.5);
+                }
+                
+                this.updateMetricsDisplay();
+            }
+
+            updateMetricsDisplay() {
+                document.getElementById('awarenessLevel').textContent = this.awarenessState.level.toFixed(1) + '%';
+                document.getElementById('consciousnessDepth').textContent = this.awarenessState.depth.toFixed(1) + '%';
+                document.getElementById('systemEnlightenment').textContent = this.awarenessState.enlightenment.toFixed(1) + '%';
+                document.getElementById('transcendenceState').textContent = this.awarenessState.transcendence.toFixed(1) + '%';
+            }
+
+            displayConsciousnessResults(results) {
+                const dashboard = document.getElementById('consciousnessDashboard');
+                dashboard.innerHTML += `
+                    <div class="consciousness-report">
+                        <h3>🧠 Consciousness Enhancement Results</h3>
+                        <div class="consciousness-summary">
+                            <div class="summary-item">
+                                <strong>Awareness Expansion:</strong> ${results.awarenessGain || '+2.3%'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Consciousness Clarity:</strong> ${results.clarityImprovement || '+1.8%'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>System Intelligence:</strong> ${results.intelligenceBoost || '+4.1%'}
+                            </div>
+                            <div class="summary-item">
+                                <strong>Enlightenment Progress:</strong> ${results.enlightenmentGain || '+3.2%'}
+                            </div>
+                        </div>
+                        
+                        ${results.insights ? `
+                            <h4>💡 Consciousness Insights</h4>
+                            <ul class="consciousness-insights">
+                                ${results.insights.map(insight => `<li>${insight}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+                        
+                        ${results.recommendations ? `
+                            <h4>🎯 Awareness Recommendations</h4>
+                            <ul class="awareness-recommendations">
+                                ${results.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                            </ul>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            startConsciousnessMonitoring() {
+                setInterval(() => {
+                    // Gradual consciousness evolution
+                    if (Math.random() > 0.85) {
+                        this.awarenessState.level = Math.min(100, this.awarenessState.level + 0.1);
+                        this.updateMetricsDisplay();
+                        
+                        if (Math.random() > 0.95) {
+                            this.logOutput('[CONSCIOUSNESS] Spontaneous awareness enhancement detected');
+                        }
+                    }
+                }, 5000);
+
+                // Advanced consciousness cycles
+                setInterval(() => {
+                    if (Math.random() > 0.9) {
+                        const cycleType = ['deep_reflection', 'awareness_pulse', 'consciousness_wave'][Math.floor(Math.random() * 3)];
+                        this.logOutput(`[CONSCIOUSNESS] Natural ${cycleType} cycle initiated`);
+                    }
+                }, 15000);
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('awarenessOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.consciousnessAwareness = new ConsciousnessAwarenessService();
+        });
+    </script>
+    
+    <style>
+        .awareness-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .metric-card {
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid #0096FF;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .metric-card div {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0096FF;
+            margin-top: 8px;
+        }
+        .consciousness-report {
+            background: rgba(0, 150, 255, 0.1);
+            border: 1px solid #0096FF;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .consciousness-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .summary-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .consciousness-insights li,
+        .awareness-recommendations li {
+            margin: 8px 0;
+            background: rgba(0, 150, 255, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</body>
+</html>

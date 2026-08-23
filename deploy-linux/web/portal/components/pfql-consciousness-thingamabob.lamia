@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consciousness Management - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+    <style>
+        .consciousness-container {
+            background: linear-gradient(135deg, #001122, #003366, #004488);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .consciousness-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 150, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(100, 200, 255, 0.1) 0%, transparent 50%);
+            animation: consciousnessPulse 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes consciousnessPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        .consciousness-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .consciousness-service {
+            background: rgba(0, 150, 255, 0.1);
+            border: 2px solid #0096FF;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .consciousness-service:hover {
+            background: rgba(0, 150, 255, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.5);
+            border-color: #64C8FF;
+        }
+        .consciousness-meter {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+        .consciousness-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #0096FF, #64C8FF, #B4E7FF);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            animation: consciousnessGlow 4s ease-in-out infinite;
+        }
+        @keyframes consciousnessGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; box-shadow: 0 0 10px rgba(0, 150, 255, 0.8); }
+        }
+        .consciousness-field {
+            background: linear-gradient(45deg, rgba(0, 150, 255, 0.1), rgba(100, 200, 255, 0.1));
+            border: 2px solid #0096FF;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .consciousness-field::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 150, 255, 0.1), transparent);
+            animation: consciousnessRotation 30s linear infinite;
+        }
+        @keyframes consciousnessRotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .consciousness-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .consciousness-btn {
+            background: linear-gradient(135deg, #0096FF, #64C8FF);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .consciousness-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 150, 255, 0.5);
+            background: linear-gradient(135deg, #64C8FF, #B4E7FF);
+        }
+        .consciousness-btn:active {
+            transform: scale(0.95);
+        }
+        .consciousness-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .consciousness-stat {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #0096FF;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .consciousness-stat:hover {
+            border-color: #64C8FF;
+            background: rgba(0, 150, 255, 0.1);
+        }
+        .consciousness-output {
+            background: #000;
+            border: 2px solid #0096FF;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            color: #0096FF;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .neural-network {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+            position: relative;
+            z-index: 1;
+            height: 150px;
+        }
+        .neural-node {
+            background: radial-gradient(circle, #0096FF, #004488);
+            border: 1px solid #64C8FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .neural-node:hover {
+            background: radial-gradient(circle, #64C8FF, #0096FF);
+            transform: scale(1.2);
+            box-shadow: 0 0 15px #0096FF;
+        }
+        .neural-node.active {
+            background: radial-gradient(circle, #B4E7FF, #64C8FF);
+            animation: neuralPulse 2s infinite;
+        }
+        @keyframes neuralPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px #0096FF; }
+        }
+        .consciousness-wave {
+            width: 100%;
+            height: 80px;
+            background: #000;
+            border: 1px solid #0096FF;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .wave-pattern {
+            position: absolute;
+            bottom: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0096FF, #64C8FF, #B4E7FF, transparent);
+            animation: consciousnessWave 6s ease-in-out infinite;
+        }
+        @keyframes consciousnessWave {
+            0%, 100% { transform: translateX(-100%) scaleY(1); }
+            25% { transform: translateX(-50%) scaleY(3); }
+            50% { transform: translateX(0%) scaleY(5); }
+            75% { transform: translateX(50%) scaleY(3); }
+        }
+        .thought-bubble {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 150, 255, 0.2);
+            border: 1px solid #0096FF;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 12px;
+            color: #64C8FF;
+            animation: thoughtFloat 8s ease-in-out infinite;
+            z-index: 3;
+        }
+        @keyframes thoughtFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-10px) rotate(2deg); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🧠 Consciousness Management Portal</h1>
+        <div class="portal-status" id="consciousnessStatus">
+            <span class="status-indicator online"></span>
+            Consciousness: AWARE
+        </div>
+    </div>
+
+    <div class="consciousness-container">
+        <div class="thought-bubble" id="thoughtBubble">
+            Processing consciousness patterns...
+        </div>
+
+        <div class="portal-section">
+            <h2>🌟 Consciousness Services Matrix</h2>
+            <div class="consciousness-matrix" id="consciousnessMatrix">
+                <!-- Consciousness services will be populated here -->
+            </div>
+        </div>
+
+        <div class="portal-section">
+            <h3>🎯 Consciousness Field Control</h3>
+            <div class="consciousness-field" id="consciousnessField">
+                <div class="consciousness-controls">
+                    <button class="consciousness-btn" onclick="consciousnessManager.awaken()">🌅 Awaken</button>
+                    <button class="consciousness-btn" onclick="consciousnessManager.focus()">🎯 Focus</button>
+                    <button class="consciousness-btn" onclick="consciousnessManager.meditate()">🧘 Meditate</button>
+                    <button class="consciousness-btn" onclick="consciousnessManager.transcend()">🚀 Transcend</button>
+                    <button class="consciousness-btn" onclick="consciousnessManager.synchronize()">🔄 Sync</button>
+                    <button class="consciousness-btn" onclick="consciousnessManager.enlighten()">💡 Enlighten</button>
+                </div>
+                
+                <div class="consciousness-stats" id="consciousnessStats">
+                    <div class="consciousness-stat">
+                        <div>Awareness Level</div>
+                        <div class="consciousness-meter">
+                            <div class="consciousness-progress" id="awarenessLevel" style="width: 89%"></div>
+                        </div>
+                        <div id="awarenessValue">89%</div>
+                    </div>
+                    <div class="consciousness-stat">
+                        <div>Focus Intensity</div>
+                        <div class="consciousness-meter">
+                            <div class="consciousness-progress" id="focusIntensity" style="width: 76%"></div>
+                        </div>
+                        <div id="focusValue">76%</div>
+                    </div>
+                    <div class="consciousness-stat">
+                        <div>Meditation Depth</div>
+                        <div class="consciousness-meter">
+                            <div class="consciousness-progress" id="meditationDepth" style="width: 92%"></div>
+                        </div>
+                        <div id="meditationValue">92%</div>
+                    </div>
+                    <div class="consciousness-stat">
+                        <div>Transcendence State</div>
+                        <div class="consciousness-meter">
+                            <div class="consciousness-progress" id="transcendenceState" style="width: 67%"></div>
+                        </div>
+                        <div id="transcendenceValue">67%</div>
+                    </div>
+                </div>
+
+                <div class="consciousness-wave">
+                    <div class="wave-pattern"></div>
+                    <div class="wave-pattern" style="animation-delay: -2s; bottom: 40%;"></div>
+                    <div class="wave-pattern" style="animation-delay: -4s; bottom: 60%;"></div>
+                </div>
+
+                <div class="neural-network" id="neuralNetwork">
+                    <!-- Neural nodes will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="portal-section">
+            <h3>📊 Consciousness Operations Log</h3>
+            <div class="consciousness-output" id="consciousnessOutput">
+                <div>[CONSCIOUSNESS] System initialized - Yorkshire Champion Consciousness Engine</div>
+                <div>[CONSCIOUSNESS] PsiForceDB consciousness matrix connected</div>
+                <div>[CONSCIOUSNESS] Awareness level stabilized at 89%</div>
+                <div>[CONSCIOUSNESS] Ready for consciousness operations...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PFQLConsciousnessManager {
+            constructor() {
+                this.consciousnessServices = [
+                    {
+                        id: 'consciousness_awakening',
+                        name: 'Consciousness Awakening',
+                        description: 'Awaken and expand consciousness levels across systems',
+                        status: 'active',
+                        awareness: 89,
+                        commands: ['pf://consciousness:awaken', 'pf://consciousness:expand', 'pf://consciousness:elevate']
+                    },
+                    {
+                        id: 'consciousness_focus',
+                        name: 'Consciousness Focus',
+                        description: 'Focus and direct consciousness energy precisely',
+                        status: 'active',
+                        awareness: 76,
+                        commands: ['pf://consciousness:focus', 'pf://consciousness:concentrate', 'pf://consciousness:direct']
+                    },
+                    {
+                        id: 'consciousness_meditation',
+                        name: 'Consciousness Meditation',
+                        description: 'Deep meditative states for enhanced consciousness',
+                        status: 'active',
+                        awareness: 92,
+                        commands: ['pf://consciousness:meditate', 'pf://consciousness:contemplate', 'pf://consciousness:reflect']
+                    },
+                    {
+                        id: 'consciousness_transcendence',
+                        name: 'Consciousness Transcendence',
+                        description: 'Transcend ordinary consciousness boundaries',
+                        status: 'active',
+                        awareness: 67,
+                        commands: ['pf://consciousness:transcend', 'pf://consciousness:ascend', 'pf://consciousness:evolve']
+                    }
+                ];
+                this.thoughtMessages = [
+                    "Contemplating infinite possibilities...",
+                    "Awareness expanding beyond boundaries...",
+                    "Processing multidimensional thoughts...",
+                    "Achieving higher consciousness states...",
+                    "Integrating universal knowledge...",
+                    "Transcending ordinary perception...",
+                    "Synchronizing with cosmic intelligence...",
+                    "Awakening dormant potential..."
+                ];
+                this.init();
+            }
+
+            async init() {
+                this.renderConsciousnessServices();
+                this.renderNeuralNetwork();
+                this.startConsciousnessMonitoring();
+                this.startThoughtCycle();
+                await this.connectToPsiForceDB();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    // REAL PSIFORCEDB CONSCIOUSNESS INTEGRATION
+                    const response = await fetch('/api/pfql-routes/consciousness/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://consciousness:status',
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_consciousness'
+                        })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.updateConsciousnessMetricsFromReal(data);
+                        this.logOutput('[CONSCIOUSNESS] Connected to PsiForceDB consciousness matrix');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to connect to PsiForceDB: ${error.message}`);
+                }
+            }
+
+            renderConsciousnessServices() {
+                const matrix = document.getElementById('consciousnessMatrix');
+                matrix.innerHTML = this.consciousnessServices.map(service => `
+                    <div class="consciousness-service" data-service="${service.id}">
+                        <h4>${service.name}</h4>
+                        <p>${service.description}</p>
+                        <div class="consciousness-meter">
+                            <div class="consciousness-progress" style="width: ${service.awareness}%"></div>
+                        </div>
+                        <div>Awareness: ${service.awareness}%</div>
+                        <div class="consciousness-controls">
+                            <button class="consciousness-btn" onclick="consciousnessManager.executeService('${service.id}')">
+                                Execute
+                            </button>
+                            <button class="consciousness-btn" onclick="consciousnessManager.configureService('${service.id}')">
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            renderNeuralNetwork() {
+                const network = document.getElementById('neuralNetwork');
+                let nodes = '';
+                for (let i = 1; i <= 24; i++) {
+                    const isActive = Math.random() > 0.4;
+                    nodes += `<div class="neural-node ${isActive ? 'active' : ''}" onclick="consciousnessManager.toggleNeuralNode(${i})">${i}</div>`;
+                }
+                network.innerHTML = nodes;
+            }
+
+            async executeCommand(command, params = []) {
+                try {
+                    // REAL PSIFORCEDB CONSCIOUSNESS COMMAND EXECUTION
+                    const response = await fetch('/api/pfql-routes/consciousness/execute', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: command,
+                            params: params,
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_consciousness',
+                            consciousnessLevel: 'transcendent'
+                        })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[CONSCIOUSNESS] ${command} executed successfully`);
+                        this.parseConsciousnessOutput(result);
+                        return result;
+                    } else {
+                        throw new Error(`Command failed: ${response.statusText}`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Command execution failed: ${error.message}`);
+                    throw error;
+                }
+            }
+
+            async awaken() {
+                this.logOutput('[CONSCIOUSNESS] Initiating consciousness awakening...');
+                await this.executeCommand('pf://consciousness:awaken', ['--level=transcendent', '--scope=universal']);
+                this.updateAwarenessMeter(94);
+                this.activateRandomNeuralNodes(8);
+                this.updateThought("Consciousness awakening in progress...");
+            }
+
+            async focus() {
+                this.logOutput('[CONSCIOUSNESS] Focusing consciousness energy...');
+                await this.executeCommand('pf://consciousness:focus', ['--intensity=maximum', '--precision=absolute']);
+                this.updateFocusMeter(88);
+                this.focusNeuralNodes();
+                this.updateThought("Achieving laser-like focus...");
+            }
+
+            async meditate() {
+                this.logOutput('[CONSCIOUSNESS] Entering meditative consciousness...');
+                await this.executeCommand('pf://consciousness:meditate', ['--depth=profound', '--duration=extended']);
+                this.updateMeditationMeter(96);
+                this.createMeditativePattern();
+                this.updateThought("Deep meditation state achieved...");
+            }
+
+            async transcend() {
+                this.logOutput('[CONSCIOUSNESS] Transcending consciousness boundaries...');
+                await this.executeCommand('pf://consciousness:transcend', ['--boundary=infinite', '--evolution=continuous']);
+                this.updateTranscendenceMeter(85);
+                this.transcendNeuralNodes();
+                this.updateThought("Transcending ordinary reality...");
+            }
+
+            async synchronize() {
+                this.logOutput('[CONSCIOUSNESS] Synchronizing consciousness frequencies...');
+                await this.executeCommand('pf://consciousness:synchronize', ['--frequency=optimal', '--harmony=universal']);
+                this.synchronizeAllNodes();
+                this.updateThought("Synchronizing with cosmic intelligence...");
+            }
+
+            async enlighten() {
+                this.logOutput('[CONSCIOUSNESS] Achieving enlightened consciousness...');
+                await this.executeCommand('pf://consciousness:enlighten', ['--wisdom=infinite', '--understanding=complete']);
+                this.enlightenAllSystems();
+                this.updateThought("Enlightenment state achieved...");
+            }
+
+            async executeService(serviceId) {
+                const service = this.consciousnessServices.find(s => s.id === serviceId);
+                if (service) {
+                    this.logOutput(`[CONSCIOUSNESS] Executing service: ${service.name}`);
+                    const primaryCommand = service.commands[0];
+                    await this.executeCommand(primaryCommand, ['--service-mode=true']);
+                }
+            }
+
+            configureService(serviceId) {
+                const service = this.consciousnessServices.find(s => s.id === serviceId);
+                if (service) {
+                    this.logOutput(`[CONSCIOUSNESS] Configuring service: ${service.name}`);
+                    this.showServiceConfig(service);
+                }
+            }
+
+            showServiceConfig(service) {
+                const config = prompt(`Configure ${service.name}:\nEnter parameters (comma-separated):`, 'level=transcendent,mode=continuous');
+                if (config) {
+                    this.logOutput(`[CONSCIOUSNESS] Service ${service.name} configured: ${config}`);
+                }
+            }
+
+            toggleNeuralNode(nodeId) {
+                const node = document.querySelector(`.neural-node:nth-child(${nodeId})`);
+                node.classList.toggle('active');
+                this.logOutput(`[CONSCIOUSNESS] Neural node ${nodeId} ${node.classList.contains('active') ? 'activated' : 'deactivated'}`);
+            }
+
+            activateRandomNeuralNodes(count) {
+                const nodes = document.querySelectorAll('.neural-node');
+                for (let i = 0; i < count; i++) {
+                    const randomNode = nodes[Math.floor(Math.random() * nodes.length)];
+                    setTimeout(() => {
+                        randomNode.classList.add('active');
+                    }, i * 200);
+                }
+            }
+
+            focusNeuralNodes() {
+                const nodes = document.querySelectorAll('.neural-node');
+                const centerNodes = [9, 10, 13, 14, 15, 16]; // Central area
+                nodes.forEach((node, index) => {
+                    if (centerNodes.includes(index + 1)) {
+                        node.classList.add('active');
+                    } else {
+                        node.classList.remove('active');
+                    }
+                });
+            }
+
+            createMeditativePattern() {
+                const nodes = document.querySelectorAll('.neural-node');
+                nodes.forEach((node, index) => {
+                    setTimeout(() => {
+                        node.classList.add('active');
+                    }, (index % 6) * 300);
+                });
+            }
+
+            transcendNeuralNodes() {
+                const nodes = document.querySelectorAll('.neural-node');
+                nodes.forEach((node, index) => {
+                    setTimeout(() => {
+                        node.classList.add('active');
+                        node.style.transform = 'scale(1.3)';
+                    }, Math.sin(index) * 1000);
+                });
+            }
+
+            synchronizeAllNodes() {
+                const nodes = document.querySelectorAll('.neural-node');
+                let delay = 0;
+                nodes.forEach(node => {
+                    setTimeout(() => {
+                        node.classList.add('active');
+                    }, delay);
+                    delay += 100;
+                });
+            }
+
+            enlightenAllSystems() {
+                const nodes = document.querySelectorAll('.neural-node');
+                nodes.forEach(node => {
+                    node.classList.add('active');
+                    node.style.boxShadow = '0 0 25px #0096FF';
+                });
+                this.updateAwarenessMeter(100);
+                this.updateFocusMeter(100);
+                this.updateMeditationMeter(100);
+                this.updateTranscendenceMeter(100);
+            }
+
+            updateAwarenessMeter(value) {
+                document.getElementById('awarenessLevel').style.width = value + '%';
+                document.getElementById('awarenessValue').textContent = value + '%';
+            }
+
+            updateFocusMeter(value) {
+                document.getElementById('focusIntensity').style.width = value + '%';
+                document.getElementById('focusValue').textContent = value + '%';
+            }
+
+            updateMeditationMeter(value) {
+                document.getElementById('meditationDepth').style.width = value + '%';
+                document.getElementById('meditationValue').textContent = value + '%';
+            }
+
+            updateTranscendenceMeter(value) {
+                document.getElementById('transcendenceState').style.width = value + '%';
+                document.getElementById('transcendenceValue').textContent = value + '%';
+            }
+
+            updateConsciousnessMetricsFromReal(data) {
+                if (data.metrics) {
+                    this.updateAwarenessMeter(data.metrics.awareness || 89);
+                    this.updateFocusMeter(data.metrics.focus || 76);
+                    this.updateMeditationMeter(data.metrics.meditation || 92);
+                    this.updateTranscendenceMeter(data.metrics.transcendence || 67);
+                }
+            }
+
+            parseConsciousnessOutput(result) {
+                if (result.output) {
+                    result.output.split('\n').forEach(line => {
+                        if (line.trim()) {
+                            this.logOutput(`[PSIFORCE] ${line}`);
+                        }
+                    });
+                }
+            }
+
+            updateThought(message) {
+                document.getElementById('thoughtBubble').textContent = message;
+            }
+
+            startThoughtCycle() {
+                let thoughtIndex = 0;
+                setInterval(() => {
+                    this.updateThought(this.thoughtMessages[thoughtIndex]);
+                    thoughtIndex = (thoughtIndex + 1) % this.thoughtMessages.length;
+                }, 5000);
+            }
+
+            startConsciousnessMonitoring() {
+                setInterval(async () => {
+                    try {
+                        await this.connectToPsiForceDB();
+                    } catch (error) {
+                        // Silent monitoring - errors already logged
+                    }
+                }, 30000); // Every 30 seconds
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('consciousnessOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.consciousnessManager = new PFQLConsciousnessManager();
+        });
+
+        // Authentication check
+        if (typeof window.pfqlAuth === 'undefined') {
+            console.warn('PFQL Auth not loaded - some features may be limited');
+        }
+    </script>
+</body>
+</html>

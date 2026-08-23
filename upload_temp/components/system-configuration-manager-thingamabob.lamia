@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Configuration Manager - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>⚙️ System Configuration Manager</h1>
+        <div class="portal-status" id="configStatus">
+            <span class="status-indicator online"></span>
+            Configuration Manager: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="configManager.loadConfigs()">🔄 Load Configs</button>
+            <button class="service-btn" onclick="configManager.editConfig()">✏️ Edit Config</button>
+            <button class="service-btn" onclick="configManager.backupConfigs()">💾 Backup</button>
+            <button class="service-btn" onclick="configManager.restoreConfigs()">🔙 Restore</button>
+        </div>
+
+        <div class="config-tree" id="configTree">
+            <!-- Configuration tree will be populated here -->
+        </div>
+
+        <div class="service-output" id="configOutput">
+            <div>[CONFIG] System configuration manager initialized</div>
+            <div>[CONFIG] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[CONFIG] Loading system configurations...</div>
+        </div>
+    </div>
+
+    <script>
+        class SystemConfigurationManager {
+            constructor() {
+                this.configs = {};
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                await this.loadConfigs();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/system/config/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_system'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[CONFIG] Connected to PsiForceDB configuration system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async loadConfigs() {
+                this.logOutput('[CONFIG] Loading system configurations...');
+                try {
+                    const response = await fetch('/api/pfql-routes/system/config/load', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:config:load',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.configs = result.configs || this.getDefaultConfigs();
+                        this.displayConfigTree();
+                        this.logOutput('[CONFIG] Configurations loaded successfully');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to load configurations: ${error.message}`);
+                    this.configs = this.getDefaultConfigs();
+                    this.displayConfigTree();
+                }
+            }
+
+            displayConfigTree() {
+                const tree = document.getElementById('configTree');
+                tree.innerHTML = this.renderConfigNode(this.configs, 'root');
+            }
+
+            renderConfigNode(node, path, level = 0) {
+                if (typeof node === 'object' && node !== null && !Array.isArray(node)) {
+                    const indent = '  '.repeat(level);
+                    return Object.keys(node).map(key => {
+                        const currentPath = path === 'root' ? key : `${path}.${key}`;
+                        const isObject = typeof node[key] === 'object' && node[key] !== null && !Array.isArray(node[key]);
+                        
+                        return `
+                            <div class="config-node" style="margin-left: ${level * 20}px;">
+                                <div class="config-key ${isObject ? 'expandable' : 'value'}" 
+                                     onclick="${isObject ? `configManager.toggleNode('${currentPath}')` : `configManager.editValue('${currentPath}')`}">
+                                    ${isObject ? '📁' : '📄'} ${key}
+                                    ${!isObject ? `<span class="config-value">: ${this.formatValue(node[key])}</span>` : ''}
+                                </div>
+                                ${isObject ? `<div class="config-children" id="children-${currentPath}">${this.renderConfigNode(node[key], currentPath, level + 1)}</div>` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                }
+                return '';
+            }
+
+            formatValue(value) {
+                if (typeof value === 'string') return `"${value}"`;
+                if (typeof value === 'boolean') return value.toString();
+                if (typeof value === 'number') return value.toString();
+                if (Array.isArray(value)) return `[${value.length} items]`;
+                return JSON.stringify(value);
+            }
+
+            toggleNode(path) {
+                const children = document.getElementById(`children-${path}`);
+                if (children) {
+                    children.style.display = children.style.display === 'none' ? 'block' : 'none';
+                }
+            }
+
+            editValue(path) {
+                const currentValue = this.getValueByPath(path);
+                const newValue = prompt(`Edit ${path}:`, currentValue);
+                
+                if (newValue !== null && newValue !== currentValue) {
+                    this.updateConfig(path, newValue);
+                }
+            }
+
+            async editConfig() {
+                const configPath = prompt('Enter configuration path (e.g., database.host):');
+                if (configPath) {
+                    this.editValue(configPath);
+                }
+            }
+
+            async updateConfig(path, value) {
+                this.logOutput(`[CONFIG] Updating ${path} = ${value}`);
+                try {
+                    const response = await fetch('/api/pfql-routes/system/config/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:config:update',
+                            server: '172.236.23.54',
+                            path: path,
+                            value: this.parseValue(value)
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.setValueByPath(path, this.parseValue(value));
+                        this.displayConfigTree();
+                        this.logOutput('[CONFIG] Configuration updated successfully');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to update configuration: ${error.message}`);
+                }
+            }
+
+            async backupConfigs() {
+                this.logOutput('[CONFIG] Creating configuration backup...');
+                try {
+                    const response = await fetch('/api/pfql-routes/system/config/backup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://system:config:backup',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[CONFIG] Backup created: ${result.backupId}`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Backup failed: ${error.message}`);
+                }
+            }
+
+            async restoreConfigs() {
+                const backupId = prompt('Enter backup ID to restore:');
+                if (backupId) {
+                    const confirmRestore = confirm(`Restore configuration from backup ${backupId}?`);
+                    if (confirmRestore) {
+                        this.logOutput(`[CONFIG] Restoring from backup ${backupId}...`);
+                        try {
+                            const response = await fetch('/api/pfql-routes/system/config/restore', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    ...window.pfqlAuth.getAuthHeaders()
+                                },
+                                body: JSON.stringify({
+                                    command: 'pf://system:config:restore',
+                                    server: '172.236.23.54',
+                                    backupId: backupId
+                                })
+                            });
+                            
+                            if (response.ok) {
+                                await this.loadConfigs();
+                                this.logOutput('[CONFIG] Configuration restored successfully');
+                            }
+                        } catch (error) {
+                            this.logOutput(`[ERROR] Restore failed: ${error.message}`);
+                        }
+                    }
+                }
+            }
+
+            getValueByPath(path) {
+                return path.split('.').reduce((obj, key) => obj && obj[key], this.configs);
+            }
+
+            setValueByPath(path, value) {
+                const keys = path.split('.');
+                const lastKey = keys.pop();
+                const target = keys.reduce((obj, key) => obj[key], this.configs);
+                if (target) {
+                    target[lastKey] = value;
+                }
+            }
+
+            parseValue(value) {
+                if (value === 'true') return true;
+                if (value === 'false') return false;
+                if (!isNaN(value) && !isNaN(parseFloat(value))) return parseFloat(value);
+                try {
+                    return JSON.parse(value);
+                } catch {
+                    return value;
+                }
+            }
+
+            getDefaultConfigs() {
+                return {
+                    system: {
+                        hostname: 'medusa-server',
+                        timezone: 'UTC',
+                        language: 'en_US',
+                        debug: false,
+                        maxConnections: 1000
+                    },
+                    database: {
+                        host: '172.236.23.54',
+                        port: 5432,
+                        name: 'psiforcedb_main',
+                        poolSize: 20,
+                        timeout: 30000,
+                        ssl: true
+                    },
+                    security: {
+                        encryptionKey: '***hidden***',
+                        sessionTimeout: 3600,
+                        passwordPolicy: {
+                            minLength: 8,
+                            requireSpecialChars: true,
+                            requireNumbers: true
+                        },
+                        rateLimiting: {
+                            enabled: true,
+                            maxRequests: 100,
+                            windowMs: 60000
+                        }
+                    },
+                    performance: {
+                        caching: {
+                            enabled: true,
+                            ttl: 300,
+                            maxSize: '512MB'
+                        },
+                        compression: {
+                            enabled: true,
+                            level: 6
+                        },
+                        monitoring: {
+                            enabled: true,
+                            interval: 60
+                        }
+                    },
+                    logging: {
+                        level: 'INFO',
+                        maxFileSize: '100MB',
+                        maxFiles: 10,
+                        compress: true,
+                        destinations: ['file', 'database']
+                    },
+                    backup: {
+                        enabled: true,
+                        schedule: '0 2 * * *',
+                        retention: 30,
+                        compression: true,
+                        encryption: true
+                    }
+                };
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('configOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.configManager = new SystemConfigurationManager();
+        });
+    </script>
+    
+    <style>
+        .config-tree {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .config-node {
+            margin: 2px 0;
+        }
+        .config-key {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .config-key:hover {
+            background: rgba(100, 181, 246, 0.2);
+        }
+        .config-key.expandable {
+            font-weight: bold;
+            color: #64B5F6;
+        }
+        .config-key.value {
+            color: #4CAF50;
+        }
+        .config-value {
+            color: #FF9800;
+            margin-left: auto;
+            font-style: italic;
+        }
+        .config-children {
+            border-left: 1px dashed rgba(100, 181, 246, 0.3);
+            margin-left: 10px;
+            padding-left: 10px;
+        }
+    </style>
+</body>
+</html>

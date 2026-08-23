@@ -1,0 +1,725 @@
+/**
+ * MEDUSASERV JUPYTER LAB THINGAMABOB COMPONENT
+ * ===========================================
+ * Enterprise Jupyter Lab thingamabob with Python/R/Julia support
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "jupyter_lab_thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise_jupyter"
+    @jupyter_enabled true
+    @python_support true
+    @r_support true
+    @julia_support true
+    
+    @render {
+        <div class="jupyter-thingamabob">
+            <!-- Jupyter Header Thingamabob -->
+            <div class="thingamabob-header">
+                <div class="thingamabob-title">
+                    <div class="thingamabob-icon">🔬</div>
+                    <h2>Jupyter Lab Thingamabob</h2>
+                    <span class="thingamabob-badge">Data Science</span>
+                </div>
+                <div class="thingamabob-controls">
+                    <button class="thingamabob-btn new-notebook">📓 New Notebook</button>
+                    <button class="thingamabob-btn launch-lab">🚀 Launch Lab</button>
+                    <button class="thingamabob-btn terminal">💻 Terminal</button>
+                </div>
+            </div>
+
+            <!-- Jupyter Interface Thingamabob -->
+            <div class="thingamabob-interface">
+                <!-- File Explorer Thingamabob -->
+                <div class="explorer-thingamabob">
+                    <h3>Jupyter Files</h3>
+                    <div class="explorer-toolbar">
+                        <button class="explorer-btn">📁 New Folder</button>
+                        <button class="explorer-btn">📄 New File</button>
+                        <button class="explorer-btn">⬆️ Upload</button>
+                    </div>
+                    
+                    <div class="file-tree">
+                        <div class="file-item folder">
+                            <div class="file-icon">📁</div>
+                            <span class="file-name">notebooks</span>
+                            <div class="file-toggle">▼</div>
+                        </div>
+                        <div class="file-children">
+                            <div class="file-item notebook">
+                                <div class="file-icon">🐍</div>
+                                <span class="file-name">data_analysis.ipynb</span>
+                                <span class="file-status running">●</span>
+                            </div>
+                            <div class="file-item notebook">
+                                <div class="file-icon">📊</div>
+                                <span class="file-name">visualization.ipynb</span>
+                                <span class="file-status">○</span>
+                            </div>
+                            <div class="file-item notebook">
+                                <div class="file-icon">🤖</div>
+                                <span class="file-name">machine_learning.ipynb</span>
+                                <span class="file-status">○</span>
+                            </div>
+                        </div>
+                        
+                        <div class="file-item folder">
+                            <div class="file-icon">📁</div>
+                            <span class="file-name">data</span>
+                            <div class="file-toggle">▶</div>
+                        </div>
+                        
+                        <div class="file-item file">
+                            <div class="file-icon">🔬</div>
+                            <span class="file-name">requirements.txt</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notebook Viewer Thingamabob -->
+                <div class="notebook-viewer-thingamabob">
+                    <div class="notebook-header">
+                        <div class="notebook-title">
+                            <div class="notebook-icon">🐍</div>
+                            <span>data_analysis.ipynb</span>
+                            <span class="kernel-status">Python 3 (ipykernel)</span>
+                        </div>
+                        <div class="notebook-controls">
+                            <button class="notebook-btn">▶️ Run</button>
+                            <button class="notebook-btn">⏹️ Stop</button>
+                            <button class="notebook-btn">🔄 Restart</button>
+                            <button class="notebook-btn">💾 Save</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mock Notebook Interface -->
+                    <div class="notebook-content">
+                        <!-- Code Cell -->
+                        <div class="notebook-cell code-cell">
+                            <div class="cell-input">
+                                <div class="cell-prompt">In [1]:</div>
+                                <div class="cell-editor">
+                                    <pre><code class="python">import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load MedusaServ performance data
+df = pd.read_csv('/data/medusaserv_metrics.csv')
+print(f"Loaded {len(df)} performance records")
+df.head()</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell-output">
+                                <div class="cell-prompt-out">Out[1]:</div>
+                                <div class="output-content">
+                                    <pre>Loaded 1000 performance records</pre>
+                                    <div class="dataframe-preview">
+                                        <table>
+                                            <tr><th>timestamp</th><th>cpu_usage</th><th>memory_usage</th><th>requests</th><th>response_time</th></tr>
+                                            <tr><td>2025-01-24 10:00:00</td><td>15.2%</td><td>2.1GB</td><td>1,234</td><td>12ms</td></tr>
+                                            <tr><td>2025-01-24 10:01:00</td><td>18.7%</td><td>2.3GB</td><td>1,456</td><td>15ms</td></tr>
+                                            <tr><td>2025-01-24 10:02:00</td><td>12.3%</td><td>2.0GB</td><td>1,123</td><td>8ms</td></tr>
+                                            <tr><td>2025-01-24 10:03:00</td><td>22.1%</td><td>2.5GB</td><td>1,789</td><td>18ms</td></tr>
+                                            <tr><td>2025-01-24 10:04:00</td><td>16.8%</td><td>2.2GB</td><td>1,345</td><td>11ms</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Markdown Cell -->
+                        <div class="notebook-cell markdown-cell">
+                            <div class="markdown-content">
+                                <h3>📊 MedusaServ Performance Analysis</h3>
+                                <p>This notebook analyzes the performance metrics of our MedusaServ Enterprise system over the past 24 hours. We'll examine:</p>
+                                <ul>
+                                    <li>CPU and Memory utilization patterns</li>
+                                    <li>Request volume and response time correlation</li>
+                                    <li>Yorkshire Champion performance multiplier compliance</li>
+                                    <li>Predictive analysis for capacity planning</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Visualization Cell -->
+                        <div class="notebook-cell code-cell">
+                            <div class="cell-input">
+                                <div class="cell-prompt">In [2]:</div>
+                                <div class="cell-editor">
+                                    <pre><code class="python"># Create performance visualization
+plt.figure(figsize=(12, 8))
+
+# CPU Usage over time
+plt.subplot(2, 2, 1)
+plt.plot(df['timestamp'], df['cpu_usage'], color='#6f42c1', linewidth=2)
+plt.title('CPU Usage Over Time', fontsize=14, fontweight='bold')
+plt.ylabel('CPU Usage (%)')
+
+# Memory Usage over time  
+plt.subplot(2, 2, 2)
+plt.plot(df['timestamp'], df['memory_usage'], color='#28a745', linewidth=2)
+plt.title('Memory Usage Over Time', fontsize=14, fontweight='bold')
+plt.ylabel('Memory Usage (GB)')
+
+# Response Time Distribution
+plt.subplot(2, 2, 3)
+plt.hist(df['response_time'], bins=50, color='#ffc107', alpha=0.7)
+plt.title('Response Time Distribution', fontsize=14, fontweight='bold')
+plt.xlabel('Response Time (ms)')
+
+# Request Volume
+plt.subplot(2, 2, 4)
+plt.plot(df['timestamp'], df['requests'], color='#dc3545', linewidth=2)
+plt.title('Request Volume Over Time', fontsize=14, fontweight='bold')
+plt.ylabel('Requests per minute')
+
+plt.tight_layout()
+plt.show()</code></pre>
+                                </div>
+                            </div>
+                            <div class="cell-output">
+                                <div class="cell-prompt-out">Out[2]:</div>
+                                <div class="output-content">
+                                    <div class="plot-container">
+                                        <div class="mock-plot">
+                                            <div class="plot-panel">📈 CPU Usage</div>
+                                            <div class="plot-panel">📊 Memory Usage</div>
+                                            <div class="plot-panel">⏱️ Response Times</div>
+                                            <div class="plot-panel">🔥 Request Volume</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kernel Status Thingamabob -->
+                <div class="kernel-status-thingamabob">
+                    <h3>Active Kernels</h3>
+                    
+                    <div class="kernel-list">
+                        <div class="kernel-item active">
+                            <div class="kernel-icon">🐍</div>
+                            <div class="kernel-info">
+                                <div class="kernel-name">Python 3 (ipykernel)</div>
+                                <div class="kernel-notebook">data_analysis.ipynb</div>
+                            </div>
+                            <div class="kernel-status-dot online"></div>
+                            <button class="kernel-shutdown">🔄</button>
+                        </div>
+                        
+                        <div class="kernel-item">
+                            <div class="kernel-icon">📊</div>
+                            <div class="kernel-info">
+                                <div class="kernel-name">R</div>
+                                <div class="kernel-notebook">statistics.ipynb</div>
+                            </div>
+                            <div class="kernel-status-dot idle"></div>
+                            <button class="kernel-shutdown">⏹️</button>
+                        </div>
+                        
+                        <div class="kernel-item">
+                            <div class="kernel-icon">⚡</div>
+                            <div class="kernel-info">
+                                <div class="kernel-name">Julia 1.8</div>
+                                <div class="kernel-notebook">performance.ipynb</div>
+                            </div>
+                            <div class="kernel-status-dot idle"></div>
+                            <button class="kernel-shutdown">⏹️</button>
+                        </div>
+                    </div>
+                    
+                    <div class="jupyter-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Server Status:</span>
+                            <span class="stat-value online">Running</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Active Sessions:</span>
+                            <span class="stat-value">3</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Memory Usage:</span>
+                            <span class="stat-value">1.2 GB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @styles {
+        .jupyter-thingamabob {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #ff6b35;
+            margin-bottom: 2rem;
+        }
+
+        .thingamabob-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .thingamabob-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .thingamabob-icon {
+            font-size: 1.5rem;
+        }
+
+        .thingamabob-title h2 {
+            color: #ff6b35;
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-badge {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thingamabob-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .thingamabob-btn:hover {
+            background: #e85a2b;
+            transform: translateY(-1px);
+        }
+
+        .thingamabob-interface {
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 1.5rem;
+            min-height: 600px;
+        }
+
+        .explorer-thingamabob {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .explorer-thingamabob h3 {
+            color: #343a40;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .explorer-toolbar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .explorer-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .explorer-btn:hover {
+            background: #e85a2b;
+        }
+
+        .file-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .file-item.folder {
+            font-weight: 600;
+        }
+
+        .file-children {
+            margin-left: 1rem;
+            border-left: 1px solid #dee2e6;
+            padding-left: 0.5rem;
+        }
+
+        .file-children .file-item {
+            font-size: 0.8rem;
+        }
+
+        .file-icon {
+            font-size: 0.875rem;
+        }
+
+        .file-name {
+            flex: 1;
+        }
+
+        .file-status.running {
+            color: #28a745;
+        }
+
+        .file-toggle {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .notebook-viewer-thingamabob {
+            border-right: 1px solid #e9ecef;
+            padding-right: 1.5rem;
+        }
+
+        .notebook-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .notebook-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notebook-title span:first-of-type {
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .kernel-status {
+            background: #28a745;
+            color: white;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .notebook-controls {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .notebook-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .notebook-btn:hover {
+            background: #5a6268;
+        }
+
+        .notebook-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .notebook-cell {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .code-cell {
+            background: #f8f9fa;
+        }
+
+        .markdown-cell {
+            background: white;
+        }
+
+        .cell-input,
+        .cell-output {
+            display: flex;
+        }
+
+        .cell-prompt,
+        .cell-prompt-out {
+            background: #495057;
+            color: white;
+            padding: 0.5rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.75rem;
+            min-width: 60px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .cell-prompt-out {
+            background: #dc3545;
+        }
+
+        .cell-editor {
+            flex: 1;
+            padding: 0.5rem;
+        }
+
+        .cell-editor pre {
+            margin: 0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .output-content {
+            flex: 1;
+            padding: 0.5rem;
+            background: white;
+        }
+
+        .output-content pre {
+            margin: 0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.875rem;
+            color: #495057;
+        }
+
+        .dataframe-preview {
+            margin-top: 0.5rem;
+        }
+
+        .dataframe-preview table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .dataframe-preview th,
+        .dataframe-preview td {
+            padding: 0.375rem;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .dataframe-preview th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .markdown-content {
+            padding: 1rem;
+        }
+
+        .markdown-content h3 {
+            color: #343a40;
+            margin-bottom: 0.75rem;
+        }
+
+        .markdown-content ul {
+            padding-left: 1.5rem;
+        }
+
+        .plot-container {
+            margin-top: 0.5rem;
+        }
+
+        .mock-plot {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .plot-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+            color: #6c757d;
+            border: 2px dashed #dee2e6;
+        }
+
+        .kernel-status-thingamabob {
+            padding-left: 1.5rem;
+        }
+
+        .kernel-status-thingamabob h3 {
+            color: #343a40;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .kernel-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .kernel-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+
+        .kernel-item.active {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .kernel-icon {
+            font-size: 1rem;
+        }
+
+        .kernel-info {
+            flex: 1;
+        }
+
+        .kernel-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .kernel-notebook {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .kernel-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .kernel-status-dot.online {
+            background: #28a745;
+        }
+
+        .kernel-status-dot.idle {
+            background: #ffc107;
+        }
+
+        .kernel-shutdown {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.25rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .jupyter-stats {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: #6c757d;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .stat-value.online {
+            color: #28a745;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .thingamabob-interface {
+                grid-template-columns: 200px 1fr 250px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .thingamabob-interface {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                gap: 1rem;
+            }
+
+            .thingamabob-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .mock-plot {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}

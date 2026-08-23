@@ -1,0 +1,112 @@
+<!--
+Purple-Pages.com - Health Dashboard API
+Real-time system health across all servers
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_health_dashboard_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    auth_result = verify_api_authentication();
+    if (!auth_result.authenticated) {
+        return response(401, json({"error": "Unauthorized"}));
+    }
+    
+    // Get latest metrics for all servers
+    servers = ["db", "dev", "main", "backoffice"];
+    server_health = {};
+    
+    for (server_id in servers) {
+        latest_metric = get_latest_metric_vpc(server_id);
+        error_count = get_error_count_last_hour_vpc(server_id);
+        
+        if (latest_metric) {
+            // Determine health status
+            status = "healthy";
+            if (latest_metric.cpu_usage_percent > 80 || latest_metric.memory_usage_percent > 85) {
+                status = "warning";
+            }
+            if (latest_metric.cpu_usage_percent > 95 || latest_metric.memory_usage_percent > 95) {
+                status = "critical";
+            }
+            
+            server_health[server_id] = {
+                "status": status,
+                "cpu_usage": latest_metric.cpu_usage_percent,
+                "memory_usage": latest_metric.memory_usage_percent,
+                "memory_usage_mb": latest_metric.memory_usage_mb,
+                "memory_total_mb": latest_metric.memory_total_mb,
+                "disk_usage": latest_metric.disk_usage_percent,
+                "disk_usage_gb": latest_metric.disk_usage_gb,
+                "disk_total_gb": latest_metric.disk_total_gb,
+                "active_connections": latest_metric.active_connections,
+                "queries_per_second": latest_metric.queries_per_second,
+                "error_count_last_hour": error_count,
+                "last_update": latest_metric.timestamp
+            };
+        }
+    }
+    
+    return response(200, json({
+        "success": true,
+        "servers": server_health,
+        "query_time_ms": get_epoch_ms() - start_time
+    }));
+}
+
+function get_latest_metric_vpc(server_id) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        query = "SELECT * FROM purple_pages_system_metrics WHERE server_id = $1 ORDER BY epoch_ms DESC LIMIT 1";
+        result = db_connection.execute_prepared(query, [server_id]);
+        
+        if (result.rows.length > 0) {
+            row = result.rows[0];
+            return {
+                "timestamp": row.timestamp,
+                "cpu_usage_percent": row.cpu_usage_percent,
+                "memory_usage_mb": row.memory_usage_mb,
+                "memory_total_mb": row.memory_total_mb,
+                "memory_usage_percent": (row.memory_usage_mb / row.memory_total_mb) * 100,
+                "disk_usage_gb": row.disk_usage_gb,
+                "disk_total_gb": row.disk_total_gb,
+                "disk_usage_percent": (row.disk_usage_gb / row.disk_total_gb) * 100,
+                "active_connections": row.active_connections,
+                "queries_per_second": row.queries_per_second
+            };
+        }
+        
+        return null;
+        
+    } catch (error) {
+        return null;
+    } finally {
+        db_connection.close();
+    }
+}
+
+function get_error_count_last_hour_vpc(server_id) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        one_hour_ago = get_epoch_ms() - (60 * 60 * 1000);
+        query = "SELECT COUNT(*) as count FROM purple_pages_error_logs WHERE server_id = $1 AND epoch_ms >= $2";
+        result = db_connection.execute_prepared(query, [server_id, one_hour_ago]);
+        
+        return result.rows[0].count;
+        
+    } catch (error) {
+        return 0;
+    } finally {
+        db_connection.close();
+    }
+}
+

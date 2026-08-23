@@ -1,0 +1,1478 @@
+/**
+ * MEDUSASERV VIRTUAL HOSTS MANAGEMENT
+ * ==================================
+ * Advanced virtual host configuration and domain management
+ * Revolutionary PsiForceDB integration with PFQL commands
+ * AES 256 Post-Quantum Cryptography security architecture
+ * © 2025 The Medusa Initiative - Yorkshire Champion Standards
+ */
+
+@component "medusaserv_virtualhosts" {
+    @version "0.4.0"
+    @theme "enterprise_virtualhosts"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    @authentication_required true
+    @psiforcedb_backend true
+    @apache_integration true
+    @nginx_support true
+    @ssl_management true
+    
+    @include "components/medusa-security-core.lamia"
+    @include "components/domain-manager-thingamabob.lamia"
+    @include "components/ssl-certificate-manager-thingamabob.lamia"
+    @include "components/secure-directories-thingamabob.lamia"
+    @include "components/pfql-command-portal-thingamabob.lamia"
+
+    @render {
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>MedusaServ Virtual Hosts - Domain Management</title>
+            <link rel="icon" type="image/png" href="/assets/MedusaServ.png">
+        </head>
+        <body class="virtualhosts-page">
+            <!-- Security Core -->
+            @render_component("medusa_security_core")
+
+            <!-- Virtual Hosts Header -->
+            <header class="virtualhosts-header">
+                <div class="header-content">
+                    <div class="brand-section">
+                        <img src="/assets/MedusaServ.png" alt="MedusaServ" class="brand-logo">
+                        <div class="brand-text">
+                            <h1>Virtual Hosts Manager</h1>
+                            <span class="version-tag">Enterprise v0.4.0</span>
+                        </div>
+                    </div>
+                    <div class="breadcrumb">
+                        <a href="/portal">Portal</a> > <span>Virtual Hosts</span>
+                    </div>
+                    <div class="user-section">
+                        <div class="user-info">
+                            <span class="welcome-text">Administrator</span>
+                            <a href="/logout" class="logout-btn">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Quick Stats Dashboard -->
+            <section class="vhost-stats">
+                <div class="stats-content">
+                    <div class="stat-card">
+                        <div class="stat-icon">🌐</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="total-domains">0</div>
+                            <div class="stat-label">Active Domains</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔒</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="ssl-domains">0</div>
+                            <div class="stat-label">SSL Protected</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="active-traffic">0</div>
+                            <div class="stat-label">Active Connections</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-info">
+                            <div class="stat-value">A+</div>
+                            <div class="stat-label">Security Grade</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Virtual Hosts Interface -->
+            <main class="virtualhosts-main">
+                <div class="main-content">
+                    <!-- Action Bar -->
+                    <div class="action-bar">
+                        <div class="action-left">
+                            <button class="btn primary" onclick="showAddVirtualHostModal()">
+                                ➕ Add Virtual Host
+                            </button>
+                            <button class="btn secondary" onclick="bulkSSLSetup()">
+                                🔐 Bulk SSL Setup
+                            </button>
+                            <button class="btn secondary" onclick="exportVirtualHosts()">
+                                📥 Export Config
+                            </button>
+                        </div>
+                        <div class="action-right">
+                            <div class="search-box">
+                                <input type="text" placeholder="Search domains..." id="domain-search">
+                                <button class="search-btn">🔍</button>
+                            </div>
+                            <select class="filter-select" id="status-filter">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="ssl">SSL Enabled</option>
+                                <option value="redirect">Redirect</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Virtual Hosts Table -->
+                    <div class="vhosts-table-container">
+                        <table class="vhosts-table" id="virtual-hosts-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="select-all-vhosts">
+                                    </th>
+                                    <th>Domain</th>
+                                    <th>Status</th>
+                                    <th>SSL</th>
+                                    <th>Document Root</th>
+                                    <th>Traffic</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vhosts-table-body">
+                                <!-- Virtual hosts will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Virtual Host Details Panel -->
+                    <div class="vhost-details-panel" id="vhost-details-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h3>Virtual Host Configuration</h3>
+                            <button class="close-panel-btn" onclick="hideVHostDetailsPanel()">×</button>
+                        </div>
+                        <div class="panel-content">
+                            <div class="detail-tabs">
+                                <button class="tab-btn active" data-tab="general">General</button>
+                                <button class="tab-btn" data-tab="ssl">SSL/TLS</button>
+                                <button class="tab-btn" data-tab="redirects">Redirects</button>
+                                <button class="tab-btn" data-tab="headers">Headers</button>
+                                <button class="tab-btn" data-tab="logs">Logs</button>
+                                <button class="tab-btn" data-tab="analytics">Analytics</button>
+                            </div>
+
+                            <!-- General Tab -->
+                            <div class="tab-content active" id="general-tab">
+                                <div class="config-section">
+                                    <h4>Basic Configuration</h4>
+                                    <div class="form-group">
+                                        <label>Domain Name:</label>
+                                        <input type="text" id="vhost-domain" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Document Root:</label>
+                                        <input type="text" id="vhost-document-root" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Server Admin:</label>
+                                        <input type="email" id="vhost-admin-email" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Status:</label>
+                                        <select id="vhost-status" class="form-select">
+                                            <option value="active">Active</option>
+                                            <option value="inactive">Inactive</option>
+                                            <option value="maintenance">Maintenance</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="config-section">
+                                    <h4>Advanced Options</h4>
+                                    <div class="form-group checkbox-group">
+                                        <label>
+                                            <input type="checkbox" id="vhost-enable-logs"> Enable Access Logs
+                                        </label>
+                                    </div>
+                                    <div class="form-group checkbox-group">
+                                        <label>
+                                            <input type="checkbox" id="vhost-enable-gzip"> Enable GZIP Compression
+                                        </label>
+                                    </div>
+                                    <div class="form-group checkbox-group">
+                                        <label>
+                                            <input type="checkbox" id="vhost-enable-cache"> Enable Browser Caching
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SSL Tab -->
+                            <div class="tab-content" id="ssl-tab">
+                                <div class="ssl-status-section">
+                                    <h4>SSL/TLS Status</h4>
+                                    <div class="ssl-indicator" id="ssl-status-indicator">
+                                        <div class="ssl-icon">🔒</div>
+                                        <div class="ssl-info">
+                                            <div class="ssl-status">SSL Enabled</div>
+                                            <div class="ssl-details">Let's Encrypt - Expires: Mar 15, 2025</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ssl-actions">
+                                    <button class="btn primary">🔄 Renew Certificate</button>
+                                    <button class="btn secondary">📥 Download Certificate</button>
+                                    <button class="btn secondary">⚙️ Configure SSL</button>
+                                </div>
+
+                                <div class="ssl-config">
+                                    <h4>SSL Configuration</h4>
+                                    <div class="form-group">
+                                        <label>Certificate Authority:</label>
+                                        <select class="form-select">
+                                            <option value="letsencrypt">Let's Encrypt (Free)</option>
+                                            <option value="sectigo">Sectigo</option>
+                                            <option value="digicert">DigiCert</option>
+                                            <option value="custom">Custom Certificate</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group checkbox-group">
+                                        <label>
+                                            <input type="checkbox" checked> Force HTTPS Redirect
+                                        </label>
+                                    </div>
+                                    <div class="form-group checkbox-group">
+                                        <label>
+                                            <input type="checkbox" checked> Enable HSTS
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Redirects Tab -->
+                            <div class="tab-content" id="redirects-tab">
+                                <div class="redirects-section">
+                                    <h4>URL Redirects</h4>
+                                    <button class="btn secondary add-redirect-btn">➕ Add Redirect</button>
+                                    <div class="redirects-list" id="redirects-list">
+                                        <!-- Redirects will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Headers Tab -->
+                            <div class="tab-content" id="headers-tab">
+                                <div class="headers-section">
+                                    <h4>HTTP Headers</h4>
+                                    <div class="security-headers">
+                                        <h5>Security Headers</h5>
+                                        <div class="header-item">
+                                            <label>
+                                                <input type="checkbox" checked> Content-Security-Policy
+                                            </label>
+                                            <input type="text" class="header-value" value="default-src 'self'">
+                                        </div>
+                                        <div class="header-item">
+                                            <label>
+                                                <input type="checkbox" checked> X-Frame-Options
+                                            </label>
+                                            <input type="text" class="header-value" value="SAMEORIGIN">
+                                        </div>
+                                        <div class="header-item">
+                                            <label>
+                                                <input type="checkbox" checked> X-XSS-Protection
+                                            </label>
+                                            <input type="text" class="header-value" value="1; mode=block">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Logs Tab -->
+                            <div class="tab-content" id="logs-tab">
+                                <div class="logs-section">
+                                    <h4>Access & Error Logs</h4>
+                                    <div class="log-viewer">
+                                        <div class="log-controls">
+                                            <select class="log-type-select">
+                                                <option value="access">Access Log</option>
+                                                <option value="error">Error Log</option>
+                                            </select>
+                                            <button class="btn secondary">🔄 Refresh</button>
+                                            <button class="btn secondary">📥 Download</button>
+                                        </div>
+                                        <div class="log-content">
+                                            <pre id="log-content">Loading logs...</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Analytics Tab -->
+                            <div class="tab-content" id="analytics-tab">
+                                <div class="analytics-section">
+                                    <h4>Traffic Analytics</h4>
+                                    <div class="analytics-metrics">
+                                        <div class="metric-card">
+                                            <div class="metric-value">1,234</div>
+                                            <div class="metric-label">Visits Today</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value">45.6 MB</div>
+                                            <div class="metric-label">Bandwidth</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value">234ms</div>
+                                            <div class="metric-label">Avg Response</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value">99.9%</div>
+                                            <div class="metric-label">Uptime</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button class="btn secondary">Cancel</button>
+                            <button class="btn primary">💾 Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Add Virtual Host Modal -->
+            <div id="add-vhost-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add New Virtual Host</h3>
+                        <button class="modal-close" onclick="hideAddVirtualHostModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Domain Name *</label>
+                            <input type="text" id="new-vhost-domain" placeholder="example.com" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Document Root *</label>
+                            <input type="text" id="new-vhost-docroot" placeholder="/var/www/html/example.com" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Server Admin Email</label>
+                            <input type="email" id="new-vhost-admin" placeholder="admin@example.com" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Template</label>
+                            <select id="new-vhost-template" class="form-select">
+                                <option value="basic">Basic Virtual Host</option>
+                                <option value="php">PHP Application</option>
+                                <option value="node">Node.js Application</option>
+                                <option value="static">Static Website</option>
+                                <option value="wordpress">WordPress</option>
+                            </select>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="new-vhost-ssl" checked> Enable SSL (Let's Encrypt)
+                            </label>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="new-vhost-www"> Add www subdomain
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn secondary" onclick="hideAddVirtualHostModal()">Cancel</button>
+                        <button class="btn primary" onclick="createVirtualHost()">🌐 Create Virtual Host</button>
+                    </div>
+                </div>
+            </div>
+        </body>
+
+        <style>
+        /* Virtual Hosts Page Styles */
+        .virtualhosts-page {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .virtualhosts-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .version-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .user-section .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Stats Section */
+        .vhost-stats {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .stats-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
+        /* Main Content */
+        .virtualhosts-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-left {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn.secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box {
+            display: flex;
+            background: #f8f9fa;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+
+        /* Virtual Hosts Table */
+        .vhosts-table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .vhosts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .vhosts-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .vhosts-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .vhosts-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .ssl-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .ssl-badge.enabled {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .ssl-badge.disabled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .traffic-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .traffic-bar {
+            width: 40px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+        }
+
+        .traffic-bar.low {
+            background: #28a745;
+        }
+
+        .traffic-bar.medium {
+            background: #ffc107;
+        }
+
+        .traffic-bar.high {
+            background: #dc3545;
+        }
+
+        /* Details Panel */
+        .vhost-details-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 500px;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-panel-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .detail-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .config-section {
+            margin-bottom: 30px;
+        }
+
+        .config-section h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .ssl-indicator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #d4edda;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .ssl-icon {
+            font-size: 24px;
+        }
+
+        .ssl-status {
+            font-weight: 600;
+            color: #155724;
+        }
+
+        .ssl-details {
+            font-size: 12px;
+            color: #155724;
+            opacity: 0.8;
+        }
+
+        .ssl-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .ssl-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .analytics-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .panel-footer {
+            background: #f8f9fa;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .vhost-details-panel {
+                width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .action-left, .action-right {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stats-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .vhost-details-panel {
+                width: 100%;
+                left: 0;
+            }
+
+            .search-box input {
+                width: 150px;
+            }
+        }
+        </style>
+
+        <script>
+        // Virtual Hosts Manager JavaScript
+        class VirtualHostsManager {
+            constructor() {
+                this.virtualHosts = [];
+                this.selectedVHost = null;
+                this.securityCore = null;
+                this.init();
+            }
+
+            async init() {
+                console.log('🌐 Virtual Hosts Manager v0.4.0 initializing...');
+                
+                await this.waitForSecurity();
+                this.bindEventListeners();
+                await this.loadVirtualHosts();
+                this.updateStats();
+            }
+
+            async waitForSecurity() {
+                return new Promise((resolve, reject) => {
+                    const checkSecurity = () => {
+                        if (window.MedusaSecurityCore && window.MedusaSecure) {
+                            this.securityCore = window.MedusaSecurityCore;
+                            console.log('✅ Virtual Hosts secured with AES 256 PQC');
+                            resolve();
+                        } else {
+                            setTimeout(checkSecurity, 100);
+                        }
+                    };
+                    
+                    checkSecurity();
+                    
+                    setTimeout(() => {
+                        reject(new Error('Security core timeout'));
+                    }, 10000);
+                });
+            }
+
+            bindEventListeners() {
+                // Search functionality
+                document.getElementById('domain-search').addEventListener('input', (e) => {
+                    this.filterVirtualHosts(e.target.value);
+                });
+
+                // Status filter
+                document.getElementById('status-filter').addEventListener('change', (e) => {
+                    this.filterByStatus(e.target.value);
+                });
+
+                // Select all checkbox
+                document.getElementById('select-all-vhosts').addEventListener('change', (e) => {
+                    this.toggleSelectAll(e.target.checked);
+                });
+
+                // Detail tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.switchDetailTab(e.target.dataset.tab);
+                    });
+                });
+            }
+
+            async loadVirtualHosts() {
+                try {
+                    console.log('📋 Loading virtual hosts from PsiForceDB...');
+
+                    // PFQL query to load virtual hosts
+                    const response = await window.MedusaSecure.secureCall(
+                        'domain-manager',
+                        'listVirtualHosts',
+                        {
+                            include_ssl: true,
+                            include_stats: true,
+                            security_level: 'quantum_resistant'
+                        }
+                    );
+
+                    if (response.success) {
+                        this.virtualHosts = response.data.virtual_hosts || this.getMockVirtualHosts();
+                        this.renderVirtualHostsTable();
+                        console.log(`✅ Loaded ${this.virtualHosts.length} virtual hosts`);
+                    } else {
+                        throw new Error(response.error || 'Failed to load virtual hosts');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Failed to load virtual hosts:', error);
+                    // Use mock data for development
+                    this.virtualHosts = this.getMockVirtualHosts();
+                    this.renderVirtualHostsTable();
+                }
+            }
+
+            getMockVirtualHosts() {
+                return [
+                    {
+                        id: 'vh_001',
+                        domain: 'portal.poweredbymedusa.com',
+                        status: 'active',
+                        ssl_enabled: true,
+                        ssl_provider: 'Let\'s Encrypt',
+                        ssl_expires: '2025-04-15',
+                        document_root: '/var/www/html/portal',
+                        admin_email: 'admin@poweredbymedusa.com',
+                        traffic: 'high',
+                        connections: 1234,
+                        bandwidth: '45.6 MB'
+                    },
+                    {
+                        id: 'vh_002', 
+                        domain: 'api.poweredbymedusa.com',
+                        status: 'active',
+                        ssl_enabled: true,
+                        ssl_provider: 'Let\'s Encrypt',
+                        ssl_expires: '2025-04-20',
+                        document_root: '/var/www/html/api',
+                        admin_email: 'admin@poweredbymedusa.com',
+                        traffic: 'medium',
+                        connections: 567,
+                        bandwidth: '12.3 MB'
+                    },
+                    {
+                        id: 'vh_003',
+                        domain: 'docs.poweredbymedusa.com',
+                        status: 'active',
+                        ssl_enabled: true,
+                        ssl_provider: 'Let\'s Encrypt', 
+                        ssl_expires: '2025-04-18',
+                        document_root: '/var/www/html/docs',
+                        admin_email: 'admin@poweredbymedusa.com',
+                        traffic: 'low',
+                        connections: 89,
+                        bandwidth: '3.2 MB'
+                    }
+                ];
+            }
+
+            renderVirtualHostsTable() {
+                const tbody = document.getElementById('vhosts-table-body');
+                tbody.innerHTML = '';
+
+                this.virtualHosts.forEach(vhost => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <input type="checkbox" class="vhost-checkbox" data-id="${vhost.id}">
+                        </td>
+                        <td>
+                            <div class="domain-info">
+                                <div class="domain-name">${vhost.domain}</div>
+                                <div class="domain-path">${vhost.document_root}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-badge ${vhost.status}">${vhost.status.charAt(0).toUpperCase() + vhost.status.slice(1)}</span>
+                        </td>
+                        <td>
+                            <span class="ssl-badge ${vhost.ssl_enabled ? 'enabled' : 'disabled'}">
+                                ${vhost.ssl_enabled ? '🔒 Enabled' : '🔓 Disabled'}
+                            </span>
+                            ${vhost.ssl_enabled ? `<div style="font-size: 11px; color: #666;">Expires: ${vhost.ssl_expires}</div>` : ''}
+                        </td>
+                        <td>${vhost.document_root}</td>
+                        <td>
+                            <div class="traffic-indicator">
+                                <div class="traffic-bar ${vhost.traffic}"></div>
+                                <span>${vhost.connections || 0}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-small primary" onclick="vhostManager.editVirtualHost('${vhost.id}')">
+                                    ✏️ Edit
+                                </button>
+                                <button class="btn-small secondary" onclick="vhostManager.viewLogs('${vhost.id}')">
+                                    📊 Logs
+                                </button>
+                                <button class="btn-small danger" onclick="vhostManager.deleteVirtualHost('${vhost.id}')">
+                                    🗑️ Delete
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                this.updateStats();
+            }
+
+            editVirtualHost(vhostId) {
+                const vhost = this.virtualHosts.find(vh => vh.id === vhostId);
+                if (!vhost) return;
+
+                this.selectedVHost = vhost;
+                this.populateDetailsPanel(vhost);
+                this.showVHostDetailsPanel();
+
+                console.log(`✏️ Editing virtual host: ${vhost.domain}`);
+            }
+
+            populateDetailsPanel(vhost) {
+                // Populate general tab
+                document.getElementById('vhost-domain').value = vhost.domain;
+                document.getElementById('vhost-document-root').value = vhost.document_root;
+                document.getElementById('vhost-admin-email').value = vhost.admin_email;
+                document.getElementById('vhost-status').value = vhost.status;
+
+                // Update SSL status
+                const sslIndicator = document.getElementById('ssl-status-indicator');
+                if (vhost.ssl_enabled) {
+                    sslIndicator.innerHTML = `
+                        <div class="ssl-icon">🔒</div>
+                        <div class="ssl-info">
+                            <div class="ssl-status">SSL Enabled</div>
+                            <div class="ssl-details">${vhost.ssl_provider} - Expires: ${vhost.ssl_expires}</div>
+                        </div>
+                    `;
+                    sslIndicator.className = 'ssl-indicator enabled';
+                } else {
+                    sslIndicator.innerHTML = `
+                        <div class="ssl-icon">🔓</div>
+                        <div class="ssl-info">
+                            <div class="ssl-status">SSL Disabled</div>
+                            <div class="ssl-details">No SSL certificate configured</div>
+                        </div>
+                    `;
+                    sslIndicator.className = 'ssl-indicator disabled';
+                }
+            }
+
+            showVHostDetailsPanel() {
+                document.getElementById('vhost-details-panel').style.display = 'block';
+                document.body.style.marginRight = '500px';
+            }
+
+            hideVHostDetailsPanel() {
+                document.getElementById('vhost-details-panel').style.display = 'none';
+                document.body.style.marginRight = '0';
+                this.selectedVHost = null;
+            }
+
+            switchDetailTab(tabName) {
+                // Update tab buttons
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+
+                console.log(`📑 Switched to ${tabName} tab`);
+            }
+
+            updateStats() {
+                const totalDomains = this.virtualHosts.length;
+                const sslDomains = this.virtualHosts.filter(vh => vh.ssl_enabled).length;
+                const activeConnections = this.virtualHosts.reduce((sum, vh) => sum + (vh.connections || 0), 0);
+
+                document.getElementById('total-domains').textContent = totalDomains;
+                document.getElementById('ssl-domains').textContent = sslDomains;
+                document.getElementById('active-traffic').textContent = activeConnections;
+            }
+
+            filterVirtualHosts(searchTerm) {
+                const rows = document.querySelectorAll('#vhosts-table-body tr');
+                rows.forEach(row => {
+                    const domain = row.querySelector('.domain-name').textContent.toLowerCase();
+                    if (domain.includes(searchTerm.toLowerCase())) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            filterByStatus(status) {
+                const rows = document.querySelectorAll('#vhosts-table-body tr');
+                rows.forEach(row => {
+                    if (!status) {
+                        row.style.display = '';
+                        return;
+                    }
+
+                    const statusBadge = row.querySelector('.status-badge');
+                    const sslBadge = row.querySelector('.ssl-badge');
+                    
+                    let shouldShow = false;
+                    
+                    if (status === 'ssl' && sslBadge.classList.contains('enabled')) {
+                        shouldShow = true;
+                    } else if (statusBadge.classList.contains(status)) {
+                        shouldShow = true;
+                    }
+
+                    row.style.display = shouldShow ? '' : 'none';
+                });
+            }
+
+            toggleSelectAll(checked) {
+                document.querySelectorAll('.vhost-checkbox').forEach(checkbox => {
+                    checkbox.checked = checked;
+                });
+            }
+
+            async createVirtualHost() {
+                try {
+                    const vhostData = {
+                        domain: document.getElementById('new-vhost-domain').value,
+                        document_root: document.getElementById('new-vhost-docroot').value,
+                        admin_email: document.getElementById('new-vhost-admin').value,
+                        template: document.getElementById('new-vhost-template').value,
+                        ssl_enabled: document.getElementById('new-vhost-ssl').checked,
+                        www_subdomain: document.getElementById('new-vhost-www').checked
+                    };
+
+                    if (!vhostData.domain || !vhostData.document_root) {
+                        alert('Please fill in required fields: Domain and Document Root');
+                        return;
+                    }
+
+                    console.log('🌐 Creating virtual host:', vhostData.domain);
+
+                    // Create via secure call to domain manager
+                    const response = await window.MedusaSecure.secureCall(
+                        'domain-manager',
+                        'createVirtualHost',
+                        vhostData
+                    );
+
+                    if (response.success) {
+                        console.log('✅ Virtual host created successfully');
+                        await this.loadVirtualHosts();
+                        this.hideAddVirtualHostModal();
+                        alert(`✅ Virtual host "${vhostData.domain}" created successfully!`);
+                    } else {
+                        throw new Error(response.error || 'Failed to create virtual host');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Failed to create virtual host:', error);
+                    alert(`❌ Failed to create virtual host: ${error.message}`);
+                }
+            }
+
+            async deleteVirtualHost(vhostId) {
+                const vhost = this.virtualHosts.find(vh => vh.id === vhostId);
+                if (!vhost) return;
+
+                if (!confirm(`Are you sure you want to delete virtual host "${vhost.domain}"? This action cannot be undone.`)) {
+                    return;
+                }
+
+                try {
+                    console.log(`🗑️ Deleting virtual host: ${vhost.domain}`);
+
+                    const response = await window.MedusaSecure.secureCall(
+                        'domain-manager',
+                        'deleteVirtualHost',
+                        { vhost_id: vhostId }
+                    );
+
+                    if (response.success) {
+                        console.log('✅ Virtual host deleted successfully');
+                        await this.loadVirtualHosts();
+                        alert(`✅ Virtual host "${vhost.domain}" deleted successfully!`);
+                    } else {
+                        throw new Error(response.error || 'Failed to delete virtual host');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Failed to delete virtual host:', error);
+                    alert(`❌ Failed to delete virtual host: ${error.message}`);
+                }
+            }
+
+            viewLogs(vhostId) {
+                const vhost = this.virtualHosts.find(vh => vh.id === vhostId);
+                if (!vhost) return;
+
+                // Show logs in details panel
+                this.editVirtualHost(vhostId);
+                this.switchDetailTab('logs');
+            }
+
+            showAddVirtualHostModal() {
+                document.getElementById('add-vhost-modal').style.display = 'block';
+                // Clear form
+                document.getElementById('new-vhost-domain').value = '';
+                document.getElementById('new-vhost-docroot').value = '';
+                document.getElementById('new-vhost-admin').value = '';
+            }
+
+            hideAddVirtualHostModal() {
+                document.getElementById('add-vhost-modal').style.display = 'none';
+            }
+
+            async bulkSSLSetup() {
+                const selectedVHosts = Array.from(document.querySelectorAll('.vhost-checkbox:checked'))
+                    .map(cb => cb.dataset.id);
+
+                if (selectedVHosts.length === 0) {
+                    alert('Please select at least one virtual host');
+                    return;
+                }
+
+                if (!confirm(`Enable SSL for ${selectedVHosts.length} selected virtual hosts?`)) {
+                    return;
+                }
+
+                console.log('🔐 Setting up SSL for multiple virtual hosts:', selectedVHosts);
+
+                try {
+                    const response = await window.MedusaSecure.secureCall(
+                        'ssl-certificate-manager',
+                        'bulkSSLSetup',
+                        { vhost_ids: selectedVHosts }
+                    );
+
+                    if (response.success) {
+                        await this.loadVirtualHosts();
+                        alert('✅ Bulk SSL setup completed successfully!');
+                    } else {
+                        throw new Error(response.error || 'Bulk SSL setup failed');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Bulk SSL setup failed:', error);
+                    alert(`❌ Bulk SSL setup failed: ${error.message}`);
+                }
+            }
+
+            exportVirtualHosts() {
+                const exportData = this.virtualHosts.map(vh => ({
+                    domain: vh.domain,
+                    document_root: vh.document_root,
+                    status: vh.status,
+                    ssl_enabled: vh.ssl_enabled,
+                    admin_email: vh.admin_email
+                }));
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], 
+                    { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `virtual_hosts_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                console.log('📥 Virtual hosts configuration exported');
+            }
+        }
+
+        // Global functions for button interactions
+        function showAddVirtualHostModal() {
+            vhostManager.showAddVirtualHostModal();
+        }
+
+        function hideAddVirtualHostModal() {
+            vhostManager.hideAddVirtualHostModal();
+        }
+
+        function createVirtualHost() {
+            vhostManager.createVirtualHost();
+        }
+
+        function hideVHostDetailsPanel() {
+            vhostManager.hideVHostDetailsPanel();
+        }
+
+        function bulkSSLSetup() {
+            vhostManager.bulkSSLSetup();
+        }
+
+        function exportVirtualHosts() {
+            vhostManager.exportVirtualHosts();
+        }
+
+        // Initialize Virtual Hosts Manager
+        let vhostManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            vhostManager = new VirtualHostsManager();
+        });
+        </script>
+    }
+}

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Tuning Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>⚡ Database Tuning Service</h1>
+        <div class="portal-status" id="tuningStatus">
+            <span class="status-indicator online"></span>
+            Tuning Engine: OPTIMIZING
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="tuningService.autoTune()">🎯 Auto Tune</button>
+            <button class="service-btn" onclick="tuningService.optimizeQueries()">🚀 Query Optimization</button>
+            <button class="service-btn" onclick="tuningService.rebuildIndexes()">🔨 Rebuild Indexes</button>
+            <button class="service-btn" onclick="tuningService.updateStatistics()">📊 Update Statistics</button>
+        </div>
+
+        <div class="tuning-dashboard" id="tuningDashboard">
+            <div class="performance-metrics">
+                <div class="metric-card">
+                    <h4>Query Performance</h4>
+                    <div class="metric-gauge" id="queryPerformance">87%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Index Efficiency</h4>
+                    <div class="metric-gauge" id="indexEfficiency">92%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Memory Usage</h4>
+                    <div class="metric-gauge" id="memoryUsage">73%</div>
+                </div>
+                <div class="metric-card">
+                    <h4>I/O Performance</h4>
+                    <div class="metric-gauge" id="ioPerformance">89%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tuning-recommendations" id="tuningRecommendations">
+            <!-- Tuning recommendations will be populated here -->
+        </div>
+
+        <div class="service-output" id="tuningOutput">
+            <div>[TUNING] Database tuning service initialized</div>
+            <div>[TUNING] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[TUNING] Yorkshire Champion optimization standards loaded</div>
+            <div>[TUNING] Ready for tuning operations...</div>
+        </div>
+    </div>
+
+    <script>
+        class DatabaseTuningService {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                await this.loadPerformanceMetrics();
+                this.startRealTimeMonitoring();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_main'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[TUNING] Connected to PsiForceDB tuning engine');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async autoTune() {
+                this.logOutput('[TUNING] Starting automatic database tuning...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/auto', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:tune:auto',
+                            server: '172.236.23.54',
+                            options: {
+                                yorkshireStandard: true,
+                                aggressiveOptimization: true,
+                                maintainUptime: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayTuningResults(result);
+                        this.logOutput('[TUNING] Automatic tuning completed successfully');
+                        this.updatePerformanceMetrics(result.metrics);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Auto tuning failed: ${error.message}`);
+                }
+            }
+
+            async optimizeQueries() {
+                this.logOutput('[TUNING] Optimizing query performance...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/queries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:tune:queries',
+                            server: '172.236.23.54',
+                            options: {
+                                analyzeSlow: true,
+                                optimizeExecution: true,
+                                updatePlans: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[TUNING] Optimized ${result.queriesOptimized} queries`);
+                        this.logOutput(`[TUNING] Average improvement: ${result.performanceImprovement}%`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Query optimization failed: ${error.message}`);
+                }
+            }
+
+            async rebuildIndexes() {
+                this.logOutput('[TUNING] Rebuilding database indexes...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/indexes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:tune:indexes',
+                            server: '172.236.23.54',
+                            options: {
+                                rebuildFragmented: true,
+                                createMissing: true,
+                                removeUnused: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[TUNING] Rebuilt ${result.indexesRebuilt} indexes`);
+                        this.logOutput(`[TUNING] Created ${result.indexesCreated} new indexes`);
+                        this.logOutput(`[TUNING] Removed ${result.indexesRemoved} unused indexes`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Index rebuilding failed: ${error.message}`);
+                }
+            }
+
+            async updateStatistics() {
+                this.logOutput('[TUNING] Updating database statistics...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/statistics', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:tune:statistics',
+                            server: '172.236.23.54',
+                            options: {
+                                fullScan: true,
+                                updateAll: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[TUNING] Updated statistics for ${result.tablesUpdated} tables`);
+                        this.logOutput(`[TUNING] Statistics accuracy improved by ${result.accuracyImprovement}%`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Statistics update failed: ${error.message}`);
+                }
+            }
+
+            async loadPerformanceMetrics() {
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/metrics', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:metrics:performance',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.updatePerformanceMetrics(result);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to load metrics: ${error.message}`);
+                }
+            }
+
+            updatePerformanceMetrics(metrics) {
+                if (metrics) {
+                    document.getElementById('queryPerformance').textContent = (metrics.queryPerformance || 87) + '%';
+                    document.getElementById('indexEfficiency').textContent = (metrics.indexEfficiency || 92) + '%';
+                    document.getElementById('memoryUsage').textContent = (metrics.memoryUsage || 73) + '%';
+                    document.getElementById('ioPerformance').textContent = (metrics.ioPerformance || 89) + '%';
+                }
+            }
+
+            displayTuningResults(result) {
+                const container = document.getElementById('tuningRecommendations');
+                container.innerHTML = `
+                    <h3>🎯 Tuning Results</h3>
+                    <div class="tuning-summary">
+                        <div class="summary-item">
+                            <strong>Performance Improvement:</strong> ${result.performanceImprovement || 'N/A'}%
+                        </div>
+                        <div class="summary-item">
+                            <strong>Optimizations Applied:</strong> ${result.optimizationsApplied || 0}
+                        </div>
+                        <div class="summary-item">
+                            <strong>Response Time Improvement:</strong> ${result.responseTimeImprovement || 'N/A'}ms
+                        </div>
+                    </div>
+                    ${result.recommendations ? `
+                        <h4>📋 Recommendations</h4>
+                        <ul class="recommendations">
+                            ${result.recommendations.map(rec => `
+                                <li class="recommendation-item">
+                                    <div class="recommendation-text">${rec.description}</div>
+                                    <div class="recommendation-impact">Impact: ${rec.impact}</div>
+                                    <button class="apply-btn" onclick="tuningService.applyRecommendation('${rec.id}')">
+                                        Apply
+                                    </button>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                `;
+            }
+
+            async applyRecommendation(recommendationId) {
+                this.logOutput(`[TUNING] Applying recommendation: ${recommendationId}...`);
+                try {
+                    const response = await fetch('/api/pfql-routes/database/tuning/apply', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:tune:apply',
+                            server: '172.236.23.54',
+                            recommendationId: recommendationId
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[TUNING] Recommendation applied: ${result.status}`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to apply recommendation: ${error.message}`);
+                }
+            }
+
+            startRealTimeMonitoring() {
+                setInterval(async () => {
+                    try {
+                        await this.loadPerformanceMetrics();
+                    } catch (error) {
+                        // Silent monitoring
+                    }
+                }, 30000); // Every 30 seconds
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('tuningOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.tuningService = new DatabaseTuningService();
+        });
+    </script>
+    
+    <style>
+        .tuning-dashboard {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .metric-card {
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid #64B5F6;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+        }
+        .metric-gauge {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 10px;
+        }
+        .tuning-recommendations {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tuning-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .summary-item {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #64B5F6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .recommendation-text {
+            flex-grow: 1;
+        }
+        .recommendation-impact {
+            font-size: 12px;
+            color: #FF9800;
+            margin-right: 10px;
+        }
+        .apply-btn {
+            background: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .apply-btn:hover {
+            background: #45a049;
+        }
+    </style>
+</body>
+</html>

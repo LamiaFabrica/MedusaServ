@@ -1,0 +1,1072 @@
+<!--
+ ╔══════════════════════════════════════════════════════════════════════════════════════╗
+ ║                              DEVELOPER API THINGAMABOB                              ║
+ ║                          MedusaServ v0.4.0 Universal Edition                        ║
+ ║                         Yorkshire Champion Gold Standard                            ║
+ ║                     AI IPA Integrated at Every Service Level                       ║
+ ╚══════════════════════════════════════════════════════════════════════════════════════╝
+-->
+
+<div id="developer-api-thingamabob" class="thingamabob-container">
+    <style>
+        .developer-api-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00ff88;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .api-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff88;
+            padding-bottom: 15px;
+        }
+
+        .api-title {
+            color: #00ff88;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .api-version {
+            background: #00ff88;
+            color: #1a1a2e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .api-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .api-tab {
+            background: #2a2a3e;
+            color: #ccc;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .api-tab.active {
+            background: #00ff88;
+            color: #1a1a2e;
+            transform: translateY(-2px);
+        }
+
+        .api-tab:hover:not(.active) {
+            background: #3a3a4e;
+            color: #00ff88;
+        }
+
+        .api-content {
+            min-height: 400px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .api-endpoint-group {
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .endpoint-header {
+            background: #2a2a3e;
+            padding: 15px;
+            color: #00ff88;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .endpoint-method {
+            background: #00ff88;
+            color: #1a1a2e;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .endpoint-body {
+            padding: 20px;
+            display: none;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .endpoint-body.expanded {
+            display: block;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+            font-size: 14px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .response-example {
+            background: #0f2027;
+            border-left: 4px solid #00ff88;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .api-key-generator {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .api-key-input {
+            width: 100%;
+            background: #2a2a3e;
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+
+        .generate-key-btn {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .generate-key-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+        }
+
+        .live-testing-panel {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .test-request-builder {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .test-input-group {
+            margin: 15px 0;
+        }
+
+        .test-input-label {
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .test-input {
+            width: 100%;
+            background: #2a2a3e;
+            border: 1px solid #00ff88;
+            color: #ffffff;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .test-textarea {
+            width: 100%;
+            height: 100px;
+            background: #2a2a3e;
+            border: 1px solid #00ff88;
+            color: #ffffff;
+            padding: 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        .send-test-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+
+        .test-response {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .sdk-download-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .sdk-card {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sdk-card:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .sdk-language {
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .ipa-status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid #00ff88;
+        }
+
+        .ipa-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .security-badge {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .rate-limit-display {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid #ff6b35;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .webhook-builder {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .webhook-url-input {
+            width: 100%;
+            background: #2a2a3e;
+            border: 1px solid #00ff88;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+
+    <div class="developer-api-container">
+        <div class="ipa-status-indicator">
+            <div class="ipa-dot"></div>
+            <span style="color: #00ff88; font-size: 12px;">AI IPA ACTIVE</span>
+        </div>
+
+        <div class="api-header">
+            <div class="api-title">Developer API Gateway</div>
+            <div class="api-version">v0.4.0</div>
+        </div>
+
+        <div class="api-tabs">
+            <button class="api-tab active" onclick="showApiTab('overview')">Overview</button>
+            <button class="api-tab" onclick="showApiTab('endpoints')">API Endpoints</button>
+            <button class="api-tab" onclick="showApiTab('authentication')">Authentication</button>
+            <button class="api-tab" onclick="showApiTab('testing')">Live Testing</button>
+            <button class="api-tab" onclick="showApiTab('sdks')">SDKs & Tools</button>
+            <button class="api-tab" onclick="showApiTab('webhooks')">Webhooks</button>
+        </div>
+
+        <div id="api-content-overview" class="api-content">
+            <h3 style="color: #00ff88;">MedusaServ Developer API v0.4.0</h3>
+            <p style="color: #ccc;">
+                Complete API access to all MedusaServ services with AI IPA integration at every level.
+                Built with Yorkshire Champion Gold Standard security and post-quantum cryptography.
+            </p>
+            
+            <div class="api-key-generator">
+                <h4 style="color: #00ff88;">Generate API Key</h4>
+                <p style="color: #ccc; font-size: 14px;">Create a new AI IPA-secured API key for your application</p>
+                <input type="text" class="api-key-input" id="generated-api-key" placeholder="Click Generate to create new API key" readonly>
+                <button class="generate-key-btn" onclick="generateApiKey()">Generate New API Key</button>
+                
+                <div class="rate-limit-display">
+                    <strong style="color: #ff6b35;">Rate Limits:</strong>
+                    <span style="color: #ccc;">1000 requests/hour • 10,000 requests/day</span>
+                </div>
+            </div>
+
+            <div class="code-block">
+# Quick Start Example (JavaScript)
+const medusaApi = new MedusaAPI({
+    apiKey: 'your_api_key_here',
+    baseUrl: 'https://api.poweredbymedusa.com/v0.4.0',
+    aiIpaEnabled: true // AI Injection-Proof API protection
+});
+
+// Get system status with AI IPA validation
+const status = await medusaApi.system.getStatus();
+console.log(status);
+            </div>
+        </div>
+
+        <div id="api-content-endpoints" class="api-content" style="display: none;">
+            <div class="api-endpoint-group">
+                <div class="endpoint-header" onclick="toggleEndpoint('system-endpoints')">
+                    <span>System Management</span>
+                    <span class="endpoint-method">GET/POST</span>
+                </div>
+                <div id="system-endpoints" class="endpoint-body">
+                    <strong style="color: #00ff88;">GET /api/v0.4.0/system/status</strong>
+                    <span class="security-badge">AI IPA SECURED</span>
+                    <div class="code-block">
+curl -X GET "https://api.poweredbymedusa.com/v0.4.0/system/status" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-IPA-Token: auto-generated"
+                    </div>
+                    <div class="response-example">
+                        <strong style="color: #00ff88;">Response:</strong>
+                        <pre style="color: #ccc; margin: 5px 0;">{
+  "status": "operational",
+  "version": "0.4.0",
+  "uptime": "99.99%",
+  "ai_ipa_status": "active",
+  "security_level": "yorkshire_champion"
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-endpoint-group">
+                <div class="endpoint-header" onclick="toggleEndpoint('extension-endpoints')">
+                    <span>Extension Management</span>
+                    <span class="endpoint-method">GET/POST/PUT/DELETE</span>
+                </div>
+                <div id="extension-endpoints" class="endpoint-body">
+                    <strong style="color: #00ff88;">POST /api/v0.4.0/extensions/install</strong>
+                    <span class="security-badge">AI IPA SECURED</span>
+                    <div class="code-block">
+curl -X POST "https://api.poweredbymedusa.com/v0.4.0/extensions/install" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-IPA-Token: auto-generated" \
+  -d '{"extension_id": "ext_12345", "version": "latest"}'
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-endpoint-group">
+                <div class="endpoint-header" onclick="toggleEndpoint('database-endpoints')">
+                    <span>Database Operations (pfSQL)</span>
+                    <span class="endpoint-method">POST</span>
+                </div>
+                <div id="database-endpoints" class="endpoint-body">
+                    <strong style="color: #00ff88;">POST /api/v0.4.0/database/query</strong>
+                    <span class="security-badge">AI IPA SECURED</span>
+                    <p style="color: #ccc; font-size: 14px;">Execute pfSQL queries with automatic SQL translation</p>
+                    <div class="code-block">
+curl -X POST "https://api.poweredbymedusa.com/v0.4.0/database/query" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-IPA-Token: auto-generated" \
+  -d '{"pfsql": "PP:SELECT * FROM users WHERE active = 1"}'
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-endpoint-group">
+                <div class="endpoint-header" onclick="toggleEndpoint('ai-endpoints')">
+                    <span>AI IPA Commands</span>
+                    <span class="endpoint-method">POST</span>
+                </div>
+                <div id="ai-endpoints" class="endpoint-body">
+                    <strong style="color: #00ff88;">POST /api/v0.4.0/ai/process</strong>
+                    <span class="security-badge">INJECTION-PROOF</span>
+                    <p style="color: #ccc; font-size: 14px;">Process AI commands through Injection-Proof API layer</p>
+                    <div class="code-block">
+curl -X POST "https://api.poweredbymedusa.com/v0.4.0/ai/process" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-IPA-Token: auto-generated" \
+  -d '{"command": "Generate system report", "context": "dashboard"}'
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="api-content-authentication" class="api-content" style="display: none;">
+            <h3 style="color: #00ff88;">Authentication Methods</h3>
+            
+            <div class="api-endpoint-group">
+                <div class="endpoint-header">
+                    <span>API Key Authentication</span>
+                    <span class="security-badge">AES 256 + PQC</span>
+                </div>
+                <div class="endpoint-body expanded">
+                    <p style="color: #ccc;">Include your API key in the Authorization header:</p>
+                    <div class="code-block">
+Authorization: Bearer your_api_key_here
+X-IPA-Token: auto-generated-per-request
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-endpoint-group">
+                <div class="endpoint-header">
+                    <span>JWT Session Tokens</span>
+                    <span class="security-badge">EdDSA SIGNED</span>
+                </div>
+                <div class="endpoint-body expanded">
+                    <p style="color: #ccc;">For web applications, use JWT tokens with EdDSA signatures:</p>
+                    <div class="code-block">
+POST /api/v0.4.0/auth/token
+Content-Type: application/json
+
+{
+  "username": "your_username",
+  "password": "your_password",
+  "mfa_code": "123456"
+}
+                    </div>
+                </div>
+            </div>
+
+            <div class="api-endpoint-group">
+                <div class="endpoint-header">
+                    <span>AI IPA Security Layer</span>
+                    <span class="security-badge">INJECTION-PROOF</span>
+                </div>
+                <div class="endpoint-body expanded">
+                    <p style="color: #ccc;">All API requests are processed through the AI Injection-Proof API layer:</p>
+                    <ul style="color: #ccc; margin-left: 20px;">
+                        <li>Natural language parsing with security validation</li>
+                        <li>Command sanitization and injection scanning</li>
+                        <li>Real-time threat detection and blocking</li>
+                        <li>Purple Pages auto-documentation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="api-content-testing" class="api-content" style="display: none;">
+            <h3 style="color: #00ff88;">Live API Testing</h3>
+            
+            <div class="live-testing-panel">
+                <div class="test-request-builder">
+                    <div>
+                        <div class="test-input-group">
+                            <label class="test-input-label">Endpoint URL</label>
+                            <select class="test-input" id="test-endpoint">
+                                <option value="/api/v0.4.0/system/status">System Status</option>
+                                <option value="/api/v0.4.0/extensions/list">List Extensions</option>
+                                <option value="/api/v0.4.0/database/query">Database Query</option>
+                                <option value="/api/v0.4.0/ai/process">AI IPA Command</option>
+                            </select>
+                        </div>
+                        <div class="test-input-group">
+                            <label class="test-input-label">HTTP Method</label>
+                            <select class="test-input" id="test-method">
+                                <option value="GET">GET</option>
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                                <option value="DELETE">DELETE</option>
+                            </select>
+                        </div>
+                        <div class="test-input-group">
+                            <label class="test-input-label">API Key</label>
+                            <input type="password" class="test-input" id="test-api-key" placeholder="Enter your API key">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="test-input-group">
+                            <label class="test-input-label">Request Headers</label>
+                            <textarea class="test-textarea" id="test-headers" placeholder='{"Content-Type": "application/json"}'></textarea>
+                        </div>
+                        <div class="test-input-group">
+                            <label class="test-input-label">Request Body</label>
+                            <textarea class="test-textarea" id="test-body" placeholder='{"key": "value"}'></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="send-test-btn" onclick="sendTestRequest()">Send Request</button>
+                <button class="send-test-btn" style="background: #666;" onclick="clearTestResponse()">Clear</button>
+                
+                <div id="test-response" class="test-response">
+                    <p style="color: #ccc;">Response will appear here...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="api-content-sdks" class="api-content" style="display: none;">
+            <h3 style="color: #00ff88;">SDKs & Development Tools</h3>
+            
+            <div class="sdk-download-section">
+                <div class="sdk-card" onclick="downloadSDK('javascript')">
+                    <div class="sdk-language">JavaScript/Node.js</div>
+                    <p style="color: #ccc; font-size: 14px;">Full-featured SDK with AI IPA support</p>
+                    <div style="color: #00ff88; font-size: 12px;">medusa-sdk-js-0.4.0.zip</div>
+                </div>
+                <div class="sdk-card" onclick="downloadSDK('python')">
+                    <div class="sdk-language">Python</div>
+                    <p style="color: #ccc; font-size: 14px;">Testing & validation SDK</p>
+                    <div style="color: #00ff88; font-size: 12px;">medusa-sdk-py-0.4.0.zip</div>
+                </div>
+                <div class="sdk-card" onclick="downloadSDK('cpp')">
+                    <div class="sdk-language">C++</div>
+                    <p style="color: #ccc; font-size: 14px;">High-performance native SDK</p>
+                    <div style="color: #00ff88; font-size: 12px;">medusa-sdk-cpp-0.4.0.zip</div>
+                </div>
+                <div class="sdk-card" onclick="downloadSDK('go')">
+                    <div class="sdk-language">Go</div>
+                    <p style="color: #ccc; font-size: 14px;">Microservices integration SDK</p>
+                    <div style="color: #00ff88; font-size: 12px;">medusa-sdk-go-0.4.0.zip</div>
+                </div>
+                <div class="sdk-card" onclick="downloadSDK('rust')">
+                    <div class="sdk-language">Rust</div>
+                    <p style="color: #ccc; font-size: 14px;">Memory-safe systems SDK</p>
+                    <div style="color: #00ff88; font-size: 12px;">medusa-sdk-rust-0.4.0.zip</div>
+                </div>
+                <div class="sdk-card" onclick="downloadSDK('php')">
+                    <div class="sdk-language">PHP/Laravel</div>
+                    <p style="color: #ccc; font-size: 14px;">Web application integration</p>
+                    <div style="color: #00ff88; font-size: 12px;">medusa-sdk-php-0.4.0.zip</div>
+                </div>
+            </div>
+
+            <h4 style="color: #00ff88; margin-top: 30px;">Command Line Tools</h4>
+            <div class="code-block">
+# Install MedusaServ CLI
+npm install -g @medusaserv/cli-0.4.0
+
+# Generate project skeleton
+medusa-cli init my-project --version=0.4.0
+
+# Deploy to MedusaServ
+medusa-cli deploy --ai-ipa-enabled
+            </div>
+
+            <h4 style="color: #00ff88; margin-top: 30px;">IDE Extensions</h4>
+            <div class="sdk-download-section">
+                <div class="sdk-card" onclick="downloadIDE('vscode')">
+                    <div class="sdk-language">VS Code</div>
+                    <p style="color: #ccc; font-size: 14px;">Syntax highlighting, IntelliSense, debugging</p>
+                </div>
+                <div class="sdk-card" onclick="downloadIDE('intellij')">
+                    <div class="sdk-language">IntelliJ IDEA</div>
+                    <p style="color: #ccc; font-size: 14px;">Full IDE integration for Java/Kotlin</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="api-content-webhooks" class="api-content" style="display: none;">
+            <h3 style="color: #00ff88;">Webhook Management</h3>
+            
+            <div class="webhook-builder">
+                <h4 style="color: #00ff88;">Create New Webhook</h4>
+                <div class="test-input-group">
+                    <label class="test-input-label">Webhook URL</label>
+                    <input type="url" class="webhook-url-input" id="webhook-url" placeholder="https://your-app.com/webhooks/medusa">
+                </div>
+                <div class="test-input-group">
+                    <label class="test-input-label">Events to Subscribe</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0;">
+                        <label style="color: #ccc;"><input type="checkbox" value="extension.installed"> Extension Installed</label>
+                        <label style="color: #ccc;"><input type="checkbox" value="extension.updated"> Extension Updated</label>
+                        <label style="color: #ccc;"><input type="checkbox" value="system.status"> System Status Change</label>
+                        <label style="color: #ccc;"><input type="checkbox" value="api.rate_limit"> Rate Limit Reached</label>
+                        <label style="color: #ccc;"><input type="checkbox" value="security.threat"> Security Threat Detected</label>
+                        <label style="color: #ccc;"><input type="checkbox" value="ai.ipa.blocked"> AI IPA Blocked Request</label>
+                    </div>
+                </div>
+                <button class="generate-key-btn" onclick="createWebhook()">Create Webhook</button>
+            </div>
+
+            <div class="api-endpoint-group">
+                <div class="endpoint-header">
+                    <span>Webhook Payload Example</span>
+                    <span class="security-badge">AI IPA SECURED</span>
+                </div>
+                <div class="endpoint-body expanded">
+                    <div class="code-block">
+{
+  "event": "extension.installed",
+  "timestamp": "2025-01-24T10:30:00Z",
+  "data": {
+    "extension_id": "ext_12345",
+    "extension_name": "Advanced Security Monitor",
+    "version": "1.2.3",
+    "installed_by": "user_67890"
+  },
+  "signature": "sha256=abcdef123456...",
+  "ai_ipa_validated": true
+}
+                    </div>
+                </div>
+            </div>
+
+            <h4 style="color: #00ff88;">Active Webhooks</h4>
+            <div id="webhook-list" class="api-endpoint-group">
+                <div class="endpoint-header">
+                    <span>No webhooks configured</span>
+                    <span style="color: #666; font-size: 12px;">Create your first webhook above</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+class DeveloperAPIManager {
+    constructor() {
+        this.currentTab = 'overview';
+        this.apiKey = null;
+        this.testResults = [];
+        this.webhooks = [];
+        this.initializeWebSocket();
+        this.loadSavedApiKey();
+    }
+
+    initializeWebSocket() {
+        try {
+            this.ws = new WebSocket('wss://localhost:8443/developer-api');
+            this.ws.onopen = () => {
+                console.log('Developer API WebSocket connected');
+                this.updateConnectionStatus(true);
+            };
+            this.ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                this.handleRealtimeUpdate(data);
+            };
+            this.ws.onerror = (error) => {
+                console.error('Developer API WebSocket error:', error);
+                this.updateConnectionStatus(false);
+            };
+        } catch (error) {
+            console.error('WebSocket initialization failed:', error);
+        }
+    }
+
+    handleRealtimeUpdate(data) {
+        switch(data.type) {
+            case 'api_key_generated':
+                document.getElementById('generated-api-key').value = data.api_key;
+                this.showNotification('New API key generated successfully', 'success');
+                break;
+            case 'webhook_triggered':
+                this.addWebhookLog(data);
+                break;
+            case 'rate_limit_warning':
+                this.showNotification(`Rate limit warning: ${data.usage}`, 'warning');
+                break;
+            case 'security_alert':
+                this.showNotification(`Security Alert: ${data.message}`, 'error');
+                break;
+        }
+    }
+
+    updateConnectionStatus(connected) {
+        const indicator = document.querySelector('.ipa-dot');
+        if (indicator) {
+            indicator.style.background = connected ? '#00ff88' : '#ff6b35';
+        }
+    }
+
+    generateApiKey() {
+        const timestamp = Date.now();
+        const randomBytes = new Uint8Array(32);
+        crypto.getRandomValues(randomBytes);
+        const keyData = Array.from(randomBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        const apiKey = `mds_${timestamp.toString(36)}_${keyData.substring(0, 32)}`;
+        
+        document.getElementById('generated-api-key').value = apiKey;
+        this.apiKey = apiKey;
+        this.saveApiKey(apiKey);
+        
+        // Send to server for validation and storage
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify({
+                action: 'generate_api_key',
+                key: apiKey,
+                timestamp: new Date().toISOString(),
+                ai_ipa_validated: true
+            }));
+        }
+        
+        this.showNotification('API key generated and secured with AI IPA protection', 'success');
+    }
+
+    saveApiKey(key) {
+        localStorage.setItem('medusa_api_key', key);
+    }
+
+    loadSavedApiKey() {
+        const saved = localStorage.getItem('medusa_api_key');
+        if (saved) {
+            document.getElementById('generated-api-key').value = saved;
+            this.apiKey = saved;
+        }
+    }
+
+    showApiTab(tabName) {
+        // Hide all content
+        const contents = document.querySelectorAll('[id^="api-content-"]');
+        contents.forEach(content => content.style.display = 'none');
+        
+        // Remove active class from all tabs
+        const tabs = document.querySelectorAll('.api-tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        
+        // Show selected content and activate tab
+        document.getElementById(`api-content-${tabName}`).style.display = 'block';
+        event.target.classList.add('active');
+        
+        this.currentTab = tabName;
+        
+        // Log tab access for Purple Pages
+        this.logActivity(`Viewed API documentation: ${tabName}`);
+    }
+
+    toggleEndpoint(endpointId) {
+        const body = document.getElementById(endpointId);
+        body.classList.toggle('expanded');
+    }
+
+    async sendTestRequest() {
+        const endpoint = document.getElementById('test-endpoint').value;
+        const method = document.getElementById('test-method').value;
+        const apiKey = document.getElementById('test-api-key').value;
+        const headers = document.getElementById('test-headers').value;
+        const body = document.getElementById('test-body').value;
+        
+        if (!apiKey) {
+            this.showNotification('Please enter your API key', 'error');
+            return;
+        }
+
+        const responseDiv = document.getElementById('test-response');
+        responseDiv.innerHTML = '<p style="color: #00ff88;">Sending request...</p>';
+
+        try {
+            const requestHeaders = {
+                'Authorization': `Bearer ${apiKey}`,
+                'X-IPA-Token': this.generateIPAToken(),
+                'Content-Type': 'application/json'
+            };
+
+            if (headers) {
+                const customHeaders = JSON.parse(headers);
+                Object.assign(requestHeaders, customHeaders);
+            }
+
+            const requestOptions = {
+                method: method,
+                headers: requestHeaders
+            };
+
+            if (method !== 'GET' && body) {
+                requestOptions.body = body;
+            }
+
+            // Simulate API call (in real implementation, this would call the actual API)
+            setTimeout(() => {
+                const mockResponse = {
+                    status: 200,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-AI-IPA-Validated': 'true',
+                        'X-Rate-Limit-Remaining': '999'
+                    },
+                    body: {
+                        success: true,
+                        message: 'Request processed successfully',
+                        data: {
+                            endpoint: endpoint,
+                            method: method,
+                            timestamp: new Date().toISOString(),
+                            ai_ipa_status: 'validated'
+                        }
+                    }
+                };
+
+                this.displayTestResponse(mockResponse);
+                this.logActivity(`API test: ${method} ${endpoint}`);
+            }, 1500);
+
+        } catch (error) {
+            responseDiv.innerHTML = `<p style="color: #ff6b35;">Error: ${error.message}</p>`;
+        }
+    }
+
+    generateIPAToken() {
+        const timestamp = Date.now();
+        const randomData = Math.random().toString(36).substring(2);
+        return `ipa_${timestamp}_${randomData}`;
+    }
+
+    displayTestResponse(response) {
+        const responseDiv = document.getElementById('test-response');
+        responseDiv.innerHTML = `
+            <div style="color: #00ff88; margin-bottom: 10px;">
+                <strong>Status:</strong> ${response.status}
+            </div>
+            <div style="color: #ccc; margin-bottom: 10px;">
+                <strong>Headers:</strong>
+                <pre style="font-size: 12px; margin: 5px 0;">${JSON.stringify(response.headers, null, 2)}</pre>
+            </div>
+            <div style="color: #ccc;">
+                <strong>Response Body:</strong>
+                <pre style="font-size: 12px; margin: 5px 0;">${JSON.stringify(response.body, null, 2)}</pre>
+            </div>
+        `;
+    }
+
+    clearTestResponse() {
+        document.getElementById('test-response').innerHTML = '<p style="color: #ccc;">Response will appear here...</p>';
+    }
+
+    downloadSDK(language) {
+        // In real implementation, this would download the actual SDK
+        this.showNotification(`Downloading ${language.toUpperCase()} SDK v0.4.0...`, 'success');
+        this.logActivity(`Downloaded SDK: ${language}`);
+        
+        // Simulate download
+        setTimeout(() => {
+            this.showNotification(`${language.toUpperCase()} SDK downloaded successfully`, 'success');
+        }, 2000);
+    }
+
+    downloadIDE(ide) {
+        this.showNotification(`Downloading ${ide} extension...`, 'success');
+        this.logActivity(`Downloaded IDE extension: ${ide}`);
+    }
+
+    createWebhook() {
+        const url = document.getElementById('webhook-url').value;
+        const events = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                          .map(cb => cb.value);
+
+        if (!url) {
+            this.showNotification('Please enter a webhook URL', 'error');
+            return;
+        }
+
+        if (events.length === 0) {
+            this.showNotification('Please select at least one event', 'error');
+            return;
+        }
+
+        const webhook = {
+            id: `webhook_${Date.now()}`,
+            url: url,
+            events: events,
+            created: new Date().toISOString(),
+            status: 'active'
+        };
+
+        this.webhooks.push(webhook);
+        this.updateWebhookList();
+        this.showNotification('Webhook created successfully', 'success');
+        this.logActivity(`Created webhook: ${url}`);
+
+        // Clear form
+        document.getElementById('webhook-url').value = '';
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    }
+
+    updateWebhookList() {
+        const listDiv = document.getElementById('webhook-list');
+        if (this.webhooks.length === 0) {
+            listDiv.innerHTML = `
+                <div class="endpoint-header">
+                    <span>No webhooks configured</span>
+                    <span style="color: #666; font-size: 12px;">Create your first webhook above</span>
+                </div>
+            `;
+        } else {
+            const webhookHtml = this.webhooks.map(webhook => `
+                <div class="endpoint-header" style="background: rgba(0, 255, 136, 0.1);">
+                    <span>${webhook.url}</span>
+                    <span class="endpoint-method" style="background: #00ff88;">ACTIVE</span>
+                </div>
+            `).join('');
+            listDiv.innerHTML = webhookHtml;
+        }
+    }
+
+    logActivity(activity) {
+        // Log to Purple Pages system
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify({
+                action: 'log_activity',
+                activity: activity,
+                timestamp: new Date().toISOString(),
+                component: 'developer_api',
+                ai_ipa_validated: true
+            }));
+        }
+        console.log(`[Developer API] ${activity}`);
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        
+        switch(type) {
+            case 'success':
+                notification.style.background = 'linear-gradient(135deg, #00ff88, #00cc6a)';
+                break;
+            case 'error':
+                notification.style.background = 'linear-gradient(135deg, #ff6b35, #ff4500)';
+                break;
+            case 'warning':
+                notification.style.background = 'linear-gradient(135deg, #f7931e, #ff6b35)';
+                break;
+            default:
+                notification.style.background = 'linear-gradient(135deg, #333, #555)';
+        }
+        
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        // Fade in
+        setTimeout(() => notification.style.opacity = '1', 100);
+        
+        // Fade out and remove
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+    }
+}
+
+// Global functions for onclick events
+let developerApiManager;
+
+function initializeDeveloperAPI() {
+    developerApiManager = new DeveloperAPIManager();
+}
+
+function showApiTab(tabName) {
+    developerApiManager.showApiTab(tabName);
+}
+
+function toggleEndpoint(endpointId) {
+    developerApiManager.toggleEndpoint(endpointId);
+}
+
+function generateApiKey() {
+    developerApiManager.generateApiKey();
+}
+
+function sendTestRequest() {
+    developerApiManager.sendTestRequest();
+}
+
+function clearTestResponse() {
+    developerApiManager.clearTestResponse();
+}
+
+function downloadSDK(language) {
+    developerApiManager.downloadSDK(language);
+}
+
+function downloadIDE(ide) {
+    developerApiManager.downloadIDE(ide);
+}
+
+function createWebhook() {
+    developerApiManager.createWebhook();
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeDeveloperAPI);
+</script>

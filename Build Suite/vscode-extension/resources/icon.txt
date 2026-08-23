@@ -1,0 +1,2 @@
+McMaker Extension Icon
+This is a placeholder for the main McMaker extension icon.

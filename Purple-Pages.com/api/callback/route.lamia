@@ -1,0 +1,299 @@
+<!--
+Purple-Pages.com - Callback Router
+Routes callbacks from Back Office API Gateway to internal services
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_callback_router() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Callback-Type");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify callback authentication (from Back Office)
+    if (!verify_callback_authentication()) {
+        return response(401, json({
+            "error": "Unauthorized",
+            "message": "Invalid callback authentication"
+        }));
+    }
+    
+    callback_data = parse_json(request.body);
+    callback_type = request.headers.get("X-Callback-Type") || callback_data.get("callback_type", "api");
+    
+    // Route based on callback type
+    if (callback_type == "api" || callback_type == "database") {
+        return route_api_callback(callback_data);
+    } else if (callback_type == "gui") {
+        return route_gui_callback(callback_data);
+    } else if (callback_type == "error_log") {
+        return route_error_log_callback(callback_data);
+    } else {
+        return response(400, json({
+            "error": "Invalid callback type",
+            "valid_types": ["api", "database", "gui", "error_log"]
+        }));
+    }
+}
+
+// Route API/Database callback
+function route_api_callback(callback_data) {
+    target_server = callback_data.get("target_server", "main");
+    target_service = callback_data.get("target_service", "");
+    endpoint = callback_data.get("endpoint", "");
+    method = callback_data.get("method", "GET");
+    body = callback_data.get("body", {});
+    headers = callback_data.get("headers", {});
+    
+    // Get VPC address
+    vpc_address = get_server_vpc_address(target_server);
+    
+    // Forward request to internal service
+    start_time = get_epoch_ms();
+    
+    try {
+        if (target_service == "psiforcedb" || callback_data.get("query_type") == "PFQL") {
+            // Database query
+            result = execute_database_callback_vpc(vpc_address, callback_data);
+        } else {
+            // API request
+            result = execute_api_callback_vpc(vpc_address, method, endpoint, body, headers);
+        }
+        
+        total_time = get_epoch_ms() - start_time;
+        
+        // Log callback to Purple Pages
+        log_callback_request(callback_data, result, total_time);
+        
+        return response(200, json({
+            "success": true,
+            "callback_id": callback_data.get("callback_id"),
+            "response": result.response,
+            "performance": {
+                "total_time_ms": total_time,
+                "gateway_time_ms": 5,
+                "service_time_ms": result.service_time_ms,
+                "network_time_ms": total_time - result.service_time_ms - 5
+            }
+        }));
+        
+    } catch (error) {
+        // Log error
+        log_error_to_purple_pages({
+            "server_id": "dev",
+            "application": "PurplePages",
+            "component": "CallbackRouter",
+            "error_level": "ERROR",
+            "error_message": "Callback routing failed: " + error.message,
+            "error_context": {
+                "callback_id": callback_data.get("callback_id"),
+                "target_server": target_server,
+                "endpoint": endpoint
+            }
+        });
+        
+        return response(500, json({
+            "success": false,
+            "error": "Callback routing failed",
+            "message": error.message
+        }));
+    }
+}
+
+// Route GUI callback
+function route_gui_callback(callback_data) {
+    target_database = callback_data.get("target_database", "");
+    action = callback_data.get("action", "");
+    payload = callback_data.get("payload", {});
+    
+    // Route to database server for GUI queries
+    vpc_address = "10.0.0.4:5432";
+    
+    start_time = get_epoch_ms();
+    
+    try {
+        if (action == "query_execute") {
+            result = execute_gui_query_vpc(vpc_address, target_database, payload);
+        } else {
+            result = execute_gui_action_vpc(vpc_address, action, payload);
+        }
+        
+        total_time = get_epoch_ms() - start_time;
+        
+        return response(200, json({
+            "success": true,
+            "callback_id": callback_data.get("callback_id"),
+            "result": result.result,
+            "performance": {
+                "total_time_ms": total_time,
+                "gateway_overhead_ms": 3,
+                "database_query_ms": result.query_time_ms,
+                "network_ms": total_time - result.query_time_ms - 3
+            }
+        }));
+        
+    } catch (error) {
+        return response(500, json({
+            "success": false,
+            "error": "GUI callback failed",
+            "message": error.message
+        }));
+    }
+}
+
+// Route error log callback (from other servers)
+function route_error_log_callback(callback_data) {
+    // Forward to error logging API
+    error_data = callback_data.get("error_data", {});
+    
+    // Use internal VPC connection to log
+    result = log_error_vpc_internal(error_data);
+    
+    return response(200, json({
+        "success": true,
+        "error_id": result.error_id
+    }));
+}
+
+// Execute database callback via VPC
+function execute_database_callback_vpc(vpc_address, callback_data) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        query = callback_data.get("query", "");
+        database = callback_data.get("database", "");
+        query_params = callback_data.get("query_params", {});
+        
+        start_time = get_epoch_ms();
+        
+        // Execute PFQL query
+        result = db_connection.execute_pfql(database, query, query_params);
+        
+        query_time = get_epoch_ms() - start_time;
+        
+        return {
+            "response": {
+                "status_code": 200,
+                "body": {
+                    "rows": result.rows.length,
+                    "columns": result.columns,
+                    "data": result.data,
+                    "query_time_ms": query_time
+                }
+            },
+            "service_time_ms": query_time
+        };
+        
+    } catch (error) {
+        throw error;
+    } finally {
+        db_connection.close();
+    }
+}
+
+// Execute API callback via VPC
+function execute_api_callback_vpc(vpc_address, method, endpoint, body, headers) {
+    // Make HTTP request to internal service via VPC
+    http_client = get_vpc_http_client();
+    
+    start_time = get_epoch_ms();
+    response = http_client.request({
+        "method": method,
+        "url": "http://" + vpc_address + endpoint,
+        "headers": headers,
+        "body": body
+    });
+    service_time = get_epoch_ms() - start_time;
+    
+    return {
+        "response": {
+            "status_code": response.status_code,
+            "headers": response.headers,
+            "body": response.body
+        },
+        "service_time_ms": service_time
+    };
+}
+
+// Execute GUI query via VPC
+function execute_gui_query_vpc(vpc_address, database, payload) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    
+    try {
+        query = payload.get("query", "");
+        query_params = payload.get("query_params", {});
+        
+        start_time = get_epoch_ms();
+        result = db_connection.execute_pfql(database, query, query_params);
+        query_time = get_epoch_ms() - start_time;
+        
+        return {
+            "result": {
+                "rows": result.rows.length,
+                "columns": result.columns,
+                "data": result.data,
+                "query_time_ms": query_time
+            },
+            "query_time_ms": query_time
+        };
+        
+    } catch (error) {
+        throw error;
+    } finally {
+        db_connection.close();
+    }
+}
+
+// Utility functions
+function get_server_vpc_address(server_id) {
+    address_map = {
+        "db": "10.0.0.4:5432",
+        "dev": "10.0.0.5:8080",
+        "main": "10.0.0.2:8080",
+        "backoffice": "10.0.0.4:8080"
+    };
+    return address_map.get(server_id, "10.0.0.2:8080");
+}
+
+function verify_callback_authentication() {
+    // Verify request is from Back Office Server
+    client_ip = get_client_ip();
+    
+    // Check if from Back Office (10.0.0.4 or 172.236.28.155)
+    if (client_ip == "10.0.0.4" || client_ip == "172.236.28.155") {
+        return true;
+    }
+    
+    // Check API key
+    api_key = request.headers.get("X-API-Key");
+    if (api_key && verify_backoffice_api_key(api_key)) {
+        return true;
+    }
+    
+    return false;
+}
+
+function log_callback_request(callback_data, result, total_time) {
+    // Log to request logs
+    log_request({
+        "server_id": "dev",
+        "server_vpc_ip": "10.0.0.5",
+        "method": callback_data.get("method", "POST"),
+        "endpoint": "/callback/route",
+        "status_code": result.response.status_code,
+        "response_time_ms": total_time
+    });
+}
+
+function log_error_vpc_internal(error_data) {
+    // Direct VPC logging (no callback overhead)
+    return handle_log_error(error_data, {
+        "authenticated": true,
+        "server_id": error_data.get("server_id", "unknown")
+    });
+}
+

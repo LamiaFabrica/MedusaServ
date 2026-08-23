@@ -1,0 +1,105 @@
+# Purple-Pages.com Virtual Host Configuration
+# © 2025 D Hargreaves (Roylepython) - The Medusa Project
+
+<VirtualHost *:80>
+    ServerName purple-pages.com
+    ServerAlias www.purple-pages.com
+    DocumentRoot /opt/medusaserv/web/Purple-Pages.com
+    
+    # Lamia template engine
+    AddHandler lamia-handler .lamia
+    
+    # API v1 routing
+    <LocationMatch "^/api/v1/">
+        SetHandler api-handler
+        APIHandler purple_pages_api_handler
+    </LocationMatch>
+    
+    # kMeans XML routing
+    <LocationMatch "^/api/v1/kmeans">
+        SetHandler kmeans-handler
+        KMeansHandler kmeans_communication
+    </LocationMatch>
+    
+    # Callback routing
+    <LocationMatch "^/api/callback/">
+        SetHandler callback-handler
+        CallbackHandler api_gateway_native
+    </LocationMatch>
+    
+    # Static files
+    <Directory "/opt/medusaserv/web/Purple-Pages.com">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # SSO cookie sharing
+    CookieDomain .purple-pages.com
+    CookiePath /
+    
+    # SSL redirect
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Logging
+    ErrorLog /var/log/medusaserv/purple-pages.com_error.log
+    CustomLog /var/log/medusaserv/purple-pages.com_access.log combined
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName purple-pages.com
+    ServerAlias www.purple-pages.com
+    DocumentRoot /opt/medusaserv/web/Purple-Pages.com
+    
+    # LFSSL Configuration
+    SSLEngine on
+    SSLCertificateFile /opt/medusaserv/config/ssl/purple-pages.com.crt
+    SSLCertificateKeyFile /opt/medusaserv/config/ssl/purple-pages.com.key
+    SSLProtocol TLSv1.3
+    SSLCipherSuite TLS_AES_256_GCM_SHA384
+    
+    # Lamia template engine
+    AddHandler lamia-handler .lamia
+    
+    # API v1 routing
+    <LocationMatch "^/api/v1/">
+        SetHandler api-handler
+        APIHandler purple_pages_api_handler
+    </LocationMatch>
+    
+    # kMeans XML routing
+    <LocationMatch "^/api/v1/kmeans">
+        SetHandler kmeans-handler
+        KMeansHandler kmeans_communication
+    </LocationMatch>
+    
+    # Callback routing
+    <LocationMatch "^/api/callback/">
+        SetHandler callback-handler
+        CallbackHandler api_gateway_native
+    </LocationMatch>
+    
+    # Static files
+    <Directory "/opt/medusaserv/web/Purple-Pages.com">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # SSO cookie sharing
+    CookieDomain .purple-pages.com
+    CookiePath /
+    
+    # Security headers
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # Logging
+    ErrorLog /var/log/medusaserv/purple-pages.com_ssl_error.log
+    CustomLog /var/log/medusaserv/purple-pages.com_ssl_access.log combined
+</VirtualHost>
+

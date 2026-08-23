@@ -1,0 +1,73 @@
+# PsiForceDB.com Virtual Host Configuration
+# © 2025 D Hargreaves (Roylepython) - The Medusa Project
+
+<VirtualHost *:80>
+    ServerName psiforcedb.com
+    ServerAlias www.psiforcedb.com
+    DocumentRoot /opt/medusaserv/web/PsiForceDB.com
+    
+    # Lamia template engine
+    AddHandler lamia-handler .lamia
+    
+    # API routing
+    <LocationMatch "^/api/">
+        SetHandler api-handler
+        APIHandler psiforcedb_website_api_handlers
+    </LocationMatch>
+    
+    # Static files
+    <Directory "/opt/medusaserv/web/PsiForceDB.com">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # SSL redirect
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Logging
+    ErrorLog /var/log/medusaserv/psiforcedb.com_error.log
+    CustomLog /var/log/medusaserv/psiforcedb.com_access.log combined
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName psiforcedb.com
+    ServerAlias www.psiforcedb.com
+    DocumentRoot /opt/medusaserv/web/PsiForceDB.com
+    
+    # LFSSL Configuration
+    SSLEngine on
+    SSLCertificateFile /opt/medusaserv/config/ssl/psiforcedb.com.crt
+    SSLCertificateKeyFile /opt/medusaserv/config/ssl/psiforcedb.com.key
+    SSLProtocol TLSv1.3
+    SSLCipherSuite TLS_AES_256_GCM_SHA384
+    
+    # Lamia template engine
+    AddHandler lamia-handler .lamia
+    
+    # API routing
+    <LocationMatch "^/api/">
+        SetHandler api-handler
+        APIHandler psiforcedb_website_api_handlers
+    </LocationMatch>
+    
+    # Static files
+    <Directory "/opt/medusaserv/web/PsiForceDB.com">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+    
+    # Security headers
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # Logging
+    ErrorLog /var/log/medusaserv/psiforcedb.com_ssl_error.log
+    CustomLog /var/log/medusaserv/psiforcedb.com_ssl_access.log combined
+</VirtualHost>
+

@@ -1,0 +1,1061 @@
+/**
+ * MEDUSASERV WEBMAIL THINGAMABOB COMPONENT
+ * =======================================
+ * Enterprise webmail thingamabob with IMAP/POP3/Exchange integration
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "webmail_thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise_webmail"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    @authentication_required true
+    @psiforcedb_backend true
+    @webmail_enabled true
+    @imap_support true
+    @pop3_support true
+    @exchange_support true
+    
+    @render {
+        <div class="webmail-thingamabob">
+            <!-- Webmail Header Thingamabob -->
+            <div class="thingamabob-header">
+                <div class="thingamabob-title">
+                    <div class="thingamabob-icon">📧</div>
+                    <h2>Webmail Thingamabob</h2>
+                    <span class="thingamabob-badge">Enterprise</span>
+                </div>
+                <div class="thingamabob-controls">
+                    <button class="thingamabob-btn compose">✉️ New Message</button>
+                    <button class="thingamabob-btn refresh">🔄 Refresh</button>
+                    <button class="thingamabob-btn settings">⚙️ Settings</button>
+                </div>
+            </div>
+
+            <!-- Webmail Interface Thingamabob -->
+            <div class="thingamabob-interface">
+                <!-- Folder Sidebar Thingamabob -->
+                <div class="folder-thingamabob">
+                    <h3>Mail Folders</h3>
+                    <div class="folder-list">
+                        <div class="folder-item active">
+                            <div class="folder-icon">📥</div>
+                            <span>Inbox</span>
+                            <span class="message-count">12</span>
+                        </div>
+                        <div class="folder-item">
+                            <div class="folder-icon">📤</div>
+                            <span>Sent</span>
+                            <span class="message-count">45</span>
+                        </div>
+                        <div class="folder-item">
+                            <div class="folder-icon">📝</div>
+                            <span>Drafts</span>
+                            <span class="message-count">3</span>
+                        </div>
+                        <div class="folder-item">
+                            <div class="folder-icon">🗑️</div>
+                            <span>Trash</span>
+                            <span class="message-count">8</span>
+                        </div>
+                        <div class="folder-item">
+                            <div class="folder-icon">⚠️</div>
+                            <span>Spam</span>
+                            <span class="message-count">2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message List Thingamabob -->
+                <div class="message-list-thingamabob">
+                    <div class="list-header">
+                        <h3>Messages</h3>
+                        <div class="list-controls">
+                            <input type="text" placeholder="Search messages..." class="search-thingamabob">
+                            <select class="sort-thingamabob">
+                                <option>Sort by Date</option>
+                                <option>Sort by Sender</option>
+                                <option>Sort by Subject</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="message-items">
+                        <div class="message-item unread">
+                            <div class="message-status">●</div>
+                            <div class="message-sender">System Administrator</div>
+                            <div class="message-subject">Welcome to MedusaServ Enterprise</div>
+                            <div class="message-date">2 minutes ago</div>
+                            <div class="message-attachment">📎</div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-status"></div>
+                            <div class="message-sender">Security Team</div>
+                            <div class="message-subject">Security Update Notification</div>
+                            <div class="message-date">1 hour ago</div>
+                            <div class="message-attachment"></div>
+                        </div>
+                        
+                        <div class="message-item priority">
+                            <div class="message-status">🔴</div>
+                            <div class="message-sender">Monitoring System</div>
+                            <div class="message-subject">Critical Alert: High CPU Usage</div>
+                            <div class="message-date">3 hours ago</div>
+                            <div class="message-attachment">📊</div>
+                        </div>
+                        
+                        <div class="message-item">
+                            <div class="message-status"></div>
+                            <div class="message-sender">Backup Service</div>
+                            <div class="message-subject">Daily Backup Completed Successfully</div>
+                            <div class="message-date">Yesterday</div>
+                            <div class="message-attachment"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Preview Thingamabob -->
+                <div class="message-preview-thingamabob">
+                    <div class="preview-header">
+                        <h3>Welcome to MedusaServ Enterprise</h3>
+                        <div class="preview-controls">
+                            <button class="preview-btn">↩️ Reply</button>
+                            <button class="preview-btn">↪️ Forward</button>
+                            <button class="preview-btn">🗑️ Delete</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-meta">
+                        <div class="meta-row">
+                            <span class="meta-label">From:</span>
+                            <span class="meta-value">System Administrator &lt;admin@medusaserv.com&gt;</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">To:</span>
+                            <span class="meta-value">User &lt;user@medusaserv.com&gt;</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">Date:</span>
+                            <span class="meta-value">Today, 2:47 PM</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">Subject:</span>
+                            <span class="meta-value">Welcome to MedusaServ Enterprise</span>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-content">
+                        <p>Welcome to the MedusaServ Enterprise Webmail Thingamabob!</p>
+                        
+                        <p>Your enterprise webmail system is now fully operational with the following features:</p>
+                        
+                        <ul>
+                            <li>✅ IMAP/POP3/Exchange support</li>
+                            <li>✅ Advanced spam filtering</li>
+                            <li>✅ Two-factor authentication</li>
+                            <li>✅ Mobile synchronization</li>
+                            <li>✅ Calendar integration</li>
+                            <li>✅ Contact management</li>
+                        </ul>
+                        
+                        <p>Access your webmail thingamabob through the portal interface or directly at webmail.medusaserv.com</p>
+                        
+                        <p>For support, contact our Yorkshire Champion technical team.</p>
+                        
+                        <hr>
+                        <p><small>This is an automated message from the MedusaServ Enterprise System.</small></p>
+                    </div>
+                    
+                    <div class="preview-attachments">
+                        <h4>Attachments (1)</h4>
+                        <div class="attachment-item">
+                            <div class="attachment-icon">📄</div>
+                            <div class="attachment-info">
+                                <span class="attachment-name">MedusaServ_Setup_Guide.pdf</span>
+                                <span class="attachment-size">2.4 MB</span>
+                            </div>
+                            <button class="attachment-download">📥 Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Status Thingamabob -->
+            <div class="account-status-thingamabob">
+                <div class="status-item">
+                    <span class="status-label">Server Status:</span>
+                    <span class="status-value online">Online</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Storage Used:</span>
+                    <span class="status-value">2.1 GB / 10 GB</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Last Sync:</span>
+                    <span class="status-value">Just now</span>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @styles {
+        .webmail-thingamabob {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #6f42c1;
+            margin-bottom: 2rem;
+        }
+
+        .thingamabob-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .thingamabob-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .thingamabob-icon {
+            font-size: 1.5rem;
+        }
+
+        .thingamabob-title h2 {
+            color: #6f42c1;
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-badge {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thingamabob-btn {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .thingamabob-btn:hover {
+            background: #8e44ad;
+            transform: translateY(-1px);
+        }
+
+        .thingamabob-interface {
+            display: grid;
+            grid-template-columns: 250px 1fr 350px;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            min-height: 500px;
+        }
+
+        .folder-thingamabob {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .folder-thingamabob h3 {
+            color: #343a40;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .folder-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .folder-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .folder-item:hover,
+        .folder-item.active {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .folder-icon {
+            font-size: 0.875rem;
+        }
+
+        .message-count {
+            margin-left: auto;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .message-list-thingamabob {
+            border-right: 1px solid #e9ecef;
+            padding-right: 1.5rem;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .list-header h3 {
+            color: #343a40;
+            margin: 0;
+        }
+
+        .list-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-thingamabob,
+        .sort-thingamabob {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .message-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .message-item {
+            display: grid;
+            grid-template-columns: 20px 1fr 120px 20px;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .message-item:hover {
+            background: rgba(111, 66, 193, 0.05);
+            border-color: #6f42c1;
+        }
+
+        .message-item.unread {
+            background: rgba(111, 66, 193, 0.1);
+            border-left: 3px solid #6f42c1;
+        }
+
+        .message-item.priority {
+            border-left: 3px solid #dc3545;
+        }
+
+        .message-status {
+            color: #6f42c1;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .message-subject {
+            color: #6c757d;
+            font-size: 0.875rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-date {
+            font-size: 0.75rem;
+            color: #adb5bd;
+            text-align: right;
+        }
+
+        .message-attachment {
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .message-preview-thingamabob {
+            padding-left: 1.5rem;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .preview-header h3 {
+            color: #343a40;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .preview-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .preview-btn {
+            background: transparent;
+            border: 1px solid #6f42c1;
+            color: #6f42c1;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preview-btn:hover {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .preview-meta {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .meta-row {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 60px;
+            font-size: 0.875rem;
+        }
+
+        .meta-value {
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .preview-content {
+            line-height: 1.6;
+            color: #495057;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-content p {
+            margin-bottom: 1rem;
+        }
+
+        .preview-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-content li {
+            margin-bottom: 0.25rem;
+        }
+
+        .preview-content hr {
+            border: none;
+            border-top: 1px solid #e9ecef;
+            margin: 1.5rem 0;
+        }
+
+        .preview-attachments {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+        }
+
+        .preview-attachments h4 {
+            color: #343a40;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .attachment-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+
+        .attachment-icon {
+            font-size: 1.2rem;
+        }
+
+        .attachment-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .attachment-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .attachment-size {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .attachment-download {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .account-status-thingamabob {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-top: 3px solid #6f42c1;
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-value {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .status-value.online {
+            color: #28a745;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .thingamabob-interface {
+                grid-template-columns: 200px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .thingamabob-interface {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                gap: 1rem;
+            }
+
+            .thingamabob-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .account-status-thingamabob {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    }
+
+    @javascript {
+        // Initialize Webmail functionality with PsiForceDB v0.4.0
+        document.addEventListener('DOMContentLoaded', function() {
+            const webmailManager = new WebmailThingamabob();
+            webmailManager.init();
+        });
+
+        class WebmailThingamabob {
+            constructor() {
+                this.securityCore = null;
+                this.sessionValidated = false;
+                this.componentName = 'webmail-thingamabob';
+                this.psiForceDB = {
+                    connected: false,
+                    mailboxes: [],
+                    messages: []
+                };
+                this.mailAccounts = [];
+                this.currentFolder = 'inbox';
+                this.bindEventListeners();
+            }
+
+            init() {
+                console.log('📧 Webmail Thingamabob v0.4.0 initializing with PsiForceDB security...');
+                
+                // Wait for MedusaSecurityCore to be ready
+                this.waitForSecurityCore().then(() => {
+                    this.connectToPsiForceDB();
+                    this.loadMailAccounts();
+                    this.loadMessages();
+                    this.startMailSync();
+                }).catch(error => {
+                    console.error('❌ Webmail security initialization failed:', error);
+                });
+            }
+            
+            async waitForSecurityCore() {
+                return new Promise((resolve, reject) => {
+                    const checkSecurity = () => {
+                        if (window.MedusaSecurityCore) {
+                            this.securityCore = window.MedusaSecurityCore;
+                            console.log('✅ Webmail secured with AES 256 PQC');
+                            resolve();
+                        } else {
+                            setTimeout(checkSecurity, 100);
+                        }
+                    };
+                    
+                    checkSecurity();
+                    
+                    // Timeout after 10 seconds
+                    setTimeout(() => {
+                        reject(new Error('Security core timeout'));
+                    }, 10000);
+                });
+            }
+
+            async connectToPsiForceDB() {
+                console.log('🗄️ Connecting Webmail to PsiForceDB...');
+                
+                try {
+                    if (this.securityCore && this.securityCore.psiForceDB.connected) {
+                        this.psiForceDB.connected = true;
+                        console.log('✅ Webmail PsiForceDB connection established');
+                        this.addSecureLogEntry('success', 'Webmail PsiForceDB connection established');
+                        
+                        // Test connection with encrypted mail query
+                        const testQuery = "SELECT 'Webmail PsiForceDB Integration Active' as status";
+                        const testResult = await this.securityCore.psiForceQuery(testQuery);
+                        
+                        if (testResult.success) {
+                            console.log('✅ Webmail PsiForceDB integration active');
+                        }
+                        
+                    } else {
+                        throw new Error('Security core PsiForceDB not available');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Webmail PsiForceDB connection failed:', error);
+                    this.addSecureLogEntry('error', `Webmail PsiForceDB connection failed: ${error.message}`);
+                }
+            }
+
+            async loadMailAccounts() {
+                console.log('📮 Loading mail accounts from PsiForceDB...');
+                
+                try {
+                    if (!this.psiForceDB.connected) {
+                        throw new Error('PsiForceDB not connected');
+                    }
+                    
+                    // Load mail accounts using PsiForceDB
+                    const accountsQuery = `
+                        SELECT username, email_address, mail_server, mail_protocol, security_level 
+                        FROM user_mail_accounts 
+                        WHERE active = true AND user_id IN 
+                        (SELECT id FROM portal_users WHERE active = true)
+                    `;
+                    
+                    const accountsResult = await this.securityCore.psiForceQuery(accountsQuery);
+                    
+                    if (accountsResult.success && accountsResult.data) {
+                        this.mailAccounts = accountsResult.data;
+                        console.log(`✅ Loaded ${this.mailAccounts.length} mail accounts from PsiForceDB`);
+                        this.addSecureLogEntry('success', `Loaded ${this.mailAccounts.length} mail accounts`);
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load mail accounts:', error);
+                    this.addSecureLogEntry('error', `Mail account loading failed: ${error.message}`);
+                }
+            }
+
+            async loadMessages() {
+                console.log('📬 Loading messages with AES 256 PQC encryption...');
+                
+                try {
+                    if (!this.psiForceDB.connected) {
+                        throw new Error('PsiForceDB not connected');
+                    }
+                    
+                    // Load encrypted messages from PsiForceDB
+                    const messagesQuery = `
+                        SELECT message_id, sender, recipient, subject_encrypted, body_encrypted, 
+                               date_received, folder, security_level 
+                        FROM user_mail_messages 
+                        WHERE folder = '${this.currentFolder}' AND active = true
+                        ORDER BY date_received DESC LIMIT 50
+                    `;
+                    
+                    const messagesResult = await this.securityCore.psiForceQuery(messagesQuery);
+                    
+                    if (messagesResult.success && messagesResult.data) {
+                        this.psiForceDB.messages = messagesResult.data;
+                        console.log(`✅ Loaded ${this.psiForceDB.messages.length} encrypted messages`);
+                        this.updateMessageDisplay();
+                        this.addSecureLogEntry('success', `Loaded ${this.psiForceDB.messages.length} encrypted messages`);
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load messages:', error);
+                    this.addSecureLogEntry('error', `Message loading failed: ${error.message}`);
+                }
+            }
+
+            bindEventListeners() {
+                // Compose button
+                document.querySelector('.thingamabob-btn.compose')?.addEventListener('click', () => {
+                    this.composeMessage();
+                });
+
+                // Refresh button
+                document.querySelector('.thingamabob-btn.refresh')?.addEventListener('click', () => {
+                    this.refreshMessages();
+                });
+
+                // Settings button
+                document.querySelector('.thingamabob-btn.settings')?.addEventListener('click', () => {
+                    this.openSettings();
+                });
+
+                // Folder selection
+                document.querySelectorAll('.folder-item').forEach(folder => {
+                    folder.addEventListener('click', (e) => this.selectFolder(e.currentTarget));
+                });
+
+                // Message selection
+                document.querySelectorAll('.message-item').forEach(message => {
+                    message.addEventListener('click', (e) => this.selectMessage(e.currentTarget));
+                });
+            }
+
+            async composeMessage() {
+                try {
+                    if (!this.securityCore) {
+                        throw new Error('Security core not available');
+                    }
+                    
+                    // Secure message composition with AES 256 PQC
+                    const composeData = {
+                        action: 'compose_message',
+                        timestamp: Date.now(),
+                        security_level: 'quantum_resistant'
+                    };
+                    
+                    const response = await this.securityCore.secureThingamabobCall(
+                        this.componentName,
+                        'composeSecureMessage',
+                        composeData
+                    );
+                    
+                    if (response.success) {
+                        console.log('✅ Secure message composer opened');
+                        this.addSecureLogEntry('success', 'Secure message composer opened');
+                        // Open compose modal with encryption
+                        this.showComposeModal();
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to open secure composer:', error);
+                    this.addSecureLogEntry('error', `Compose failed: ${error.message}`);
+                }
+            }
+
+            async refreshMessages() {
+                const refreshBtn = document.querySelector('.thingamabob-btn.refresh');
+                const originalText = refreshBtn.innerHTML;
+                
+                refreshBtn.innerHTML = '⏳ Syncing...';
+                refreshBtn.disabled = true;
+
+                try {
+                    if (!this.securityCore) {
+                        throw new Error('Security core not available');
+                    }
+                    
+                    // Secure mail sync with PsiForceDB
+                    const syncData = {
+                        action: 'sync_messages',
+                        folder: this.currentFolder,
+                        timestamp: Date.now(),
+                        security_level: 'quantum_resistant'
+                    };
+                    
+                    const response = await this.securityCore.secureThingamabobCall(
+                        this.componentName,
+                        'syncSecureMessages',
+                        syncData
+                    );
+                    
+                    if (response.success) {
+                        await this.loadMessages(); // Reload messages
+                        this.addSecureLogEntry('success', 'Secure message sync completed');
+                        refreshBtn.innerHTML = '✅ Synced';
+                    } else {
+                        throw new Error(response.message || 'Sync failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Message sync failed:', error);
+                    this.addSecureLogEntry('error', `Message sync failed: ${error.message}`);
+                    refreshBtn.innerHTML = '❌ Failed';
+                } finally {
+                    refreshBtn.disabled = false;
+                    setTimeout(() => {
+                        refreshBtn.innerHTML = originalText;
+                    }, 3000);
+                }
+            }
+
+            async selectFolder(folderElement) {
+                const folderName = folderElement.querySelector('span').textContent.toLowerCase();
+                
+                // Remove active class from all folders
+                document.querySelectorAll('.folder-item').forEach(f => f.classList.remove('active'));
+                
+                // Add active class to selected folder
+                folderElement.classList.add('active');
+                
+                this.currentFolder = folderName;
+                
+                try {
+                    // Secure folder access with PsiForceDB
+                    const folderData = {
+                        folder: folderName,
+                        timestamp: Date.now(),
+                        security_level: 'quantum_resistant'
+                    };
+                    
+                    const response = await this.securityCore.secureThingamabobCall(
+                        this.componentName,
+                        'accessSecureFolder',
+                        folderData
+                    );
+                    
+                    if (response.success) {
+                        await this.loadMessages(); // Load messages for selected folder
+                        this.addSecureLogEntry('success', `Accessed secure folder: ${folderName}`);
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Folder access failed:', error);
+                    this.addSecureLogEntry('error', `Folder access failed: ${error.message}`);
+                }
+            }
+
+            showComposeModal() {
+                // Create secure compose modal with AES 256 PQC
+                const modal = document.createElement('div');
+                modal.className = 'webmail-compose-modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>🔐 Secure Message Composer (AES 256 PQC)</h3>
+                            <button class="modal-close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="compose-field">
+                                <label>To:</label>
+                                <input type="email" class="compose-to" placeholder="recipient@domain.com">
+                            </div>
+                            <div class="compose-field">
+                                <label>Subject:</label>
+                                <input type="text" class="compose-subject" placeholder="Message subject (encrypted)">
+                            </div>
+                            <div class="compose-field">
+                                <label>Message:</label>
+                                <textarea class="compose-body" rows="10" placeholder="Your secure message (AES 256 PQC encrypted)"></textarea>
+                            </div>
+                            <div class="security-options">
+                                <label>
+                                    <input type="checkbox" checked> Enable PQC Encryption
+                                </label>
+                                <label>
+                                    <input type="checkbox"> Request Read Receipt
+                                </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="modal-btn cancel">Cancel</button>
+                            <button class="modal-btn send">🔒 Send Encrypted</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                modal.style.display = 'flex';
+                
+                // Bind modal events
+                modal.querySelector('.modal-close').addEventListener('click', () => {
+                    modal.remove();
+                });
+                
+                modal.querySelector('.modal-btn.cancel').addEventListener('click', () => {
+                    modal.remove();
+                });
+                
+                modal.querySelector('.modal-btn.send').addEventListener('click', () => {
+                    this.sendSecureMessage(modal);
+                });
+            }
+
+            async sendSecureMessage(modal) {
+                const to = modal.querySelector('.compose-to').value;
+                const subject = modal.querySelector('.compose-subject').value;
+                const body = modal.querySelector('.compose-body').value;
+                
+                if (!to || !subject || !body) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                try {
+                    // Secure message sending with AES 256 PQC
+                    const messageData = {
+                        to: to,
+                        subject: subject,
+                        body: body,
+                        encryption: 'AES_256_PQC',
+                        timestamp: Date.now(),
+                        security_level: 'quantum_resistant'
+                    };
+                    
+                    const response = await this.securityCore.secureThingamabobCall(
+                        this.componentName,
+                        'sendEncryptedMessage',
+                        messageData
+                    );
+                    
+                    if (response.success) {
+                        this.addSecureLogEntry('success', `Encrypted message sent to ${to}`);
+                        modal.remove();
+                        alert('✅ Encrypted message sent successfully!');
+                    } else {
+                        throw new Error(response.message || 'Send failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to send encrypted message:', error);
+                    this.addSecureLogEntry('error', `Message send failed: ${error.message}`);
+                    alert('❌ Failed to send encrypted message');
+                }
+            }
+
+            updateMessageDisplay() {
+                // Update message list with encrypted message indicators
+                const messageList = document.querySelector('.message-list-thingamabob');
+                if (!messageList) return;
+                
+                // Add security indicators to messages
+                const messages = messageList.querySelectorAll('.message-item');
+                messages.forEach((message, index) => {
+                    const securityIndicator = document.createElement('div');
+                    securityIndicator.className = 'security-indicator';
+                    securityIndicator.innerHTML = '🔐 PQC';
+                    securityIndicator.title = 'AES 256 Post-Quantum Cryptography Encrypted';
+                    
+                    message.appendChild(securityIndicator);
+                });
+            }
+
+            startMailSync() {
+                // Auto-sync every 2 minutes with PsiForceDB
+                setInterval(() => {
+                    if (this.psiForceDB.connected) {
+                        this.loadMessages();
+                    }
+                }, 120000);
+            }
+
+            async addSecureLogEntry(type, message) {
+                // Log to PsiForceDB with AES 256 PQC
+                if (this.securityCore && this.psiForceDB.connected) {
+                    try {
+                        const secureLogData = {
+                            component: this.componentName,
+                            event_type: type.toUpperCase(),
+                            message: message,
+                            timestamp: new Date().toISOString(),
+                            security_level: 'quantum_resistant'
+                        };
+                        
+                        // Use PsiForceDB for secure logging
+                        const logQuery = `
+                            INSERT INTO security_audit_log (component_name, event_type, event_data_encrypted, security_level) 
+                            VALUES ('${this.componentName}', '${type.toUpperCase()}', 
+                                   '${JSON.stringify(secureLogData)}', 'quantum_resistant')
+                        `;
+                        
+                        await this.securityCore.psiForceQuery(logQuery);
+                        
+                    } catch (error) {
+                        console.warn('⚠️ Failed to write secure webmail log entry:', error);
+                    }
+                }
+            }
+        }
+    }
+}

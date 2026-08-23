@@ -1,0 +1,1329 @@
+/**
+ * MEDUSASERV UNIFIED THINGAMABOB MANAGEMENT INTERFACE
+ * ==================================================
+ * Master control system for all 22 compiled components and service thingamabobs
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "unified_thingamabob_manager" {
+    @version "0.3.0d"
+    @theme "enterprise_unified"
+    @compiled_components_enabled true
+    @yorkshire_champion_standards true
+    
+    @render {
+        <div class="unified-manager-thingamabob">
+            <!-- Master Control Header -->
+            <div class="thingamabob-header">
+                <div class="thingamabob-title">
+                    <div class="thingamabob-icon">🎛️</div>
+                    <h2>Unified Thingamabob Manager</h2>
+                    <span class="thingamabob-badge">Master Control</span>
+                </div>
+                <div class="thingamabob-controls">
+                    <button class="thingamabob-btn start-all">▶️ Start All</button>
+                    <button class="thingamabob-btn stop-all">⏹️ Stop All</button>
+                    <button class="thingamabob-btn restart-all">🔄 Restart All</button>
+                    <button class="thingamabob-btn health-check">🏥 Health Check</button>
+                </div>
+            </div>
+
+            <!-- Master Interface -->
+            <div class="thingamabob-interface">
+                <!-- Categories Sidebar -->
+                <div class="categories-thingamabob">
+                    <h3>📦 Component Categories</h3>
+                    <div class="category-list">
+                        <div class="category-item active" data-category="hardware">
+                            <div class="category-icon">⚡</div>
+                            <div class="category-info">
+                                <span class="category-name">Hardware Acceleration</span>
+                                <span class="component-count">3</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                        
+                        <div class="category-item" data-category="security">
+                            <div class="category-icon">🛡️</div>
+                            <div class="category-info">
+                                <span class="category-name">Enterprise Security</span>
+                                <span class="component-count">9</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                        
+                        <div class="category-item" data-category="admin">
+                            <div class="category-icon">👑</div>
+                            <div class="category-info">
+                                <span class="category-name">Admin Dashboard</span>
+                                <span class="component-count">1</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                        
+                        <div class="category-item" data-category="application">
+                            <div class="category-icon">🚀</div>
+                            <div class="category-info">
+                                <span class="category-name">Application Infrastructure</span>
+                                <span class="component-count">3</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                        
+                        <div class="category-item" data-category="utilities">
+                            <div class="category-icon">⚙️</div>
+                            <div class="category-info">
+                                <span class="category-name">System Utilities</span>
+                                <span class="component-count">6</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                        
+                        <div class="category-item" data-category="python">
+                            <div class="category-icon">🐍</div>
+                            <div class="category-info">
+                                <span class="category-name">Python Integration</span>
+                                <span class="component-count">1</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                        
+                        <div class="category-item" data-category="specialized">
+                            <div class="category-icon">🎖️</div>
+                            <div class="category-info">
+                                <span class="category-name">Specialized Libraries</span>
+                                <span class="component-count">4</span>
+                            </div>
+                            <div class="category-status online"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-stats">
+                        <h4>System Overview</h4>
+                        <div class="stat-item">
+                            <span class="stat-label">Total Components:</span>
+                            <span class="stat-value">22</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Distribution Size:</span>
+                            <span class="stat-value">1.4 MB</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Active Services:</span>
+                            <span class="stat-value online">22</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">System Health:</span>
+                            <span class="stat-value online">Optimal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Component Details Panel -->
+                <div class="components-thingamabob">
+                    <div class="components-header">
+                        <h3 id="category-title">⚡ Hardware Acceleration Components</h3>
+                        <div class="components-controls">
+                            <input type="text" placeholder="Search components..." class="search-components">
+                            <select class="filter-components">
+                                <option>All Components</option>
+                                <option>Running</option>
+                                <option>Stopped</option>
+                                <option>Error</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Hardware Acceleration Components -->
+                    <div class="component-category" data-category="hardware">
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🖥️</div>
+                                <div class="component-details">
+                                    <div class="component-name">CPU Acceleration Policy</div>
+                                    <div class="component-file">accel_policy_cpu.cpp.so</div>
+                                    <div class="component-description">Native CPU acceleration optimization (14.5 KB)</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🎮</div>
+                                <div class="component-details">
+                                    <div class="component-name">DirectX 11 Acceleration Policy</div>
+                                    <div class="component-file">accel_policy_dx11.cpp.so</div>
+                                    <div class="component-description">Windows DirectX 11 hardware acceleration (14.5 KB)</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">📹</div>
+                                <div class="component-details">
+                                    <div class="component-name">VA-API Acceleration Policy</div>
+                                    <div class="component-file">accel_policy_va_api.cpp.so</div>
+                                    <div class="component-description">Linux Video Acceleration API processing (14.5 KB)</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Components -->
+                    <div class="component-category" data-category="security" style="display: none;">
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🔐</div>
+                                <div class="component-details">
+                                    <div class="component-name">Advanced SSL Manager</div>
+                                    <div class="component-file">advanced_ssl_manager_native.cpp.so</div>
+                                    <div class="component-description">Quantum-resistant SSL/TLS management (122.0 KB)</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🔑</div>
+                                <div class="component-details">
+                                    <div class="component-name">Security Credentials Vault</div>
+                                    <div class="component-file">apply-security-credentials-vault.cpp.so</div>
+                                    <div class="component-description">Professional credential management system</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🛡️</div>
+                                <div class="component-details">
+                                    <div class="component-name">Icewall Firewall Daddy</div>
+                                    <div class="component-file">medusa_icewall_firewall_daddy.hpp</div>
+                                    <div class="component-description">🔥 The Ultimate Firewall's Daddy - Military Grade Quantum Security</div>
+                                </div>
+                            </div>
+                            <div class="component-status online daddy-status"></div>
+                            <div class="component-actions">
+                                <button class="component-btn daddy-btn">🛡️ Activate Daddy</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn special-config" onclick="openIcewallConfig()">🔥 Full Management</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🧪</div>
+                                <div class="component-details">
+                                    <div class="component-name">Testing Framework Thingamabob</div>
+                                    <div class="component-file">medusa_thingamabob_testing_framework.hpp</div>
+                                    <div class="component-description">🎯 Yorkshire Champion comprehensive testing system with quantum validation</div>
+                                </div>
+                            </div>
+                            <div class="component-status online testing-status"></div>
+                            <div class="component-actions">
+                                <button class="component-btn testing-btn">🧪 Run Tests</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn special-config" onclick="openTestingFramework()">📊 Test Dashboard</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🚀</div>
+                                <div class="component-details">
+                                    <div class="component-name">Performance Monitoring Thingamabob</div>
+                                    <div class="component-file">performance-monitoring-thingamabob.lamia</div>
+                                    <div class="component-description">📊 Yorkshire Champion performance monitoring with 15.0x optimization metrics</div>
+                                </div>
+                            </div>
+                            <div class="component-status online performance-status"></div>
+                            <div class="component-actions">
+                                <button class="component-btn performance-btn">📊 Monitor</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn special-config" onclick="openPerformanceMonitoring()">🚀 Dashboard</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🔒</div>
+                                <div class="component-details">
+                                    <div class="component-name">BCrypt Core</div>
+                                    <div class="component-file">bcrypt_core.so</div>
+                                    <div class="component-description">Native password hashing with bcrypt algorithm</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                        
+                        <div class="component-item">
+                            <div class="component-info">
+                                <div class="component-icon">🛡️</div>
+                                <div class="component-details">
+                                    <div class="component-name">BCrypt JavaScript Implementation</div>
+                                    <div class="component-file">bcryptjs_impl.cpp.so</div>
+                                    <div class="component-description">Cross-platform password hashing consistency</div>
+                                </div>
+                            </div>
+                            <div class="component-status online"></div>
+                            <div class="component-actions">
+                                <button class="component-btn">▶️ Start</button>
+                                <button class="component-btn">⏹️ Stop</button>
+                                <button class="component-btn">⚙️ Config</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Thingamabobs Integration -->
+                    <div class="service-thingamabobs-section">
+                        <h4>🎛️ Service Thingamabobs Integration</h4>
+                        <div class="service-grid">
+                            <div class="service-thingamabob">
+                                <div class="service-icon">📧</div>
+                                <div class="service-name">Webmail Thingamabob</div>
+                                <div class="service-integration">
+                                    <span class="integration-badge ssl">SSL Manager</span>
+                                    <span class="integration-badge auth">Credentials Vault</span>
+                                </div>
+                                <div class="service-status online">Active</div>
+                            </div>
+                            
+                            <div class="service-thingamabob">
+                                <div class="service-icon">🔬</div>
+                                <div class="service-name">Jupyter Lab Thingamabob</div>
+                                <div class="service-integration">
+                                    <span class="integration-badge python">Python 3.13</span>
+                                    <span class="integration-badge launcher">App Launcher</span>
+                                </div>
+                                <div class="service-status online">Active</div>
+                            </div>
+                            
+                            <div class="service-thingamabob">
+                                <div class="service-icon">📁</div>
+                                <div class="service-name">File Manager Thingamabob</div>
+                                <div class="service-integration">
+                                    <span class="integration-badge backup">Backup Manager</span>
+                                    <span class="integration-badge ssl">SSL Manager</span>
+                                </div>
+                                <div class="service-status online">Active</div>
+                            </div>
+                            
+                            <div class="service-thingamabob">
+                                <div class="service-icon">🔗</div>
+                                <div class="service-name">VSFTPD Thingamabob</div>
+                                <div class="service-integration">
+                                    <span class="integration-badge ssl">SSL Manager</span>
+                                    <span class="integration-badge auth">Credentials Vault</span>
+                                </div>
+                                <div class="service-status online">Active</div>
+                            </div>
+                            
+                            <div class="service-thingamabob">
+                                <div class="service-icon">📅</div>
+                                <div class="service-name">Calendar Thingamabob</div>
+                                <div class="service-integration">
+                                    <span class="integration-badge ssl">SSL Manager</span>
+                                    <span class="integration-badge backup">Backup Manager</span>
+                                </div>
+                                <div class="service-status online">Active</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLI Integration Panel -->
+                <div class="cli-integration-thingamabob">
+                    <div class="panel-tabs">
+                        <button class="tab-btn active">🖥️ CLI Commands</button>
+                        <button class="tab-btn">🔌 Integration Hooks</button>
+                        <button class="tab-btn">📊 Performance</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- CLI Commands -->
+                        <div class="cli-commands">
+                            <h4>Master CLI Functions</h4>
+                            <div class="command-list">
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-thingamabob --start-all</div>
+                                    <div class="command-desc">Start all service thingamabobs</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-thingamabob --status</div>
+                                    <div class="command-desc">Check all component status</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-ssl --manage</div>
+                                    <div class="command-desc">SSL certificate management</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-backup --schedule</div>
+                                    <div class="command-desc">Configure automated backups</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-webmail --sync</div>
+                                    <div class="command-desc">Synchronize webmail accounts</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-jupyter --kernel-manage</div>
+                                    <div class="command-desc">Manage Jupyter kernels</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-ftp --user-add</div>
+                                    <div class="command-desc">Add FTP user account</div>
+                                </div>
+                                <div class="command-item">
+                                    <div class="command-syntax">medusa-debug --trace</div>
+                                    <div class="command-desc">Enable debug tracing</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Integration Hooks -->
+                        <div class="integration-hooks" style="display: none;">
+                            <h4>Web Server Integration Hooks</h4>
+                            <div class="hook-list">
+                                <div class="hook-item">
+                                    <div class="hook-name">SSL Certificate Auto-Renewal</div>
+                                    <div class="hook-status">✅ Active</div>
+                                    <div class="hook-desc">Automatically renews SSL certificates via advanced_ssl_manager</div>
+                                </div>
+                                <div class="hook-item">
+                                    <div class="hook-name">User Authentication Bridge</div>
+                                    <div class="hook-status">✅ Active</div>
+                                    <div class="hook-desc">Bridges webmail/FTP auth via credentials vault</div>
+                                </div>
+                                <div class="hook-item">
+                                    <div class="hook-name">Backup Automation Hook</div>
+                                    <div class="hook-status">✅ Active</div>
+                                    <div class="hook-desc">Automated backup triggers for all data services</div>
+                                </div>
+                                <div class="hook-item">
+                                    <div class="hook-name">Hardware Acceleration Selector</div>
+                                    <div class="hook-status">✅ Active</div>
+                                    <div class="hook-desc">Auto-selects optimal acceleration policy</div>
+                                </div>
+                                <div class="hook-item">
+                                    <div class="hook-name">Debug Trace Integration</div>
+                                    <div class="hook-status">✅ Active</div>
+                                    <div class="hook-desc">Integrates debug library with all thingamabobs</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Performance -->
+                        <div class="performance-panel" style="display: none;">
+                            <h4>Yorkshire Champion Performance</h4>
+                            <div class="performance-metrics">
+                                <div class="metric-card">
+                                    <div class="metric-value">22/22</div>
+                                    <div class="metric-label">Components Online</div>
+                                    <div class="metric-status success">100%</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">1.4 MB</div>
+                                    <div class="metric-label">Memory Usage</div>
+                                    <div class="metric-status success">Optimal</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">15.0x</div>
+                                    <div class="metric-label">Performance Multiplier</div>
+                                    <div class="metric-status success">Yorkshire Champion</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">99.99%</div>
+                                    <div class="metric-label">Uptime</div>
+                                    <div class="metric-status success">Revolutionary</div>
+                                </div>
+                            </div>
+                            
+                            <div class="component-performance">
+                                <h5>Component Performance</h5>
+                                <div class="perf-item">
+                                    <span class="perf-component">Hardware Acceleration</span>
+                                    <div class="perf-bar">
+                                        <div class="perf-fill" style="width: 95%;"></div>
+                                    </div>
+                                    <span class="perf-value">95%</span>
+                                </div>
+                                <div class="perf-item">
+                                    <span class="perf-component">Security Systems</span>
+                                    <div class="perf-bar">
+                                        <div class="perf-fill" style="width: 98%;"></div>
+                                    </div>
+                                    <span class="perf-value">98%</span>
+                                </div>
+                                <div class="perf-item">
+                                    <span class="perf-component">Service Thingamabobs</span>
+                                    <div class="perf-bar">
+                                        <div class="perf-fill" style="width: 92%;"></div>
+                                    </div>
+                                    <span class="perf-value">92%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @styles {
+        .unified-manager-thingamabob {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #6f42c1;
+            margin-bottom: 2rem;
+        }
+
+        .thingamabob-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .thingamabob-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .thingamabob-icon {
+            font-size: 1.5rem;
+        }
+
+        .thingamabob-title h2 {
+            color: #6f42c1;
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-badge {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thingamabob-btn {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .thingamabob-btn:hover {
+            background: #8e44ad;
+            transform: translateY(-1px);
+        }
+
+        .thingamabob-interface {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 1.5rem;
+            min-height: 700px;
+        }
+
+        .categories-thingamabob {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .categories-thingamabob h3 {
+            color: #343a40;
+            font-size: 1rem;
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .category-item:hover,
+        .category-item.active {
+            background: rgba(111, 66, 193, 0.1);
+            border-left: 4px solid #6f42c1;
+            transform: translateX(2px);
+        }
+
+        .category-icon {
+            font-size: 1.2rem;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+            display: block;
+        }
+
+        .component-count {
+            background: rgba(111, 66, 193, 0.2);
+            color: #6f42c1;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .category-status {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .category-status.online {
+            background: #28a745;
+        }
+
+        .system-stats {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .system-stats h4 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-label {
+            color: #6c757d;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .stat-value.online {
+            color: #28a745;
+        }
+
+        .components-thingamabob {
+            border-right: 1px solid #e9ecef;
+            padding-right: 1.5rem;
+        }
+
+        .components-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .components-header h3 {
+            color: #343a40;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .components-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-components,
+        .filter-components {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .component-category {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .component-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .component-item:hover {
+            background: rgba(111, 66, 193, 0.05);
+            transform: translateX(2px);
+        }
+
+        .component-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .component-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .component-details {
+            flex: 1;
+        }
+
+        .component-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.125rem;
+        }
+
+        .component-file {
+            color: #6f42c1;
+            font-size: 0.75rem;
+            font-family: 'Monaco', 'Consolas', monospace;
+            margin-bottom: 0.125rem;
+        }
+
+        .component-description {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .component-status {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .component-status.online {
+            background: #28a745;
+        }
+
+        /* Special Icewall Firewall Daddy Styling */
+        .daddy-status {
+            background: linear-gradient(45deg, #e74c3c, #c0392b) !important;
+            animation: firewallPulse 2s infinite;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+            position: relative;
+        }
+        
+        .daddy-status::after {
+            content: "🔥";
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            font-size: 0.8em;
+            animation: fireFlicker 1s infinite;
+        }
+        
+        .daddy-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b) !important;
+            color: white !important;
+            border: 2px solid #c0392b !important;
+            font-weight: bold !important;
+            animation: daddiePulse 2s infinite !important;
+        }
+        
+        .daddy-btn:hover {
+            background: linear-gradient(45deg, #c0392b, #a93226) !important;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.7) !important;
+            transform: scale(1.05) !important;
+        }
+        
+        /* Testing Framework Thingamabob Styling */
+        .testing-status {
+            background: linear-gradient(45deg, #4CAF50, #388E3C) !important;
+            animation: testingPulse 2s infinite;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+            position: relative;
+        }
+        
+        .testing-status::after {
+            content: "🧪";
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            font-size: 0.8em;
+            animation: testFlicker 1.5s infinite;
+        }
+        
+        .testing-btn {
+            background: linear-gradient(45deg, #4CAF50, #388E3C) !important;
+            color: white !important;
+            border: 2px solid #388E3C !important;
+            font-weight: bold !important;
+            animation: testingButtonPulse 2s infinite !important;
+        }
+        
+        .testing-btn:hover {
+            background: linear-gradient(45deg, #388E3C, #2E7D32) !important;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.7) !important;
+            transform: scale(1.05) !important;
+        }
+        
+        /* Performance Monitoring Thingamabob Styling */
+        .performance-status {
+            background: linear-gradient(45deg, #FF9800, #F57C00) !important;
+            animation: performancePulse 2s infinite;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+            position: relative;
+        }
+        
+        .performance-status::after {
+            content: "🚀";
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            font-size: 0.8em;
+            animation: rocketFlicker 1.5s infinite;
+        }
+        
+        .performance-btn {
+            background: linear-gradient(45deg, #FF9800, #F57C00) !important;
+            color: white !important;
+            border: 2px solid #F57C00 !important;
+            font-weight: bold !important;
+            animation: performanceButtonPulse 2s infinite !important;
+        }
+        
+        .performance-btn:hover {
+            background: linear-gradient(45deg, #F57C00, #E65100) !important;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.7) !important;
+            transform: scale(1.05) !important;
+        }
+        
+        .special-config {
+            background: linear-gradient(45deg, #f39c12, #e67e22) !important;
+            color: white !important;
+            border: 2px solid #e67e22 !important;
+        }
+        
+        .special-config:hover {
+            background: linear-gradient(45deg, #e67e22, #d35400) !important;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.7) !important;
+        }
+        
+        @keyframes firewallPulse {
+            0%, 100% { 
+                opacity: 1; 
+                box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+            }
+            50% { 
+                opacity: 0.8; 
+                box-shadow: 0 0 20px rgba(231, 76, 60, 0.8);
+            }
+        }
+        
+        @keyframes daddiePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes fireFlicker {
+            0%, 100% { opacity: 1; transform: rotate(0deg); }
+            25% { opacity: 0.8; transform: rotate(-2deg); }
+            50% { opacity: 0.9; transform: rotate(2deg); }
+            75% { opacity: 0.7; transform: rotate(-1deg); }
+        }
+        
+        @keyframes testFlicker {
+            0%, 100% { opacity: 1; transform: rotate(0deg) scale(1); }
+            25% { opacity: 0.9; transform: rotate(-3deg) scale(1.1); }
+            50% { opacity: 1; transform: rotate(3deg) scale(1.05); }
+            75% { opacity: 0.8; transform: rotate(-2deg) scale(1.1); }
+        }
+        
+        @keyframes testingPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(76, 175, 80, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(76, 175, 80, 0.8), 0 0 30px rgba(76, 175, 80, 0.4); }
+        }
+        
+        @keyframes testingButtonPulse {
+            0%, 100% { background: linear-gradient(45deg, #4CAF50, #388E3C); }
+            50% { background: linear-gradient(45deg, #66BB6A, #4CAF50); }
+        }
+        
+        @keyframes rocketFlicker {
+            0%, 100% { opacity: 1; transform: rotate(0deg) scale(1); }
+            25% { opacity: 0.9; transform: rotate(-5deg) scale(1.1); }
+            50% { opacity: 1; transform: rotate(5deg) scale(1.05); }
+            75% { opacity: 0.8; transform: rotate(-3deg) scale(1.1); }
+        }
+        
+        @keyframes performancePulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 152, 0, 0.8), 0 0 30px rgba(255, 152, 0, 0.4); }
+        }
+        
+        @keyframes performanceButtonPulse {
+            0%, 100% { background: linear-gradient(45deg, #FF9800, #F57C00); }
+            50% { background: linear-gradient(45deg, #FFB74D, #FF9800); }
+        }
+
+        .component-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .component-btn {
+            background: white;
+            border: 1px solid #dee2e6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .component-btn:hover {
+            background: #6f42c1;
+            color: white;
+            border-color: #6f42c1;
+        }
+
+        .service-thingamabobs-section {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f8f9fa;
+        }
+
+        .service-thingamabobs-section h4 {
+            color: #343a40;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .service-thingamabob {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #6f42c1;
+        }
+
+        .service-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .service-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+            flex: 1;
+        }
+
+        .service-integration {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .integration-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .integration-badge.ssl {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .integration-badge.auth {
+            background: #28a745;
+            color: white;
+        }
+
+        .integration-badge.python {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .integration-badge.launcher {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .integration-badge.backup {
+            background: #6f42c1;
+            color: white;
+        }
+
+        .service-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .service-status.online {
+            color: #28a745;
+        }
+
+        .cli-integration-thingamabob {
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #6c757d;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            color: #6f42c1;
+            border-bottom-color: #6f42c1;
+        }
+
+        .cli-commands h4,
+        .integration-hooks h4,
+        .performance-panel h4 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .command-list,
+        .hook-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .command-item,
+        .hook-item {
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #6f42c1;
+        }
+
+        .command-syntax {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.875rem;
+            color: #6f42c1;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .command-desc,
+        .hook-desc {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .hook-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .hook-status {
+            display: inline-block;
+            margin-bottom: 0.25rem;
+            font-size: 0.75rem;
+            color: #28a745;
+        }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            border-left: 3px solid #28a745;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .metric-status.success {
+            color: #28a745;
+        }
+
+        .component-performance h5 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .perf-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .perf-component {
+            color: #6c757d;
+            min-width: 120px;
+        }
+
+        .perf-bar {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .perf-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6f42c1, #28a745);
+            transition: width 0.3s ease;
+        }
+
+        .perf-value {
+            color: #343a40;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .thingamabob-interface {
+                grid-template-columns: 280px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .thingamabob-interface {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                gap: 1rem;
+            }
+
+            .thingamabob-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .performance-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+    
+    @javascript {
+        // Category switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryItems = document.querySelectorAll('.category-item');
+            const componentCategories = document.querySelectorAll('.component-category');
+            const categoryTitle = document.getElementById('category-title');
+            
+            const categoryTitles = {
+                'hardware': '⚡ Hardware Acceleration Components',
+                'security': '🛡️ Enterprise Security Components',
+                'admin': '👑 Administration Dashboard Components',
+                'application': '🚀 Application Infrastructure Components',
+                'utilities': '⚙️ System Utilities & Automation',
+                'python': '🐍 Python Integration Components',
+                'specialized': '🎖️ Specialized Library Components'
+            };
+            
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Update active category
+                    categoryItems.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding components
+                    const category = this.dataset.category;
+                    componentCategories.forEach(c => c.style.display = 'none');
+                    
+                    const targetCategory = document.querySelector(`[data-category="${category}"]`);
+                    if (targetCategory) {
+                        targetCategory.style.display = 'flex';
+                    }
+                    
+                    // Update title
+                    if (categoryTitles[category]) {
+                        categoryTitle.textContent = categoryTitles[category];
+                    }
+                });
+            });
+            
+            // Tab switching functionality
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content > div');
+            
+            tabBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    // Update active tab
+                    tabBtns.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    tabContents.forEach(c => c.style.display = 'none');
+                    if (tabContents[index]) {
+                        tabContents[index].style.display = 'block';
+                    }
+                });
+            });
+        });
+        
+        // Icewall Configuration Management
+        function openIcewallConfig() {
+            window.open('/portal/components/icewall-firewall-thingamabob.lamia', '_blank');
+        }
+        
+        // Testing Framework Management
+        function openTestingFramework() {
+            window.open('/portal/components/testing-framework-thingamabob.lamia', '_blank');
+        }
+        
+        // Performance Monitoring Management
+        function openPerformanceMonitoring() {
+            window.open('/portal/components/performance-monitoring-thingamabob.lamia', '_blank');
+        }
+    }
+}

@@ -1,0 +1,50 @@
+/**
+ * MEDUSASERV TEMPORARY LANDING PAGE
+ * Ergonomic Lamia Syntax Demo
+ * © 2025 D Hargreaves - Yorkshire Champion Standards
+ */
+
+@title "MedusaServ - Revolutionary Web Hosting | Yorkshire Champion Standards"
+
+@render {
+    @container main :: center :: glass-container {
+        @image logo://MedusaServ.png :: alt="MedusaServ" :: size="150px" :: center :: admin-glow
+
+        @text h1 "🚀 MedusaServ Professional" :: gradient-text :: shadow :: size="3rem"
+
+        @text h2 "Revolutionary Web Server with Lamia Engine" :: size="1.5rem" :: color="#a78bfa"
+
+        @text p "92x faster than traditional hosting • Native C++ performance • Yorkshire Champion Standards" :: size="1.1rem"
+
+        @emotion pride :: intensity="0.8" :: duration="15s" :: coordinates="[0.7, 0.5, 0.8]"
+
+        @container quick-links :: center {
+            @text h3 "Quick Access" :: size="1.8rem" :: gradient-text
+
+            @text p "Control Panel" :: size="1.2rem" :: color="cyan"
+
+            @text p "🌐 Server Status: ONLINE" :: color="#10b981" :: size="1.1rem"
+
+            @text p "💎 Lamia Engine: ACTIVE" :: color="#f59e0b" :: size="1.1rem"
+
+            @text p "🛡️ ICEWALL Security: ENGAGED" :: color="#ef4444" :: size="1.1rem"
+        }
+
+        @emotion excitement :: intensity="0.6" :: duration="20s" :: coordinates="[0.3, 0.7, 0.5]"
+
+        @container benchmark :: center {
+            @text h3 "Performance Benchmarks" :: gradient-text :: size="1.5rem"
+
+            @text p "⚡ Response Time: <2ms" :: size="1rem"
+            @text p "🚀 Concurrent Connections: 10,000+" :: size="1rem"
+            @text p "💪 Memory Footprint: 3.3MB" :: size="1rem"
+            @text p "🔥 Native C++ - Zero Overhead" :: size="1rem"
+        }
+
+        @container footer :: center {
+            @text p "© 2025 D Hargreaves | Yorkshire Champion Standards" :: size="0.9rem" :: color="#888"
+
+            @text p "Built with Ergonomic Lamia • Pure .lamia processing" :: size="0.8rem" :: color="#666"
+        }
+    }
+}

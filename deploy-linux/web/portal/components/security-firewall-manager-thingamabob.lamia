@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Firewall Manager - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>🛡️ Security Firewall Manager</h1>
+        <div class="portal-status" id="firewallStatus">
+            <span class="status-indicator online"></span>
+            Firewall: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="firewallManager.addRule()">➕ Add Rule</button>
+            <button class="service-btn" onclick="firewallManager.blockIP()">🚫 Block IP</button>
+            <button class="service-btn" onclick="firewallManager.allowIP()">✅ Allow IP</button>
+            <button class="service-btn" onclick="firewallManager.viewLogs()">📋 View Logs</button>
+        </div>
+
+        <div class="firewall-dashboard" id="firewallDashboard">
+            <div class="firewall-stats">
+                <div class="stat-card">
+                    <h4>Total Rules</h4>
+                    <div id="totalRules">47</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Blocked IPs</h4>
+                    <div id="blockedIPs">12</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Threats Blocked</h4>
+                    <div id="threatsBlocked">234</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Traffic Analyzed</h4>
+                    <div id="trafficAnalyzed">2.3TB</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="firewall-rules" id="firewallRules">
+            <!-- Firewall rules will be populated here -->
+        </div>
+
+        <div class="service-output" id="firewallOutput">
+            <div>[FIREWALL] Military-grade firewall manager initialized</div>
+            <div>[FIREWALL] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[FIREWALL] Yorkshire Champion security protocols loaded</div>
+            <div>[FIREWALL] Firewall protection active...</div>
+        </div>
+    </div>
+
+    <script>
+        class SecurityFirewallManager {
+            constructor() {
+                this.rules = [];
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+                await this.loadFirewallRules();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/security/firewall/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_security'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[FIREWALL] Connected to PsiForceDB firewall system');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async loadFirewallRules() {
+                this.logOutput('[FIREWALL] Loading firewall rules...');
+                try {
+                    const response = await fetch('/api/pfql-routes/security/firewall/rules', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://security:firewall:rules',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.rules = result.rules || this.getDefaultRules();
+                        this.displayRules();
+                        this.logOutput(`[FIREWALL] Loaded ${this.rules.length} firewall rules`);
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to load rules: ${error.message}`);
+                    this.rules = this.getDefaultRules();
+                    this.displayRules();
+                }
+            }
+
+            async addRule() {
+                const rule = {
+                    source: prompt('Source IP/CIDR (e.g., 192.168.1.0/24):'),
+                    destination: prompt('Destination IP/CIDR:'),
+                    port: prompt('Port (e.g., 80, 443, or range 8000-9000):'),
+                    action: prompt('Action (ALLOW/DENY):').toUpperCase(),
+                    protocol: prompt('Protocol (TCP/UDP/ANY):').toUpperCase()
+                };
+
+                if (rule.source && rule.action && rule.protocol) {
+                    await this.executeFirewallCommand('add_rule', rule);
+                }
+            }
+
+            async blockIP() {
+                const ip = prompt('Enter IP address to block:');
+                if (ip) {
+                    await this.executeFirewallCommand('block_ip', { ip: ip });
+                }
+            }
+
+            async allowIP() {
+                const ip = prompt('Enter IP address to allow:');
+                if (ip) {
+                    await this.executeFirewallCommand('allow_ip', { ip: ip });
+                }
+            }
+
+            async executeFirewallCommand(action, params) {
+                this.logOutput(`[FIREWALL] Executing ${action}...`);
+                try {
+                    const response = await fetch('/api/pfql-routes/security/firewall/execute', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: `pf://security:firewall:${action}`,
+                            server: '172.236.23.54',
+                            params: params,
+                            militaryGrade: true
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.logOutput(`[FIREWALL] ${action} executed successfully: ${result.status}`);
+                        await this.loadFirewallRules(); // Refresh rules
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to execute ${action}: ${error.message}`);
+                }
+            }
+
+            displayRules() {
+                const container = document.getElementById('firewallRules');
+                container.innerHTML = `
+                    <h3>🛡️ Active Firewall Rules</h3>
+                    <div class="rules-table">
+                        <div class="rule-header">
+                            <span>ID</span>
+                            <span>Source</span>
+                            <span>Destination</span>
+                            <span>Port</span>
+                            <span>Protocol</span>
+                            <span>Action</span>
+                            <span>Status</span>
+                            <span>Actions</span>
+                        </div>
+                        ${this.rules.map(rule => `
+                            <div class="rule-row ${rule.action.toLowerCase()}">
+                                <span>${rule.id}</span>
+                                <span>${rule.source}</span>
+                                <span>${rule.destination || 'ANY'}</span>
+                                <span>${rule.port || 'ANY'}</span>
+                                <span>${rule.protocol}</span>
+                                <span class="action-badge ${rule.action.toLowerCase()}">${rule.action}</span>
+                                <span class="status-badge ${rule.enabled ? 'active' : 'disabled'}">
+                                    ${rule.enabled ? 'ACTIVE' : 'DISABLED'}
+                                </span>
+                                <span class="rule-actions">
+                                    <button class="rule-btn edit" onclick="firewallManager.editRule(${rule.id})">
+                                        ✏️
+                                    </button>
+                                    <button class="rule-btn delete" onclick="firewallManager.deleteRule(${rule.id})">
+                                        🗑️
+                                    </button>
+                                    <button class="rule-btn toggle" onclick="firewallManager.toggleRule(${rule.id})">
+                                        ${rule.enabled ? '⏸️' : '▶️'}
+                                    </button>
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            async editRule(ruleId) {
+                const rule = this.rules.find(r => r.id === ruleId);
+                if (rule) {
+                    const newSource = prompt('Source IP/CIDR:', rule.source);
+                    const newAction = prompt('Action (ALLOW/DENY):', rule.action).toUpperCase();
+                    
+                    if (newSource && newAction) {
+                        rule.source = newSource;
+                        rule.action = newAction;
+                        await this.executeFirewallCommand('update_rule', rule);
+                    }
+                }
+            }
+
+            async deleteRule(ruleId) {
+                if (confirm(`Delete firewall rule ${ruleId}?`)) {
+                    await this.executeFirewallCommand('delete_rule', { id: ruleId });
+                }
+            }
+
+            async toggleRule(ruleId) {
+                const rule = this.rules.find(r => r.id === ruleId);
+                if (rule) {
+                    rule.enabled = !rule.enabled;
+                    await this.executeFirewallCommand('toggle_rule', { id: ruleId, enabled: rule.enabled });
+                }
+            }
+
+            async viewLogs() {
+                this.logOutput('[FIREWALL] Loading firewall logs...');
+                try {
+                    const response = await fetch('/api/pfql-routes/security/firewall/logs', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://security:firewall:logs',
+                            server: '172.236.23.54',
+                            limit: 100
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayLogs(result.logs || this.getDefaultLogs());
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Failed to load logs: ${error.message}`);
+                    this.displayLogs(this.getDefaultLogs());
+                }
+            }
+
+            displayLogs(logs) {
+                const container = document.getElementById('firewallRules');
+                container.innerHTML = `
+                    <h3>📋 Firewall Activity Logs</h3>
+                    <div class="logs-container">
+                        ${logs.map(log => `
+                            <div class="log-entry ${log.action.toLowerCase()}">
+                                <span class="log-time">${log.timestamp}</span>
+                                <span class="log-source">${log.source}</span>
+                                <span class="log-destination">${log.destination}</span>
+                                <span class="log-action ${log.action.toLowerCase()}">${log.action}</span>
+                                <span class="log-reason">${log.reason}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            getDefaultRules() {
+                return [
+                    {
+                        id: 1,
+                        source: '0.0.0.0/0',
+                        destination: 'ANY',
+                        port: '22',
+                        protocol: 'TCP',
+                        action: 'DENY',
+                        enabled: true
+                    },
+                    {
+                        id: 2,
+                        source: '192.168.1.0/24',
+                        destination: 'ANY',
+                        port: '22',
+                        protocol: 'TCP',
+                        action: 'ALLOW',
+                        enabled: true
+                    },
+                    {
+                        id: 3,
+                        source: '0.0.0.0/0',
+                        destination: 'ANY',
+                        port: '80,443',
+                        protocol: 'TCP',
+                        action: 'ALLOW',
+                        enabled: true
+                    }
+                ];
+            }
+
+            getDefaultLogs() {
+                return [
+                    {
+                        timestamp: new Date().toISOString(),
+                        source: '10.0.0.1',
+                        destination: '172.236.23.54:22',
+                        action: 'ALLOW',
+                        reason: 'Rule #2 match'
+                    },
+                    {
+                        timestamp: new Date(Date.now() - 60000).toISOString(),
+                        source: '203.0.113.1',
+                        destination: '172.236.23.54:22',
+                        action: 'DENY',
+                        reason: 'Rule #1 match'
+                    }
+                ];
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('firewallOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.firewallManager = new SecurityFirewallManager();
+        });
+    </script>
+    
+    <style>
+        .firewall-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid #F44336;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+        .rules-table {
+            margin: 15px 0;
+        }
+        .rule-header {
+            display: grid;
+            grid-template-columns: 50px 120px 120px 80px 80px 80px 80px 120px;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(244, 67, 54, 0.2);
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .rule-row {
+            display: grid;
+            grid-template-columns: 50px 120px 120px 80px 80px 80px 80px 120px;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 4px;
+            margin-bottom: 2px;
+            align-items: center;
+        }
+        .action-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .action-badge.allow {
+            background: #4CAF50;
+            color: white;
+        }
+        .action-badge.deny {
+            background: #F44336;
+            color: white;
+        }
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-badge.active {
+            background: #4CAF50;
+            color: white;
+        }
+        .status-badge.disabled {
+            background: #757575;
+            color: white;
+        }
+        .rule-btn {
+            background: transparent;
+            border: 1px solid #64B5F6;
+            border-radius: 3px;
+            color: white;
+            padding: 3px 6px;
+            cursor: pointer;
+            margin: 1px;
+            font-size: 10px;
+        }
+        .rule-btn:hover {
+            background: #64B5F6;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,256 @@
+# ============================================================================
+# MEDUSASERV PROFESSIONAL WEB SERVER - GITIGNORE
+# CLOSED SOURCE - Proprietary Software
+# © 2025 D Hargreaves - Yorkshire Champion Standards
+# ============================================================================
+
+# ============================================================================
+# CRITICAL: ALL SOURCE CODE AND BINARIES ARE PROPRIETARY
+# ============================================================================
+# This software is CLOSED SOURCE until financially independent
+# Source code is protected intellectual property
+
+# ============================================================================
+# CLOSED SOURCE - ENTIRE SRC FOLDER IS PROPRIETARY
+# ============================================================================
+# ALL SOURCE CODE - DO NOT COMMIT
+src/
+src/**
+!src/.gitkeep
+MedusaServ/src/
+core/
+managers/
+communication/
+ai/
+complete/
+engine/
+database/
+*.cpp
+*.hpp
+*.h
+*.c
+*.cc
+*.cxx
+*.hxx
+*.hh
+*.inl
+*.ipp
+
+# ============================================================================
+# ALL SCRIPTS - NO SCRIPTS ALLOWED (BAT, PY, PS1, SH, PHP, JS, etc.)
+# ============================================================================
+# Scripts must be converted to C++ or included in main binary
+*.bat
+*.py
+*.ps1
+*.sh
+*.php
+*.js
+*.vbs
+*.cmd
+*.pl
+*.rb
+*.lua
+*.ts
+*.jsx
+*.tsx
+
+# ALL COMPILED BINARIES
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+*.dylib
+*.o
+*.obj
+*.out
+*.elf
+*.bin
+# Unusual binary formats
+*.cpp.so
+*.hpp.so
+*.c.so
+*.h.so
+# Specific executables
+MedusaServWebServer
+MedusaServWebServer.exe
+NotificationServer
+NotificationServer.exe
+# Library files
+lib*.so
+lib*.a
+lib*.dll
+lib*.dylib
+
+# BUILD DIRECTORIES
+build/
+build-*/
+bin/
+obj/
+out/
+Debug/
+Release/
+RelWithDebInfo/
+MinSizeRel/
+x64/
+x86/
+Win32/
+cmake-build-*/
+.vs/
+_build/
+dist/
+# Version directories with binaries
+0.*/
+v0.*/
+release-*/
+
+# CMAKE GENERATED FILES
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# VISUAL STUDIO
+*.suo
+*.user
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.VC.db
+*.VC.opendb
+.vs/
+
+# CERTIFICATES AND KEYS (SECURITY)
+ops/certs/*.key
+ops/certs/*.pem
+ops/certs/*.crt
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+
+# CONFIGURATION WITH SECRETS
+# Protect actual configuration (allow only .template files)
+ops/config/*.conf
+!ops/config/*.conf.template
+ops/config/*_production.conf
+ops/config/*_secret.conf
+config/*.hpp
+!config/*.template.hpp
+config/*_production.hpp
+config/*_secret.hpp
+*.env
+.env.*
+.env*
+*secret*
+*password*
+*credentials*
+
+# LOGS AND RUNTIME DATA
+ops/logs/
+ops/data/
+ops/temp/
+*.log
+*.pid
+
+# DATABASE FILES
+*.db
+*.sqlite
+*.sqlite3
+database/data/
+
+# TEMPORARY FILES
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.com.dropbox.attrs
+*:com.dropbox.attrs
+*:Zone.Identifier
+*.Zone.Identifier
+
+# IDE SPECIFIC
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# NODE MODULES (if any web components)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# PYTHON CACHE (if any scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.Python
+venv/
+env/
+
+# BACKUP FILES
+*.bak
+*.backup
+*.old
+*_backup
+
+# PACKAGE ARCHIVES
+*.zip
+*.tar.gz
+*.tar
+*.rar
+*.7z
+
+# DOCUMENTATION BUILDS
+docs/_build/
+docs/.doctrees/
+
+# ============================================================================
+# WHAT CAN BE COMMITTED (PUBLIC FACING)
+# ============================================================================
+# Only these files are allowed in version control:
+
+# Documentation (public-facing only)
+!README.md
+!DEPLOYMENT_STRUCTURE.md
+!LICENSE
+!CHANGELOG.md
+!docs/public/
+
+# Public configuration templates (NO SECRETS)
+!ops/config/port_configuration.conf.template
+!config/*.template.hpp
+
+# NO BUILD SCRIPTS ALLOWED - All functionality must be in C++ binary
+# Scripts must be converted to C++ or included in main binary
+
+# Web static assets (public)
+!web/default/index.html
+!web/portal/public/
+!web/api/swagger.json
+
+# CMakeLists (build configuration only)
+!CMakeLists.txt
+!*/CMakeLists.txt
+
+# Git configuration
+!.gitignore
+!.gitattributes
+
+# ============================================================================
+# PROPRIETARY NOTICE
+# ============================================================================
+# This is CLOSED SOURCE software
+# All source code, binaries, and intellectual property are protected
+# Unauthorized distribution, modification, or reverse engineering is prohibited
+# ============================================================================

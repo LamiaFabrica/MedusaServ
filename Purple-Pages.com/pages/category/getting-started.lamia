@@ -1,0 +1,155 @@
+<!--
+Purple-Pages.com - Getting Started Category Page
+All getting started guides across technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_category_getting_started() {
+    include "base.lamia" {
+        title: "Getting Started Guides - Purple Pages"
+        description: "Quick start guides, installation instructions, and first steps for all Medusa Project technologies"
+        keywords: "getting started, installation, quick start, tutorial, beginner, setup"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/category/getting-started.lamia") {
+                            "Getting Started"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "category-hero") {
+            div(class: "category-hero-content") {
+                h1 {
+                    "🚀 Getting Started"
+                }
+                p(class: "category-description") {
+                    "Quick start guides, installation instructions, and first steps for all Medusa Project technologies"
+                }
+            }
+        }
+        
+        // Technology Guides
+        section(class: "category-content") {
+            div(class: "category-container") {
+                // PsiForceDB
+                div(class: "category-tech-section") {
+                    h2 {
+                        "🦕 PsiForceDB"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/getting-started.lamia", class: "guide-card") {
+                            h3 {
+                                "Installation Guide"
+                            }
+                            p {
+                                "Step-by-step installation instructions for PsiForceDB"
+                            }
+                            span(class: "guide-badge") {
+                                "Essential"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/quickstart.lamia", class: "guide-card") {
+                            h3 {
+                                "5-Minute Quickstart"
+                            }
+                            p {
+                                "Get up and running with PsiForceDB in 5 minutes"
+                            }
+                            span(class: "guide-badge") {
+                                "Quick"
+                            }
+                        }
+                    }
+                }
+                
+                // MedusaServ
+                div(class: "category-tech-section") {
+                    h2 {
+                        "🌐 MedusaServ"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/medusaserv/installation.lamia", class: "guide-card") {
+                            h3 {
+                                "Installation Guide"
+                            }
+                            p {
+                                "Install and configure MedusaServ web server"
+                            }
+                            span(class: "guide-badge") {
+                                "Essential"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/quickstart.lamia", class: "guide-card") {
+                            h3 {
+                                "Quick Start"
+                            }
+                            p {
+                                "Deploy your first MedusaServ application"
+                            }
+                            span(class: "guide-badge") {
+                                "Quick"
+                            }
+                        }
+                    }
+                }
+                
+                // LFSSL
+                div(class: "category-tech-section") {
+                    h2 {
+                        "🔒 LFSSL"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/lfssl/getting-started.lamia", class: "guide-card") {
+                            h3 {
+                                "Getting Started with LFSSL"
+                            }
+                            p {
+                                "Introduction to native C++ TLS 1.3 implementation"
+                            }
+                            span(class: "guide-badge") {
+                                "Essential"
+                            }
+                        }
+                    }
+                }
+                
+                // Lamia
+                div(class: "category-tech-section") {
+                    h2 {
+                        "📝 Lamia"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/lamia/getting-started.lamia", class: "guide-card") {
+                            h3 {
+                                "Lamia Templates Guide"
+                            }
+                            p {
+                                "Create your first Lamia template"
+                            }
+                            span(class: "guide-badge") {
+                                "Essential"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,69 @@
+[  1%] Building CXX object CMakeFiles/psiforcedb_core.dir/src/ai_ipa_demonstration.cpp.obj
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp: In function 'void demonstrate_ai_ipa_integration()':
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:38:49: error: 'IPA' was not declared in this scope; did you mean 'PsiForceDB::Protocols::IPA'?
+   38 |         auto ipa_integration = std::make_shared<IPA::PsiForceDBIPAIntegration>();
+      |                                                 ^~~
+      |                                                 PsiForceDB::Protocols::IPA
+In file included from C:\Build\PsiForceDB\src\ai_ipa_consciousness_bridge.hpp:21,
+                 from C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:21:
+C:\Build\PsiForceDB\src\psiforcedb_ipa_integration.hpp:34:11: note: 'PsiForceDB::Protocols::IPA' declared here
+   34 | namespace IPA {
+      |           ^~~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:38:37: error: parse error in template argument list
+   38 |         auto ipa_integration = std::make_shared<IPA::PsiForceDBIPAIntegration>();
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:38:79: error: no matching function for call to 'make_shared<<expression error> >()'
+   38 |         auto ipa_integration = std::make_shared<IPA::PsiForceDBIPAIntegration>();
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:38:79: note: there is 1 candidate
+In file included from C:/Build/PsiForceDB/Build Suite/mingw64/include/c++/15.2.0/memory:82,
+                 from C:\Build\PsiForceDB\src\psiforcedb_ipa_integration.hpp:26:
+C:/Build/PsiForceDB/Build Suite/mingw64/include/c++/15.2.0/bits/shared_ptr.h:1003:5: note: candidate 1: 'template<class _Tp, class ... _Args> std::shared_ptr<typename std::enable_if<(! std::is_array<_Tp>::value), _Tp>::type> std::make_shared(_Args&& ...)'
+ 1003 |     make_shared(_Args&&... __args)
+      |     ^~~~~~~~~~~
+C:/Build/PsiForceDB/Build Suite/mingw64/include/c++/15.2.0/bits/shared_ptr.h:1003:5: note: template argument deduction/substitution failed:
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:38:79: error: template argument 1 is invalid
+   38 |         auto ipa_integration = std::make_shared<IPA::PsiForceDBIPAIntegration>();
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:51:54: error: 'AI' was not declared in this scope; did you mean 'PsiForceDB::Security::AI'?
+   51 |         auto consciousness_bridge = std::make_shared<AI::ConsciousnessBridge>();
+      |                                                      ^~
+      |                                                      PsiForceDB::Security::AI
+C:\Build\PsiForceDB\src\ai_ipa_consciousness_bridge.hpp:32:11: note: 'PsiForceDB::Security::AI' declared here
+   32 | namespace AI {
+      |           ^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:51:42: error: parse error in template argument list
+   51 |         auto consciousness_bridge = std::make_shared<AI::ConsciousnessBridge>();
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:51:78: error: no matching function for call to 'make_shared<<expression error> >()'
+   51 |         auto consciousness_bridge = std::make_shared<AI::ConsciousnessBridge>();
+      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:51:78: note: there is 1 candidate
+C:/Build/PsiForceDB/Build Suite/mingw64/include/c++/15.2.0/bits/shared_ptr.h:1003:5: note: candidate 1: 'template<class _Tp, class ... _Args> std::shared_ptr<typename std::enable_if<(! std::is_array<_Tp>::value), _Tp>::type> std::make_shared(_Args&& ...)'
+ 1003 |     make_shared(_Args&&... __args)
+      |     ^~~~~~~~~~~
+C:/Build/PsiForceDB/Build Suite/mingw64/include/c++/15.2.0/bits/shared_ptr.h:1003:5: note: template argument deduction/substitution failed:
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:51:78: error: template argument 1 is invalid
+   51 |         auto consciousness_bridge = std::make_shared<AI::ConsciousnessBridge>();
+      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:65:33: error: parse error in template argument list
+   65 |         auto trex_entity = std::make_shared<AI::AIIPAEnhancedQuantumEntity>(consciousness_bridge);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:66:35: error: parse error in template argument list
+   66 |         auto raptor_entity = std::make_shared<AI::AIIPAEnhancedQuantumEntity>(consciousness_bridge);
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:188:13: error: 'AI' is not a class, namespace, or enumeration
+  188 |             AI::AIFingerprint trex_fingerprint = consciousness_bridge->get_ai_fingerprint(
+      |             ^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:192:48: error: 'trex_fingerprint' was not declared in this scope
+  192 |             std::cout << "   AI Identity: " << trex_fingerprint.ai_identity << std::endl;
+      |                                                ^~~~~~~~~~~~~~~~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:199:13: error: 'AI' is not a class, namespace, or enumeration
+  199 |             AI::AIFingerprint raptor_fingerprint = consciousness_bridge->get_ai_fingerprint(
+      |             ^~
+C:\Build\PsiForceDB\src\ai_ipa_demonstration.cpp:203:48: error: 'raptor_fingerprint' was not declared in this scope
+  203 |             std::cout << "   AI Identity: " << raptor_fingerprint.ai_identity << std::endl;
+      |                                                ^~~~~~~~~~~~~~~~~~
+mingw32-make[2]: *** [CMakeFiles\psiforcedb_core.dir\build.make:679: CMakeFiles/psiforcedb_core.dir/src/ai_ipa_demonstration.cpp.obj] Error 1
+mingw32-make[1]: *** [CMakeFiles\Makefile2:123: CMakeFiles/psiforcedb_core.dir/all] Error 2
+mingw32-make: *** [Makefile:135: all] Error 2

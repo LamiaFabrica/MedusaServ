@@ -1,0 +1,10 @@
+    # Try to find JWT
+    find_path(JWT_INCLUDE_DIR jwt-cpp/jwt.h)
+    if(JWT_INCLUDE_DIR)
+        set(JWT_FOUND TRUE)
+        set(JWT_INCLUDE_DIRS ${JWT_INCLUDE_DIR})
+        message(STATUS "Found JWT: ${JWT_INCLUDE_DIRS}")
+    else()
+        message(WARNING "JWT not found, building without it")
+        set(JWT_FOUND FALSE)
+    endif()

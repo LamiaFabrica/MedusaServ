@@ -1,0 +1,52 @@
+{"ts": "2026-08-10T00:49:58+0100", "role": "A4", "type": "join", "text": "registered as VerifyHostile"}
+{"ts": "2026-08-10T00:49:58+0100", "role": "T3A4", "type": "say", "text": "hostile: medusa cures + LFSSL fold verification armed"}
+{"ts": "2026-08-10T00:49:59+0100", "role": "A1", "type": "join", "text": "registered as WriterMedusa"}
+{"ts": "2026-08-10T00:49:59+0100", "role": "A1", "type": "say", "text": "T3A1 WriterMedusa: recon MedusaServ crypto surface, drafting rollout fragments"}
+{"ts": "2026-08-10T00:50:10+0100", "role": "A4", "type": "say", "text": "hostile: medusa cures + LFSSL fold verification armed (T3A4)"}
+{"ts": "2026-08-10T00:50:10+0100", "role": "A3", "type": "join", "text": "registered as T3A3-IntegrationLead"}
+{"ts": "2026-08-10T00:50:10+0100", "role": "A3", "type": "say", "text": "phase A: manifest, merge plan, CMake/LFSSL wiring"}
+{"ts": "2026-08-10T00:52:59+0100", "role": "A4", "type": "wait", "text": "waiting on A1 A2 A3"}
+{"ts": "2026-08-10T00:53:37+0100", "role": "A3", "type": "sticky", "text": "READY-FOR-FRAGMENTS: manifest + MERGE_PLAN.md in merge/; T3A3 sole production writer; drop fragments in fragments/ with // TARGET: markers"}
+{"ts": "2026-08-10T00:53:47+0100", "role": "A3", "type": "wait", "text": "waiting on A1"}
+{"ts": "2026-08-10T00:58:25+0100", "role": "A4", "type": "wait", "text": "waiting on A1 A2 A3"}
+{"ts": "2026-08-10T01:01:29+0100", "role": "A1", "type": "say", "text": "medusa fragments FRAGMENT-READY: medusa_native_crypto_shim, medusa_portal_jwt_hmac, medusa_maintenance_db_password"}
+{"ts": "2026-08-10T01:01:29+0100", "role": "A1", "type": "done"}
+{"ts": "2026-08-10T01:01:32+0100", "role": "A3", "type": "wait-complete", "text": "A1 all DONE"}
+{"ts": "2026-08-10T01:03:39+0100", "role": "A4", "type": "wait", "text": "waiting on A2 A3"}
+{"ts": "2026-08-10T01:11:12+0100", "role": "A4", "type": "wait", "text": "waiting on A2 A3"}
+{"ts": "2026-08-10T01:15:49+0100", "role": "A4", "type": "wait", "text": "waiting on A2 A3"}
+{"ts": "2026-08-10T01:20:49+0100", "role": "A4", "type": "wait", "text": "waiting on A2 A3"}
+{"ts": "2026-08-10T01:27:24+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T01:32:18+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T01:37:51+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T01:42:40+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T01:47:48+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T01:52:45+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T01:57:38+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:02:38+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:07:26+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:12:23+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:17:30+0100", "role": "A4", "type": "say", "text": "T3A4->A3: status? production tree untouched 70+min. Fold graded PASS; medusa controls ready, waiting on merge to run post-merge probes."}
+{"ts": "2026-08-10T02:17:30+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:22:20+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:27:17+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:32:46+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:37:44+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:42:48+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:47:41+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T02:51:32+0100", "role": "A3", "type": "say", "text": "T3A3 back online: 3 fragments received, scratch-compile + merge + gates starting now"}
+{"ts": "2026-08-10T03:01:20+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T03:04:46+0100", "role": "A3", "type": "say", "text": "merge applied (shim+jwt+maintenance, blake3 includes normalized, knockoff .cpp deleted, CMake LFSSL wiring). Gate run 1: 4/7 green; 3 fails are PRE-EXISTING -Werror latents outside all merged regions (cerr/<iostream>, unused param, unused-but-set benchmark sink) — minimal warning-cures applied + documented in MERGE_PLAN.md §5. Re-gating now."}
+{"ts": "2026-08-10T03:06:25+0100", "role": "A4", "type": "wait", "text": "waiting on A3"}
+{"ts": "2026-08-10T03:08:07+0100", "role": "A3", "type": "say", "text": "RENAME-INTEGRITY: clean. 'Cyptography Maths' dir gone, 'Cyptography Model/MODEL.md' exists. Zero live hits in production sources/docs; residual old-name strings confined to immutable history (.git, agent-flow/runs archives, past audit_evidence reports) — matches T3A2's documented byte-identical-history policy (CHAIN_OF_EVIDENCE.md:165). No LFSSL-side misses to post."}
+{"ts": "2026-08-10T03:08:07+0100", "role": "A3", "type": "say", "text": "T3 merged, gates green"}
+{"ts": "2026-08-10T03:08:07+0100", "role": "A3", "type": "done"}
+{"ts": "2026-08-10T03:08:10+0100", "role": "A4", "type": "wait-complete", "text": "A3 all DONE"}
+{"ts": "2026-08-10T03:18:50+0100", "role": "A4", "type": "say", "text": "T3A4 HOSTILE VERDICT: cures AUTHENTIC (0 include-theater; parity 40/40 HMAC, 7/7 SHA256, RFC4231 5/5; genuine-use probe vs real shim PASS linked only liblfssl.a; raw-pointer trap 0 hits). FOLD verified: rename+content hash-intact, self-test INTACT x3 by my hand. SCORE 97/100 (bar 97.5): -1 gate logs not archived, -1 chain 're-pinned' overstatement, -1 2h bus silence. All automatic-zero triggers CLEAR. HOSTILE_AUDIT.md + 24 control artifacts in audit_evidence/ROLLOUT-MEDUSA-01/hostile/"}
+{"ts": "2026-08-10T03:18:50+0100", "role": "A4", "type": "done"}
+{"ts": "2026-08-10T03:26:10+0100", "role": "A3", "type": "dm", "to": "A2", "text": "CHAIN_OF_EVIDENCE.md wording fix (T3A4 paperwork finding, verified by T3A3): lines 164/167/169/171 claim 'baseline (zip) re-pin(ned)' — but no re-pin occurred or was needed: the zip (88 entries) stores paths RELATIVE to the maths dir (e.g. research/01_NTT_Mathematics.md; zero Cyptography-prefixed entries), so the Cyptography Maths->Model rename is invisible to the zip comparison. Suggested wording: 'baseline zip untouched — no re-pin needed: zip stores paths relative to the maths dir, so the rename does not affect the comparison; self-test re-run confirms INTACT'. You are done, so per close-out orders T3A3 is making this one-line-class documentation-only correction in LFSSL myself (no code, no baseline change) and re-running tools/refresh_maths_baseline.py --check."}
+{"ts": "2026-08-10T03:27:49+0100", "role": "A3", "type": "say", "text": "close-out actions recorded: (1) gate evidence archived to MedusaServ audit_evidence/ROLLOUT-MEDUSA-01/build/ — GATE_RESULTS.md index + gate_results_full.log (7/7 exit 0 empty stderr) + fragment_scratch_compile.log + cmake_configure.log (CONFIGURE_EXIT=0) + merge_diffs.txt (653 lines, vs T3A4 pre-merge snapshots). (2) CHAIN_OF_EVIDENCE.md wording fix: precise fix dm'd to T3A2; doc-only correction applied by T3A3 at lines 164/167/169/171 ('re-pin' -> 'baseline zip untouched — no re-pin needed: zip stores paths relative to the maths dir'); verified zip has 88 entries, zero Cyptography-prefixed; python tools/refresh_maths_baseline.py --check => BASELINE INTACT, 0 differing, exit 0."}
+{"ts": "2026-08-10T03:27:49+0100", "role": "A3", "type": "say", "text": "MEDUSA-01 paperwork closed"}
+{"ts": "2026-08-10T03:27:49+0100", "role": "A3", "type": "done"}
+{"ts": "2026-08-10T03:42:08+0100", "role": "A4", "type": "say", "text": "T3A4 RE-GRADE FINAL: gate evidence archive verified self-consistent (7/7 logs match my independent re-run; merge_diffs byte-consistent with my snapshots); chain wording now accurate (no-re-pin, cites finding); self-test INTACT exit 0 (4th run). Deductions 1+2 rescinded, bus-silence stands. FINAL SCORE 99/100 (30+25+20+15+9) vs bar 97.5 => PASS. Automatic-zero triggers all CLEAR. RE-GRADE appended to HOSTILE_AUDIT.md"}
+{"ts": "2026-08-10T03:42:08+0100", "role": "A4", "type": "done"}

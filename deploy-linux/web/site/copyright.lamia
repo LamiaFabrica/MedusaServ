@@ -1,0 +1,155 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+COPYRIGHT COMPONENT - MEDUSA ECOSYSTEM
+======================================
+
+This copyright includes MIT license and universal footer
+-->
+
+component copyright() {
+    universal_footer {
+        background: "linear-gradient(135deg, #2a1a2a 0%, #1a1a2e 100%)"
+        color: "white"
+        padding: "1rem 0"
+        border_top: "2px solid rgba(139, 63, 139, 0.3)"
+        
+        content {
+            max_width: "1400px"
+            margin: "0 auto"
+            padding: "0 2rem"
+            display: "flex"
+            align_items: "center"
+            justify_content: "center"
+            gap: "1rem"
+            
+            copyright_gif3d {
+                position: "relative"
+                width: "30px"
+                height: "30px"
+                
+                symbol {
+                    position: "relative"
+                    width: "100%"
+                    height: "100%"
+                    
+                    ring {
+                        position: "absolute"
+                        width: "100%"
+                        height: "100%"
+                        border: "2px solid rgba(255, 215, 0, 0.6)"
+                        border_radius: "50%"
+                        animation: "copyrightRingRotate 4s linear infinite"
+                    }
+                    
+                    core {
+                        position: "absolute"
+                        width: "8px"
+                        height: "8px"
+                        background: "radial-gradient(circle, #FFD700, #FFA500)"
+                        border_radius: "50%"
+                        top: "50%"
+                        left: "50%"
+                        transform: "translate(-50%, -50%)"
+                        box_shadow: "0 0 8px rgba(255, 215, 0, 0.8)"
+                        animation: "copyrightCorePulse 2s ease-in-out infinite"
+                    }
+                    
+                    particles {
+                        position: "absolute"
+                        width: "100%"
+                        height: "100%"
+                        
+                        particle {
+                            position: "absolute"
+                            width: "2px"
+                            height: "2px"
+                            background: "#FFD700"
+                            border_radius: "50%"
+                            animation: "copyrightParticleFloat 3s ease-in-out infinite"
+                        }
+                        
+                        particle:nth-child(1) {
+                            top: "10%"
+                            left: "10%"
+                            animation_delay: "0s"
+                        }
+                        
+                        particle:nth-child(2) {
+                            top: "20%"
+                            right: "15%"
+                            animation_delay: "1s"
+                        }
+                        
+                        particle:nth-child(3) {
+                            bottom: "15%"
+                            left: "20%"
+                            animation_delay: "2s"
+                        }
+                        
+                        particle:nth-child(4) {
+                            bottom: "10%"
+                            right: "10%"
+                            animation_delay: "3s"
+                        }
+                    }
+                }
+            }
+            
+            license_text {
+                display: "flex"
+                align_items: "center"
+                gap: "0.5rem"
+                font_size: "0.9rem"
+                
+                license_label {
+                    color: "#FFD700"
+                    font_weight: "600"
+                    text: "MIT License"
+                }
+                
+                license_separator {
+                    color: "rgba(255, 255, 255, 0.5)"
+                    text: "-"
+                }
+                
+                copyright_text {
+                    color: "rgba(255, 255, 255, 0.8)"
+                    text: "© 2025 The Medusa Project | Roylepython | D Hargreaves"
+                }
+            }
+        }
+    }
+    
+    // COPYRIGHT ANIMATIONS
+    animations {
+        copyrightRingRotate {
+            keyframes: [
+                { from: "0deg", to: "360deg" }
+            ]
+            duration: "4s"
+            timing: "linear"
+            iteration: "infinite"
+        }
+        
+        copyrightCorePulse {
+            keyframes: [
+                { from: "scale(1); box-shadow: 0 0 8px rgba(255, 215, 0, 0.8)", to: "scale(1.2); box-shadow: 0 0 15px rgba(255, 215, 0, 1)" },
+                { from: "scale(1.2); box-shadow: 0 0 15px rgba(255, 215, 0, 1)", to: "scale(1); box-shadow: 0 0 8px rgba(255, 215, 0, 0.8)" }
+            ]
+            duration: "2s"
+            timing: "ease-in-out"
+            iteration: "infinite"
+        }
+        
+        copyrightParticleFloat {
+            keyframes: [
+                { from: "translateY(0px) rotate(0deg); opacity: 0.6", to: "translateY(-10px) rotate(180deg); opacity: 1" },
+                { from: "translateY(-10px) rotate(180deg); opacity: 1", to: "translateY(0px) rotate(0deg); opacity: 0.6" }
+            ]
+            duration: "3s"
+            timing: "ease-in-out"
+            iteration: "infinite"
+        }
+    }
+}

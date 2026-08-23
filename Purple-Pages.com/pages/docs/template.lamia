@@ -1,0 +1,74 @@
+<!--
+Purple-Pages.com - Documentation Article Template
+Template for imported documentation pages
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_doc_template(title: string, category: string, technology: string = "") {
+    include "base.lamia" {
+        title: title + " - Purple Pages"
+        description: "Documentation: " + title
+        keywords: title + ", " + category + ", documentation"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    ${category != "general" ? `li {
+                        a(href: "/pages/category/${category}.lamia") {
+                            "${category}"
+                        }
+                    }` : ""}
+                    ${technology ? `li {
+                        a(href: "/pages/${technology}/index.lamia") {
+                            "${technology}"
+                        }
+                    }` : ""}
+                    li(class: "active") {
+                        "${title}"
+                    }
+                }
+            }
+        }
+        
+        // Documentation Content
+        section(class: "doc-content-section") {
+            div(class: "doc-container") {
+                article(class: "doc-article") {
+                    header(class: "doc-header") {
+                        h1 {
+                            "${title}"
+                        }
+                        div(class: "doc-meta") {
+                            ${category != "general" ? `<span class="doc-category">${category}</span>` : ""}
+                            ${technology ? `<span class="doc-technology">${technology}</span>` : ""}
+                        }
+                    }
+                    
+                    // Content will be injected here from markdown conversion
+                    div(class: "doc-content") {
+                        // Markdown content converted to HTML
+                    }
+                    
+                    // Related Documentation
+                    aside(class: "doc-related") {
+                        h3 {
+                            "Related Documentation"
+                        }
+                        ul(class: "related-links") {
+                            // Related links will be populated
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

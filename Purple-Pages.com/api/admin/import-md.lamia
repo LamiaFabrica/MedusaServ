@@ -1,0 +1,83 @@
+<!--
+Purple-Pages.com - Import Markdown Files API
+Imports MD files and converts to Lamia pages
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_import_md_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify admin access
+    if (!verify_admin_access()) {
+        return response(401, json({
+            "error": "Unauthorized",
+            "message": "Admin access required"
+        }));
+    }
+    
+    if (request.method != "POST") {
+        return response(405, json({
+            "error": "Method not allowed"
+        }));
+    }
+    
+    body = parse_json(request.body);
+    files = body.get("files", []);
+    category = body.get("category", "general");
+    technology = body.get("technology", "");
+    
+    if (files.length == 0) {
+        return response(400, json({
+            "error": "No files specified"
+        }));
+    }
+    
+    results = [];
+    imported = 0;
+    failed = 0;
+    
+    for (file_data in files) {
+        file_path = file_data.get("path", "");
+        
+        if (!file_path) {
+            results.push({
+                "file": "unknown",
+                "success": false,
+                "error": "No path specified"
+            });
+            failed++;
+            continue;
+        }
+        
+        // Import file
+        result = import_markdown_file(file_path, category, technology);
+        
+        results.push({
+            "file": file_path,
+            "success": result.success,
+            "lamia_path": result.lamia_path || "",
+            "error": result.error || ""
+        });
+        
+        if (result.success) {
+            imported++;
+        } else {
+            failed++;
+        }
+    }
+    
+    return response(200, json({
+        "success": true,
+        "imported": imported,
+        "failed": failed,
+        "results": results
+    }));
+}
+

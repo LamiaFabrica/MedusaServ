@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Analysis Service - PFQL Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/portal-style.css">
+</head>
+<body>
+    <div class="portal-header">
+        <h1>📊 Database Analysis Service</h1>
+        <div class="portal-status" id="analysisStatus">
+            <span class="status-indicator online"></span>
+            Analysis Engine: ACTIVE
+        </div>
+    </div>
+
+    <div class="service-container">
+        <div class="service-controls">
+            <button class="service-btn" onclick="analysisService.runAnalysis()">🔍 Run Analysis</button>
+            <button class="service-btn" onclick="analysisService.queryPlan()">📋 Query Plan</button>
+            <button class="service-btn" onclick="analysisService.indexAnalysis()">🗂️ Index Analysis</button>
+            <button class="service-btn" onclick="analysisService.performanceReport()">📈 Performance Report</button>
+        </div>
+
+        <div class="analysis-results" id="analysisResults">
+            <!-- Analysis results will be populated here -->
+        </div>
+
+        <div class="service-output" id="analysisOutput">
+            <div>[ANALYSIS] Database analysis service initialized</div>
+            <div>[ANALYSIS] Connected to PsiForceDB on 172.236.23.54</div>
+            <div>[ANALYSIS] Ready for analysis operations...</div>
+        </div>
+    </div>
+
+    <script>
+        class DatabaseAnalysisService {
+            constructor() {
+                this.init();
+            }
+
+            async init() {
+                await this.connectToPsiForceDB();
+            }
+
+            async connectToPsiForceDB() {
+                try {
+                    const response = await fetch('/api/pfql-routes/database/analysis/status', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            server: '172.236.23.54',
+                            database: 'psiforcedb_main'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        this.logOutput('[ANALYSIS] Connected to PsiForceDB analysis engine');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Connection failed: ${error.message}`);
+                }
+            }
+
+            async runAnalysis() {
+                this.logOutput('[ANALYSIS] Running comprehensive database analysis...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/analysis/comprehensive', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:analyze:comprehensive',
+                            server: '172.236.23.54',
+                            options: {
+                                includeTables: true,
+                                includeIndexes: true,
+                                includeStats: true,
+                                includePerformance: true
+                            }
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayAnalysisResults(result);
+                        this.logOutput('[ANALYSIS] Comprehensive analysis completed');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Analysis failed: ${error.message}`);
+                }
+            }
+
+            async queryPlan() {
+                const query = prompt('Enter SQL query to analyze:');
+                if (query) {
+                    this.logOutput('[ANALYSIS] Analyzing query execution plan...');
+                    try {
+                        const response = await fetch('/api/pfql-routes/database/analysis/queryplan', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                ...window.pfqlAuth.getAuthHeaders()
+                            },
+                            body: JSON.stringify({
+                                command: 'pf://database:analyze:queryplan',
+                                server: '172.236.23.54',
+                                query: query
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.displayQueryPlan(result);
+                            this.logOutput('[ANALYSIS] Query plan analysis completed');
+                        }
+                    } catch (error) {
+                        this.logOutput(`[ERROR] Query plan analysis failed: ${error.message}`);
+                    }
+                }
+            }
+
+            async indexAnalysis() {
+                this.logOutput('[ANALYSIS] Analyzing database indexes...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/analysis/indexes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:analyze:indexes',
+                            server: '172.236.23.54'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayIndexAnalysis(result);
+                        this.logOutput('[ANALYSIS] Index analysis completed');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Index analysis failed: ${error.message}`);
+                }
+            }
+
+            async performanceReport() {
+                this.logOutput('[ANALYSIS] Generating performance report...');
+                try {
+                    const response = await fetch('/api/pfql-routes/database/analysis/performance', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...window.pfqlAuth.getAuthHeaders()
+                        },
+                        body: JSON.stringify({
+                            command: 'pf://database:analyze:performance',
+                            server: '172.236.23.54',
+                            timeframe: '24h'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.displayPerformanceReport(result);
+                        this.logOutput('[ANALYSIS] Performance report generated');
+                    }
+                } catch (error) {
+                    this.logOutput(`[ERROR] Performance report failed: ${error.message}`);
+                }
+            }
+
+            displayAnalysisResults(result) {
+                const container = document.getElementById('analysisResults');
+                container.innerHTML = `
+                    <h3>📊 Comprehensive Analysis Results</h3>
+                    <div class="analysis-grid">
+                        <div class="analysis-card">
+                            <h4>Database Size</h4>
+                            <div class="analysis-value">${result.databaseSize || 'N/A'}</div>
+                        </div>
+                        <div class="analysis-card">
+                            <h4>Table Count</h4>
+                            <div class="analysis-value">${result.tableCount || 0}</div>
+                        </div>
+                        <div class="analysis-card">
+                            <h4>Index Count</h4>
+                            <div class="analysis-value">${result.indexCount || 0}</div>
+                        </div>
+                        <div class="analysis-card">
+                            <h4>Fragmentation</h4>
+                            <div class="analysis-value">${result.fragmentation || 'N/A'}</div>
+                        </div>
+                    </div>
+                    ${result.recommendations ? `
+                        <h4>🎯 Recommendations</h4>
+                        <ul class="recommendations">
+                            ${result.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    ` : ''}
+                `;
+            }
+
+            displayQueryPlan(result) {
+                const container = document.getElementById('analysisResults');
+                container.innerHTML = `
+                    <h3>📋 Query Execution Plan</h3>
+                    <div class="query-plan">
+                        <pre>${result.executionPlan || 'No plan available'}</pre>
+                    </div>
+                    <div class="plan-stats">
+                        <div class="stat">Cost: ${result.estimatedCost || 'N/A'}</div>
+                        <div class="stat">Rows: ${result.estimatedRows || 'N/A'}</div>
+                        <div class="stat">Duration: ${result.estimatedDuration || 'N/A'}</div>
+                    </div>
+                `;
+            }
+
+            displayIndexAnalysis(result) {
+                const container = document.getElementById('analysisResults');
+                container.innerHTML = `
+                    <h3>🗂️ Index Analysis Results</h3>
+                    ${result.indexes ? result.indexes.map(index => `
+                        <div class="index-item">
+                            <strong>${index.name}</strong> (${index.table})
+                            <div class="index-stats">
+                                Usage: ${index.usage}% | Size: ${index.size} | Fragmentation: ${index.fragmentation}%
+                            </div>
+                            ${index.recommendation ? `<div class="recommendation">${index.recommendation}</div>` : ''}
+                        </div>
+                    `).join('') : 'No index data available'}
+                `;
+            }
+
+            displayPerformanceReport(result) {
+                const container = document.getElementById('analysisResults');
+                container.innerHTML = `
+                    <h3>📈 Performance Report</h3>
+                    <div class="performance-metrics">
+                        <div class="metric">
+                            <h4>Average Response Time</h4>
+                            <div class="metric-value">${result.avgResponseTime || 'N/A'}ms</div>
+                        </div>
+                        <div class="metric">
+                            <h4>Queries per Second</h4>
+                            <div class="metric-value">${result.queriesPerSecond || 'N/A'}</div>
+                        </div>
+                        <div class="metric">
+                            <h4>Cache Hit Ratio</h4>
+                            <div class="metric-value">${result.cacheHitRatio || 'N/A'}%</div>
+                        </div>
+                        <div class="metric">
+                            <h4>Slow Queries</h4>
+                            <div class="metric-value">${result.slowQueryCount || 0}</div>
+                        </div>
+                    </div>
+                    ${result.slowQueries ? `
+                        <h4>🐌 Slowest Queries</h4>
+                        <div class="slow-queries">
+                            ${result.slowQueries.map(query => `
+                                <div class="slow-query">
+                                    <div class="query-text">${query.sql}</div>
+                                    <div class="query-time">Duration: ${query.duration}ms</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                `;
+            }
+
+            logOutput(message) {
+                const output = document.getElementById('analysisOutput');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.analysisService = new DatabaseAnalysisService();
+        });
+    </script>
+    
+    <style>
+        .analysis-results {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #64B5F6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .analysis-card {
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid #64B5F6;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+        }
+        .analysis-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #64B5F6;
+        }
+        .query-plan pre {
+            background: #000;
+            color: #64B5F6;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .index-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #64B5F6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        .index-stats {
+            font-size: 12px;
+            color: #999;
+        }
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .metric {
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .slow-query {
+            background: rgba(255, 152, 0, 0.1);
+            border: 1px solid #FF9800;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        .query-text {
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .query-time {
+            color: #FF9800;
+            font-size: 12px;
+        }
+    </style>
+</body>
+</html>

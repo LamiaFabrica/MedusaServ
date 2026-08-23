@@ -1,0 +1,18 @@
+BUILD ELF LINUX BINARIES - C++26 STANDARD
+==========================================
+
+Run in WSL Ubuntu:
+
+cd "/mnt/c/McMaker Projects/Projects/MedusaServ Professional Web Server"
+chmod +x build_elf_linux.sh
+./build_elf_linux.sh
+
+Or manually:
+
+cd "/mnt/c/McMaker Projects/Projects/MedusaServ Professional Web Server"
+mkdir -p build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=26 -DCMAKE_CXX_STANDARD_REQUIRED=ON -DCMAKE_CXX_EXTENSIONS=OFF
+make -j$(nproc)
+
+Binaries will be in: build/bin/
+

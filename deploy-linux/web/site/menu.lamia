@@ -1,0 +1,482 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+MENU COMPONENT - MEDUSA ECOSYSTEM
+=================================
+
+This menu includes navigation with About dropdown containing Support Me and About Me
+-->
+
+component menu() {
+    navigation_section {
+        display: "flex"
+        justify_content: "center"
+        align_items: "center"
+        padding: "0.02rem 0"
+        
+        nav_items {
+            display: "flex"
+            gap: "1rem"
+            align_items: "center"
+            
+            // HOME
+            nav_item {
+                link {
+                    icon: "house-door-gif3d-mini"
+                    text: "Home"
+                    url: "index.lamia"
+                    active: true
+                    hover_effect: "translateY(-1px)"
+                }
+            }
+            
+            separator {
+                width: "2px"
+                height: "20px"
+                background: "linear-gradient(to bottom, transparent, #FF6B9D, transparent)"
+                border_radius: "1px"
+                opacity: "0.6"
+                animation: "separatorPulse 2s ease-in-out infinite"
+            }
+            
+            // ABOUT DROPDOWN
+            nav_item has_children {
+                link {
+                    icon: "middle-finger-gif3d-mini"
+                    text: "About"
+                    url: "#"
+                    hover_effect: "translateY(-1px)"
+                }
+                
+                dropdown {
+                    position: "absolute"
+                    top: "100%"
+                    left: "0"
+                    min_width: "400px"
+                    background: "rgba(255, 255, 255, 0.98)"
+                    backdrop_filter: "blur(20px)"
+                    border_radius: "15px"
+                    box_shadow: "0 20px 60px rgba(0, 0, 0, 0.2)"
+                    padding: "1.5rem"
+                    opacity: "0"
+                    visibility: "hidden"
+                    transform: "translateY(-10px) scale(0.95)"
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                    z_index: "1001"
+                    border: "2px solid #FF6B9D"
+                    
+                    dropdown_title {
+                        text: "About The Medusa Project"
+                        font_size: "1.2rem"
+                        font_weight: "bold"
+                        color: "#8B3F8B"
+                        text_align: "center"
+                        margin_bottom: "1.5rem"
+                        padding_bottom: "0.5rem"
+                        border_bottom: "2px solid #FF6B9D"
+                    }
+                    
+                    dropdown_buttons {
+                        display: "flex"
+                        gap: "1rem"
+                        justify_content: "center"
+                        
+                        button support {
+                            display: "flex"
+                            flex_direction: "column"
+                            align_items: "center"
+                            padding: "1rem"
+                            background: "linear-gradient(135deg, #8B3F8B, #FF6B9D)"
+                            border: "none"
+                            border_radius: "10px"
+                            color: "white"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            min_width: "150px"
+                            hover_effect: "translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(139, 63, 139, 0.4)"
+                            
+                            icon: "🎯"
+                            title: "Support Me"
+                            description: "Patreon & donations"
+                            link: "support.lamia"
+                        }
+                        
+                        button about {
+                            display: "flex"
+                            flex_direction: "column"
+                            align_items: "center"
+                            padding: "1rem"
+                            background: "linear-gradient(135deg, #8B3F8B, #FF6B9D)"
+                            border: "none"
+                            border_radius: "10px"
+                            color: "white"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            min_width: "150px"
+                            hover_effect: "translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(139, 63, 139, 0.4)"
+                            
+                            icon: "👨‍💻"
+                            title: "About Me"
+                            description: "D Hargreaves story"
+                            link: "about.lamia"
+                        }
+                    }
+                }
+            }
+            
+            separator {
+                width: "2px"
+                height: "20px"
+                background: "linear-gradient(to bottom, transparent, #FF6B9D, transparent)"
+                border_radius: "1px"
+                opacity: "0.6"
+                animation: "separatorPulse 2s ease-in-out infinite"
+            }
+            
+            // 3D GIF
+            nav_item has_children {
+                link {
+                    icon: "hand-wave-gif3d-mini"
+                    text: "3Dgif"
+                    url: "#"
+                    hover_effect: "translateY(-1px)"
+                }
+                
+                dropdown {
+                    position: "absolute"
+                    top: "100%"
+                    left: "0"
+                    min_width: "600px"
+                    background: "rgba(255, 255, 255, 0.98)"
+                    backdrop_filter: "blur(20px)"
+                    border_radius: "15px"
+                    box_shadow: "0 20px 60px rgba(0, 0, 0, 0.2)"
+                    padding: "1.5rem"
+                    opacity: "0"
+                    visibility: "hidden"
+                    transform: "translateY(-10px) scale(0.95)"
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                    z_index: "1001"
+                    border: "2px solid #FF6B9D"
+                    
+                    dropdown_title {
+                        text: "🎮 GIF3D Gaming meets Developers for the first time with Lamia"
+                        font_size: "1.2rem"
+                        font_weight: "bold"
+                        color: "#8B3F8B"
+                        text_align: "center"
+                        margin_bottom: "1.5rem"
+                        padding_bottom: "0.5rem"
+                        border_bottom: "2px solid #FF6B9D"
+                    }
+                    
+                    dropdown_buttons {
+                        display: "flex"
+                        gap: "1rem"
+                        justify_content: "center"
+                        
+                        button gif3d {
+                            display: "flex"
+                            flex_direction: "column"
+                            align_items: "center"
+                            padding: "1rem"
+                            background: "linear-gradient(135deg, #8B3F8B, #FF6B9D)"
+                            border: "none"
+                            border_radius: "10px"
+                            color: "white"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            min_width: "150px"
+                            hover_effect: "translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(139, 63, 139, 0.4)"
+                            
+                            icon: "🎬"
+                            title: "GIF3D"
+                            description: "Revolutionary format"
+                            link: "gif3d.lamia"
+                        }
+                        
+                        button megamenu {
+                            display: "flex"
+                            flex_direction: "column"
+                            align_items: "center"
+                            padding: "1rem"
+                            background: "linear-gradient(135deg, #8B3F8B, #FF6B9D)"
+                            border: "none"
+                            border_radius: "10px"
+                            color: "white"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            min_width: "150px"
+                            hover_effect: "translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(139, 63, 139, 0.4)"
+                            
+                            icon: "🎯"
+                            title: "MEGAMENU"
+                            description: "Advanced navigation"
+                            link: "megamenu.lamia"
+                        }
+                    }
+                }
+            }
+            
+            separator {
+                width: "2px"
+                height: "20px"
+                background: "linear-gradient(to bottom, transparent, #FF6B9D, transparent)"
+                border_radius: "1px"
+                opacity: "0.6"
+                animation: "separatorPulse 2s ease-in-out infinite"
+            }
+            
+            // LAMIA
+            nav_item has_children {
+                link {
+                    icon: "hash-gif3d-mini"
+                    text: "Lamia"
+                    url: "#"
+                    hover_effect: "translateY(-1px)"
+                }
+                
+                dropdown {
+                    position: "absolute"
+                    top: "100%"
+                    left: "0"
+                    min_width: "600px"
+                    background: "rgba(255, 255, 255, 0.98)"
+                    backdrop_filter: "blur(20px)"
+                    border_radius: "15px"
+                    box_shadow: "0 20px 60px rgba(0, 0, 0, 0.2)"
+                    padding: "1.5rem"
+                    opacity: "0"
+                    visibility: "hidden"
+                    transform: "translateY(-10px) scale(0.95)"
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                    z_index: "1001"
+                    border: "2px solid #FF6B9D"
+                    
+                    megamenu_grid {
+                        display: "grid"
+                        grid_template_columns: "repeat(3, 1fr)"
+                        gap: "1.5rem"
+                        
+                        column {
+                            title: "Core Features"
+                            links: [
+                                { icon: "📝", text: "Syntax & Structure", url: "lamia-syntax.lamia" },
+                                { icon: "📄", text: "Manifest System", url: "lamia-manifest.lamia" },
+                                { icon: "💎", text: "Crystal Return Types", url: "lamia-crystal.lamia" },
+                                { icon: "🚀", text: "@ludicrous Mode", url: "lamia-ludicrous.lamia" }
+                            ]
+                        }
+                        
+                        column {
+                            title: "Advanced Features"
+                            links: [
+                                { icon: "🧠", text: "3D Emotion Synthesis", url: "lamia-emotion.lamia" },
+                                { icon: "📦", text: "Spatial Processing", url: "lamia-spatial.lamia" },
+                                { icon: "⚙️", text: "G-code Generation", url: "lamia-gcode.lamia" },
+                                { icon: "👥", text: "Social Protocols", url: "lamia-social.lamia" }
+                            ]
+                        }
+                        
+                        column {
+                            title: "Development"
+                            links: [
+                                { icon: "🎮", text: "Playground", url: "playground.lamia" },
+                                { icon: "📊", text: "Benchmarks", url: "benchmarks.lamia" },
+                                { icon: "📚", text: "Documentation", url: "purple-pages.lamia" },
+                                { icon: "🔧", text: "Tools", url: "lamia-tools.lamia" }
+                            ]
+                        }
+                    }
+                    
+                    triforce_section {
+                        grid_column: "span 3"
+                        background: "linear-gradient(135deg, #FFD700, #C0C0C0, #CD7F32)"
+                        border_radius: "10px"
+                        padding: "1rem"
+                        margin_top: "1rem"
+                        position: "relative"
+                        overflow: "hidden"
+                        
+                        title: "🐍 LAMIA TRIFORCE POWER"
+                        grid {
+                            grid_template_columns: "repeat(3, 1fr)"
+                            gap: "0.5rem"
+                            
+                            item {
+                                background: "rgba(255, 255, 255, 0.9)"
+                                border_radius: "6px"
+                                padding: "0.5rem"
+                                text_align: "center"
+                                transition: "all 0.3s ease"
+                                hover_effect: "translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2)"
+                                
+                                icon: "⚡"
+                                title: "Performance"
+                                description: "78.3% complexity reduction"
+                            }
+                            
+                            item {
+                                background: "rgba(255, 255, 255, 0.9)"
+                                border_radius: "6px"
+                                padding: "0.5rem"
+                                text_align: "center"
+                                transition: "all 0.3s ease"
+                                hover_effect: "translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2)"
+                                
+                                icon: "🧠"
+                                title: "Intelligence"
+                                description: "3D emotion synthesis"
+                            }
+                            
+                            item {
+                                background: "rgba(255, 255, 255, 0.9)"
+                                border_radius: "6px"
+                                padding: "0.5rem"
+                                text_align: "center"
+                                transition: "all 0.3s ease"
+                                hover_effect: "translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2)"
+                                
+                                icon: "🏭"
+                                title: "Manufacturing"
+                                description: "Native G-code generation"
+                            }
+                        }
+                    }
+                }
+            }
+            
+            separator {
+                width: "2px"
+                height: "20px"
+                background: "linear-gradient(to bottom, transparent, #FF6B9D, transparent)"
+                border_radius: "1px"
+                opacity: "0.6"
+                animation: "separatorPulse 2s ease-in-out infinite"
+            }
+            
+            // PURPLE PAGES
+            nav_item {
+                link {
+                    icon: "book-gif3d-mini"
+                    text: "Purple Pages"
+                    url: "purple-pages.lamia"
+                    hover_effect: "translateY(-1px)"
+                }
+            }
+            
+            separator {
+                width: "2px"
+                height: "20px"
+                background: "linear-gradient(to bottom, transparent, #FF6B9D, transparent)"
+                border_radius: "1px"
+                opacity: "0.6"
+                animation: "separatorPulse 2s ease-in-out infinite"
+            }
+            
+            // LAMIA FABRICA
+            nav_item {
+                link {
+                    icon: "hand-wave-gif3d-mini"
+                    text: "Lamia Fabrica"
+                    url: "lamia-fabrica.lamia"
+                    hover_effect: "translateY(-1px)"
+                }
+            }
+            
+            separator {
+                width: "2px"
+                height: "20px"
+                background: "linear-gradient(to bottom, transparent, #FF6B9D, transparent)"
+                border_radius: "1px"
+                opacity: "0.6"
+                animation: "separatorPulse 2s ease-in-out infinite"
+            }
+            
+            // MEDUSASERV
+            nav_item has_children {
+                link {
+                    icon: "server-gif3d-mini"
+                    text: "MedusaServ"
+                    url: "#"
+                    hover_effect: "translateY(-1px)"
+                }
+                
+                dropdown {
+                    position: "absolute"
+                    top: "100%"
+                    left: "0"
+                    min_width: "400px"
+                    background: "rgba(255, 255, 255, 0.98)"
+                    backdrop_filter: "blur(20px)"
+                    border_radius: "15px"
+                    box_shadow: "0 20px 60px rgba(0, 0, 0, 0.2)"
+                    padding: "1.5rem"
+                    opacity: "0"
+                    visibility: "hidden"
+                    transform: "translateY(-10px) scale(0.95)"
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                    z_index: "1001"
+                    border: "2px solid #FF6B9D"
+                    
+                    dropdown_title {
+                        text: "MedusaServ Web Server"
+                        font_size: "1.2rem"
+                        font_weight: "bold"
+                        color: "#8B3F8B"
+                        text_align: "center"
+                        margin_bottom: "1.5rem"
+                        padding_bottom: "0.5rem"
+                        border_bottom: "2px solid #FF6B9D"
+                    }
+                    
+                    dropdown_buttons {
+                        display: "flex"
+                        gap: "1rem"
+                        justify_content: "center"
+                        
+                        button server {
+                            display: "flex"
+                            flex_direction: "column"
+                            align_items: "center"
+                            padding: "1rem"
+                            background: "linear-gradient(135deg, #8B3F8B, #FF6B9D)"
+                            border: "none"
+                            border_radius: "10px"
+                            color: "white"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            min_width: "150px"
+                            hover_effect: "translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(139, 63, 139, 0.4)"
+                            
+                            icon: "⚡"
+                            title: "Server"
+                            description: "High-performance C++"
+                            link: "medusaserv.lamia"
+                        }
+                        
+                        button security {
+                            display: "flex"
+                            flex_direction: "column"
+                            align_items: "center"
+                            padding: "1rem"
+                            background: "linear-gradient(135deg, #8B3F8B, #FF6B9D)"
+                            border: "none"
+                            border_radius: "10px"
+                            color: "white"
+                            cursor: "pointer"
+                            transition: "all 0.3s ease"
+                            min_width: "150px"
+                            hover_effect: "translateY(-5px) scale(1.05); box-shadow: 0 10px 20px rgba(139, 63, 139, 0.4)"
+                            
+                            icon: "🛡️"
+                            title: "ICEWALL"
+                            description: "Military-grade security"
+                            link: "icewall.lamia"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

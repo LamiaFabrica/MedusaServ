@@ -1,0 +1,129 @@
+<!--
+© 2025 D Hargreaves AKA Roylepython | All Rights Reserved
+
+HEADER COMPONENT - MEDUSA ECOSYSTEM
+===================================
+
+This header includes the 3 main brand logos and navigation structure
+-->
+
+component header() {
+    // SPINNING UNIVERSE BACKGROUND
+    background {
+        type: "universe"
+        animation: "spinUniverse 60s linear infinite"
+        layers: 4
+        colors: [
+            "rgba(139, 63, 139, 0.4)",
+            "rgba(255, 107, 0, 0.3)", 
+            "rgba(33, 150, 243, 0.3)",
+            "rgba(76, 175, 80, 0.3)"
+        ]
+    }
+
+    // WHEELCHAIR GIF3D - TOP LEFT CORNER
+    accessibility {
+        position: "fixed"
+        top: "10px"
+        left: "10px"
+        width: "40px"
+        height: "30px"
+        z_index: "1000"
+        animation: "wheelchairBounce 2s ease-in-out infinite"
+        hover_effect: "wheelchairZoom 0.5s ease-out forwards"
+    }
+
+    // REVOLUTIONARY GIF3D MEGA MENU
+    navigation {
+        position: "fixed"
+        top: "0"
+        left: "0"
+        right: "0"
+        background: "rgba(255, 255, 255, 0.95)"
+        backdrop_filter: "blur(20px)"
+        border_bottom: "3px solid #8B3F8B"
+        z_index: "1000"
+        padding: "0.5rem 0"
+        box_shadow: "0 4px 30px rgba(0, 0, 0, 0.3)"
+        
+        container {
+            max_width: "1400px"
+            margin: "0 auto"
+            padding: "0.02rem 1rem"
+            
+            // MEDUSA ART LOGO - BIG DESKTOP HEADER
+            logo_section {
+                display: "flex"
+                justify_content: "center"
+                align_items: "center"
+                padding: "0.02rem 0"
+                margin_bottom: "0.02rem"
+                
+                image {
+                    src: "/assets/medusa-transformed.png"
+                    alt: "Medusa Art Logo - Intertwined Purple Snakes with Python Symbol"
+                    title: "Medusa EcoSystem - Revolutionary Python-Powered Platform"
+                    width: "100px"
+                    height: "auto"
+                    filter: "drop-shadow(0 0 20px rgba(139, 63, 139, 0.6))"
+                    animation: "medusaArtGlow 3s ease-in-out infinite"
+                }
+            }
+            
+            // LOGO SECTION - CENTERED ON ITS OWN ROW
+            brand_logos {
+                display: "flex"
+                justify_content: "center"
+                align_items: "center"
+                padding: "0.02rem 0"
+                margin_bottom: "0.02rem"
+                
+                logo_text {
+                    display: "flex"
+                    align_items: "center"
+                    gap: "0.5rem"
+                    font_size: "1.5rem"
+                    font_weight: "900"
+                    
+                    spock_atom {
+                        position: "relative"
+                        width: "40px"
+                        height: "32px"
+                        transform_style: "preserve-3d"
+                        perspective: "400px"
+                        
+                        core {
+                            position: "absolute"
+                            width: "12px"
+                            height: "12px"
+                            background: "radial-gradient(circle, #FF6B6B, #FF8E8E, #FFB3B3)"
+                            border_radius: "50%"
+                            top: "50%"
+                            left: "50%"
+                            transform: "translate(-50%, -50%)"
+                            box_shadow: "0 0 12px rgba(255, 107, 107, 0.8)"
+                            animation: "spockCorePulse 2s ease-in-out infinite"
+                        }
+                        
+                        rings: [
+                            { color: "rgba(255, 107, 107, 0.8)", duration: "4s" },
+                            { color: "rgba(255, 182, 193, 0.6)", duration: "6s", direction: "reverse" },
+                            { color: "rgba(255, 20, 147, 0.4)", duration: "8s" }
+                        ]
+                        
+                        electrons: 3
+                        vulcan_symbol: true
+                    }
+                    
+                    medusa_text {
+                        color: "#8B3F8B"
+                    }
+                    
+                    ecosystem_text {
+                        color: "#FF6B9D"
+                    }
+                }
+            }
+        }
+    }
+}

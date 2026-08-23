@@ -1,0 +1,142 @@
+<!--
+Purple-Pages.com - Footer Component
+Documentation hub footer
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_footer() {
+    footer(class: "main-footer") {
+        div(class: "footer-container") {
+            // Footer Columns
+            div(class: "footer-grid") {
+                // Column 1: About Purple Pages
+                div(class: "footer-column") {
+                    h4 {
+                        "About Purple Pages"
+                    }
+                    p {
+                        "Comprehensive documentation hub for The Medusa Project ecosystem. Complete guides, references, and knowledge base for all technologies."
+                    }
+                }
+                
+                // Column 2: Technologies
+                div(class: "footer-column") {
+                    h4 {
+                        "Technologies"
+                    }
+                    ul(class: "footer-links") {
+                        li {
+                            a(href: "/pages/psiforcedb/index.lamia") {
+                                "🦕 PsiForceDB"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/medusaserv/index.lamia") {
+                                "🌐 MedusaServ"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/lfssl/index.lamia") {
+                                "🔒 LFSSL"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/lamia/index.lamia") {
+                                "📝 Lamia"
+                            }
+                        }
+                    }
+                }
+                
+                // Column 3: Documentation Categories
+                div(class: "footer-column") {
+                    h4 {
+                        "Documentation"
+                    }
+                    ul(class: "footer-links") {
+                        li {
+                            a(href: "/pages/category/getting-started.lamia") {
+                                "Getting Started"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/category/user-guides.lamia") {
+                                "User Guides"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/category/api.lamia") {
+                                "API Reference"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/category/administration.lamia") {
+                                "Administration"
+                            }
+                        }
+                        li {
+                            a(href: "/pages/search.lamia") {
+                                "Search"
+                            }
+                        }
+                    }
+                }
+                
+                // Column 4: Connect
+                div(class: "footer-column") {
+                    h4 {
+                        "Connect"
+                    }
+                    ul(class: "footer-links") {
+                        li {
+                            a(href: "https://x.com/Medusainit", target: "_blank", rel: "noopener noreferrer") {
+                                "X/Twitter: @Medusainit"
+                            }
+                        }
+                        li {
+                            a(href: "https://discord.gg/cGV8bMS3Jy", target: "_blank", rel: "noopener noreferrer") {
+                                "Discord Community"
+                            }
+                        }
+                        li {
+                            a(href: "https://www.patreon.com/TheMedusaInitiative", target: "_blank", rel: "noopener noreferrer") {
+                                "Support on Patreon"
+                            }
+                        }
+                        li {
+                            a(href: "https://psiforcedb.com", target: "_blank") {
+                                "PsiForceDB.com"
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Copyright and Credits
+            div(class: "footer-bottom") {
+                div(class: "copyright") {
+                    p {
+                        "© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards"
+                    }
+                    p {
+                        "Purple Pages - Documentation Hub for The Medusa Project Ecosystem"
+                    }
+                    p(class: "ecosystem-note") {
+                        "Part of The Medusa Project: 100% Native C++ Stack"
+                    }
+                }
+                div(class: "footer-social") {
+                    a(href: "https://x.com/Medusainit", target: "_blank", rel: "noopener noreferrer", class: "social-icon", title: "Follow @Medusainit on X/Twitter") {
+                        "X"
+                    }
+                    a(href: "https://discord.gg/cGV8bMS3Jy", target: "_blank", rel: "noopener noreferrer", class: "social-icon", title: "Join Discord") {
+                        "Discord"
+                    }
+                    a(href: "https://www.patreon.com/TheMedusaInitiative", target: "_blank", rel: "noopener noreferrer", class: "social-icon", title: "Support on Patreon") {
+                        "Patreon"
+                    }
+                }
+            }
+        }
+    }
+}

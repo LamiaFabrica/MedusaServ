@@ -1,0 +1,146 @@
+<!--
+Purple-Pages.com - API Documentation Category Page
+All API documentation across technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_category_api() {
+    include "base.lamia" {
+        title: "API Documentation - Purple Pages"
+        description: "Complete API references for all Medusa Project technologies - RESTful APIs, IPA endpoints, and integration guides"
+        keywords: "API, REST, IPA, endpoints, integration, reference, documentation"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/category/api.lamia") {
+                            "API Documentation"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "category-hero") {
+            div(class: "category-hero-content") {
+                h1 {
+                    "🔌 API Documentation"
+                }
+                p(class: "category-description") {
+                    "Complete API references for all Medusa Project technologies. RESTful APIs, IPA endpoints, and integration guides."
+                }
+            }
+        }
+        
+        // API Sections by Technology
+        section(class: "category-content") {
+            div(class: "category-container") {
+                // PsiForceDB APIs
+                div(class: "api-tech-section") {
+                    h2 {
+                        "🦕 PsiForceDB APIs"
+                    }
+                    div(class: "api-cards") {
+                        a(href: "/pages/psiforcedb/api/rest.lamia", class: "api-card") {
+                            h3 {
+                                "REST API"
+                            }
+                            p {
+                                "RESTful API endpoints for PsiForceDB"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/api/pfql.lamia", class: "api-card") {
+                            h3 {
+                                "PFQL API"
+                            }
+                            p {
+                                "PFQL query language API"
+                            }
+                        }
+                        
+                        a(href: "/pages/psiforcedb/api/ipa.lamia", class: "api-card") {
+                            h3 {
+                                "IPA Endpoints"
+                            }
+                            p {
+                                "Internal Process Architecture endpoints"
+                            }
+                        }
+                    }
+                }
+                
+                // MedusaServ APIs
+                div(class: "api-tech-section") {
+                    h2 {
+                        "🌐 MedusaServ APIs"
+                    }
+                    div(class: "api-cards") {
+                        a(href: "/pages/medusaserv/api/endpoints.lamia", class: "api-card") {
+                            h3 {
+                                "HTTP Endpoints"
+                            }
+                            p {
+                                "HTTP request handling API"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/api/lamia-api.lamia", class: "api-card") {
+                            h3 {
+                                "Lamia API"
+                            }
+                            p {
+                                "Lamia template integration API"
+                            }
+                        }
+                    }
+                }
+                
+                // LFSSL APIs
+                div(class: "api-tech-section") {
+                    h2 {
+                        "🔒 LFSSL APIs"
+                    }
+                    div(class: "api-cards") {
+                        a(href: "/pages/lfssl/api/tls-api.lamia", class: "api-card") {
+                            h3 {
+                                "TLS API"
+                            }
+                            p {
+                                "TLS 1.3 implementation API"
+                            }
+                        }
+                    }
+                }
+                
+                // Lamia APIs
+                div(class: "api-tech-section") {
+                    h2 {
+                        "📝 Lamia APIs"
+                    }
+                    div(class: "api-cards") {
+                        a(href: "/pages/lamia/api/functions.lamia", class: "api-card") {
+                            h3 {
+                                "Template Functions"
+                            }
+                            p {
+                                "Built-in template functions API"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

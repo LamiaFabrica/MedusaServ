@@ -1,0 +1,15 @@
+# PRECELL MANIFEST — ROLLOUT-MEDUSA-01 (T3A3 IntegrationLead)
+# captured: 2026-08-09T23:51:08Z
+HEAD: 514cdc737f674d3b9c39bf3cb7656a254ed7cb63
+baseline: 514cdc7 + dirty (never revert, never commit)
+
+## git status --short
+?? agent-flow/
+
+## git diff --stat (tracked modifications)
+(end diff --stat — EMPTY: no tracked file modifications)
+
+## sha256 of dirty files
+# Only dirty entry is untracked dir agent-flow/, which contains ONLY agent-flow/runs (the live 8swarm disk bus).
+# Bus contents are volatile by design (append-only JSONL, written continuously by all agents) and are excluded from hashing.
+# find agent-flow -type f -not -path 'agent-flow/runs/*' => 0 files. No stable dirty files exist to hash.

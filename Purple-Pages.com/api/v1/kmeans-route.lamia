@@ -1,0 +1,62 @@
+<!--
+Purple-Pages.com - kMeans Routing API
+Routes messages using kMeans XML clustering via VPC
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_kmeans_route_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Server-ID");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Verify authentication
+    auth_result = verify_api_authentication();
+    if (!auth_result.authenticated) {
+        return response(401, json({
+            "error": "Unauthorized"
+        }));
+    }
+    
+    // Parse kMeans XML message
+    body = parse_json(request.body);
+    xml_message = body.get("xml_message", "");
+    
+    if (!xml_message) {
+        return response(400, json({
+            "error": "xml_message required"
+        }));
+    }
+    
+    // Parse kMeans XML
+    kmeans_parser = get_kmeans_parser();
+    message = kmeans_parser.parse(xml_message);
+    
+    // Route message
+    router = get_kmeans_router();
+    start_time = get_epoch_ms();
+    success = router.route(message, response_data);
+    route_time = get_epoch_ms() - start_time;
+    
+    if (success) {
+        return response(200, json({
+            "success": true,
+            "message_id": message.message_id,
+            "response": response_data,
+            "route_time_ms": route_time,
+            "route_type": message.routing.route_type,
+            "vpc_optimized": message.routing.route_type == "vpc_direct"
+        }));
+    } else {
+        return response(500, json({
+            "success": false,
+            "error": "Routing failed",
+            "message_id": message.message_id
+        }));
+    }
+}
+

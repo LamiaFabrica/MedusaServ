@@ -1,0 +1,126 @@
+# MedusaServ Robots.txt - Optimized for SEO
+# Generated: 2025-01-27
+# Website: https://poweredbymedusa.com/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://poweredbymedusa.com/sitemap.xml
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Allow social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Allow archive.org
+User-agent: ia_archiver
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /secure/
+Disallow: /internal/
+Disallow: /api/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /temp/
+Disallow: /logs/
+Disallow: /backup/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /system/
+
+# Disallow file types that shouldn't be indexed
+Disallow: /*.pdf$
+Disallow: /*.doc$
+Disallow: /*.docx$
+Disallow: /*.xls$
+Disallow: /*.xlsx$
+Disallow: /*.ppt$
+Disallow: /*.pptx$
+Disallow: /*.zip$
+Disallow: /*.rar$
+Disallow: /*.tar$
+Disallow: /*.gz$
+Disallow: /*.sql$
+Disallow: /*.log$
+Disallow: /*.tmp$
+Disallow: /*.temp$
+
+# Allow important file types
+Allow: /*.html$
+Allow: /*.htm$
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.ico$
+Allow: /*.xml$
+Allow: /*.txt$
+
+# Crawl delay (optional - be respectful to servers)
+Crawl-delay: 1
+
+# Additional directives for better SEO
+# Allow all documentation pages
+Allow: /docs/
+Allow: /documentation/
+Allow: /features/
+Allow: /lamia-language/
+Allow: /support-us/
+Allow: /patreon-benefits/
+Allow: /community/
+Allow: /download/
+
+# Block any potential security-sensitive paths
+Disallow: /.*\.env
+Disallow: /.*\.htaccess
+Disallow: /.*\.htpasswd
+Disallow: /.*\.ini
+Disallow: /.*\.conf
+Disallow: /.*\.config
+Disallow: /.*\.key
+Disallow: /.*\.pem
+Disallow: /.*\.crt
+Disallow: /.*\.p12
+Disallow: /.*\.pfx
+
+# Allow search engines to access our revolutionary content
+Allow: /revolutionary/
+Allow: /quantum/
+Allow: /enterprise/
+Allow: /security/
+Allow: /performance/
+Allow: /lamia/
+Allow: /medusaserv/
+Allow: /programming-language/
+Allow: /web-platform/

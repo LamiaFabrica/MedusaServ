@@ -1,0 +1,137 @@
+<!--
+Purple-Pages.com - VPC Routing Configuration
+Server-to-server routing configuration for VPC network
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_vpc_config() {
+    // VPC Network Configuration
+    VPC_CONFIG = {
+        "network": "10.0.0.0/24",
+        "subnet_mask": "255.255.255.0",
+        "gateway": "10.0.0.1"
+    };
+    
+    // Server Registry
+    SERVERS = {
+        "db": {
+            "public_ip": "172.236.28.155",
+            "vpc_ip": "10.0.0.4",
+            "services": {
+                "database": {
+                    "port": 5432,
+                    "protocol": "PFQL",
+                    "connection_pool": 100
+                },
+                "api": {
+                    "port": 8080,
+                    "protocol": "HTTP"
+                }
+            },
+            "role": "Database Server (PsiForceDB Primary)"
+        },
+        "dev": {
+            "public_ip": "172.236.22.79",
+            "vpc_ip": "10.0.0.5",
+            "services": {
+                "purple_pages": {
+                    "port": 8080,
+                    "protocol": "HTTP"
+                },
+                "error_logging": {
+                    "port": 8081,
+                    "protocol": "HTTP"
+                }
+            },
+            "role": "Developer Server (Purple Pages)"
+        },
+        "main": {
+            "public_ip": "172.236.20.28",
+            "vpc_ip": "10.0.0.2",
+            "services": {
+                "lamiafabrica_backend": {
+                    "port": 8080,
+                    "protocol": "HTTP",
+                    "connection_pool": 50
+                },
+                "lamiafabrica_frontend": {
+                    "port": 3000,
+                    "protocol": "HTTP",
+                    "cdn_enabled": true
+                },
+                "customer_portal": {
+                    "port": 8082,
+                    "protocol": "HTTP"
+                },
+                "user_tools": {
+                    "port": 8083,
+                    "protocol": "HTTP"
+                }
+            },
+            "role": "Main Server (Lamia Fabrica Backend/Frontend)"
+        },
+        "backoffice": {
+            "public_ip": "172.236.28.155",
+            "vpc_ip": "10.0.0.4",
+            "services": {
+                "api_gateway": {
+                    "port": 443,
+                    "protocol": "HTTPS/LFSSL"
+                },
+                "callback_manager": {
+                    "port": 8443,
+                    "protocol": "HTTPS/LFSSL"
+                },
+                "database_proxy": {
+                    "port": 5432,
+                    "protocol": "PFQL"
+                }
+            },
+            "role": "Back Office Server (API Gateway & Callback Router)"
+        }
+    };
+    
+    // Connection Pools (Maintained for VPC traffic)
+    CONNECTION_POOLS = {
+        "vpc_pool": {
+            "type": "database",
+            "host": "10.0.0.4",
+            "port": 5432,
+            "database": "psiforcedb",
+            "min_connections": 10,
+            "max_connections": 100,
+            "idle_timeout": 300,
+            "connection_timeout": 5
+        },
+        "main_server_pool": {
+            "type": "http",
+            "host": "10.0.0.2",
+            "port": 8080,
+            "max_connections": 50,
+            "keepalive": true
+        },
+        "dev_server_pool": {
+            "type": "http",
+            "host": "10.0.0.5",
+            "port": 8080,
+            "max_connections": 20,
+            "keepalive": true
+        }
+    };
+    
+    // Routing Rules
+    ROUTING_RULES = {
+        "internal": {
+            "use_vpc": true,
+            "encryption": false,  // No encryption overhead for VPC
+            "timeout_ms": 5000
+        },
+        "external": {
+            "use_callback": true,
+            "callback_server": "10.0.0.4:8443",
+            "encryption": true,  // LFSSL encryption
+            "timeout_ms": 30000
+        }
+    };
+}
+

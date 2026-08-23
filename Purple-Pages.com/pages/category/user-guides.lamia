@@ -1,0 +1,167 @@
+<!--
+Purple-Pages.com - User Guides Category Page
+All user guides across technologies
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_category_user_guides() {
+    include "base.lamia" {
+        title: "User Guides - Purple Pages"
+        description: "Comprehensive user guides for all Medusa Project technologies - from beginner to advanced"
+        keywords: "user guides, tutorials, how-to, beginner, developer, business, advanced, documentation"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/category/user-guides.lamia") {
+                            "User Guides"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Hero Section
+        section(class: "category-hero") {
+            div(class: "category-hero-content") {
+                h1 {
+                    "📚 User Guides"
+                }
+                p(class: "category-description") {
+                    "Comprehensive guides for average users, developers, business users, and advanced users"
+                }
+            }
+        }
+        
+        // User Type Sections
+        section(class: "category-content") {
+            div(class: "category-container") {
+                // Beginner Guides
+                div(class: "user-type-section") {
+                    h2 {
+                        "👶 Beginner Guides"
+                    }
+                    p {
+                        "Simple, clear guides for users new to The Medusa Project ecosystem"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/guides/beginner.lamia", class: "guide-card") {
+                            h3 {
+                                "PsiForceDB for Beginners"
+                            }
+                            p {
+                                "Learn the basics of PsiForceDB"
+                            }
+                            span(class: "guide-badge") {
+                                "Beginner"
+                            }
+                        }
+                        
+                        a(href: "/pages/medusaserv/guides/getting-started.lamia", class: "guide-card") {
+                            h3 {
+                                "MedusaServ Getting Started"
+                            }
+                            p {
+                                "Your first MedusaServ application"
+                            }
+                            span(class: "guide-badge") {
+                                "Beginner"
+                            }
+                        }
+                    }
+                }
+                
+                // Developer Guides
+                div(class: "user-type-section") {
+                    h2 {
+                        "👨‍💻 Developer Guides"
+                    }
+                    p {
+                        "Technical documentation for software developers"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/guides/developer.lamia", class: "guide-card") {
+                            h3 {
+                                "PsiForceDB Developer Guide"
+                            }
+                            p {
+                                "Complete developer documentation"
+                            }
+                            span(class: "guide-badge") {
+                                "Developer"
+                            }
+                        }
+                        
+                        a(href: "/pages/lamia/guides/advanced.lamia", class: "guide-card") {
+                            h3 {
+                                "Advanced Lamia Templates"
+                            }
+                            p {
+                                "Advanced templating techniques"
+                            }
+                            span(class: "guide-badge") {
+                                "Developer"
+                            }
+                        }
+                    }
+                }
+                
+                // Business Guides
+                div(class: "user-type-section") {
+                    h2 {
+                        "💼 Business User Guides"
+                    }
+                    p {
+                        "Documentation for business users and decision makers"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/guides/business.lamia", class: "guide-card") {
+                            h3 {
+                                "PsiForceDB for Business"
+                            }
+                            p {
+                                "Business value and use cases"
+                            }
+                            span(class: "guide-badge") {
+                                "Business"
+                            }
+                        }
+                    }
+                }
+                
+                // Advanced Guides
+                div(class: "user-type-section") {
+                    h2 {
+                        "🚀 Advanced Guides"
+                    }
+                    p {
+                        "Advanced topics for experienced users and system administrators"
+                    }
+                    div(class: "guide-cards") {
+                        a(href: "/pages/psiforcedb/guides/advanced.lamia", class: "guide-card") {
+                            h3 {
+                                "Advanced PsiForceDB"
+                            }
+                            p {
+                                "Advanced features and techniques"
+                            }
+                            span(class: "guide-badge") {
+                                "Advanced"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

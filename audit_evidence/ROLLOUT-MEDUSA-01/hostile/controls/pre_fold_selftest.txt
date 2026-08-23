@@ -1,0 +1,3 @@
+zip entries: 88; differing: 0; missing from tree: 0
+BASELINE INTACT — nothing to do
+EXIT=0

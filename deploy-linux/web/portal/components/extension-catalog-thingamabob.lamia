@@ -1,0 +1,629 @@
+/*
+ * Extension Catalog Thingamabob - v0.4.0
+ * Yorkshire Champion Standards - Complete Extension Management System
+ * 
+ * Features:
+ * - Extension browsing and installation
+ * - Automatic updates and version management
+ * - Dependency resolution
+ * - Security scanning
+ * 
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "extension_catalog_thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise_extension_catalog"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Extension Catalog v0.4.0 - Yorkshire Champion Standards</title>
+        <style>
+            :root {
+                --yorkshire-gold: #FFD700;
+                --yorkshire-green: #228B22;
+                --medusa-purple: #6B46C1;
+                --quantum-blue: #00D4FF;
+                --success: #10B981;
+                --warning: #F59E0B;
+                --danger: #EF4444;
+            }
+
+            .extension-catalog-container {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                color: white;
+                padding: 30px;
+                border-radius: 12px;
+                font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            }
+
+            .catalog-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid var(--yorkshire-gold);
+            }
+
+            .catalog-title {
+                font-size: 32px;
+                font-weight: bold;
+                background: linear-gradient(90deg, var(--yorkshire-gold), var(--quantum-blue));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .catalog-stats {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+            .stat-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                border-radius: 8px;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .stat-value {
+                font-size: 36px;
+                font-weight: bold;
+                color: var(--yorkshire-gold);
+                margin-bottom: 5px;
+            }
+
+            .stat-label {
+                font-size: 14px;
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            .search-filters {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+            .search-box {
+                flex: 1;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 215, 0, 0.3);
+                border-radius: 8px;
+                padding: 12px 20px;
+                color: white;
+                font-size: 16px;
+            }
+
+            .filter-button {
+                background: linear-gradient(135deg, var(--medusa-purple), var(--quantum-blue));
+                border: none;
+                border-radius: 8px;
+                padding: 12px 24px;
+                color: white;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .filter-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(107, 70, 193, 0.3);
+            }
+
+            .extension-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 25px;
+                margin-bottom: 30px;
+            }
+
+            .extension-card {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 215, 0, 0.2);
+                border-radius: 12px;
+                padding: 25px;
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .extension-card:hover {
+                transform: translateY(-5px);
+                border-color: var(--yorkshire-gold);
+                box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
+            }
+
+            .extension-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+                margin-bottom: 15px;
+            }
+
+            .extension-icon {
+                width: 60px;
+                height: 60px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, var(--medusa-purple), var(--quantum-blue));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 28px;
+            }
+
+            .extension-badge {
+                background: var(--success);
+                color: white;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .extension-badge.premium {
+                background: var(--yorkshire-gold);
+                color: black;
+            }
+
+            .extension-badge.beta {
+                background: var(--warning);
+            }
+
+            .extension-title {
+                font-size: 20px;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            .extension-author {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+
+            .extension-description {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 14px;
+                line-height: 1.6;
+                margin-bottom: 15px;
+            }
+
+            .extension-meta {
+                display: flex;
+                gap: 15px;
+                margin-bottom: 20px;
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .extension-meta-item {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .extension-actions {
+                display: flex;
+                gap: 10px;
+            }
+
+            .install-button {
+                flex: 1;
+                background: linear-gradient(135deg, var(--success), #059669);
+                border: none;
+                border-radius: 8px;
+                padding: 10px;
+                color: white;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .install-button:hover {
+                transform: scale(1.02);
+                box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+            }
+
+            .install-button.installed {
+                background: rgba(255, 255, 255, 0.1);
+                cursor: default;
+            }
+
+            .install-button.updating {
+                background: linear-gradient(135deg, var(--warning), #D97706);
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.7; }
+            }
+
+            .featured-section {
+                margin-bottom: 40px;
+            }
+
+            .featured-header {
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .featured-icon {
+                color: var(--yorkshire-gold);
+            }
+
+            .categories-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 30px;
+            }
+
+            .category-chip {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 20px;
+                padding: 8px 16px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .category-chip:hover,
+            .category-chip.active {
+                background: var(--medusa-purple);
+                border-color: var(--medusa-purple);
+            }
+
+            .update-banner {
+                background: linear-gradient(135deg, var(--warning), var(--yorkshire-gold));
+                border-radius: 8px;
+                padding: 15px 20px;
+                margin-bottom: 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .update-text {
+                font-weight: 600;
+                color: black;
+            }
+
+            .update-all-button {
+                background: black;
+                color: var(--yorkshire-gold);
+                border: none;
+                border-radius: 6px;
+                padding: 8px 20px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="extension-catalog-container">
+            <div class="catalog-header">
+                <h1 class="catalog-title">🔌 Extension Catalog</h1>
+                <div class="header-actions">
+                    <button class="filter-button" onclick="openUploadModal()">
+                        📦 Upload Extension
+                    </button>
+                    <button class="filter-button" onclick="checkForUpdates()">
+                        🔄 Check Updates
+                    </button>
+                </div>
+            </div>
+
+            <div class="catalog-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-extensions">247</div>
+                    <div class="stat-label">Total Extensions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="installed-count">42</div>
+                    <div class="stat-label">Installed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="updates-available">7</div>
+                    <div class="stat-label">Updates Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="categories-count">15</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </div>
+
+            <div id="update-banner" class="update-banner" style="display: none;">
+                <span class="update-text">🔔 7 extensions have updates available</span>
+                <button class="update-all-button" onclick="updateAllExtensions()">Update All</button>
+            </div>
+
+            <div class="search-filters">
+                <input type="text" class="search-box" placeholder="🔍 Search extensions..." 
+                       oninput="searchExtensions(this.value)">
+                <select class="search-box" style="flex: 0.3;" onchange="filterByCategory(this.value)">
+                    <option value="">All Categories</option>
+                    <option value="security">Security</option>
+                    <option value="performance">Performance</option>
+                    <option value="developer">Developer Tools</option>
+                    <option value="ui">UI/UX</option>
+                    <option value="database">Database</option>
+                    <option value="ai">AI & Machine Learning</option>
+                </select>
+                <button class="filter-button" onclick="toggleAdvancedFilters()">
+                    ⚙️ Filters
+                </button>
+            </div>
+
+            <div class="categories-list">
+                <div class="category-chip active" onclick="filterCategory('all')">All</div>
+                <div class="category-chip" onclick="filterCategory('featured')">⭐ Featured</div>
+                <div class="category-chip" onclick="filterCategory('popular')">🔥 Popular</div>
+                <div class="category-chip" onclick="filterCategory('new')">✨ New</div>
+                <div class="category-chip" onclick="filterCategory('security')">🔒 Security</div>
+                <div class="category-chip" onclick="filterCategory('performance')">⚡ Performance</div>
+                <div class="category-chip" onclick="filterCategory('developer')">👨‍💻 Developer</div>
+                <div class="category-chip" onclick="filterCategory('ai')">🤖 AI</div>
+            </div>
+
+            <div class="featured-section">
+                <h2 class="featured-header">
+                    <span class="featured-icon">⭐</span>
+                    Featured Extensions
+                </h2>
+                <div class="extension-grid" id="featured-extensions">
+                    <!-- Featured extensions will be loaded here -->
+                </div>
+            </div>
+
+            <div class="extension-grid" id="extension-list">
+                <!-- Extensions will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <script>
+            class ExtensionCatalogManager {
+                constructor() {
+                    this.extensions = [];
+                    this.installedExtensions = new Set();
+                    this.categories = new Map();
+                    this.updateQueue = [];
+                    this.searchTerm = '';
+                    this.activeCategory = 'all';
+                    this.initializeWebSocket();
+                    this.loadExtensions();
+                }
+
+                initializeWebSocket() {
+                    // WebSocket for real-time updates
+                    this.ws = new WebSocket('wss://localhost:8443/extension-updates');
+                    
+                    this.ws.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        this.handleRealtimeUpdate(data);
+                    };
+
+                    this.ws.onerror = (error) => {
+                        console.error('WebSocket error:', error);
+                        // Fallback to polling
+                        this.startPolling();
+                    };
+                }
+
+                handleRealtimeUpdate(data) {
+                    switch(data.type) {
+                        case 'new_extension':
+                            this.addNewExtension(data.extension);
+                            this.showNotification(`New extension available: ${data.extension.name}`, 'success');
+                            break;
+                        case 'update_available':
+                            this.markUpdateAvailable(data.extensionId, data.version);
+                            this.showNotification(`Update available for ${data.extensionName}`, 'info');
+                            break;
+                        case 'installation_complete':
+                            this.markAsInstalled(data.extensionId);
+                            break;
+                        case 'security_alert':
+                            this.handleSecurityAlert(data);
+                            break;
+                    }
+                }
+
+                async loadExtensions() {
+                    try {
+                        const response = await fetch('/api/extensions/catalog');
+                        const data = await response.json();
+                        this.extensions = data.extensions;
+                        this.categories = new Map(Object.entries(data.categories));
+                        this.renderExtensions();
+                        this.updateStats();
+                    } catch (error) {
+                        console.error('Failed to load extensions:', error);
+                        this.showError('Failed to load extension catalog');
+                    }
+                }
+
+                renderExtensions(extensions = this.extensions) {
+                    const container = document.getElementById('extension-list');
+                    
+                    if (extensions.length === 0) {
+                        container.innerHTML = '<div class="no-results">No extensions found</div>';
+                        return;
+                    }
+
+                    container.innerHTML = extensions.map(ext => this.createExtensionCard(ext)).join('');
+                }
+
+                createExtensionCard(extension) {
+                    const isInstalled = this.installedExtensions.has(extension.id);
+                    const hasUpdate = extension.hasUpdate;
+                    
+                    return `
+                        <div class="extension-card" data-extension-id="${extension.id}">
+                            <div class="extension-header">
+                                <div class="extension-icon">${extension.icon || '🔌'}</div>
+                                ${extension.premium ? '<span class="extension-badge premium">PRO</span>' : ''}
+                                ${extension.beta ? '<span class="extension-badge beta">BETA</span>' : ''}
+                            </div>
+                            <h3 class="extension-title">${extension.name}</h3>
+                            <div class="extension-author">by ${extension.author}</div>
+                            <div class="extension-description">${extension.description}</div>
+                            <div class="extension-meta">
+                                <div class="extension-meta-item">
+                                    <span>⬇️</span> ${this.formatNumber(extension.downloads)}
+                                </div>
+                                <div class="extension-meta-item">
+                                    <span>⭐</span> ${extension.rating}/5
+                                </div>
+                                <div class="extension-meta-item">
+                                    <span>📦</span> v${extension.version}
+                                </div>
+                            </div>
+                            <div class="extension-actions">
+                                ${this.getActionButton(extension, isInstalled, hasUpdate)}
+                                <button class="filter-button" onclick="viewExtensionDetails('${extension.id}')" 
+                                        style="flex: 0.3;">
+                                    ℹ️ Details
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                getActionButton(extension, isInstalled, hasUpdate) {
+                    if (hasUpdate) {
+                        return `<button class="install-button updating" 
+                                       onclick="updateExtension('${extension.id}')">
+                                   🔄 Update to v${extension.latestVersion}
+                               </button>`;
+                    } else if (isInstalled) {
+                        return `<button class="install-button installed" disabled>
+                                   ✅ Installed
+                               </button>`;
+                    } else {
+                        return `<button class="install-button" 
+                                       onclick="installExtension('${extension.id}')">
+                                   📥 Install
+                               </button>`;
+                    }
+                }
+
+                async installExtension(extensionId) {
+                    const button = document.querySelector(`[data-extension-id="${extensionId}"] .install-button`);
+                    button.innerHTML = '⏳ Installing...';
+                    button.disabled = true;
+
+                    try {
+                        const response = await fetch('/api/extensions/install', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ extensionId })
+                        });
+
+                        if (response.ok) {
+                            this.installedExtensions.add(extensionId);
+                            button.innerHTML = '✅ Installed';
+                            button.classList.add('installed');
+                            this.showNotification('Extension installed successfully!', 'success');
+                            
+                            // Auto-document in Purple Pages
+                            this.documentExtension(extensionId);
+                        } else {
+                            throw new Error('Installation failed');
+                        }
+                    } catch (error) {
+                        button.innerHTML = '❌ Failed';
+                        button.disabled = false;
+                        this.showNotification('Installation failed: ' + error.message, 'error');
+                    }
+                }
+
+                async documentExtension(extensionId) {
+                    // Integrate with Purple Pages for auto-documentation
+                    await fetch('/api/purple-pages/document', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'extension_installation',
+                            extensionId,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+                }
+
+                formatNumber(num) {
+                    if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+                    if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+                    return num.toString();
+                }
+
+                showNotification(message, type = 'info') {
+                    // Implement notification system
+                    console.log(`[${type}] ${message}`);
+                }
+
+                updateStats() {
+                    document.getElementById('total-extensions').textContent = this.extensions.length;
+                    document.getElementById('installed-count').textContent = this.installedExtensions.size;
+                    document.getElementById('categories-count').textContent = this.categories.size;
+                    
+                    const updatesCount = this.extensions.filter(e => e.hasUpdate).length;
+                    document.getElementById('updates-available').textContent = updatesCount;
+                    
+                    if (updatesCount > 0) {
+                        document.getElementById('update-banner').style.display = 'flex';
+                    }
+                }
+            }
+
+            // Initialize the catalog manager
+            const catalogManager = new ExtensionCatalogManager();
+
+            // Global functions for event handlers
+            function searchExtensions(term) {
+                catalogManager.searchTerm = term.toLowerCase();
+                catalogManager.applyFilters();
+            }
+
+            function filterByCategory(category) {
+                catalogManager.activeCategory = category;
+                catalogManager.applyFilters();
+            }
+
+            function installExtension(id) {
+                catalogManager.installExtension(id);
+            }
+
+            function updateExtension(id) {
+                catalogManager.updateExtension(id);
+            }
+
+            function updateAllExtensions() {
+                catalogManager.updateAllExtensions();
+            }
+
+            function checkForUpdates() {
+                catalogManager.checkForUpdates();
+            }
+
+            function viewExtensionDetails(id) {
+                window.location.href = `/extensions/details/${id}`;
+            }
+        </script>
+    </body>
+    </html>
+}

@@ -1,0 +1,259 @@
+<!--
+Purple-Pages.com - Documentation Import Admin Page
+Import Markdown files into Purple Pages
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_admin_import_docs() {
+    include "base.lamia" {
+        title: "Import Documentation - Admin"
+        description: "Import Markdown documentation files into Purple Pages"
+        keywords: "admin, import, documentation, markdown"
+    }
+    
+    main {
+        // Breadcrumbs
+        nav(class: "breadcrumbs") {
+            div(class: "breadcrumb-container") {
+                ol(class: "breadcrumb-list") {
+                    li {
+                        a(href: "/index.lamia") {
+                            "Home"
+                        }
+                    }
+                    li {
+                        a(href: "/pages/admin.lamia") {
+                            "Admin"
+                        }
+                    }
+                    li(class: "active") {
+                        "Import Documentation"
+                    }
+                }
+            }
+        }
+        
+        // Admin Content
+        section(class: "admin-section") {
+            div(class: "admin-container") {
+                h1 {
+                    "📚 Import Documentation"
+                }
+                p(class: "admin-description") {
+                    "Scan for Markdown files and import them into Purple Pages. Uses BertieBot's documentation system integration."
+                }
+                
+                // Scan Section
+                div(class: "import-section") {
+                    h2 {
+                        "🔍 Scan for Markdown Files"
+                    }
+                    p {
+                        "Scan the codebase for .md files that can be imported"
+                    }
+                    button(id: "scan-btn", class: "btn btn-primary") {
+                        "Scan for MD Files"
+                    }
+                    
+                    div(id: "scan-results", class: "scan-results hidden") {
+                        // Results will appear here
+                    }
+                }
+                
+                // Import Section
+                div(class: "import-section") {
+                    h2 {
+                        "📥 Import Files"
+                    }
+                    p {
+                        "Select files to import and configure their category/technology"
+                    }
+                    
+                    form(id: "import-form", class: "import-form") {
+                        div(class: "form-group") {
+                            label(for: "import-category") {
+                                "Category:"
+                            }
+                            select(id: "import-category", name: "category") {
+                                option(value: "getting-started") {
+                                    "Getting Started"
+                                }
+                                option(value: "user-guides") {
+                                    "User Guides"
+                                }
+                                option(value: "api") {
+                                    "API Documentation"
+                                }
+                                option(value: "administration") {
+                                    "Administration"
+                                }
+                                option(value: "troubleshooting") {
+                                    "Troubleshooting"
+                                }
+                                option(value: "architecture") {
+                                    "Architecture"
+                                }
+                                option(value: "general", selected: true) {
+                                    "General"
+                                }
+                            }
+                        }
+                        
+                        div(class: "form-group") {
+                            label(for: "import-technology") {
+                                "Technology:"
+                            }
+                            select(id: "import-technology", name: "technology") {
+                                option(value: "", selected: true) {
+                                    "None (General)"
+                                }
+                                option(value: "psiforcedb") {
+                                    "🦕 PsiForceDB"
+                                }
+                                option(value: "medusaserv") {
+                                    "🌐 MedusaServ"
+                                }
+                                option(value: "lfssl") {
+                                    "🔒 LFSSL"
+                                }
+                                option(value: "lamia") {
+                                    "📝 Lamia"
+                                }
+                            }
+                        }
+                        
+                        div(id: "file-list", class: "file-list") {
+                            // Files will be listed here after scan
+                        }
+                        
+                        div(class: "form-actions") {
+                            button(type: "submit", id: "import-btn", class: "btn btn-primary", disabled: true) {
+                                "Import Selected Files"
+                            }
+                        }
+                    }
+                }
+                
+                // Status Section
+                div(id: "import-status", class: "import-status hidden") {
+                    h2 {
+                        "Import Status"
+                    }
+                    div(id: "status-messages", class: "status-messages") {
+                        // Status messages will appear here
+                    }
+                }
+            }
+        }
+    }
+    
+    // Import JavaScript
+    script {
+        raw {
+            // Import functionality will be added here
+            document.getElementById('scan-btn')?.addEventListener('click', async () => {
+                const resultsDiv = document.getElementById('scan-results');
+                const importBtn = document.getElementById('import-btn');
+                
+                resultsDiv.classList.remove('hidden');
+                resultsDiv.innerHTML = '<p>Scanning...</p>';
+                
+                try {
+                    const response = await fetch('/api/admin/scan-md.lamia');
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        displayScanResults(data.files);
+                        importBtn.disabled = false;
+                    } else {
+                        resultsDiv.innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                    }
+                } catch (error) {
+                    resultsDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                }
+            });
+            
+            function displayScanResults(files) {
+                const resultsDiv = document.getElementById('scan-results');
+                const fileList = document.getElementById('file-list');
+                
+                if (files.length === 0) {
+                    resultsDiv.innerHTML = '<p>No Markdown files found.</p>';
+                    return;
+                }
+                
+                let html = `<p>Found ${files.length} Markdown files:</p><ul class="file-list-items">`;
+                let checkboxes = '';
+                
+                files.forEach((file, index) => {
+                    html += `<li>
+                        <strong>${file.name}</strong><br>
+                        <small>${file.path}</small><br>
+                        <small>Category: ${file.category || 'auto-detected'}, Technology: ${file.technology || 'none'}</small>
+                    </li>`;
+                    
+                    checkboxes += `<label class="file-checkbox">
+                        <input type="checkbox" name="files[]" value="${index}" data-file-path="${file.path}">
+                        <strong>${file.name}</strong> - ${file.path}
+                    </label>`;
+                });
+                
+                html += '</ul>';
+                resultsDiv.innerHTML = html;
+                fileList.innerHTML = checkboxes;
+            }
+            
+            document.getElementById('import-form')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const statusDiv = document.getElementById('import-status');
+                const messagesDiv = document.getElementById('status-messages');
+                const checkboxes = document.querySelectorAll('input[name="files[]"]:checked');
+                
+                if (checkboxes.length === 0) {
+                    alert('Please select at least one file to import');
+                    return;
+                }
+                
+                statusDiv.classList.remove('hidden');
+                messagesDiv.innerHTML = '<p>Importing files...</p>';
+                
+                const files = Array.from(checkboxes).map(cb => ({
+                    path: cb.dataset.filePath
+                }));
+                
+                const category = document.getElementById('import-category').value;
+                const technology = document.getElementById('import-technology').value;
+                
+                try {
+                    const response = await fetch('/api/admin/import-md.lamia', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ files, category, technology })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        messagesDiv.innerHTML = `
+                            <p class="success">✅ Imported ${data.imported} files successfully!</p>
+                            <p>Failed: ${data.failed}</p>
+                            <ul>
+                                ${data.results.map(r => `
+                                    <li class="${r.success ? 'success' : 'error'}">
+                                        ${r.file}: ${r.success ? '✅' : '❌ ' + r.error}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `;
+                    } else {
+                        messagesDiv.innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                    }
+                } catch (error) {
+                    messagesDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+                }
+            });
+        }
+    }
+}
+

@@ -1,0 +1,117 @@
+# LFCS WEBSERVER VIRTUAL HOST CONFIGURATION
+# ==========================================
+# Server: psmdb_web
+# Owner: admin
+# Path: ./vhosts/fconfig.vhost (as requested)
+# Generated: 2025-01-28
+
+[vhost]
+id = vhost_webserver_admin
+name = psmdb_web_vhost
+type = webserver
+owner = admin
+encrypted = true
+created = 1643376000
+
+[webserver]
+server_name = psmdb.local
+document_root = /var/www/html
+port = 80
+ssl_port = 443
+enable_ssl = true
+enable_hsts = true
+enable_compression = true
+enable_caching = true
+
+[paths]
+config = ./vhosts/fconfig.vhost
+data = ./vhost/admin/webserver/data
+logs = ./vhost/admin/webserver/logs
+cache = ./vhost/admin/webserver/cache
+ssl_certs = ./vhost/admin/webserver/ssl
+temp_files = ./vhost/admin/webserver/tmp
+
+[security]
+icewall_protection = enabled
+rate_limiting = enabled
+ddos_protection = enabled
+waf_enabled = true
+ssl_enforcement = true
+certificate_validation = strict
+
+[performance]
+compression = enabled
+caching = enabled
+optimization = quantum
+load_balancing = round_robin
+connection_pooling = true
+
+[lamia_integration]
+lamia_processing = enabled
+quantum_optimizer = enabled
+native_parsing = enabled
+advanced_caching = enabled
+real_time_processing = enabled
+
+[virtual_hosts]
+customer_db.john.local = ./vhost/john/pfdb/customer_db/config.vhost
+analytics_db.alice.local = ./vhost/alice/pfdb/analytics_db/config.vhost
+reporting_db.bob.local = ./vhost/bob/pfdb/reporting_db/config.vhost
+
+[network]
+listen_ports = 80,443
+max_connections = 10000
+timeout_seconds = 300
+keep_alive = enabled
+pipeline_requests = enabled
+
+[monitoring]
+access_logs = enabled
+error_logs = enabled
+performance_metrics = enabled
+real_time_monitoring = enabled
+health_checks = enabled
+
+[ssl]
+certificate_file = ./vhost/admin/webserver/ssl/cert.pem
+private_key_file = ./vhost/admin/webserver/ssl/key.pem
+ca_certificate_file = ./vhost/admin/webserver/ssl/ca.pem
+cipher_suite = TLS_AES_256_GCM_SHA384
+protocols = TLSv1.3
+hsts_max_age = 31536000
+force_https = true
+
+[rewrite_rules]
+# Redirect HTTP to HTTPS
+RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+
+# API routing
+RewriteRule ^/api/(.*)$ /api/handler.php?request=$1 [QSA,L]
+
+# Static file caching
+RewriteRule ^/static/(.*)$ /static/$1 [L]
+
+[custom_headers]
+X-Frame-Options = DENY
+X-Content-Type-Options = nosniff
+X-XSS-Protection = 1; mode=block
+Strict-Transport-Security = max-age=31536000; includeSubDomains
+Content-Security-Policy = default-src 'self'
+
+[modules]
+mod_ssl = enabled
+mod_rewrite = enabled
+mod_deflate = enabled
+mod_expires = enabled
+mod_headers = enabled
+mod_lamia = enabled
+mod_quantum = enabled
+
+# Encrypted section - this data is protected
+[encrypted_data]
+master_key = "ENCRYPTED_MASTER_KEY"
+session_tokens = "ENCRYPTED_SESSION_DATA"
+credentials = "ENCRYPTED_CREDENTIALS"
+certificates = "ENCRYPTED_SSL_CERTS"
+private_keys = "ENCRYPTED_PRIVATE_KEYS"
+api_keys = "ENCRYPTED_API_KEYS"

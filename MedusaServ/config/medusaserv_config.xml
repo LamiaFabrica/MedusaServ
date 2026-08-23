@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<medusaserv-config version="1.0">
+    <!-- Server Configuration -->
+    <server>
+        <name>MedusaServ Web Server</name>
+        <version>1.0.0</version>
+        <description>LamiaMedusaServ Web Server with LFCS Integration</description>
+        <admin-email>admin@medusaserv.local</admin-email>
+    </server>
+
+    <!-- Network Configuration -->
+    <network>
+        <http-port>8080</http-port>
+        <https-port>8443</https-port>
+        <max-connections>1000</max-connections>
+        <max-threads>4</max-threads>
+        <connection-timeout>30</connection-timeout>
+        <keep-alive-timeout>5</keep-alive-timeout>
+        <max-request-size>1048576</max-request-size> <!-- 1MB -->
+        <max-header-size>8192</max-header-size> <!-- 8KB -->
+    </network>
+
+    <!-- SSL/TLS Configuration -->
+    <ssl>
+        <enabled>true</enabled>
+        <certificate-file>ssl/server.crt</certificate-file>
+        <private-key-file>ssl/server.key</private-key-file>
+        <ca-certificate-file>ssl/ca.crt</ca-certificate-file>
+        <cipher-list>HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA</cipher-list>
+        <session-cache-size>100</session-cache-size>
+        <session-timeout>300</session-timeout>
+        <require-client-cert>false</require-client-cert>
+    </ssl>
+
+    <!-- Virtual Hosts Configuration -->
+    <virtual-hosts>
+        <host>
+            <name>localhost</name>
+            <aliases>
+                <alias>127.0.0.1</alias>
+                <alias>medusaserv.local</alias>
+            </aliases>
+            <document-root>./www</document-root>
+            <index-files>
+                <file>index.html</file>
+                <file>index.htm</file>
+                <file>index.php</file>
+                <file>default.html</file>
+            </index-files>
+            <error-pages>
+                <error code="404">errors/404.html</error>
+                <error code="500">errors/500.html</error>
+            </error-pages>
+            <access-log>logs/localhost_access.log</access-log>
+            <error-log>logs/localhost_error.log</error-log>
+        </host>
+
+        <host>
+            <name>phpmyadmin.local</name>
+            <aliases>
+                <alias>dbadmin.local</alias>
+            </aliases>
+            <document-root>./www/phpmyadmin</document-root>
+            <index-files>
+                <file>index.php</file>
+            </index-files>
+            <access-log>logs/phpmyadmin_access.log</access-log>
+            <error-log>logs/phpmyadmin_error.log</error-log>
+        </host>
+
+        <host>
+            <name>portal.local</name>
+            <aliases>
+                <alias>admin.local</alias>
+            </aliases>
+            <document-root>./www/portal</document-root>
+            <index-files>
+                <file>index.html</file>
+            </index-files>
+            <access-log>logs/portal_access.log</access-log>
+            <error-log>logs/portal_error.log</error-log>
+        </host>
+    </virtual-hosts>
+
+    <!-- Security Configuration -->
+    <security>
+        <rate-limiting>
+            <enabled>true</enabled>
+            <max-requests-per-minute>60</max-requests-per-minute>
+            <burst-limit>10</burst-limit>
+        </rate-limiting>
+
+        <ip-blocking>
+            <enabled>true</enabled>
+            <block-duration>3600</block-duration> <!-- 1 hour -->
+            <max-failed-attempts>5</max-failed-attempts>
+        </ip-blocking>
+
+        <cors>
+            <enabled>true</enabled>
+            <allowed-origins>
+                <origin>http://localhost:8080</origin>
+                <origin>https://localhost:8443</origin>
+                <origin>http://medusaserv.local</origin>
+                <origin>https://medusaserv.local</origin>
+            </allowed-origins>
+            <allowed-methods>
+                <method>GET</method>
+                <method>POST</method>
+                <method>PUT</method>
+                <method>DELETE</method>
+                <method>OPTIONS</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>Content-Type</header>
+                <header>Authorization</header>
+                <header>X-Requested-With</header>
+            </allowed-headers>
+            <max-age>86400</max-age> <!-- 24 hours -->
+        </cors>
+
+        <csrf-protection>
+            <enabled>true</enabled>
+            <token-lifetime>3600</token-lifetime> <!-- 1 hour -->
+        </csrf-protection>
+    </security>
+
+    <!-- Module Configuration -->
+    <modules>
+        <module>
+            <name>lfcs_container</name>
+            <enabled>true</enabled>
+            <path>modules/lfcs_container.dll</path>
+            <config>
+                <container-root>/var/lib/lfcs</container-root>
+                <max-containers>100</max-containers>
+                <default-memory-limit>512MB</default-memory-limit>
+            </config>
+        </module>
+
+        <module>
+            <name>psiforcedb_connector</name>
+            <enabled>true</enabled>
+            <path>modules/psiforcedb_connector.dll</path>
+            <config>
+                <database-path>./data/psiforcedb</database-path>
+                <max-connections>50</max-connections>
+                <connection-timeout>30</connection-timeout>
+            </config>
+        </module>
+
+        <module>
+            <name>lamia_templating</name>
+            <enabled>true</enabled>
+            <path>modules/lamia_templating.dll</path>
+            <config>
+                <template-dir>./templates</template-dir>
+                <cache-dir>./cache/templates</cache-dir>
+                <cache-enabled>true</cache-enabled>
+            </config>
+        </module>
+    </modules>
+
+    <!-- Performance Configuration -->
+    <performance>
+        <monitoring>
+            <enabled>true</enabled>
+            <update-interval>30</update-interval> <!-- seconds -->
+            <metrics-file>logs/performance_metrics.log</metrics-file>
+        </monitoring>
+
+        <optimization>
+            <memory-pool-enabled>true</memory-pool-enabled>
+            <memory-pool-size>67108864</memory-pool-size> <!-- 64MB -->
+            <cache-enabled>true</cache-enabled>
+            <cache-size>33554432</cache-size> <!-- 32MB -->
+            <compression-enabled>true</compression-enabled>
+            <compression-level>6</compression-level>
+        </optimization>
+
+        <threading>
+            <worker-threads>4</worker-threads>
+            <io-threads>2</io-threads>
+            <max-queue-size>1000</max-queue-size>
+        </threading>
+    </performance>
+
+    <!-- Logging Configuration -->
+    <logging>
+        <level>info</level> <!-- debug, info, warning, error -->
+        <format>[%Y-%m-%d %H:%M:%S] [%level] [%thread] %message</format>
+        <max-file-size>10485760</max-file-size> <!-- 10MB -->
+        <max-files>5</max-files>
+        <async-logging>true</async-logging>
+        <buffer-size>8192</buffer-size>
+
+        <loggers>
+            <logger name="access">
+                <file>logs/access.log</file>
+                <level>info</level>
+            </logger>
+            <logger name="error">
+                <file>logs/error.log</file>
+                <level>warning</level>
+            </logger>
+            <logger name="security">
+                <file>logs/security.log</file>
+                <level>info</level>
+            </logger>
+            <logger name="performance">
+                <file>logs/performance.log</file>
+                <level>info</level>
+            </logger>
+        </loggers>
+    </logging>
+
+    <!-- Database Configuration (for phpMyAdmin interface) -->
+    <database>
+        <connections>
+            <connection name="psiforcedb_main">
+                <type>psiforcedb</type>
+                <host>localhost</host>
+                <port>5432</port>
+                <database>psiforcedb</database>
+                <username>admin</username>
+                <password>encrypted_password_here</password>
+                <ssl-mode>require</ssl-mode>
+                <max-connections>20</max-connections>
+            </connection>
+
+            <connection name="medusaserv_meta">
+                <type>sqlite</type>
+                <file>./data/medusaserv_meta.db</file>
+                <max-connections>5</max-connections>
+            </connection>
+        </connections>
+
+        <phpmyadmin>
+            <enabled>true</enabled>
+            <theme>bootstrap</theme>
+            <language>en</language>
+            <max-rows-per-page>100</max-rows-per-page>
+            <export-method>quick</export-method>
+            <import-method>sql</import-method>
+        </phpmyadmin>
+    </database>
+
+    <!-- Portal Configuration -->
+    <portal>
+        <enabled>true</enabled>
+        <title>MedusaServ Management Portal</title>
+        <theme>dark</theme>
+        <session-timeout>1800</session-timeout> <!-- 30 minutes -->
+        <max-login-attempts>3</max-login-attempts>
+        <lockout-duration>900</lockout-duration> <!-- 15 minutes -->
+
+        <features>
+            <feature name="dashboard" enabled="true"/>
+            <feature name="server-status" enabled="true"/>
+            <feature name="virtual-hosts" enabled="true"/>
+            <feature name="security-logs" enabled="true"/>
+            <feature name="performance-metrics" enabled="true"/>
+            <feature name="lfcs-containers" enabled="true"/>
+            <feature name="database-management" enabled="true"/>
+            <feature name="user-management" enabled="true"/>
+        </features>
+
+        <users>
+            <user>
+                <username>admin</username>
+                <password-hash>hashed_password_here</password-hash>
+                <role>administrator</role>
+                <email>admin@medusaserv.local</email>
+            </user>
+        </users>
+    </portal>
+
+    <!-- LFCS Container System Configuration -->
+    <lfcs>
+        <enabled>true</enabled>
+        <container-root>./containers</container-root>
+        <max-containers>50</max-containers>
+        <default-memory-limit>256MB</default-memory-limit>
+        <default-cpu-limit>0.5</default-cpu-limit>
+        <network-isolation>true</network-isolation>
+        <storage-quota>1GB</storage-quota>
+
+        <images>
+            <image name="web-server-base">
+                <path>./images/web-server-base.img</path>
+                <description>Base image for web servers</description>
+            </image>
+            <image name="database-server">
+                <path>./images/database-server.img</path>
+                <description>Database server image</description>
+            </image>
+        </images>
+
+        <monitoring>
+            <enabled>true</enabled>
+            <metrics-interval>60</metrics-interval> <!-- seconds -->
+            <alert-thresholds>
+                <cpu>80</cpu>
+                <memory>90</memory>
+                <disk>95</disk>
+            </alert-thresholds>
+        </monitoring>
+    </lfcs>
+</medusaserv-config>

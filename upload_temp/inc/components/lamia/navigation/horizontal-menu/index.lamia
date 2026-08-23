@@ -1,0 +1,716 @@
+/**
+ * MEDUSASERV PORTAL HORIZONTAL NAVIGATION MENU v0.3.0d
+ * Native Lamia horizontal navigation with enterprise design
+ * SEO: /portal/inc/components/lamia/navigation/horizontal-menu/
+ */
+
+@component "medusaserv_horizontal_navigation" {
+    @version "0.3.0d"
+    @type "navigation_horizontal"
+    @seo_friendly true
+    
+    @config {
+        @menu_items {
+            dashboard: {
+                title: "Dashboard",
+                url: "/portal/dashboard",
+                icon: "📊",
+                description: "System overview and key metrics",
+                active: true
+            },
+            system: {
+                title: "System Management", 
+                url: "/portal/system-management",
+                icon: "⚙️",
+                description: "Server configuration and control",
+                submenu: {
+                    server_control: { title: "Server Control", url: "/portal/system-management/server-control", icon: "🔄" },
+                    performance: { title: "Performance", url: "/portal/system-management/performance-tuning", icon: "🚀" },
+                    processes: { title: "Processes", url: "/portal/system-management/process-monitor", icon: "⚡" },
+                    services: { title: "Services", url: "/portal/system-management/service-manager", icon: "🔧" }
+                }
+            },
+            domains: {
+                title: "Virtual Hosts",
+                url: "/portal/virtual-hosts", 
+                icon: "🌐",
+                description: "Domain and virtual host management",
+                submenu: {
+                    hosts: { title: "Virtual Hosts", url: "/portal/virtual-hosts/management", icon: "🏠" },
+                    domains: { title: "Domain Manager", url: "/portal/virtual-hosts/domains", icon: "🌐" },
+                    subdomains: { title: "Subdomains", url: "/portal/virtual-hosts/subdomains", icon: "🔗" },
+                    redirects: { title: "Redirects", url: "/portal/virtual-hosts/redirects", icon: "↩️" }
+                }
+            },
+            security: {
+                title: "Security Center",
+                url: "/portal/security-center",
+                icon: "🛡️", 
+                description: "Security policies and monitoring",
+                submenu: {
+                    icewall: { title: "ICEWALL Firewall", url: "/portal/security-center/icewall-firewall", icon: "❄️" },
+                    ssl: { title: "SSL Certificates", url: "/portal/security-center/ssl-certificates", icon: "🔒" },
+                    auth: { title: "Authentication", url: "/portal/security-center/authentication", icon: "🔐" },
+                    audit: { title: "Security Audit", url: "/portal/security-center/security-audit", icon: "🔍" }
+                }
+            },
+            files: {
+                title: "File Manager",
+                url: "/portal/file-manager",
+                icon: "📁",
+                description: "File and directory management", 
+                submenu: {
+                    browser: { title: "File Browser", url: "/portal/file-manager/browser", icon: "🗂️" },
+                    upload: { title: "File Upload", url: "/portal/file-manager/upload", icon: "📤" },
+                    backup: { title: "File Backup", url: "/portal/file-manager/backup", icon: "💾" },
+                    permissions: { title: "Permissions", url: "/portal/file-manager/permissions", icon: "🔑" }
+                }
+            },
+            database: {
+                title: "Database Admin",
+                url: "/portal/database-admin",
+                icon: "🗄️",
+                description: "Database administration tools",
+                submenu: {
+                    management: { title: "DB Management", url: "/portal/database-admin/management", icon: "🗃️" },
+                    query: { title: "Query Builder", url: "/portal/database-admin/query-builder", icon: "📝" },
+                    backup: { title: "DB Backup", url: "/portal/database-admin/backup-restore", icon: "💿" },
+                    users: { title: "User Management", url: "/portal/database-admin/user-management", icon: "👥" }
+                }
+            },
+            analytics: {
+                title: "Analytics",
+                url: "/portal/monitoring-analytics",
+                icon: "📈",
+                description: "Performance monitoring and analytics",
+                submenu: {
+                    performance: { title: "Performance", url: "/portal/monitoring-analytics/performance-metrics", icon: "📊" },
+                    logs: { title: "Log Analysis", url: "/portal/monitoring-analytics/log-analysis", icon: "📋" },
+                    alerts: { title: "Alert Manager", url: "/portal/monitoring-analytics/alert-manager", icon: "🚨" },
+                    reports: { title: "Reports", url: "/portal/monitoring-analytics/system-reports", icon: "📄" }
+                }
+            }
+        }
+    }
+    
+    @render {
+        @container nav-wrapper :: class="horizontal-nav-wrapper" :: role="navigation" :: aria-label="Main Navigation" {
+            @nav main-nav :: class="horizontal-nav" {
+                @container nav-items :: class="nav-items-container" {
+                    @foreach item in @{menu_items} {
+                        @container nav-item :: class="nav-item" :: data-key="@{item.key}" {
+                            @link @{item.url} :: class="nav-link @{item.active ? 'active' : ''}" :: 
+                                  title="@{item.description}" :: aria-label="@{item.title}" {
+                                @icon "@{item.icon}" :: class="nav-icon"
+                                @text "@{item.title}" :: class="nav-text"
+                                @if @{item.submenu} {
+                                    @icon "▼" :: class="nav-dropdown-arrow"
+                                }
+                            }
+                            
+                            @if @{item.submenu} {
+                                @container submenu :: class="nav-submenu" :: aria-hidden="true" {
+                                    @container submenu-content :: class="submenu-content" {
+                                        @text h4 "@{item.title}" :: class="submenu-title"
+                                        @container submenu-items :: class="submenu-items" {
+                                            @foreach subitem in @{item.submenu} {
+                                                @link @{subitem.url} :: class="submenu-link" :: 
+                                                      title="@{subitem.title}" {
+                                                    @icon "@{subitem.icon}" :: class="submenu-icon"
+                                                    @text "@{subitem.title}" :: class="submenu-text"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                @container nav-tools :: class="nav-tools" {
+                    @container search-container :: class="nav-search" {
+                        @input search :: type="text" :: placeholder="Search portal..." :: 
+                               class="search-input" :: id="portal-search" :: 
+                               aria-label="Search portal features"
+                        @button search-btn :: class="search-button" :: onclick="performSearch()" :: 
+                                aria-label="Perform search" {
+                            @icon "🔍"
+                        }
+                        @container search-results :: class="search-results" :: id="search-results" :: hidden
+                    }
+                    
+                    @container quick-actions :: class="nav-quick-actions" {
+                        @button notifications :: class="quick-action notification-btn" :: 
+                                title="Notifications" :: onclick="toggleNotifications()" :: 
+                                aria-label="View notifications" {
+                            @icon "🔔" :: class="notification-icon"
+                            @container badge :: class="notification-badge" :: id="notification-count" :: hidden
+                        }
+                        
+                        @button help :: class="quick-action help-btn" :: 
+                                title="Help & Documentation" :: onclick="openHelp()" :: 
+                                aria-label="Open help" {
+                            @icon "❓"
+                        }
+                        
+                        @button fullscreen :: class="quick-action fullscreen-btn" :: 
+                                title="Toggle Fullscreen" :: onclick="toggleFullscreen()" :: 
+                                aria-label="Toggle fullscreen mode" {
+                            @icon "⛶" :: id="fullscreen-icon"
+                        }
+                    }
+                }
+            }
+            
+            @container mobile-nav-toggle :: class="mobile-nav-toggle" :: onclick="toggleMobileNav()" {
+                @icon "☰" :: class="mobile-menu-icon" :: id="mobile-menu-icon"
+            }
+        }
+        
+        @container notifications-panel :: class="notifications-panel" :: id="notifications-panel" :: hidden {
+            @container panel-header :: class="panel-header" {
+                @text h3 "Notifications" :: class="panel-title"
+                @button close :: class="panel-close" :: onclick="toggleNotifications()" {
+                    @icon "✕"
+                }
+            }
+            @container panel-content :: class="panel-content" :: id="notifications-content" {
+                @text "Loading notifications..." :: class="loading-message"
+            }
+        }
+    }
+    
+    @styles {
+        .horizontal-nav-wrapper {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-bottom: 3px solid #6f42c1;
+            box-shadow: 0 2px 20px rgba(111, 66, 193, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .horizontal-nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+        
+        .nav-items-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: #6f42c1;
+            background: linear-gradient(135deg, rgba(111, 66, 193, 0.05), rgba(111, 66, 193, 0.1));
+            border-bottom-color: #6f42c1;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+        
+        .nav-text {
+            font-size: 0.95rem;
+        }
+        
+        .nav-dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-item:hover .nav-dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .nav-submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            min-width: 280px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .nav-item:hover .nav-submenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .submenu-content {
+            padding: 1.5rem;
+        }
+        
+        .submenu-title {
+            color: #6f42c1;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .submenu-items {
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .submenu-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            text-decoration: none;
+            color: #495057;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .submenu-link:hover {
+            background: #f8f9fa;
+            color: #6f42c1;
+            transform: translateX(4px);
+        }
+        
+        .submenu-icon {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .submenu-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .nav-tools {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-search {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            font-size: 0.9rem;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.1);
+        }
+        
+        .search-button {
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #6f42c1;
+            border-left: none;
+            border-radius: 0 20px 20px 0;
+            background: #6f42c1;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background: #5a2d91;
+            border-color: #5a2d91;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1001;
+            margin-top: 0.5rem;
+            border: 1px solid #e9ecef;
+        }
+        
+        .nav-quick-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .quick-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: transparent;
+            border: 2px solid #e9ecef;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .quick-action:hover {
+            border-color: #6f42c1;
+            color: #6f42c1;
+            background: rgba(111, 66, 193, 0.05);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .mobile-nav-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: transparent;
+            border: 2px solid #6f42c1;
+            color: #6f42c1;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-toggle:hover {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .notifications-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            z-index: 1002;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notifications-panel:not([hidden]) {
+            transform: translateX(0);
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+        }
+        
+        .panel-title {
+            margin: 0;
+            color: #495057;
+            font-size: 1.1rem;
+        }
+        
+        .panel-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+        
+        .panel-close:hover {
+            color: #dc3545;
+        }
+        
+        .panel-content {
+            padding: 1.5rem;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .search-input {
+                width: 150px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .horizontal-nav {
+                padding: 0 1rem;
+            }
+            
+            .nav-items-container,
+            .nav-search {
+                display: none;
+            }
+            
+            .mobile-nav-toggle {
+                display: flex;
+            }
+            
+            .nav-tools {
+                gap: 0.5rem;
+            }
+            
+            .quick-action {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .notifications-panel {
+                width: 100%;
+            }
+        }
+        
+        /* Mobile Navigation Overlay */
+        @media (max-width: 768px) {
+            .nav-items-container.mobile-active {
+                display: flex;
+                position: fixed;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                border-top: 1px solid #e9ecef;
+            }
+            
+            .nav-items-container.mobile-active .nav-link {
+                padding: 1rem;
+                border-bottom: 1px solid #f8f9fa;
+                border-radius: 0;
+            }
+            
+            .nav-items-container.mobile-active .nav-submenu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                border: none;
+                border-top: 1px solid #e9ecef;
+            }
+        }
+    }
+    
+    @scripts {
+        let searchTimeout;
+        let isFullscreen = false;
+        
+        function performSearch() {
+            const searchInput = document.getElementById('portal-search');
+            const query = searchInput.value.trim();
+            
+            if (query.length < 2) {
+                hideSearchResults();
+                return;
+            }
+            
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/portal/api/search?q=${encodeURIComponent(query)}`);
+                    const results = await response.json();
+                    displaySearchResults(results);
+                } catch (error) {
+                    console.error('Search error:', error);
+                    hideSearchResults();
+                }
+            }, 300);
+        }
+        
+        function displaySearchResults(results) {
+            const resultsContainer = document.getElementById('search-results');
+            if (!results || results.length === 0) {
+                resultsContainer.innerHTML = '<div class="search-no-results">No results found</div>';
+            } else {
+                resultsContainer.innerHTML = results.map(result => 
+                    `<div class="search-result-item">
+                        <a href="${result.url}" class="search-result-link">
+                            <div class="search-result-icon">${result.icon || '📄'}</div>
+                            <div class="search-result-content">
+                                <div class="search-result-title">${result.title}</div>
+                                <div class="search-result-description">${result.description}</div>
+                            </div>
+                        </a>
+                    </div>`
+                ).join('');
+            }
+            resultsContainer.removeAttribute('hidden');
+        }
+        
+        function hideSearchResults() {
+            document.getElementById('search-results').setAttribute('hidden', '');
+        }
+        
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            const isHidden = panel.hasAttribute('hidden');
+            
+            if (isHidden) {
+                panel.removeAttribute('hidden');
+                loadNotifications();
+            } else {
+                panel.setAttribute('hidden', '');
+            }
+        }
+        
+        async function loadNotifications() {
+            const content = document.getElementById('notifications-content');
+            try {
+                const response = await fetch('/portal/api/notifications');
+                const notifications = await response.json();
+                
+                if (notifications.length === 0) {
+                    content.innerHTML = '<div class="no-notifications">No new notifications</div>';
+                } else {
+                    content.innerHTML = notifications.map(notif => 
+                        `<div class="notification-item ${notif.read ? '' : 'unread'}">
+                            <div class="notification-icon">${notif.icon}</div>
+                            <div class="notification-content">
+                                <div class="notification-title">${notif.title}</div>
+                                <div class="notification-message">${notif.message}</div>
+                                <div class="notification-time">${notif.timestamp}</div>
+                            </div>
+                        </div>`
+                    ).join('');
+                }
+            } catch (error) {
+                content.innerHTML = '<div class="error-message">Failed to load notifications</div>';
+            }
+        }
+        
+        function openHelp() {
+            window.open('/portal/documentation', '_blank');
+        }
+        
+        function toggleFullscreen() {
+            const icon = document.getElementById('fullscreen-icon');
+            
+            if (!isFullscreen) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                    icon.textContent = '⛳';
+                    isFullscreen = true;
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    icon.textContent = '⛶';
+                    isFullscreen = false;
+                }
+            }
+        }
+        
+        function toggleMobileNav() {
+            const navItems = document.querySelector('.nav-items-container');
+            const mobileIcon = document.getElementById('mobile-menu-icon');
+            
+            navItems.classList.toggle('mobile-active');
+            mobileIcon.textContent = navItems.classList.contains('mobile-active') ? '✕' : '☰';
+        }
+        
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search input listener
+            const searchInput = document.getElementById('portal-search');
+            if (searchInput) {
+                searchInput.addEventListener('input', performSearch);
+                searchInput.addEventListener('blur', () => {
+                    setTimeout(hideSearchResults, 200);
+                });
+            }
+            
+            // Close notifications panel when clicking outside
+            document.addEventListener('click', function(event) {
+                const panel = document.getElementById('notifications-panel');
+                const button = document.querySelector('.notification-btn');
+                
+                if (!panel.contains(event.target) && !button.contains(event.target)) {
+                    panel.setAttribute('hidden', '');
+                }
+            });
+            
+            // Update notification count periodically
+            setInterval(async () => {
+                try {
+                    const response = await fetch('/portal/api/notifications/count');
+                    const data = await response.json();
+                    const badge = document.getElementById('notification-count');
+                    
+                    if (data.unread > 0) {
+                        badge.textContent = data.unread > 99 ? '99+' : data.unread;
+                        badge.removeAttribute('hidden');
+                    } else {
+                        badge.setAttribute('hidden', '');
+                    }
+                } catch (error) {
+                    console.error('Failed to update notification count:', error);
+                }
+            }, 30000);
+        });
+    }
+}

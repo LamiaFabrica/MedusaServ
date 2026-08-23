@@ -1,0 +1,239 @@
+<!--
+Purple-Pages.com - Settings Gear Component
+Reusable settings panel for all pages (CDN-ready)
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_settings_gear() {
+    // Settings Gear Button (Fixed Position)
+    div(class: "settings-gear-container") {
+        button(id: "settings-gear-btn", class: "settings-gear-btn", aria-label: "Open Settings", title: "Settings") {
+            "⚙️"
+        }
+    }
+    
+    // Settings Panel Overlay
+    div(id: "settings-panel", class: "settings-panel-overlay hidden") {
+        div(class: "settings-panel-container") {
+            // Panel Header
+            div(class: "settings-panel-header") {
+                h2 {
+                    "⚙️ Settings"
+                }
+                button(id: "settings-close-btn", class: "settings-close-btn", aria-label: "Close Settings") {
+                    "×"
+                }
+            }
+            
+            // Settings Content
+            div(class: "settings-panel-content") {
+                // Highlight System Settings
+                section(class: "settings-section") {
+                    h3 {
+                        "⚡ Highlight System"
+                    }
+                    div(class: "settings-note") {
+                        "Configure the Mission Impossible-style highlight system for 'can you show me...' queries"
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "highlight-duration") {
+                            "Highlight Duration:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "range", id: "highlight-duration", name: "highlight_duration", min: "2000", max: "10000", value: "5000", step: "500")
+                            span(class: "setting-value", id: "highlight-duration-value") {
+                                "5 seconds"
+                            }
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "highlight-intensity") {
+                            "Highlight Intensity:"
+                        }
+                        div(class: "setting-control") {
+                            select(id: "highlight-intensity", name: "highlight_intensity") {
+                                option(value: "normal", selected: true) {
+                                    "Normal"
+                                }
+                                option(value: "intense") {
+                                    "Intense (More Eye-Catching)"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "highlight-notifications") {
+                            "Show Notifications:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "highlight-notifications", name: "highlight_notifications", checked: true)
+                        }
+                    }
+                }
+                
+                // CDN Settings Section
+                section(class: "settings-section") {
+                    h3 {
+                        "🌐 CDN Configuration"
+                    }
+                    div(class: "settings-note") {
+                        "Namecheap CDN settings (will be active once CDN is configured)"
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "cdn-enabled") {
+                            "CDN Status:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "cdn-enabled", name: "cdn_enabled", disabled: true)
+                            span(class: "setting-status", id: "cdn-status") {
+                                "Not Configured"
+                            }
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "cdn-prefetch") {
+                            "Resource Prefetching:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "cdn-prefetch", name: "cdn_prefetch", checked: true)
+                            span(class: "setting-description") {
+                                "Prefetch resources from CDN for faster loading"
+                            }
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "cdn-cache") {
+                            "Cache Strategy:"
+                        }
+                        div(class: "setting-control") {
+                            select(id: "cdn-cache", name: "cdn_cache") {
+                                option(value: "aggressive") {
+                                    "Aggressive (Long Cache)"
+                                }
+                                option(value: "balanced", selected: true) {
+                                    "Balanced (Recommended)"
+                                }
+                                option(value: "conservative") {
+                                    "Conservative (Short Cache)"
+                                }
+                            }
+                            span(class: "setting-description") {
+                                "How long resources are cached"
+                            }
+                        }
+                    }
+                }
+                
+                // Performance Settings Section
+                section(class: "settings-section") {
+                    h3 {
+                        "⚡ Performance"
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "lazy-load") {
+                            "Lazy Loading:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "lazy-load", name: "lazy_load", checked: true)
+                            span(class: "setting-description") {
+                                "Load images and content as needed"
+                            }
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "preload-critical") {
+                            "Preload Critical Resources:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "preload-critical", name: "preload_critical", checked: true)
+                            span(class: "setting-description") {
+                                "Preload critical CSS and JavaScript"
+                            }
+                        }
+                    }
+                }
+                
+                // Display Settings Section
+                section(class: "settings-section") {
+                    h3 {
+                        "🎨 Display"
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "theme") {
+                            "Theme:"
+                        }
+                        div(class: "setting-control") {
+                            select(id: "theme", name: "theme") {
+                                option(value: "purple", selected: true) {
+                                    "Purple (Default)"
+                                }
+                                option(value: "dark") {
+                                    "Dark Purple"
+                                }
+                                option(value: "light") {
+                                    "Light Purple"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "font-size") {
+                            "Font Size:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "range", id: "font-size", name: "font_size", min: "12", max: "20", value: "16", step: "1")
+                            span(class: "setting-value", id: "font-size-value") {
+                                "16px"
+                            }
+                        }
+                    }
+                }
+                
+                // Search Settings Section
+                section(class: "settings-section") {
+                    h3 {
+                        "🔍 Search"
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "search-suggestions") {
+                            "Show Search Suggestions:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "search-suggestions", name: "search_suggestions", checked: true)
+                        }
+                    }
+                    
+                    div(class: "setting-item") {
+                        label(for: "search-history") {
+                            "Save Search History:"
+                        }
+                        div(class: "setting-control") {
+                            input(type: "checkbox", id: "search-history", name: "search_history", checked: true)
+                        }
+                    }
+                }
+            }
+            
+            // Panel Footer
+            div(class: "settings-panel-footer") {
+                button(id: "settings-reset-btn", class: "btn btn-secondary") {
+                    "Reset to Defaults"
+                }
+                button(id: "settings-save-btn", class: "btn btn-primary") {
+                    "Save Settings"
+                }
+            }
+        }
+    }
+}

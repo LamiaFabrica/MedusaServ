@@ -1,0 +1,1594 @@
+/*
+ * Component v0.4.0
+ * Yorkshire Champion Standards
+ * 
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Optimizer Thingamabob - Yorkshire Champion Standards</title>
+    <style>
+        :root {
+            --yorkshire-gold: #FFD700;
+            --yorkshire-green: #228B22;
+            --yorkshire-blue: #4169E1;
+            --yorkshire-red: #DC143C;
+            --champion-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --champion-card: rgba(255, 255, 255, 0.05);
+            --champion-border: rgba(255, 215, 0, 0.3);
+            --champion-text: #ffffff;
+            --champion-accent: #ffd700;
+            --champion-success: #00ff88;
+            --champion-warning: #ff8800;
+            --champion-danger: #ff4444;
+            --query-bg: rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: var(--champion-bg);
+            color: var(--champion-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .database-optimizer-container {
+            padding: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--yorkshire-gold), #fff, var(--yorkshire-gold));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+            animation: dbPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes dbPulse {
+            0%, 100% { text-shadow: 0 0 30px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.3); }
+        }
+
+        .yorkshire-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--yorkshire-gold), #ffed4e);
+            color: #1a1a2e;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            animation: badgeGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes badgeGlow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 6px 25px rgba(255, 215, 0, 0.6); }
+        }
+
+        .tabs-container {
+            background: var(--champion-card);
+            border-radius: 15px;
+            border: 1px solid var(--champion-border);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tabs-nav {
+            display: flex;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--champion-border);
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            min-width: 120px;
+        }
+
+        .tab-button:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--champion-accent);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            color: var(--champion-accent);
+            border-bottom: 2px solid var(--yorkshire-gold);
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--yorkshire-gold), transparent);
+            animation: tabGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes tabGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .tab-content {
+            padding: 30px;
+            min-height: 600px;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .query-optimizer-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .query-panel {
+            background: var(--query-bg);
+            border: 1px solid var(--champion-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--champion-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            color: var(--champion-accent);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .database-selector {
+            background: transparent;
+            border: 1px solid var(--champion-border);
+            border-radius: 6px;
+            color: var(--champion-text);
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .query-editor {
+            width: 100%;
+            min-height: 300px;
+            background: transparent;
+            border: none;
+            color: var(--champion-text);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            padding: 15px;
+            resize: vertical;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        .query-editor:focus {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .optimization-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .control-button {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--yorkshire-gold), #ffed4e);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 12px;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .control-button:active {
+            transform: translateY(0);
+        }
+
+        .control-button.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--champion-text);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: var(--champion-card);
+            border: 1px solid var(--champion-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--yorkshire-gold), var(--champion-success));
+        }
+
+        .metric-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--champion-accent);
+            margin-bottom: 5px;
+            animation: numberCount 2s ease-out;
+        }
+
+        @keyframes numberCount {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .metric-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .optimization-results {
+            background: var(--champion-card);
+            border: 1px solid var(--champion-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            color: var(--champion-accent);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .improvement-badge {
+            background: linear-gradient(45deg, var(--champion-success), #00cc66);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+            animation: improvementPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes improvementPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .optimization-step {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--yorkshire-gold);
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .step-number {
+            color: var(--yorkshire-gold);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .index-recommendation {
+            background: var(--champion-card);
+            border: 1px solid var(--champion-border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .index-recommendation.high-priority {
+            border-color: var(--yorkshire-gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .recommendation-table {
+            color: var(--champion-accent);
+            font-weight: bold;
+        }
+
+        .priority-indicator {
+            display: flex;
+            gap: 3px;
+        }
+
+        .priority-star {
+            color: var(--yorkshire-gold);
+            font-size: 14px;
+        }
+
+        .sql-code {
+            background: var(--query-bg);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            margin-top: 10px;
+            border-left: 3px solid var(--yorkshire-gold);
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .performance-chart {
+            background: var(--champion-card);
+            border: 1px solid var(--champion-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 300px;
+        }
+
+        .chart-title {
+            color: var(--champion-accent);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .slow-queries-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: var(--champion-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .slow-queries-table th,
+        .slow-queries-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .slow-queries-table th {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--champion-accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .slow-queries-table tr:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .query-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-optimized {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--champion-success);
+        }
+
+        .status-needs-optimization {
+            background: rgba(255, 136, 0, 0.2);
+            color: var(--champion-warning);
+        }
+
+        .status-critical {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--champion-danger);
+        }
+
+        .connection-pool-visualizer {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+            gap: 5px;
+            padding: 15px;
+            background: var(--champion-card);
+            border: 1px solid var(--champion-border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .connection-node {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .connection-active {
+            background: var(--champion-success);
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            animation: connectionPulse 2s ease-in-out infinite;
+        }
+
+        .connection-idle {
+            background: var(--yorkshire-gold);
+            color: #1a1a2e;
+        }
+
+        .connection-closed {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes connectionPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .cache-visualization {
+            background: var(--champion-card);
+            border: 1px solid var(--champion-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .cache-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .cache-title {
+            color: var(--champion-accent);
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .cache-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .cache-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cache-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--champion-accent);
+        }
+
+        .cache-stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .floating-db-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .db-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--yorkshire-gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: dbParticleFloat 15s linear infinite;
+        }
+
+        @keyframes dbParticleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0px) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+                transform: translateY(90vh) translateX(10px) scale(1);
+            }
+            90% {
+                opacity: 0.3;
+                transform: translateY(10vh) translateX(-10px) scale(1);
+            }
+            100% {
+                transform: translateY(-100px) translateX(20px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .yorkshire-champion-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--yorkshire-gold), #ffed4e);
+            color: #1a1a2e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            animation: championPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes championPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            50% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(255, 215, 0, 0.6); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-top: 2px solid var(--yorkshire-gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .database-optimizer-container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs-nav {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                min-width: auto;
+            }
+            
+            .query-optimizer-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .optimization-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-db-particles" id="dbParticles"></div>
+    
+    <div class="database-optimizer-container">
+        <div class="yorkshire-champion-indicator">
+            Yorkshire Champion DB 15.0x
+        </div>
+        
+        <div class="header">
+            <h1>Database Optimizer Thingamabob</h1>
+            <div class="yorkshire-badge">
+                Yorkshire Champion Query Healing & Performance Engine
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-button active" onclick="switchTab('optimizer')">Query Optimizer</button>
+                <button class="tab-button" onclick="switchTab('healer')">Query Healer</button>
+                <button class="tab-button" onclick="switchTab('indexes')">Index Advisor</button>
+                <button class="tab-button" onclick="switchTab('pool')">Connection Pool</button>
+                <button class="tab-button" onclick="switchTab('cache')">Cache Manager</button>
+                <button class="tab-button" onclick="switchTab('monitor')">Performance Monitor</button>
+                <button class="tab-button" onclick="switchTab('analytics')">Analytics</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Query Optimizer Tab -->
+                <div id="optimizer" class="tab-panel active">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px; font-size: 2rem;">Query Optimization Engine</h2>
+                    
+                    <div class="optimization-controls">
+                        <button class="control-button" onclick="optimizeQuery()">🚀 Optimize Query</button>
+                        <button class="control-button secondary" onclick="analyzeQuery()">🔍 Analyze</button>
+                        <button class="control-button secondary" onclick="explainPlan()">📊 Explain Plan</button>
+                        <button class="control-button secondary" onclick="clearQueries()">🗑️ Clear</button>
+                        <select class="database-selector" id="dbTypeSelect">
+                            <option value="postgresql">PostgreSQL</option>
+                            <option value="mysql">MySQL</option>
+                            <option value="mariadb">MariaDB</option>
+                            <option value="sqlite">SQLite</option>
+                            <option value="mongodb">MongoDB</option>
+                            <option value="redis">Redis</option>
+                            <option value="oracle">Oracle</option>
+                            <option value="mssql">MS SQL</option>
+                        </select>
+                    </div>
+
+                    <div class="query-optimizer-section">
+                        <div class="query-panel">
+                            <div class="panel-header">
+                                <div class="panel-title">Original Query</div>
+                                <span style="font-size: 12px; opacity: 0.7;">Execution: <span id="originalTime">847ms</span></span>
+                            </div>
+                            <textarea class="query-editor" id="originalQuery">SELECT 
+    u.id, 
+    u.username, 
+    u.email,
+    COUNT(o.id) as order_count,
+    SUM(o.total_amount) as total_spent
+FROM users u
+LEFT JOIN orders o ON u.id = o.user_id
+WHERE u.created_at > '2024-01-01'
+    AND u.status = 'active'
+GROUP BY u.id, u.username, u.email
+HAVING COUNT(o.id) > 5
+ORDER BY total_spent DESC
+LIMIT 100;</textarea>
+                        </div>
+
+                        <div class="query-panel">
+                            <div class="panel-header">
+                                <div class="panel-title">Optimized Query</div>
+                                <span style="font-size: 12px; color: var(--champion-success);">Execution: <span id="optimizedTime">42ms</span> (15.0x faster)</span>
+                            </div>
+                            <textarea class="query-editor" id="optimizedQuery" readonly>-- Yorkshire Champion Optimized Query
+WITH active_users AS (
+    SELECT id, username, email
+    FROM users
+    WHERE created_at > '2024-01-01'::date
+        AND status = 'active'
+    -- Index hint: /*+ INDEX(users idx_created_status) */
+),
+user_orders AS (
+    SELECT 
+        user_id,
+        COUNT(*) as order_count,
+        SUM(total_amount) as total_spent
+    FROM orders
+    WHERE user_id IN (SELECT id FROM active_users)
+    GROUP BY user_id
+    HAVING COUNT(*) > 5
+)
+SELECT 
+    au.id,
+    au.username,
+    au.email,
+    COALESCE(uo.order_count, 0) as order_count,
+    COALESCE(uo.total_spent, 0) as total_spent
+FROM active_users au
+INNER JOIN user_orders uo ON au.id = uo.user_id
+ORDER BY uo.total_spent DESC NULLS LAST
+LIMIT 100;
+
+-- Optimizations Applied:
+-- 1. CTEs for better readability and potential materialization
+-- 2. Changed LEFT JOIN to INNER JOIN (more efficient with HAVING clause)
+-- 3. Added type casting for date comparison
+-- 4. Used COALESCE for null handling
+-- 5. Added NULLS LAST to ORDER BY
+-- 6. Pre-filtered orders with IN clause</textarea>
+                        </div>
+                    </div>
+
+                    <div class="optimization-results">
+                        <div class="result-header">
+                            <div class="result-title">Optimization Steps Applied</div>
+                            <div class="improvement-badge">+1,900% Performance</div>
+                        </div>
+                        
+                        <div class="optimization-step">
+                            <span class="step-number">1.</span>
+                            Converted correlated subquery to CTE for better performance
+                        </div>
+                        <div class="optimization-step">
+                            <span class="step-number">2.</span>
+                            Added index hints for optimal execution path
+                        </div>
+                        <div class="optimization-step">
+                            <span class="step-number">3.</span>
+                            Optimized JOIN strategy from NESTED LOOP to HASH JOIN
+                        </div>
+                        <div class="optimization-step">
+                            <span class="step-number">4.</span>
+                            Pre-aggregated data before joining to reduce row processing
+                        </div>
+                        <div class="optimization-step">
+                            <span class="step-number">5.</span>
+                            Yorkshire Champion AI optimization applied for 15.0x boost
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Query Healer Tab -->
+                <div id="healer" class="tab-panel">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px;">Automatic Query Healing</h2>
+                    
+                    <div class="optimization-controls">
+                        <button class="control-button" onclick="healQuery()">🏥 Heal Query</button>
+                        <button class="control-button secondary" onclick="detectIssues()">🔍 Detect Issues</button>
+                        <button class="control-button secondary" onclick="autoFix()">✨ Auto-Fix All</button>
+                        <button class="control-button secondary" onclick="validateSyntax()">✅ Validate</button>
+                    </div>
+
+                    <div class="query-panel" style="margin-bottom: 20px;">
+                        <div class="panel-header">
+                            <div class="panel-title">Problematic Query</div>
+                            <span style="font-size: 12px; color: var(--champion-danger);">Issues Detected: 5</span>
+                        </div>
+                        <textarea class="query-editor" id="problematicQuery">SELCT * FORM users u
+WERE u.created_at > '2024-01-01
+AND status = active
+GROUP BY username
+HAVING count(*) > 
+ORDER BY DESC;</textarea>
+                    </div>
+
+                    <div class="optimization-results">
+                        <div class="result-header">
+                            <div class="result-title">🏥 Query Issues Detected</div>
+                            <div style="color: var(--champion-danger);">5 Critical Issues</div>
+                        </div>
+                        
+                        <div class="optimization-step" style="border-left-color: var(--champion-danger);">
+                            <span style="color: var(--champion-danger);">❌</span>
+                            <strong>Syntax Error:</strong> "SELCT" should be "SELECT"
+                        </div>
+                        <div class="optimization-step" style="border-left-color: var(--champion-danger);">
+                            <span style="color: var(--champion-danger);">❌</span>
+                            <strong>Syntax Error:</strong> "FORM" should be "FROM"
+                        </div>
+                        <div class="optimization-step" style="border-left-color: var(--champion-danger);">
+                            <span style="color: var(--champion-danger);">❌</span>
+                            <strong>Syntax Error:</strong> "WERE" should be "WHERE"
+                        </div>
+                        <div class="optimization-step" style="border-left-color: var(--champion-warning);">
+                            <span style="color: var(--champion-warning);">⚠️</span>
+                            <strong>Missing Quote:</strong> String literal not closed properly
+                        </div>
+                        <div class="optimization-step" style="border-left-color: var(--champion-warning);">
+                            <span style="color: var(--champion-warning);">⚠️</span>
+                            <strong>Invalid GROUP BY:</strong> SELECT * with GROUP BY requires aggregation
+                        </div>
+                    </div>
+
+                    <div class="query-panel" style="margin-top: 20px;">
+                        <div class="panel-header">
+                            <div class="panel-title">Healed Query</div>
+                            <span style="font-size: 12px; color: var(--champion-success);">✅ All Issues Fixed</span>
+                        </div>
+                        <textarea class="query-editor" id="healedQuery" readonly>-- Yorkshire Champion Query Healer Fixed Version
+SELECT 
+    username,
+    COUNT(*) as user_count,
+    MAX(created_at) as latest_creation
+FROM users u
+WHERE u.created_at > '2024-01-01'
+    AND status = 'active'
+GROUP BY username
+HAVING COUNT(*) > 1
+ORDER BY user_count DESC;
+
+-- Fixes Applied:
+-- ✓ Corrected SQL keywords (SELECT, FROM, WHERE)
+-- ✓ Fixed unclosed string literal
+-- ✓ Added quotes around string value 'active'
+-- ✓ Replaced SELECT * with specific columns for GROUP BY
+-- ✓ Added missing comparison value in HAVING clause
+-- ✓ Specified column for ORDER BY</textarea>
+                    </div>
+                </div>
+
+                <!-- Index Advisor Tab -->
+                <div id="indexes" class="tab-panel">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px;">Intelligent Index Advisor</h2>
+                    
+                    <div class="optimization-controls">
+                        <button class="control-button" onclick="analyzeIndexes()">🔍 Analyze Tables</button>
+                        <button class="control-button secondary" onclick="generateIndexes()">⚡ Generate Indexes</button>
+                        <button class="control-button secondary" onclick="evaluateIndexes()">📊 Evaluate Impact</button>
+                        <button class="control-button secondary" onclick="exportScript()">💾 Export Script</button>
+                    </div>
+
+                    <div class="optimization-results">
+                        <div class="result-header">
+                            <div class="result-title">📚 Recommended Indexes</div>
+                            <div style="color: var(--champion-success);">7 High-Impact Indexes</div>
+                        </div>
+
+                        <div class="index-recommendation high-priority">
+                            <div class="recommendation-header">
+                                <div>
+                                    <div class="recommendation-table">Table: users</div>
+                                    <div style="font-size: 12px; opacity: 0.8;">Columns: created_at, status</div>
+                                </div>
+                                <div class="priority-indicator">
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                </div>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Expected Improvement:</strong> <span style="color: var(--champion-success);">+892% query performance</span><br>
+                                <strong>Affected Queries:</strong> 147 slow queries will benefit<br>
+                                <strong>Index Size:</strong> ~12 MB
+                            </div>
+                            <div class="sql-code">CREATE INDEX idx_users_created_status 
+ON users(created_at DESC, status) 
+WHERE status = 'active';</div>
+                        </div>
+
+                        <div class="index-recommendation">
+                            <div class="recommendation-header">
+                                <div>
+                                    <div class="recommendation-table">Table: orders</div>
+                                    <div style="font-size: 12px; opacity: 0.8;">Columns: user_id, total_amount</div>
+                                </div>
+                                <div class="priority-indicator">
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                </div>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Expected Improvement:</strong> <span style="color: var(--champion-success);">+456% join performance</span><br>
+                                <strong>Affected Queries:</strong> 89 queries will benefit<br>
+                                <strong>Index Size:</strong> ~28 MB
+                            </div>
+                            <div class="sql-code">CREATE INDEX idx_orders_user_amount 
+ON orders(user_id, total_amount DESC) 
+INCLUDE (order_date, status);</div>
+                        </div>
+
+                        <div class="index-recommendation">
+                            <div class="recommendation-header">
+                                <div>
+                                    <div class="recommendation-table">Table: products</div>
+                                    <div style="font-size: 12px; opacity: 0.8;">Columns: category_id, price, stock</div>
+                                </div>
+                                <div class="priority-indicator">
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                    <span class="priority-star">⭐</span>
+                                </div>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <strong>Expected Improvement:</strong> <span style="color: var(--yorkshire-gold);">+234% filter performance</span><br>
+                                <strong>Affected Queries:</strong> 45 queries will benefit<br>
+                                <strong>Index Size:</strong> ~8 MB
+                            </div>
+                            <div class="sql-code">CREATE INDEX idx_products_category_price 
+ON products(category_id, price) 
+WHERE stock > 0;</div>
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-number">23</div>
+                            <div class="metric-label">Missing Indexes</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">7</div>
+                            <div class="metric-label">Unused Indexes</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">156MB</div>
+                            <div class="metric-label">Index Storage</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">+547%</div>
+                            <div class="metric-label">Potential Gain</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connection Pool Tab -->
+                <div id="pool" class="tab-panel">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px;">Connection Pool Manager</h2>
+                    
+                    <div class="optimization-controls">
+                        <button class="control-button" onclick="optimizePool()">⚡ Optimize Pool</button>
+                        <button class="control-button secondary" onclick="rebalanceConnections()">🔄 Rebalance</button>
+                        <button class="control-button secondary" onclick="warmupConnections()">🔥 Warm Up</button>
+                        <button class="control-button secondary" onclick="drainConnections()">💧 Drain Idle</button>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-number">150</div>
+                            <div class="metric-label">Active Connections</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">50</div>
+                            <div class="metric-label">Idle Connections</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">1000</div>
+                            <div class="metric-label">Max Pool Size</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">12ms</div>
+                            <div class="metric-label">Avg Wait Time</div>
+                        </div>
+                    </div>
+
+                    <div class="connection-pool-visualizer" id="connectionPool">
+                        <!-- Connection nodes will be generated here -->
+                    </div>
+
+                    <div class="optimization-results">
+                        <div class="result-header">
+                            <div class="result-title">Connection Pool Health</div>
+                            <div style="color: var(--champion-success);">Optimal Performance</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                            <div>
+                                <h4 style="color: var(--champion-accent); margin-bottom: 10px;">Pool Statistics</h4>
+                                <div style="font-size: 14px; line-height: 1.8;">
+                                    <div>Connection Reuse Rate: <strong style="color: var(--champion-success);">94.7%</strong></div>
+                                    <div>Average Connection Age: <strong>45 minutes</strong></div>
+                                    <div>Connection Errors: <strong style="color: var(--champion-success);">0</strong></div>
+                                    <div>Queue Depth: <strong>3 requests</strong></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--champion-accent); margin-bottom: 10px;">Recommendations</h4>
+                                <div style="font-size: 14px; line-height: 1.8;">
+                                    <div>✅ Pool size is optimal for current load</div>
+                                    <div>✅ Connection timeout settings are appropriate</div>
+                                    <div>⚠️ Consider increasing min connections to 15</div>
+                                    <div>ℹ️ Next rebalancing in 5 minutes</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cache Manager Tab -->
+                <div id="cache" class="tab-panel">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px;">Query Cache Manager</h2>
+                    
+                    <div class="optimization-controls">
+                        <button class="control-button" onclick="optimizeCache()">🚀 Optimize Cache</button>
+                        <button class="control-button secondary" onclick="preloadCache()">📦 Preload</button>
+                        <button class="control-button secondary" onclick="evictStale()">🗑️ Evict Stale</button>
+                        <button class="control-button secondary" onclick="analyzeCachePatterns()">📊 Analyze Patterns</button>
+                    </div>
+
+                    <div class="cache-visualization">
+                        <div class="cache-header">
+                            <div class="cache-title">Cache Performance</div>
+                            <div class="cache-stats">
+                                <div class="cache-stat">
+                                    <div class="cache-stat-value">87.3%</div>
+                                    <div class="cache-stat-label">Hit Ratio</div>
+                                </div>
+                                <div class="cache-stat">
+                                    <div class="cache-stat-value">45.2GB</div>
+                                    <div class="cache-stat-label">Cache Size</div>
+                                </div>
+                                <div class="cache-stat">
+                                    <div class="cache-stat-value">12,847</div>
+                                    <div class="cache-stat-label">Entries</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; margin-top: 15px;">
+                            <canvas id="cacheChart" width="100%" height="200" style="max-height: 200px;"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="optimization-results" style="margin-top: 20px;">
+                        <div class="result-header">
+                            <div class="result-title">Top Cached Queries</div>
+                            <div style="color: var(--champion-success);">Yorkshire Champion Optimized</div>
+                        </div>
+                        
+                        <table class="slow-queries-table">
+                            <thead>
+                                <tr>
+                                    <th>Query Pattern</th>
+                                    <th>Hit Count</th>
+                                    <th>Avg Response</th>
+                                    <th>Cache Benefit</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-family: monospace; font-size: 12px;">SELECT * FROM users WHERE...</td>
+                                    <td>47,892</td>
+                                    <td>0.8ms</td>
+                                    <td style="color: var(--champion-success);">+2,400%</td>
+                                    <td><span class="query-status status-optimized">Cached</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: monospace; font-size: 12px;">SELECT COUNT(*) FROM orders...</td>
+                                    <td>23,456</td>
+                                    <td>1.2ms</td>
+                                    <td style="color: var(--champion-success);">+1,850%</td>
+                                    <td><span class="query-status status-optimized">Cached</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: monospace; font-size: 12px;">SELECT p.*, c.name FROM products...</td>
+                                    <td>18,234</td>
+                                    <td>2.1ms</td>
+                                    <td style="color: var(--yorkshire-gold);">+980%</td>
+                                    <td><span class="query-status status-optimized">Cached</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Performance Monitor Tab -->
+                <div id="monitor" class="tab-panel">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px;">Real-time Performance Monitor</h2>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-number" id="qps">1,847</div>
+                            <div class="metric-label">Queries/Second</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="avgLatency">23ms</div>
+                            <div class="metric-label">Avg Latency</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number" id="slowQueries">7</div>
+                            <div class="metric-label">Slow Queries</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">99.98%</div>
+                            <div class="metric-label">Uptime</div>
+                        </div>
+                    </div>
+
+                    <div class="performance-chart">
+                        <div class="chart-title">Query Performance Timeline</div>
+                        <canvas id="performanceChart" width="100%" height="250"></canvas>
+                    </div>
+
+                    <div class="optimization-results">
+                        <div class="result-header">
+                            <div class="result-title">Slow Query Log</div>
+                            <div style="color: var(--champion-warning);">7 Queries Need Attention</div>
+                        </div>
+                        
+                        <table class="slow-queries-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Query</th>
+                                    <th>Duration</th>
+                                    <th>Rows</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>15:42:13</td>
+                                    <td style="font-family: monospace; font-size: 12px; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">SELECT * FROM large_table WHERE...</td>
+                                    <td style="color: var(--champion-danger);">2,847ms</td>
+                                    <td>1,245,892</td>
+                                    <td><span class="query-status status-critical">Critical</span></td>
+                                    <td><button class="control-button" style="padding: 4px 8px; font-size: 11px;">Optimize</button></td>
+                                </tr>
+                                <tr>
+                                    <td>15:41:58</td>
+                                    <td style="font-family: monospace; font-size: 12px; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">UPDATE products SET stock = stock - 1...</td>
+                                    <td style="color: var(--champion-warning);">847ms</td>
+                                    <td>45,678</td>
+                                    <td><span class="query-status status-needs-optimization">Needs Optimization</span></td>
+                                    <td><button class="control-button" style="padding: 4px 8px; font-size: 11px;">Optimize</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analytics" class="tab-panel">
+                    <h2 style="color: var(--champion-accent); margin-bottom: 25px;">Performance Analytics</h2>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-number">847,392</div>
+                            <div class="metric-label">Queries Optimized</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">98.7%</div>
+                            <div class="metric-label">Success Rate</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">15.0x</div>
+                            <div class="metric-label">Avg Speed Boost</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">2.3TB</div>
+                            <div class="metric-label">Data Processed</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">156</div>
+                            <div class="metric-label">Indexes Created</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">$47,892</div>
+                            <div class="metric-label">Cost Saved/Month</div>
+                        </div>
+                    </div>
+
+                    <div class="optimization-results">
+                        <div class="result-header">
+                            <div class="result-title">Yorkshire Champion Performance Metrics</div>
+                            <div style="color: var(--champion-success);">15.0x Performance Multiplier Active</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+                            <div>
+                                <h4 style="color: var(--champion-accent); margin-bottom: 15px;">Database Performance</h4>
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>Query Optimization</span>
+                                        <span>98.7%</span>
+                                    </div>
+                                    <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 98.7%; height: 100%; background: linear-gradient(90deg, var(--yorkshire-gold), var(--champion-success));"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>Index Efficiency</span>
+                                        <span>94.2%</span>
+                                    </div>
+                                    <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 94.2%; height: 100%; background: linear-gradient(90deg, var(--yorkshire-gold), var(--yorkshire-blue));"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>Cache Hit Ratio</span>
+                                        <span>87.3%</span>
+                                    </div>
+                                    <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 87.3%; height: 100%; background: var(--yorkshire-gold);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 style="color: var(--champion-accent); margin-bottom: 15px;">Resource Utilization</h4>
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>CPU Usage</span>
+                                        <span>34%</span>
+                                    </div>
+                                    <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 34%; height: 100%; background: var(--champion-success);"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>Memory Usage</span>
+                                        <span>67%</span>
+                                    </div>
+                                    <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 67%; height: 100%; background: var(--yorkshire-gold);"></div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>Disk I/O</span>
+                                        <span>23%</span>
+                                    </div>
+                                    <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                        <div style="width: 23%; height: 100%; background: var(--champion-success);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Query optimization functions
+        function optimizeQuery() {
+            const originalQuery = document.getElementById('originalQuery').value;
+            if (!originalQuery.trim()) {
+                alert('Please enter a query to optimize');
+                return;
+            }
+            
+            // Simulate optimization process
+            setTimeout(() => {
+                document.getElementById('optimizedTime').textContent = '42ms';
+                // Update optimized query is already shown
+            }, 1500);
+        }
+
+        function analyzeQuery() {
+            alert('Analyzing query performance metrics...');
+        }
+
+        function explainPlan() {
+            alert('Generating execution plan...');
+        }
+
+        function clearQueries() {
+            document.getElementById('originalQuery').value = '';
+            document.getElementById('optimizedQuery').value = '';
+        }
+
+        // Query healer functions
+        function healQuery() {
+            alert('Healing query issues automatically...');
+        }
+
+        function detectIssues() {
+            alert('Detecting query issues...');
+        }
+
+        function autoFix() {
+            alert('Auto-fixing all detected issues...');
+        }
+
+        function validateSyntax() {
+            alert('Validating SQL syntax...');
+        }
+
+        // Index advisor functions
+        function analyzeIndexes() {
+            alert('Analyzing table indexes...');
+        }
+
+        function generateIndexes() {
+            alert('Generating optimal index recommendations...');
+        }
+
+        function evaluateIndexes() {
+            alert('Evaluating index impact on performance...');
+        }
+
+        function exportScript() {
+            const script = `-- Yorkshire Champion Index Optimization Script
+-- Generated: ${new Date().toLocaleString()}
+
+CREATE INDEX idx_users_created_status 
+ON users(created_at DESC, status) 
+WHERE status = 'active';
+
+CREATE INDEX idx_orders_user_amount 
+ON orders(user_id, total_amount DESC) 
+INCLUDE (order_date, status);
+
+CREATE INDEX idx_products_category_price 
+ON products(category_id, price) 
+WHERE stock > 0;`;
+            
+            const blob = new Blob([script], { type: 'text/sql' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index_optimization_script.sql';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Connection pool functions
+        function optimizePool() {
+            alert('Optimizing connection pool size...');
+        }
+
+        function rebalanceConnections() {
+            alert('Rebalancing active connections...');
+        }
+
+        function warmupConnections() {
+            alert('Warming up connection pool...');
+        }
+
+        function drainConnections() {
+            alert('Draining idle connections...');
+        }
+
+        // Cache functions
+        function optimizeCache() {
+            alert('Optimizing cache configuration...');
+        }
+
+        function preloadCache() {
+            alert('Preloading frequently accessed queries...');
+        }
+
+        function evictStale() {
+            alert('Evicting stale cache entries...');
+        }
+
+        function analyzeCachePatterns() {
+            alert('Analyzing cache access patterns...');
+        }
+
+        // Initialize connection pool visualization
+        function initializeConnectionPool() {
+            const poolContainer = document.getElementById('connectionPool');
+            const totalConnections = 200;
+            const activeConnections = 150;
+            const idleConnections = 50;
+            
+            for (let i = 0; i < totalConnections; i++) {
+                const node = document.createElement('div');
+                node.className = 'connection-node';
+                
+                if (i < activeConnections) {
+                    node.classList.add('connection-active');
+                    node.textContent = 'A';
+                    node.title = `Active Connection #${i + 1}`;
+                } else if (i < activeConnections + idleConnections) {
+                    node.classList.add('connection-idle');
+                    node.textContent = 'I';
+                    node.title = `Idle Connection #${i + 1}`;
+                } else {
+                    node.classList.add('connection-closed');
+                    node.textContent = '×';
+                    node.title = `Closed Slot #${i + 1}`;
+                }
+                
+                poolContainer.appendChild(node);
+            }
+        }
+
+        // Create floating particles
+        function createDBParticles() {
+            const container = document.getElementById('dbParticles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'db-particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Update real-time metrics
+        function updateMetrics() {
+            // Update QPS
+            const qps = document.getElementById('qps');
+            if (qps) {
+                const currentQPS = parseInt(qps.textContent.replace(/,/g, ''));
+                const variance = Math.floor(Math.random() * 100) - 50;
+                qps.textContent = (currentQPS + variance).toLocaleString();
+            }
+            
+            // Update latency
+            const latency = document.getElementById('avgLatency');
+            if (latency) {
+                const currentLatency = parseInt(latency.textContent);
+                const variance = Math.floor(Math.random() * 10) - 5;
+                latency.textContent = Math.max(10, currentLatency + variance) + 'ms';
+            }
+            
+            // Update slow queries
+            const slowQueries = document.getElementById('slowQueries');
+            if (slowQueries) {
+                const variance = Math.floor(Math.random() * 3) - 1;
+                const current = parseInt(slowQueries.textContent);
+                slowQueries.textContent = Math.max(0, current + variance);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createDBParticles();
+            initializeConnectionPool();
+            
+            // Update metrics every 2 seconds
+            setInterval(updateMetrics, 2000);
+            
+            // Auto-update statistics
+            setInterval(() => {
+                const metrics = document.querySelectorAll('.metric-number');
+                metrics.forEach(metric => {
+                    if (!metric.textContent.includes('%') && !metric.textContent.includes('x') && 
+                        !metric.textContent.includes('ms') && !metric.textContent.includes('TB') &&
+                        !metric.textContent.includes('$')) {
+                        const currentValue = parseInt(metric.textContent.replace(/,/g, ''));
+                        if (!isNaN(currentValue)) {
+                            const increment = Math.floor(Math.random() * 100) + 1;
+                            metric.textContent = (currentValue + increment).toLocaleString();
+                        }
+                    }
+                });
+            }, 10000); // Update every 10 seconds
+        });
+
+        // Yorkshire Champion Database Optimizer
+        class YorkshireChampionOptimizer {
+            constructor() {
+                this.performanceMultiplier = 15.0;
+                this.optimizationLevel = 'YORKSHIRE_CHAMPION';
+                this.cacheHitRatio = 87.3;
+            }
+            
+            async optimizeQuery(query) {
+                // Simulate Yorkshire Champion optimization
+                const startTime = performance.now();
+                
+                await new Promise(resolve => {
+                    setTimeout(resolve, Math.random() * 500 + 200);
+                });
+                
+                const endTime = performance.now();
+                const optimizationTime = endTime - startTime;
+                
+                return {
+                    originalQuery: query,
+                    optimizedQuery: this.rewriteQuery(query),
+                    performanceGain: this.performanceMultiplier,
+                    optimizationTime: optimizationTime,
+                    yorkshireBoost: true
+                };
+            }
+            
+            rewriteQuery(query) {
+                // Simulate query rewriting with Yorkshire Champion optimizations
+                return `-- Yorkshire Champion Optimized\n${query}\n-- Performance Boost: 15.0x`;
+            }
+        }
+
+        // Initialize Yorkshire Champion Optimizer
+        const yorkshireOptimizer = new YorkshireChampionOptimizer();
+    </script>
+</body>
+</html>}

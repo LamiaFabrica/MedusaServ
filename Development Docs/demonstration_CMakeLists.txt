@@ -1,0 +1,42 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(LFCDemonstration VERSION 1.0 LANGUAGES CXX)
+
+# Set the LFC++ compiler
+set(LFC_COMPILER "C:/Build/PsiForceDB/Build Suite/RELEASE/LFC++_Compiler/lamia_cxx_compiler.exe")
+
+if(WIN32)
+    if(EXISTS "${LFC_COMPILER}")
+        message(STATUS "✅ LFC++ Compiler found: ${LFC_COMPILER}")
+        set(CMAKE_CXX_COMPILER "${LFC_COMPILER}")
+        message(STATUS "✅ Using LFC++ Compiler as CMAKE_CXX_COMPILER")
+    else()
+        message(FATAL_ERROR "LFC++ Compiler not found at ${LFC_COMPILER}")
+    endif()
+endif()
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# LFSSL Library paths
+set(LFSSL_INCLUDE_DIR "C:/Build/PsiForceDB/Build Suite/RELEASE/LFSSL_Library/include")
+
+# Add LFSSL include directory
+if(EXISTS "${LFSSL_INCLUDE_DIR}/LFSSL_Native_Crypto.hpp")
+    include_directories(${LFSSL_INCLUDE_DIR})
+    message(STATUS "✅ LFSSL include directory added: ${LFSSL_INCLUDE_DIR}")
+else()
+    message(FATAL_ERROR "LFSSL Library headers not found at ${LFSSL_INCLUDE_DIR}")
+endif()
+
+# Add executable
+add_executable(demonstration demonstration.cpp)
+
+message(STATUS "========================================")
+message(STATUS "LFC++ Compiler & LFSSL Library Demonstration")
+message(STATUS "========================================")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
+message(STATUS "LFSSL Include Directory: ${LFSSL_INCLUDE_DIR}")
+message(STATUS "========================================")

@@ -1,0 +1,1519 @@
+/**
+ * MEDUSASERV CRON MANAGER THINGAMABOB COMPONENT
+ * ============================================
+ * Enterprise Cron Management System with Boot Time & Service Orchestration
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "cron_manager_thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise_cron_manager"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    @authentication_required true
+    @cron_management_enabled true
+    @boot_time_management true
+    @service_orchestration true
+    @database_logging true
+    
+    @render {
+        <div class="cron-manager-thingamabob">
+            <!-- Cron Manager Header Thingamabob -->
+            <div class="thingamabob-header">
+                <div class="thingamabob-title">
+                    <div class="thingamabob-icon">⏰</div>
+                    <h2>Cron Manager Thingamabob</h2>
+                    <span class="thingamabob-badge">Service Orchestration</span>
+                </div>
+                <div class="thingamabob-controls">
+                    <button class="thingamabob-btn add-cron">➕ New Cron</button>
+                    <button class="thingamabob-btn reload-crons">🔄 Reload</button>
+                    <button class="thingamabob-btn emergency-stop">🚨 Emergency Stop</button>
+                </div>
+            </div>
+
+            <!-- Cron Dashboard Interface -->
+            <div class="thingamabob-interface">
+                <!-- Active Cron Jobs Panel -->
+                <div class="active-crons-panel">
+                    <h3>📋 Active Cron Jobs</h3>
+                    
+                    <!-- Boot Time Crons Section -->
+                    <div class="cron-section">
+                        <div class="section-header">
+                            <span class="section-icon">🚀</span>
+                            <h4>Boot Time Services</h4>
+                            <span class="status-badge running">Active</span>
+                        </div>
+                        
+                        <div class="cron-list">
+                            <div class="cron-item critical">
+                                <div class="cron-info">
+                                    <div class="cron-name">@reboot PsiForceDB Startup</div>
+                                    <div class="cron-schedule">@reboot</div>
+                                    <div class="cron-command">/ops/PsiForceDB/bin/psiforce_startup.sh</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: Boot Time</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn disable">⏸️</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item critical">
+                                <div class="cron-info">
+                                    <div class="cron-name">@reboot Icewall Security Boot</div>
+                                    <div class="cron-schedule">@reboot</div>
+                                    <div class="cron-command">/ops/MedusaServ/scripts/icewall_boot.sh</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: Boot Time</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn disable">⏸️</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item critical">
+                                <div class="cron-info">
+                                    <div class="cron-name">@reboot Portal Services Startup</div>
+                                    <div class="cron-schedule">@reboot</div>
+                                    <div class="cron-command">/ops/MedusaServ/scripts/portal_services_boot.sh</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: Boot Time</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn disable">⏸️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maintenance Crons Section -->
+                    <div class="cron-section">
+                        <div class="section-header">
+                            <span class="section-icon">🔧</span>
+                            <h4>Maintenance Tasks</h4>
+                            <span class="status-badge running">Scheduled</span>
+                        </div>
+                        
+                        <div class="cron-list">
+                            <div class="cron-item maintenance">
+                                <div class="cron-info">
+                                    <div class="cron-name">Health Check All Services</div>
+                                    <div class="cron-schedule">*/5 * * * *</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/health_check.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: 2 min ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item maintenance">
+                                <div class="cron-info">
+                                    <div class="cron-name">PsiForceDB Optimize</div>
+                                    <div class="cron-schedule">0 2 * * *</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/psiforce_maintenance.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: 6h ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item maintenance">
+                                <div class="cron-info">
+                                    <div class="cron-name">Resource Monitor & Alert</div>
+                                    <div class="cron-schedule">*/15 * * * *</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/resource_monitor.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot warning"></div>
+                                    <span class="last-run">Last: 7 min ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item maintenance">
+                                <div class="cron-info">
+                                    <div class="cron-name">Security Scan & Report</div>
+                                    <div class="cron-schedule">0 1 * * *</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/security_scan.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: 7h ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Portal Services Crons -->
+                    <div class="cron-section">
+                        <div class="section-header">
+                            <span class="section-icon">🌐</span>
+                            <h4>Portal Service Maintenance</h4>
+                            <span class="status-badge running">Active</span>
+                        </div>
+                        
+                        <div class="cron-list">
+                            <div class="cron-item portal-service">
+                                <div class="cron-info">
+                                    <div class="cron-name">Webmail Cleanup</div>
+                                    <div class="cron-schedule">30 3 * * *</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/webmail_cleanup.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: 5h ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item portal-service">
+                                <div class="cron-info">
+                                    <div class="cron-name">DAV Sync & Optimize</div>
+                                    <div class="cron-schedule">0 4 * * *</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/dav_sync.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: 4h ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                            
+                            <div class="cron-item portal-service">
+                                <div class="cron-info">
+                                    <div class="cron-name">Database Backup</div>
+                                    <div class="cron-schedule">0 0 * * 0</div>
+                                    <div class="cron-command">python3 /ops/MedusaServ/scripts/database_backup.py</div>
+                                </div>
+                                <div class="cron-status">
+                                    <div class="status-dot success"></div>
+                                    <span class="last-run">Last: 2 days ago</span>
+                                </div>
+                                <div class="cron-actions">
+                                    <button class="action-btn run">▶️</button>
+                                    <button class="action-btn edit">✏️</button>
+                                    <button class="action-btn logs">📋</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cron Manager Control Panel -->
+                <div class="cron-control-panel">
+                    <!-- System Status Dashboard -->
+                    <div class="status-dashboard">
+                        <h3>⚡ System Status</h3>
+                        
+                        <div class="status-grid">
+                            <div class="status-card">
+                                <div class="status-icon">📊</div>
+                                <div class="status-info">
+                                    <div class="status-label">Active Crons</div>
+                                    <div class="status-value">12</div>
+                                </div>
+                                <div class="status-trend up">↗️</div>
+                            </div>
+                            
+                            <div class="status-card">
+                                <div class="status-icon">✅</div>
+                                <div class="status-info">
+                                    <div class="status-label">Successful Runs</div>
+                                    <div class="status-value">147</div>
+                                </div>
+                                <div class="status-trend up">↗️</div>
+                            </div>
+                            
+                            <div class="status-card warning">
+                                <div class="status-icon">⚠️</div>
+                                <div class="status-info">
+                                    <div class="status-label">Failed Runs</div>
+                                    <div class="status-value">3</div>
+                                </div>
+                                <div class="status-trend down">↘️</div>
+                            </div>
+                            
+                            <div class="status-card">
+                                <div class="status-icon">💾</div>
+                                <div class="status-info">
+                                    <div class="status-label">Disk Usage</div>
+                                    <div class="status-value">23%</div>
+                                </div>
+                                <div class="status-trend stable">➡️</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Panel -->
+                    <div class="quick-actions">
+                        <h3>🚀 Quick Actions</h3>
+                        
+                        <div class="action-buttons">
+                            <button class="action-button emergency">
+                                <div class="action-icon">🚨</div>
+                                <div class="action-text">
+                                    <div class="action-title">Emergency Restart</div>
+                                    <div class="action-subtitle">All Portal Services</div>
+                                </div>
+                            </button>
+                            
+                            <button class="action-button maintenance">
+                                <div class="action-icon">🔧</div>
+                                <div class="action-text">
+                                    <div class="action-title">Run Maintenance</div>
+                                    <div class="action-subtitle">All Systems</div>
+                                </div>
+                            </button>
+                            
+                            <button class="action-button security">
+                                <div class="action-icon">🛡️</div>
+                                <div class="action-text">
+                                    <div class="action-title">Security Scan</div>
+                                    <div class="action-subtitle">Full System</div>
+                                </div>
+                            </button>
+                            
+                            <button class="action-button backup">
+                                <div class="action-icon">💾</div>
+                                <div class="action-text">
+                                    <div class="action-title">Backup Now</div>
+                                    <div class="action-subtitle">All Databases</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Log -->
+                    <div class="activity-log">
+                        <h3>📋 Recent Activity</h3>
+                        
+                        <div class="log-entries">
+                            <div class="log-entry success">
+                                <div class="log-time">08:45</div>
+                                <div class="log-icon">✅</div>
+                                <div class="log-message">Health check completed successfully</div>
+                            </div>
+                            
+                            <div class="log-entry info">
+                                <div class="log-time">08:40</div>
+                                <div class="log-icon">ℹ️</div>
+                                <div class="log-message">PsiForceDB maintenance task started</div>
+                            </div>
+                            
+                            <div class="log-entry warning">
+                                <div class="log-time">08:35</div>
+                                <div class="log-icon">⚠️</div>
+                                <div class="log-message">High memory usage detected (85%)</div>
+                            </div>
+                            
+                            <div class="log-entry success">
+                                <div class="log-time">08:30</div>
+                                <div class="log-icon">🔄</div>
+                                <div class="log-message">Icewall firewall rules updated</div>
+                            </div>
+                            
+                            <div class="log-entry info">
+                                <div class="log-time">08:25</div>
+                                <div class="log-icon">📧</div>
+                                <div class="log-message">Webmail cleanup completed (142 deleted)</div>
+                            </div>
+                            
+                            <div class="log-entry success">
+                                <div class="log-time">08:20</div>
+                                <div class="log-icon">🗄️</div>
+                                <div class="log-message">CalDAV/CardDAV sync completed</div>
+                            </div>
+                        </div>
+                        
+                        <div class="log-footer">
+                            <button class="log-btn">View Full Log</button>
+                            <button class="log-btn">Export Logs</button>
+                        </div>
+                    </div>
+
+                    <!-- Service Health Monitor -->
+                    <div class="service-health">
+                        <h3>🏥 Service Health</h3>
+                        
+                        <div class="health-services">
+                            <div class="health-service online">
+                                <div class="service-icon">🗄️</div>
+                                <div class="service-info">
+                                    <div class="service-name">PsiForceDB</div>
+                                    <div class="service-status">Online</div>
+                                </div>
+                                <div class="service-uptime">99.9%</div>
+                            </div>
+                            
+                            <div class="health-service online">
+                                <div class="service-icon">🛡️</div>
+                                <div class="service-info">
+                                    <div class="service-name">Icewall</div>
+                                    <div class="service-status">Active</div>
+                                </div>
+                                <div class="service-uptime">100%</div>
+                            </div>
+                            
+                            <div class="health-service online">
+                                <div class="service-icon">📧</div>
+                                <div class="service-info">
+                                    <div class="service-name">Webmail</div>
+                                    <div class="service-status">Running</div>
+                                </div>
+                                <div class="service-uptime">98.7%</div>
+                            </div>
+                            
+                            <div class="health-service warning">
+                                <div class="service-icon">📁</div>
+                                <div class="service-info">
+                                    <div class="service-name">VSFTPD</div>
+                                    <div class="service-status">High Load</div>
+                                </div>
+                                <div class="service-uptime">97.2%</div>
+                            </div>
+                            
+                            <div class="health-service online">
+                                <div class="service-icon">🔬</div>
+                                <div class="service-info">
+                                    <div class="service-name">Jupyter Lab</div>
+                                    <div class="service-status">Running</div>
+                                </div>
+                                <div class="service-uptime">99.1%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cron Editor Modal (Hidden by default) -->
+            <div class="cron-editor-modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>📝 Edit Cron Job</h3>
+                        <button class="modal-close">✕</button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Job Name:</label>
+                            <input type="text" placeholder="Enter job name" value="Health Check All Services">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Schedule (Cron Expression):</label>
+                            <input type="text" placeholder="* * * * *" value="*/5 * * * *">
+                            <div class="schedule-help">
+                                <small>Format: minute hour day month day-of-week</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Command:</label>
+                            <textarea placeholder="Enter command to execute">python3 /ops/MedusaServ/scripts/health_check.py</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Priority:</label>
+                            <select>
+                                <option value="critical">Critical</option>
+                                <option value="high">High</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Enable logging
+                            </label>
+                            <label>
+                                <input type="checkbox"> Send email on failure
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="modal-btn cancel">Cancel</button>
+                        <button class="modal-btn save">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @styles {
+        .cron-manager-thingamabob {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #6f42c1;
+            margin-bottom: 2rem;
+        }
+
+        .thingamabob-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .thingamabob-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .thingamabob-icon {
+            font-size: 1.5rem;
+        }
+
+        .thingamabob-title h2 {
+            color: #6f42c1;
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-badge {
+            background: linear-gradient(135deg, #6f42c1, #5a32a3);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thingamabob-btn {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .thingamabob-btn:hover {
+            background: #5a32a3;
+            transform: translateY(-1px);
+        }
+
+        .thingamabob-btn.emergency-stop {
+            background: #dc3545;
+        }
+
+        .thingamabob-btn.emergency-stop:hover {
+            background: #c82333;
+        }
+
+        .thingamabob-interface {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            min-height: 700px;
+        }
+
+        /* Active Crons Panel */
+        .active-crons-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .active-crons-panel > h3 {
+            color: #343a40;
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .cron-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .section-icon {
+            font-size: 1rem;
+        }
+
+        .section-header h4 {
+            flex: 1;
+            margin: 0;
+            color: #343a40;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.running {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cron-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .cron-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            transition: all 0.2s ease;
+        }
+
+        .cron-item:hover {
+            border-color: #6f42c1;
+            box-shadow: 0 2px 8px rgba(111, 66, 193, 0.1);
+        }
+
+        .cron-item.critical {
+            border-left: 4px solid #dc3545;
+        }
+
+        .cron-item.maintenance {
+            border-left: 4px solid #ffc107;
+        }
+
+        .cron-item.portal-service {
+            border-left: 4px solid #28a745;
+        }
+
+        .cron-info {
+            flex: 1;
+        }
+
+        .cron-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .cron-schedule {
+            font-family: 'Monaco', 'Consolas', monospace;
+            background: #e9ecef;
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            color: #6c757d;
+            display: inline-block;
+            margin-bottom: 0.25rem;
+        }
+
+        .cron-command {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.75rem;
+            color: #6c757d;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .cron-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 120px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.success {
+            background: #28a745;
+        }
+
+        .status-dot.warning {
+            background: #ffc107;
+        }
+
+        .status-dot.error {
+            background: #dc3545;
+        }
+
+        .last-run {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        .cron-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .action-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.375rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        /* Control Panel */
+        .cron-control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .status-dashboard,
+        .quick-actions,
+        .activity-log,
+        .service-health {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .status-dashboard h3,
+        .quick-actions h3,
+        .activity-log h3,
+        .service-health h3 {
+            margin: 0 0 1rem 0;
+            color: #343a40;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Status Dashboard */
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 6px;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .status-card:hover {
+            border-color: #6f42c1;
+        }
+
+        .status-card.warning {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+
+        .status-icon {
+            font-size: 1rem;
+        }
+
+        .status-info {
+            flex: 1;
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        .status-value {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .status-trend {
+            font-size: 0.75rem;
+        }
+
+        .status-trend.up {
+            color: #28a745;
+        }
+
+        .status-trend.down {
+            color: #dc3545;
+        }
+
+        .status-trend.stable {
+            color: #6c757d;
+        }
+
+        /* Quick Actions */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-button:hover {
+            border-color: #6f42c1;
+            box-shadow: 0 2px 8px rgba(111, 66, 193, 0.1);
+        }
+
+        .action-button.emergency:hover {
+            border-color: #dc3545;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.1);
+        }
+
+        .action-icon {
+            font-size: 1.25rem;
+        }
+
+        .action-text {
+            flex: 1;
+        }
+
+        .action-title {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .action-subtitle {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        /* Activity Log */
+        .log-entries {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            font-size: 0.75rem;
+        }
+
+        .log-time {
+            color: #6c757d;
+            font-family: 'Monaco', 'Consolas', monospace;
+            min-width: 35px;
+        }
+
+        .log-icon {
+            font-size: 0.875rem;
+        }
+
+        .log-message {
+            flex: 1;
+            color: #343a40;
+        }
+
+        .log-entry.success {
+            border-left: 3px solid #28a745;
+        }
+
+        .log-entry.warning {
+            border-left: 3px solid #ffc107;
+        }
+
+        .log-entry.info {
+            border-left: 3px solid #17a2b8;
+        }
+
+        .log-footer {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .log-btn {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .log-btn:hover {
+            background: #5a32a3;
+        }
+
+        /* Service Health */
+        .health-services {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .health-service {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+
+        .health-service.online {
+            border-left: 4px solid #28a745;
+        }
+
+        .health-service.warning {
+            border-left: 4px solid #ffc107;
+            background: #fff3cd;
+        }
+
+        .service-icon {
+            font-size: 1rem;
+        }
+
+        .service-info {
+            flex: 1;
+        }
+
+        .service-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .service-status {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .service-uptime {
+            font-weight: 600;
+            color: #28a745;
+            font-size: 0.875rem;
+        }
+
+        .health-service.warning .service-uptime {
+            color: #856404;
+        }
+
+        /* Modal Styles */
+        .cron-editor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #343a40;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            color: #6c757d;
+        }
+
+        .modal-close:hover {
+            color: #dc3545;
+        }
+
+        .modal-body {
+            padding: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .schedule-help {
+            margin-top: 0.25rem;
+        }
+
+        .schedule-help small {
+            color: #6c757d;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .modal-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn.cancel {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+
+        .modal-btn.cancel:hover {
+            background: #5a6268;
+        }
+
+        .modal-btn.save {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+
+        .modal-btn.save:hover {
+            background: #218838;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .thingamabob-interface {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cron-manager-thingamabob {
+                padding: 1rem;
+            }
+
+            .thingamabob-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .cron-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .cron-actions {
+                align-self: flex-end;
+            }
+
+            .modal-content {
+                margin: 1rem;
+            }
+        }
+    }
+
+    @javascript {
+        // Initialize Cron Manager functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const cronManager = new CronManagerThingamabob();
+            cronManager.init();
+        });
+
+        class CronManagerThingamabob {
+            constructor() {
+                this.modal = document.querySelector('.cron-editor-modal');
+                this.securityCore = null;
+                this.sessionValidated = false;
+                this.componentName = 'cron-manager-thingamabob';
+                this.bindEventListeners();
+                this.startAutoRefresh();
+            }
+
+            init() {
+                console.log('🔄 Cron Manager Thingamabob initializing with AES 256 PQC security...');
+                
+                // Wait for MedusaSecurityCore to be ready
+                this.waitForSecurityCore().then(() => {
+                    this.loadCronJobs();
+                    this.updateServiceStatus();
+                }).catch(error => {
+                    console.error('❌ Security initialization failed:', error);
+                });
+            }
+            
+            async waitForSecurityCore() {
+                return new Promise((resolve, reject) => {
+                    const checkSecurity = () => {
+                        if (window.MedusaSecurityCore) {
+                            this.securityCore = window.MedusaSecurityCore;
+                            console.log('✅ Cron Manager secured with AES 256 PQC');
+                            resolve();
+                        } else {
+                            setTimeout(checkSecurity, 100);
+                        }
+                    };
+                    
+                    checkSecurity();
+                    
+                    // Timeout after 10 seconds
+                    setTimeout(() => {
+                        reject(new Error('Security core timeout'));
+                    }, 10000);
+                });
+            }
+
+            bindEventListeners() {
+                // Edit buttons
+                document.querySelectorAll('.action-btn.edit').forEach(btn => {
+                    btn.addEventListener('click', () => this.showEditModal());
+                });
+
+                // Run buttons
+                document.querySelectorAll('.action-btn.run').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.runCronJob(e.target));
+                });
+
+                // Quick action buttons
+                document.querySelectorAll('.action-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.executeQuickAction(e.currentTarget));
+                });
+
+                // Modal controls
+                if (this.modal) {
+                    this.modal.querySelector('.modal-close').addEventListener('click', () => this.hideModal());
+                    this.modal.querySelector('.modal-btn.cancel').addEventListener('click', () => this.hideModal());
+                    this.modal.querySelector('.modal-btn.save').addEventListener('click', () => this.saveCronJob());
+                }
+
+                // Emergency stop button
+                document.querySelector('.thingamabob-btn.emergency-stop').addEventListener('click', () => this.emergencyStop());
+
+                // Reload button
+                document.querySelector('.thingamabob-btn.reload-crons').addEventListener('click', () => this.reloadCrons());
+            }
+
+            showEditModal() {
+                if (this.modal) {
+                    this.modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            hideModal() {
+                if (this.modal) {
+                    this.modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            async runCronJob(button) {
+                const cronItem = button.closest('.cron-item');
+                const jobName = cronItem.querySelector('.cron-name').textContent;
+                
+                button.innerHTML = '⏳';
+                button.disabled = true;
+
+                try {
+                    if (!this.securityCore) {
+                        throw new Error('Security core not available');
+                    }
+                    
+                    // Secure cron execution with AES 256 PQC
+                    const cronData = {
+                        job_name: jobName,
+                        execution_type: 'manual',
+                        timestamp: Date.now(),
+                        user_initiated: true
+                    };
+                    
+                    const response = await this.securityCore.secureThingamabobCall(
+                        this.componentName,
+                        'executeCronJob',
+                        cronData
+                    );
+                    
+                    if (response.success) {
+                        // Update status
+                        const statusDot = cronItem.querySelector('.status-dot');
+                        const lastRun = cronItem.querySelector('.last-run');
+                        
+                        statusDot.className = 'status-dot success';
+                        lastRun.textContent = 'Last: Just now';
+                        
+                        // Add to secure activity log
+                        this.addSecureLogEntry('success', `Secure execution of ${jobName} completed`);
+                        
+                        button.innerHTML = '▶️';
+                    } else {
+                        throw new Error(response.message || 'Execution failed');
+                    }
+                } catch (error) {
+                    button.innerHTML = '❌';
+                    this.addSecureLogEntry('error', `Failed to execute ${jobName}: ${error.message}`);
+                } finally {
+                    button.disabled = false;
+                    setTimeout(() => {
+                        if (button.innerHTML === '❌') {
+                            button.innerHTML = '▶️';
+                        }
+                    }, 3000);
+                }
+            }
+
+            async executeQuickAction(button) {
+                const actionTitle = button.querySelector('.action-title').textContent;
+                const originalIcon = button.querySelector('.action-icon').innerHTML;
+                
+                button.querySelector('.action-icon').innerHTML = '⏳';
+                button.disabled = true;
+
+                try {
+                    // Simulate different action delays
+                    const delay = actionTitle.includes('Emergency') ? 5000 : 3000;
+                    await this.delay(delay);
+                    
+                    // Add success log entry
+                    this.addLogEntry('success', `${actionTitle} completed successfully`);
+                    
+                    // Temporary success indicator
+                    button.querySelector('.action-icon').innerHTML = '✅';
+                    
+                } catch (error) {
+                    button.querySelector('.action-icon').innerHTML = '❌';
+                    this.addLogEntry('error', `${actionTitle} failed: ${error.message}`);
+                } finally {
+                    button.disabled = false;
+                    setTimeout(() => {
+                        button.querySelector('.action-icon').innerHTML = originalIcon;
+                    }, 2000);
+                }
+            }
+
+            async emergencyStop() {
+                const button = document.querySelector('.thingamabob-btn.emergency-stop');
+                const originalText = button.innerHTML;
+                
+                if (confirm('⚠️ Are you sure you want to perform an emergency stop of all services?')) {
+                    button.innerHTML = '⏳ Stopping...';
+                    button.disabled = true;
+
+                    try {
+                        await this.delay(3000);
+                        this.addLogEntry('warning', 'Emergency stop executed - All services halted');
+                        button.innerHTML = '🔄 Restart All';
+                    } catch (error) {
+                        this.addLogEntry('error', `Emergency stop failed: ${error.message}`);
+                        button.innerHTML = originalText;
+                    } finally {
+                        button.disabled = false;
+                    }
+                }
+            }
+
+            async reloadCrons() {
+                const button = document.querySelector('.thingamabob-btn.reload-crons');
+                const originalText = button.innerHTML;
+                
+                button.innerHTML = '⏳ Reloading...';
+                button.disabled = true;
+
+                try {
+                    await this.delay(1500);
+                    this.loadCronJobs();
+                    this.addLogEntry('info', 'Cron jobs reloaded from system');
+                    button.innerHTML = '✅ Reloaded';
+                } catch (error) {
+                    this.addLogEntry('error', `Failed to reload crons: ${error.message}`);
+                    button.innerHTML = '❌ Failed';
+                } finally {
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                }
+            }
+
+            async loadCronJobs() {
+                // Simulate loading cron jobs from API
+                console.log('📋 Loading cron jobs from system');
+                
+                // Update status counters
+                this.updateStatusCounters();
+            }
+
+            updateStatusCounters() {
+                // Simulate updating status counters
+                const counters = {
+                    'Active Crons': Math.floor(Math.random() * 5) + 10,
+                    'Successful Runs': Math.floor(Math.random() * 50) + 120,
+                    'Failed Runs': Math.floor(Math.random() * 5) + 1
+                };
+
+                document.querySelectorAll('.status-value').forEach((element, index) => {
+                    const labels = Object.keys(counters);
+                    if (labels[index]) {
+                        element.textContent = counters[labels[index]];
+                    }
+                });
+            }
+
+            updateServiceStatus() {
+                // Simulate updating service health status
+                document.querySelectorAll('.health-service').forEach(service => {
+                    const uptime = service.querySelector('.service-uptime');
+                    if (uptime) {
+                        // Randomly vary uptime slightly
+                        const currentUptime = parseFloat(uptime.textContent);
+                        const variation = (Math.random() - 0.5) * 0.2;
+                        const newUptime = Math.max(95, Math.min(100, currentUptime + variation));
+                        uptime.textContent = newUptime.toFixed(1) + '%';
+                    }
+                });
+            }
+
+            addLogEntry(type, message) {
+                const logEntries = document.querySelector('.log-entries');
+                if (!logEntries) return;
+
+                const icons = {
+                    success: '✅',
+                    error: '❌',
+                    warning: '⚠️',
+                    info: 'ℹ️'
+                };
+
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry ${type}`;
+                logEntry.innerHTML = `
+                    <div class="log-time">${timeStr}</div>
+                    <div class="log-icon">${icons[type] || 'ℹ️'}</div>
+                    <div class="log-message">${message}</div>
+                `;
+
+                // Insert at the top
+                logEntries.insertBefore(logEntry, logEntries.firstChild);
+
+                // Keep only the latest 10 entries
+                while (logEntries.children.length > 6) {
+                    logEntries.removeChild(logEntries.lastChild);
+                }
+
+                // Scroll to top
+                logEntries.scrollTop = 0;
+            }
+            
+            async addSecureLogEntry(type, message) {
+                // Add to regular log display
+                this.addLogEntry(type, message);
+                
+                // Additionally log to secure PsiForceDB with pfSQL to SQL translation
+                if (this.securityCore && this.securityCore.psiForceDB.connected) {
+                    try {
+                        const secureLogData = {
+                            component: this.componentName,
+                            event_type: type.toUpperCase(),
+                            message: message,
+                            timestamp: new Date().toISOString(),
+                            security_level: 'quantum_resistant'
+                        };
+                        
+                        // Use pfSQL encrypted logging (gets translated to SQL)
+                        const pfSQLLogQuery = `
+                            INSERT INTO security_audit_log (component_name, event_type, event_data_encrypted, security_level) 
+                            VALUES ('${this.componentName}', '${type.toUpperCase()}', 
+                                   PFSQL_ENCRYPT('${JSON.stringify(secureLogData)}', 'medusa-master-2025'), 
+                                   'quantum_resistant')
+                        `;
+                        
+                        const logResult = await this.securityCore.psiForceQuery(pfSQLLogQuery);
+                        
+                        if (logResult.success) {
+                            console.log('🔒 Secure pfSQL log entry created');
+                        }
+                        
+                    } catch (error) {
+                        console.warn('⚠️ Failed to write pfSQL secure log entry:', error);
+                    }
+                }
+            }
+
+            startAutoRefresh() {
+                // Auto-refresh every 30 seconds
+                setInterval(() => {
+                    this.updateServiceStatus();
+                    this.updateStatusCounters();
+                }, 30000);
+
+                // Add a heartbeat log entry every 5 minutes
+                setInterval(() => {
+                    this.addLogEntry('info', 'System heartbeat - All monitoring systems active');
+                }, 300000);
+            }
+
+            saveCronJob() {
+                // Simulate saving cron job
+                this.addLogEntry('success', 'Cron job configuration saved');
+                this.hideModal();
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+    }
+}

@@ -1,0 +1,119 @@
+<!--
+Purple-Pages.com - Single Sign-On (SSO) API
+Cross-domain authentication between PsiForceDB.com and Purple-Pages.com
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_sso_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    header("Access-Control-Allow-Credentials: true");
+    
+    // Handle OPTIONS preflight
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    // Get action from query parameter
+    action = request.query.get("action", "verify");
+    
+    if (action == "verify") {
+        // Verify existing session token
+        token = request.headers.get("Authorization") || request.cookies.get("session_token");
+        
+        if (!token) {
+            return response(401, json({
+                "authenticated": false,
+                "message": "No session token provided"
+            }));
+        }
+        
+        // Verify token with shared session store
+        session_data = verify_session_token(token);
+        
+        if (session_data) {
+            return response(200, json({
+                "authenticated": true,
+                "user": {
+                    "id": session_data.user_id,
+                    "username": session_data.username,
+                    "email": session_data.email,
+                    "roles": session_data.roles
+                },
+                "domains": ["psiforcedb.com", "purple-pages.com"]
+            }));
+        } else {
+            return response(401, json({
+                "authenticated": false,
+                "message": "Invalid or expired session"
+            }));
+        }
+    }
+    
+    if (action == "refresh") {
+        // Refresh session token
+        token = request.headers.get("Authorization") || request.cookies.get("session_token");
+        
+        if (!token) {
+            return response(401, json({
+                "authenticated": false,
+                "message": "No session token provided"
+            }));
+        }
+        
+        // Refresh token
+        new_token = refresh_session_token(token);
+        
+        if (new_token) {
+            // Set cookie for both domains
+            response.set_cookie("session_token", new_token, {
+                "domain": ".poweredbymedusa.com",  // Shared domain
+                "path": "/",
+                "maxAge": 3600 * 24 * 7,  // 7 days
+                "httpOnly": true,
+                "secure": true,
+                "sameSite": "None"
+            });
+            
+            return response(200, json({
+                "authenticated": true,
+                "token": new_token,
+                "expires": get_token_expiry(new_token)
+            }));
+        } else {
+            return response(401, json({
+                "authenticated": false,
+                "message": "Failed to refresh session"
+            }));
+        }
+    }
+    
+    if (action == "logout") {
+        // Logout from all domains
+        token = request.headers.get("Authorization") || request.cookies.get("session_token");
+        
+        if (token) {
+            invalidate_session_token(token);
+        }
+        
+        // Clear cookies
+        response.set_cookie("session_token", "", {
+            "domain": ".poweredbymedusa.com",
+            "path": "/",
+            "maxAge": 0
+        });
+        
+        return response(200, json({
+            "logged_out": true,
+            "message": "Logged out from all domains"
+        }));
+    }
+    
+    return response(400, json({
+        "error": "Invalid action",
+        "valid_actions": ["verify", "refresh", "logout"]
+    }));
+}
+

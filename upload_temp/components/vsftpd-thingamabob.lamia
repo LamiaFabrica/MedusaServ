@@ -1,0 +1,1096 @@
+/**
+ * MEDUSASERV VSFTPD MANAGEMENT THINGAMABOB COMPONENT
+ * =================================================
+ * Enterprise VSFTPD management thingamabob with FTP/SFTP/FTPS
+ * © 2025 The Medusa Project | Roylepython | D Hargreaves
+ */
+
+@component "vsftpd_management_thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise_vsftpd"
+    @vsftpd_enabled true
+    @ftp_support true
+    @sftp_support true
+    @ftps_support true
+    
+    @render {
+        <div class="vsftpd-thingamabob">
+            <!-- VSFTPD Header Thingamabob -->
+            <div class="thingamabob-header">
+                <div class="thingamabob-title">
+                    <div class="thingamabob-icon">🔗</div>
+                    <h2>VSFTPD Management Thingamabob</h2>
+                    <span class="thingamabob-badge">FTP/SFTP/FTPS</span>
+                </div>
+                <div class="thingamabob-controls">
+                    <button class="thingamabob-btn start-service">▶️ Start</button>
+                    <button class="thingamabob-btn stop-service">⏹️ Stop</button>
+                    <button class="thingamabob-btn restart-service">🔄 Restart</button>
+                    <button class="thingamabob-btn new-user">👤 Add User</button>
+                </div>
+            </div>
+
+            <!-- VSFTPD Interface Thingamabob -->
+            <div class="thingamabob-interface">
+                <!-- Server Status Thingamabob -->
+                <div class="status-thingamabob">
+                    <div class="service-status">
+                        <h3>🔗 Service Status</h3>
+                        <div class="status-indicators">
+                            <div class="status-item">
+                                <div class="status-label">VSFTPD Service:</div>
+                                <div class="status-value online">
+                                    <div class="status-dot online"></div>
+                                    Running
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">FTP Port (21):</div>
+                                <div class="status-value online">
+                                    <div class="status-dot online"></div>
+                                    Active
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">SFTP Port (22):</div>
+                                <div class="status-value online">
+                                    <div class="status-dot online"></div>
+                                    Active
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">FTPS Port (990):</div>
+                                <div class="status-value online">
+                                    <div class="status-dot online"></div>
+                                    Active
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="connection-stats">
+                        <h4>📊 Connection Statistics</h4>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">👥</div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Active Users</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🔗</div>
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">Total Connections</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">📤</div>
+                                <div class="stat-value">2.3 GB</div>
+                                <div class="stat-label">Data Uploaded</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">📥</div>
+                                <div class="stat-value">1.8 GB</div>
+                                <div class="stat-label">Data Downloaded</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="server-config">
+                        <h4>⚙️ Quick Settings</h4>
+                        <div class="config-toggles">
+                            <div class="config-item">
+                                <label class="toggle-label">
+                                    <input type="checkbox" checked class="toggle-input">
+                                    <span class="toggle-slider"></span>
+                                    Anonymous FTP
+                                </label>
+                            </div>
+                            <div class="config-item">
+                                <label class="toggle-label">
+                                    <input type="checkbox" checked class="toggle-input">
+                                    <span class="toggle-slider"></span>
+                                    SSL/TLS Encryption
+                                </label>
+                            </div>
+                            <div class="config-item">
+                                <label class="toggle-label">
+                                    <input type="checkbox" class="toggle-input">
+                                    <span class="toggle-slider"></span>
+                                    Passive Mode Only
+                                </label>
+                            </div>
+                            <div class="config-item">
+                                <label class="toggle-label">
+                                    <input type="checkbox" checked class="toggle-input">
+                                    <span class="toggle-slider"></span>
+                                    Chroot Users
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Thingamabob -->
+                <div class="users-thingamabob">
+                    <div class="users-header">
+                        <h3>👥 FTP Users</h3>
+                        <div class="users-controls">
+                            <input type="text" placeholder="Search users..." class="search-users">
+                            <select class="filter-users">
+                                <option>All Users</option>
+                                <option>Active Users</option>
+                                <option>Disabled Users</option>
+                                <option>Admin Users</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="users-list">
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-avatar">👨‍💻</div>
+                                <div class="user-details">
+                                    <div class="user-name">medusa_admin</div>
+                                    <div class="user-meta">Admin • Last login: 2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="user-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Connections:</span>
+                                    <span class="stat-value">156</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Data Transfer:</span>
+                                    <span class="stat-value">45.2 GB</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="user-btn edit">✏️</button>
+                                <button class="user-btn disable">⏸️</button>
+                                <button class="user-btn delete">🗑️</button>
+                            </div>
+                            <div class="user-status online"></div>
+                        </div>
+                        
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-avatar">👨‍🎨</div>
+                                <div class="user-details">
+                                    <div class="user-name">developer1</div>
+                                    <div class="user-meta">Developer • Last login: 30 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="user-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Connections:</span>
+                                    <span class="stat-value">89</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Data Transfer:</span>
+                                    <span class="stat-value">12.7 GB</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="user-btn edit">✏️</button>
+                                <button class="user-btn disable">⏸️</button>
+                                <button class="user-btn delete">🗑️</button>
+                            </div>
+                            <div class="user-status online"></div>
+                        </div>
+                        
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-avatar">👩‍💼</div>
+                                <div class="user-details">
+                                    <div class="user-name">backup_service</div>
+                                    <div class="user-meta">System • Last login: 1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="user-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Connections:</span>
+                                    <span class="stat-value">234</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Data Transfer:</span>
+                                    <span class="stat-value">128.5 GB</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="user-btn edit">✏️</button>
+                                <button class="user-btn disable">⏸️</button>
+                                <button class="user-btn delete">🗑️</button>
+                            </div>
+                            <div class="user-status idle"></div>
+                        </div>
+                        
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-avatar">🔒</div>
+                                <div class="user-details">
+                                    <div class="user-name">anonymous</div>
+                                    <div class="user-meta">Anonymous • Always available</div>
+                                </div>
+                            </div>
+                            <div class="user-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Connections:</span>
+                                    <span class="stat-value">1,456</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Data Transfer:</span>
+                                    <span class="stat-value">234.8 GB</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="user-btn edit">✏️</button>
+                                <button class="user-btn disable">⏸️</button>
+                            </div>
+                            <div class="user-status online"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connections & Logs Thingamabob -->
+                <div class="connections-logs-thingamabob">
+                    <div class="panel-tabs">
+                        <button class="tab-btn active">🔗 Active Connections</button>
+                        <button class="tab-btn">📋 Recent Logs</button>
+                        <button class="tab-btn">⚙️ Configuration</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Active Connections -->
+                        <div class="connections-list">
+                            <div class="connection-item">
+                                <div class="connection-info">
+                                    <div class="connection-user">medusa_admin</div>
+                                    <div class="connection-ip">192.168.1.100</div>
+                                </div>
+                                <div class="connection-details">
+                                    <div class="connection-protocol">SFTP</div>
+                                    <div class="connection-time">Connected 45m ago</div>
+                                </div>
+                                <div class="connection-actions">
+                                    <button class="connection-btn">🔌 Disconnect</button>
+                                </div>
+                            </div>
+                            
+                            <div class="connection-item">
+                                <div class="connection-info">
+                                    <div class="connection-user">developer1</div>
+                                    <div class="connection-ip">10.0.0.25</div>
+                                </div>
+                                <div class="connection-details">
+                                    <div class="connection-protocol">FTPS</div>
+                                    <div class="connection-time">Connected 12m ago</div>
+                                </div>
+                                <div class="connection-actions">
+                                    <button class="connection-btn">🔌 Disconnect</button>
+                                </div>
+                            </div>
+                            
+                            <div class="connection-item">
+                                <div class="connection-info">
+                                    <div class="connection-user">backup_service</div>
+                                    <div class="connection-ip">172.16.0.10</div>
+                                </div>
+                                <div class="connection-details">
+                                    <div class="connection-protocol">FTP</div>
+                                    <div class="connection-time">Connected 3m ago</div>
+                                </div>
+                                <div class="connection-actions">
+                                    <button class="connection-btn">🔌 Disconnect</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Logs -->
+                        <div class="logs-list" style="display: none;">
+                            <div class="log-entry success">
+                                <div class="log-time">14:25:33</div>
+                                <div class="log-message">User 'medusa_admin' logged in from 192.168.1.100</div>
+                                <div class="log-type">LOGIN</div>
+                            </div>
+                            
+                            <div class="log-entry info">
+                                <div class="log-time">14:20:15</div>
+                                <div class="log-message">File upload completed: /web/portal/assets/image.png (2.3MB)</div>
+                                <div class="log-type">UPLOAD</div>
+                            </div>
+                            
+                            <div class="log-entry warning">
+                                <div class="log-time">14:18:42</div>
+                                <div class="log-message">Multiple failed login attempts from 203.45.67.89</div>
+                                <div class="log-type">SECURITY</div>
+                            </div>
+                            
+                            <div class="log-entry success">
+                                <div class="log-time">14:15:21</div>
+                                <div class="log-message">User 'developer1' logged out after session</div>
+                                <div class="log-type">LOGOUT</div>
+                            </div>
+                            
+                            <div class="log-entry info">
+                                <div class="log-time">14:12:08</div>
+                                <div class="log-message">Directory created: /uploads/projects/medusa-v2/</div>
+                                <div class="log-type">MKDIR</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Configuration -->
+                        <div class="config-panel" style="display: none;">
+                            <div class="config-section">
+                                <h4>🌐 Network Settings</h4>
+                                <div class="config-row">
+                                    <label>Listen Port:</label>
+                                    <input type="number" value="21" class="config-input">
+                                </div>
+                                <div class="config-row">
+                                    <label>Passive Port Range:</label>
+                                    <input type="text" value="50000-50100" class="config-input">
+                                </div>
+                                <div class="config-row">
+                                    <label>Max Connections:</label>
+                                    <input type="number" value="100" class="config-input">
+                                </div>
+                            </div>
+                            
+                            <div class="config-section">
+                                <h4>🔒 Security Settings</h4>
+                                <div class="config-row">
+                                    <label>SSL Certificate:</label>
+                                    <input type="text" value="/etc/ssl/vsftpd.pem" class="config-input">
+                                </div>
+                                <div class="config-row">
+                                    <label>Banned IPs:</label>
+                                    <textarea class="config-textarea" placeholder="Enter IP addresses, one per line"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="config-actions">
+                                <button class="config-btn save">💾 Save Configuration</button>
+                                <button class="config-btn reload">🔄 Reload Service</button>
+                                <button class="config-btn reset">↶ Reset to Default</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-monitor">
+                        <h4>📊 Performance Monitor</h4>
+                        <div class="performance-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">CPU Usage:</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 25%;"></div>
+                                </div>
+                                <span class="metric-value">25%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Memory:</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 42%;"></div>
+                                </div>
+                                <span class="metric-value">42%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Network I/O:</span>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 68%;"></div>
+                                </div>
+                                <span class="metric-value">68%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @styles {
+        .vsftpd-thingamabob {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #17a2b8;
+            margin-bottom: 2rem;
+        }
+
+        .thingamabob-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .thingamabob-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .thingamabob-icon {
+            font-size: 1.5rem;
+        }
+
+        .thingamabob-title h2 {
+            color: #17a2b8;
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-badge {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .thingamabob-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .thingamabob-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .thingamabob-btn:hover {
+            background: #138496;
+            transform: translateY(-1px);
+        }
+
+        .thingamabob-interface {
+            display: grid;
+            grid-template-columns: 320px 1fr 350px;
+            gap: 1.5rem;
+            min-height: 600px;
+        }
+
+        .status-thingamabob {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .service-status h3 {
+            color: #343a40;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .status-indicators {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .status-label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .status-value {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .status-value.online {
+            color: #28a745;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.online {
+            background: #28a745;
+        }
+
+        .connection-stats h4 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #17a2b8;
+            margin-bottom: 0.125rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+
+        .server-config h4 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .config-toggles {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .config-item {
+            background: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        .toggle-slider {
+            width: 34px;
+            height: 18px;
+            background: #ccc;
+            border-radius: 18px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-input:checked + .toggle-slider {
+            background: #17a2b8;
+        }
+
+        .toggle-input:checked + .toggle-slider::before {
+            transform: translateX(16px);
+        }
+
+        .users-thingamabob {
+            border-right: 1px solid #e9ecef;
+            padding-right: 1.5rem;
+        }
+
+        .users-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .users-header h3 {
+            color: #343a40;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .users-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .search-users,
+        .filter-users {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .users-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .user-item:hover {
+            background: rgba(23, 162, 184, 0.1);
+            transform: translateX(2px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .user-avatar {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e9ecef;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .user-meta {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .user-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 120px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+        }
+
+        .stat-label {
+            color: #6c757d;
+        }
+
+        .stat-value {
+            color: #343a40;
+            font-weight: 600;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .user-btn {
+            background: white;
+            border: 1px solid #dee2e6;
+            padding: 0.375rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .user-btn:hover {
+            background: #17a2b8;
+            color: white;
+            border-color: #17a2b8;
+        }
+
+        .user-status {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .user-status.online {
+            background: #28a745;
+        }
+
+        .user-status.idle {
+            background: #ffc107;
+        }
+
+        .connections-logs-thingamabob {
+            padding-left: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #6c757d;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            color: #17a2b8;
+            border-bottom-color: #17a2b8;
+        }
+
+        .connections-list,
+        .logs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .connection-item:hover {
+            background: rgba(23, 162, 184, 0.1);
+        }
+
+        .connection-info {
+            flex: 1;
+        }
+
+        .connection-user {
+            font-weight: 600;
+            color: #343a40;
+            font-size: 0.875rem;
+        }
+
+        .connection-ip {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .connection-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .connection-protocol {
+            background: #17a2b8;
+            color: white;
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .connection-time {
+            color: #6c757d;
+            font-size: 0.75rem;
+        }
+
+        .connection-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .connection-btn:hover {
+            background: #c82333;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #e9ecef;
+            font-size: 0.875rem;
+        }
+
+        .log-entry.success {
+            border-left-color: #28a745;
+        }
+
+        .log-entry.info {
+            border-left-color: #17a2b8;
+        }
+
+        .log-entry.warning {
+            border-left-color: #ffc107;
+        }
+
+        .log-time {
+            color: #6c757d;
+            font-weight: 600;
+            min-width: 70px;
+        }
+
+        .log-message {
+            flex: 1;
+            color: #343a40;
+        }
+
+        .log-type {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6c757d;
+        }
+
+        .config-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .config-section h4 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .config-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .config-row label {
+            color: #6c757d;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .config-input,
+        .config-textarea {
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .config-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .config-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .config-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .config-btn:hover {
+            background: #138496;
+        }
+
+        .config-btn.save {
+            background: #28a745;
+        }
+
+        .config-btn.save:hover {
+            background: #218838;
+        }
+
+        .config-btn.reset {
+            background: #6c757d;
+        }
+
+        .config-btn.reset:hover {
+            background: #5a6268;
+        }
+
+        .performance-monitor {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .performance-monitor h4 {
+            color: #343a40;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .performance-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .metric-label {
+            color: #6c757d;
+            min-width: 80px;
+        }
+
+        .metric-bar {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #17a2b8, #20c997);
+            transition: width 0.3s ease;
+        }
+
+        .metric-value {
+            color: #343a40;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .thingamabob-interface {
+                grid-template-columns: 280px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .thingamabob-interface {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                gap: 1rem;
+            }
+
+            .thingamabob-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .user-stats {
+                align-self: stretch;
+            }
+        }
+    }
+}

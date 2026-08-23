@@ -1,0 +1,742 @@
+<!--
+  MEDUSASERV LIBRARY DRAG-DROP UPLOADER v0.3.0d
+  Drag-and-drop system for library submissions with approval workflow
+  © 2025 The Medusa Project | Roylepython | D Hargreaves
+-->
+
+<lamia-component name="library-drag-drop-uploader" version="0.3.0d">
+  
+  <!-- Component Configuration -->
+  <config>
+    <max_file_size_auto_approve>524288</max_file_size_auto_approve> <!-- 500KB in bytes -->
+    <max_file_size_pending>5242880</max_file_size_pending> <!-- 5MB in bytes -->
+    <pending_queue_days>7</pending_queue_days>
+    <allowed_extensions>["cpp", "hpp", "so"]</allowed_extensions>
+    <upload_endpoint>/api/ppa-repository/library-upload</upload_endpoint>
+    <status_check_endpoint>/api/ppa-repository/upload-status</status_check_endpoint>
+  </config>
+
+  <!-- HTML Structure -->
+  <html>
+    <div class="library-uploader-container">
+      
+      <!-- Header Section -->
+      <div class="uploader-header">
+        <h2>📚 Library Submission Portal</h2>
+        <p>Drag and drop your C++, HPP, or SO libraries for review and inclusion</p>
+        
+        <!-- File Size Guidelines -->
+        <div class="size-guidelines">
+          <div class="guideline auto-approve">
+            <span class="icon">✅</span>
+            <strong>Auto-Approval:</strong> Files ≤ 500KB (immediate processing)
+          </div>
+          <div class="guideline pending-review">
+            <span class="icon">⏳</span>
+            <strong>Pending Review:</strong> Files ≤ 5MB (7-day approval queue)
+          </div>
+          <div class="guideline rejected">
+            <span class="icon">❌</span>
+            <strong>Rejected:</strong> Files > 5MB (not accepted)
+          </div>
+        </div>
+      </div>
+
+      <!-- Drag and Drop Zone -->
+      <div class="drag-drop-zone" id="dragDropZone">
+        <div class="drop-zone-content">
+          <div class="upload-icon">📁</div>
+          <h3>Drag & Drop Libraries Here</h3>
+          <p>or click to browse files</p>
+          <div class="supported-formats">
+            <span class="format-badge">.cpp</span>
+            <span class="format-badge">.hpp</span>
+            <span class="format-badge">.so</span>
+          </div>
+        </div>
+        
+        <!-- Hidden File Input -->
+        <input type="file" id="fileInput" multiple accept=".cpp,.hpp,.so" style="display: none;">
+      </div>
+
+      <!-- Upload Progress Section -->
+      <div class="upload-progress" id="uploadProgress" style="display: none;">
+        <h3>📤 Uploading Libraries...</h3>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-text" id="progressText">0%</div>
+        </div>
+        <div class="upload-details" id="uploadDetails"></div>
+      </div>
+
+      <!-- File Validation Results -->
+      <div class="validation-results" id="validationResults" style="display: none;">
+        <h3>🔍 File Validation Results</h3>
+        <div class="validation-list" id="validationList"></div>
+      </div>
+
+      <!-- Submission Status -->
+      <div class="submission-status" id="submissionStatus" style="display: none;">
+        <h3>📋 Submission Status</h3>
+        <div class="status-list" id="statusList"></div>
+      </div>
+
+      <!-- Recent Submissions -->
+      <div class="recent-submissions">
+        <h3>📊 Recent Submissions</h3>
+        <div class="submissions-table" id="submissionsTable">
+          <table>
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Size</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="submissionsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </html>
+
+  <!-- CSS Styling -->
+  <css>
+    .library-uploader-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .uploader-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .uploader-header h2 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .size-guidelines {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .guideline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .guideline.auto-approve {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .guideline.pending-review {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .guideline.rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .drag-drop-zone {
+      border: 3px dashed #3498db;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      background-color: #f8f9fa;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      margin-bottom: 30px;
+    }
+
+    .drag-drop-zone:hover {
+      border-color: #2980b9;
+      background-color: #e3f2fd;
+    }
+
+    .drag-drop-zone.dragover {
+      border-color: #27ae60;
+      background-color: #d5f4e6;
+      transform: scale(1.02);
+    }
+
+    .drop-zone-content {
+      pointer-events: none;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .drop-zone-content h3 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .drop-zone-content p {
+      color: #7f8c8d;
+      margin-bottom: 15px;
+    }
+
+    .supported-formats {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .format-badge {
+      background-color: #3498db;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .upload-progress {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 20px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3498db, #2980b9);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-weight: bold;
+      color: #2c3e50;
+      min-width: 50px;
+    }
+
+    .validation-results,
+    .submission-status {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .validation-list,
+    .status-list {
+      margin-top: 15px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      background-color: white;
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-icon {
+      font-size: 20px;
+    }
+
+    .file-details h4 {
+      margin: 0;
+      color: #2c3e50;
+    }
+
+    .file-details p {
+      margin: 0;
+      color: #7f8c8d;
+      font-size: 12px;
+    }
+
+    .file-status {
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .status-auto-approve {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .status-rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .recent-submissions {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .submissions-table table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .submissions-table th,
+    .submissions-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .submissions-table th {
+      background-color: #e9ecef;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .submissions-table tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .btn {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-view {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .btn-delete {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .btn-approve {
+      background-color: #27ae60;
+      color: white;
+    }
+
+    .btn-reject {
+      background-color: #f39c12;
+      color: white;
+    }
+  </css>
+
+  <!-- JavaScript Functionality -->
+  <javascript>
+    class LibraryDragDropUploader {
+      constructor() {
+        this.config = {
+          maxFileSizeAutoApprove: 524288, // 500KB
+          maxFileSizePending: 5242880,    // 5MB
+          pendingQueueDays: 7,
+          allowedExtensions: ['cpp', 'hpp', 'so'],
+          uploadEndpoint: '/api/ppa-repository/library-upload',
+          statusCheckEndpoint: '/api/ppa-repository/upload-status'
+        };
+        
+        this.uploadQueue = [];
+        this.currentUploads = new Map();
+        
+        this.initializeEventListeners();
+        this.loadRecentSubmissions();
+      }
+
+      initializeEventListeners() {
+        const dragDropZone = document.getElementById('dragDropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        // Drag and drop events
+        dragDropZone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          dragDropZone.classList.add('dragover');
+        });
+
+        dragDropZone.addEventListener('dragleave', (e) => {
+          e.preventDefault();
+          dragDropZone.classList.remove('dragover');
+        });
+
+        dragDropZone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          dragDropZone.classList.remove('dragover');
+          const files = Array.from(e.dataTransfer.files);
+          this.processFiles(files);
+        });
+
+        // Click to browse
+        dragDropZone.addEventListener('click', () => {
+          fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+          const files = Array.from(e.target.files);
+          this.processFiles(files);
+        });
+      }
+
+      processFiles(files) {
+        const validFiles = files.filter(file => this.validateFile(file));
+        
+        if (validFiles.length === 0) {
+          this.showNotification('No valid files found. Please upload .cpp, .hpp, or .so files only.', 'error');
+          return;
+        }
+
+        this.showValidationResults(validFiles);
+        this.uploadFiles(validFiles);
+      }
+
+      validateFile(file) {
+        const extension = file.name.split('.').pop().toLowerCase();
+        
+        if (!this.config.allowedExtensions.includes(extension)) {
+          return false;
+        }
+
+        if (file.size > this.config.maxFileSizePending) {
+          return false;
+        }
+
+        return true;
+      }
+
+      showValidationResults(files) {
+        const validationResults = document.getElementById('validationResults');
+        const validationList = document.getElementById('validationList');
+        
+        validationList.innerHTML = '';
+        
+        files.forEach(file => {
+          const fileItem = this.createFileItem(file);
+          validationList.appendChild(fileItem);
+        });
+        
+        validationResults.style.display = 'block';
+      }
+
+      createFileItem(file) {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        
+        const fileSize = this.formatFileSize(file.size);
+        const status = this.getFileStatus(file.size);
+        const statusClass = this.getStatusClass(status);
+        
+        fileItem.innerHTML = `
+          <div class="file-info">
+            <div class="file-icon">📄</div>
+            <div class="file-details">
+              <h4>${file.name}</h4>
+              <p>${fileSize} • ${file.type || 'Unknown type'}</p>
+            </div>
+          </div>
+          <div class="file-status ${statusClass}">${status}</div>
+        `;
+        
+        return fileItem;
+      }
+
+      getFileStatus(fileSize) {
+        if (fileSize <= this.config.maxFileSizeAutoApprove) {
+          return 'Auto-Approve';
+        } else if (fileSize <= this.config.maxFileSizePending) {
+          return 'Pending Review';
+        } else {
+          return 'Rejected';
+        }
+      }
+
+      getStatusClass(status) {
+        switch (status) {
+          case 'Auto-Approve': return 'status-auto-approve';
+          case 'Pending Review': return 'status-pending';
+          case 'Rejected': return 'status-rejected';
+          default: return '';
+        }
+      }
+
+      formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      async uploadFiles(files) {
+        this.showUploadProgress();
+        
+        for (const file of files) {
+          await this.uploadFile(file);
+        }
+        
+        this.hideUploadProgress();
+        this.loadRecentSubmissions();
+      }
+
+      async uploadFile(file) {
+        const formData = new FormData();
+        formData.append('library_file', file);
+        formData.append('file_size', file.size);
+        formData.append('file_type', file.type);
+        formData.append('upload_timestamp', new Date().toISOString());
+        
+        const xhr = new XMLHttpRequest();
+        
+        return new Promise((resolve, reject) => {
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              const percentComplete = (e.loaded / e.total) * 100;
+              this.updateProgress(percentComplete, file.name);
+            }
+          });
+          
+          xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+              const response = JSON.parse(xhr.responseText);
+              this.showSubmissionStatus(file, response);
+              resolve(response);
+            } else {
+              this.showSubmissionStatus(file, { error: 'Upload failed' });
+              reject(new Error('Upload failed'));
+            }
+          });
+          
+          xhr.addEventListener('error', () => {
+            this.showSubmissionStatus(file, { error: 'Network error' });
+            reject(new Error('Network error'));
+          });
+          
+          xhr.open('POST', this.config.uploadEndpoint);
+          xhr.send(formData);
+        });
+      }
+
+      showUploadProgress() {
+        document.getElementById('uploadProgress').style.display = 'block';
+        document.getElementById('submissionStatus').style.display = 'block';
+      }
+
+      hideUploadProgress() {
+        document.getElementById('uploadProgress').style.display = 'none';
+      }
+
+      updateProgress(percent, fileName) {
+        document.getElementById('progressFill').style.width = percent + '%';
+        document.getElementById('progressText').textContent = Math.round(percent) + '%';
+        document.getElementById('uploadDetails').textContent = `Uploading: ${fileName}`;
+      }
+
+      showSubmissionStatus(file, response) {
+        const statusList = document.getElementById('statusList');
+        const statusItem = document.createElement('div');
+        statusItem.className = 'file-item';
+        
+        const status = response.error ? 'Failed' : 'Success';
+        const statusClass = response.error ? 'status-rejected' : 'status-auto-approve';
+        
+        statusItem.innerHTML = `
+          <div class="file-info">
+            <div class="file-icon">${response.error ? '❌' : '✅'}</div>
+            <div class="file-details">
+              <h4>${file.name}</h4>
+              <p>${response.error || 'Upload completed successfully'}</p>
+            </div>
+          </div>
+          <div class="file-status ${statusClass}">${status}</div>
+        `;
+        
+        statusList.appendChild(statusItem);
+      }
+
+      async loadRecentSubmissions() {
+        try {
+          const response = await fetch(this.config.statusCheckEndpoint);
+          const submissions = await response.json();
+          this.displaySubmissions(submissions);
+        } catch (error) {
+          console.error('Failed to load recent submissions:', error);
+        }
+      }
+
+      displaySubmissions(submissions) {
+        const tbody = document.getElementById('submissionsTableBody');
+        tbody.innerHTML = '';
+        
+        submissions.forEach(submission => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${submission.filename}</td>
+            <td>${this.formatFileSize(submission.file_size)}</td>
+            <td>${submission.file_type}</td>
+            <td><span class="file-status ${this.getStatusClass(submission.status)}">${submission.status}</span></td>
+            <td>${new Date(submission.uploaded_at).toLocaleDateString()}</td>
+            <td class="action-buttons">
+              <button class="btn btn-view" onclick="uploader.viewSubmission('${submission.id}')">View</button>
+              ${submission.status === 'Pending' ? `
+                <button class="btn btn-approve" onclick="uploader.approveSubmission('${submission.id}')">Approve</button>
+                <button class="btn btn-reject" onclick="uploader.rejectSubmission('${submission.id}')">Reject</button>
+              ` : ''}
+              <button class="btn btn-delete" onclick="uploader.deleteSubmission('${submission.id}')">Delete</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      async viewSubmission(submissionId) {
+        // Implementation for viewing submission details
+        console.log('Viewing submission:', submissionId);
+      }
+
+      async approveSubmission(submissionId) {
+        try {
+          const response = await fetch(`/api/ppa-repository/approve-submission/${submissionId}`, {
+            method: 'POST'
+          });
+          
+          if (response.ok) {
+            this.showNotification('Submission approved successfully', 'success');
+            this.loadRecentSubmissions();
+          } else {
+            this.showNotification('Failed to approve submission', 'error');
+          }
+        } catch (error) {
+          this.showNotification('Error approving submission', 'error');
+        }
+      }
+
+      async rejectSubmission(submissionId) {
+        try {
+          const response = await fetch(`/api/ppa-repository/reject-submission/${submissionId}`, {
+            method: 'POST'
+          });
+          
+          if (response.ok) {
+            this.showNotification('Submission rejected', 'success');
+            this.loadRecentSubmissions();
+          } else {
+            this.showNotification('Failed to reject submission', 'error');
+          }
+        } catch (error) {
+          this.showNotification('Error rejecting submission', 'error');
+        }
+      }
+
+      async deleteSubmission(submissionId) {
+        if (!confirm('Are you sure you want to delete this submission?')) {
+          return;
+        }
+        
+        try {
+          const response = await fetch(`/api/ppa-repository/delete-submission/${submissionId}`, {
+            method: 'DELETE'
+          });
+          
+          if (response.ok) {
+            this.showNotification('Submission deleted successfully', 'success');
+            this.loadRecentSubmissions();
+          } else {
+            this.showNotification('Failed to delete submission', 'error');
+          }
+        } catch (error) {
+          this.showNotification('Error deleting submission', 'error');
+        }
+      }
+
+      showNotification(message, type) {
+        // Simple notification system
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 15px 20px;
+          border-radius: 5px;
+          color: white;
+          font-weight: bold;
+          z-index: 1000;
+          background-color: ${type === 'success' ? '#27ae60' : '#e74c3c'};
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.remove();
+        }, 3000);
+      }
+    }
+
+    // Initialize the uploader when the component loads
+    let uploader;
+    document.addEventListener('DOMContentLoaded', () => {
+      uploader = new LibraryDragDropUploader();
+    });
+  </javascript>
+
+</lamia-component>

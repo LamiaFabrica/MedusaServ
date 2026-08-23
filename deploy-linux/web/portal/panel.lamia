@@ -1,0 +1,1162 @@
+/**
+ * MEDUSASERV ENTERPRISE CONTROL PANEL
+ * ==================================
+ * Complete system administration interface with all thingamabobs
+ * Revolutionary PsiForceDB integration with PFQL commands
+ * AES 256 Post-Quantum Cryptography security architecture
+ * © 2025 The Medusa Initiative - Yorkshire Champion Standards
+ */
+
+@component "medusaserv_control_panel" {
+    @version "0.4.0"
+    @theme "enterprise_control_panel"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    @authentication_required true
+    @psiforcedb_backend true
+    @native_library_enabled true
+    
+    @include "components/medusa-security-core.lamia"
+    @include "components/unified-thingamabob-manager.lamia"
+    @include "components/pfql-command-portal-thingamabob.lamia"
+    @include "components/system-configuration-manager-thingamabob.lamia"
+    @include "components/system-service-manager-thingamabob.lamia"
+    @include "components/system-resource-monitor-thingamabob.lamia"
+    @include "components/system-health-thingamabob.lamia"
+    @include "components/system-log-viewer-thingamabob.lamia"
+    @include "components/system-update-manager-thingamabob.lamia"
+    @include "components/performance-monitoring-thingamabob.lamia"
+    @include "components/database-optimizer-thingamabob.lamia"
+    @include "components/security-firewall-manager-thingamabob.lamia"
+    @include "components/icewall-firewall-thingamabob.lamia"
+    @include "components/ssl-certificate-manager-thingamabob.lamia"
+    @include "components/cron-manager-thingamabob.lamia"
+    @include "components/filemanager-thingamabob.lamia"
+    @include "components/webmail-thingamabob.lamia"
+    @include "components/vsftpd-thingamabob.lamia"
+    @include "components/plugin-manager-thingamabob.lamia"
+    @include "components/extension-catalog-thingamabob.lamia"
+    @include "components/developer-api-thingamabob.lamia"
+    @include "components/testing-framework-thingamabob.lamia"
+    @include "components/jupyter-thingamabob.lamia"
+    @include "components/purple-pages-thingamabob.lamia"
+
+    @render {
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>MedusaServ Control Panel - Enterprise Administration</title>
+            <link rel="icon" type="image/png" href="/assets/MedusaServ.png">
+        </head>
+        <body class="control-panel-page">
+            <!-- Security Core -->
+            @render_component("medusa_security_core")
+
+            <!-- Control Panel Header -->
+            <header class="control-panel-header">
+                <div class="header-content">
+                    <div class="brand-section">
+                        <img src="/assets/MedusaServ.png" alt="MedusaServ" class="brand-logo">
+                        <div class="brand-text">
+                            <h1>MedusaServ Control Panel</h1>
+                            <span class="version-tag">Enterprise v0.4.0</span>
+                        </div>
+                    </div>
+                    <div class="breadcrumb">
+                        <a href="/portal">Portal</a> > <span>Control Panel</span>
+                    </div>
+                    <div class="user-section">
+                        <div class="user-info">
+                            <span class="welcome-text">Administrator</span>
+                            <a href="/logout" class="logout-btn">Sign Out</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Control Panel Navigation -->
+            <nav class="control-panel-nav">
+                <div class="nav-content">
+                    <div class="nav-categories">
+                        <div class="nav-category active" data-category="system">
+                            <div class="category-icon">🖥️</div>
+                            <span>System</span>
+                        </div>
+                        <div class="nav-category" data-category="services">
+                            <div class="category-icon">⚙️</div>
+                            <span>Services</span>
+                        </div>
+                        <div class="nav-category" data-category="security">
+                            <div class="category-icon">🔒</div>
+                            <span>Security</span>
+                        </div>
+                        <div class="nav-category" data-category="database">
+                            <div class="category-icon">🗄️</div>
+                            <span>Database</span>
+                        </div>
+                        <div class="nav-category" data-category="network">
+                            <div class="category-icon">🌐</div>
+                            <span>Network</span>
+                        </div>
+                        <div class="nav-category" data-category="development">
+                            <div class="category-icon">💻</div>
+                            <span>Development</span>
+                        </div>
+                        <div class="nav-category" data-category="pfql">
+                            <div class="category-icon">🚀</div>
+                            <span>PFQL Commands</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Control Panel Content -->
+            <main class="control-panel-main">
+                <div class="main-content">
+                    <!-- System Category (Default Active) -->
+                    <section class="category-section active" data-section="system">
+                        <div class="section-header">
+                            <h2>🖥️ System Administration</h2>
+                            <p>Core system management and monitoring tools</p>
+                        </div>
+                        
+                        <div class="thingamabobs-grid">
+                            <div class="thingamabob-card" data-component="system-configuration-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">⚙️</div>
+                                    <h3>System Configuration</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Manage system-wide configuration settings, services, and parameters</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="system-resource-monitor">
+                                <div class="card-header">
+                                    <div class="card-icon">📊</div>
+                                    <h3>Resource Monitor</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Real-time CPU, memory, disk, and network resource monitoring</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="system-health">
+                                <div class="card-header">
+                                    <div class="card-icon">❤️</div>
+                                    <h3>System Health</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Comprehensive health checks and diagnostic information</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="system-log-viewer">
+                                <div class="card-header">
+                                    <div class="card-icon">📋</div>
+                                    <h3>Log Viewer</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>View, search, and analyze system logs and error messages</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="system-update-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">🔄</div>
+                                    <h3>Update Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>System updates, patches, and package management</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="performance-monitoring">
+                                <div class="card-header">
+                                    <div class="card-icon">⚡</div>
+                                    <h3>Performance Monitor</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Advanced performance metrics and optimization tools</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Services Category -->
+                    <section class="category-section" data-section="services">
+                        <div class="section-header">
+                            <h2>⚙️ Service Management</h2>
+                            <p>Manage all system services and applications</p>
+                        </div>
+                        
+                        <div class="thingamabobs-grid">
+                            <div class="thingamabob-card" data-component="system-service-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">🔧</div>
+                                    <h3>Service Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Start, stop, restart, and monitor system services</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="cron-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">⏰</div>
+                                    <h3>Cron Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Schedule and manage automated tasks and jobs</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="webmail">
+                                <div class="card-header">
+                                    <div class="card-icon">📧</div>
+                                    <h3>Webmail Service</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Enterprise webmail with IMAP/POP3/Exchange support</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="vsftpd">
+                                <div class="card-header">
+                                    <div class="card-icon">📁</div>
+                                    <h3>FTP Service</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Secure FTP server configuration and management</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="filemanager">
+                                <div class="card-header">
+                                    <div class="card-icon">🗂️</div>
+                                    <h3>File Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Web-based file and directory management</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Security Category -->
+                    <section class="category-section" data-section="security">
+                        <div class="section-header">
+                            <h2>🔒 Security Management</h2>
+                            <p>Advanced security tools and firewall management</p>
+                        </div>
+                        
+                        <div class="thingamabobs-grid">
+                            <div class="thingamabob-card" data-component="security-firewall-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">🛡️</div>
+                                    <h3>Firewall Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Configure and manage network firewall rules</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="icewall-firewall">
+                                <div class="card-header">
+                                    <div class="card-icon">🧊</div>
+                                    <h3>IceWall Firewall</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Advanced quantum-resistant firewall protection</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="ssl-certificate-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">🔐</div>
+                                    <h3>SSL Certificates</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Manage SSL/TLS certificates and security</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="security-vulnerability-scanner">
+                                <div class="card-header">
+                                    <div class="card-icon">🔍</div>
+                                    <h3>Vulnerability Scanner</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Scan for security vulnerabilities and threats</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="secure-directories">
+                                <div class="card-header">
+                                    <div class="card-icon">🔒</div>
+                                    <h3>Secure Directories</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Manage directory permissions and encryption</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Database Category -->
+                    <section class="category-section" data-section="database">
+                        <div class="section-header">
+                            <h2>🗄️ Database Administration</h2>
+                            <p>PsiForceDB management and optimization tools</p>
+                        </div>
+                        
+                        <div class="thingamabobs-grid">
+                            <div class="thingamabob-card" data-component="database-optimizer">
+                                <div class="card-header">
+                                    <div class="card-icon">⚡</div>
+                                    <h3>Database Optimizer</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Optimize PsiForceDB performance and queries</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="database-backup">
+                                <div class="card-header">
+                                    <div class="card-icon">💾</div>
+                                    <h3>Database Backup</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Automated database backup and scheduling</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="database-restore">
+                                <div class="card-header">
+                                    <div class="card-icon">🔄</div>
+                                    <h3>Database Restore</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Restore databases from backup files</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="database-analysis">
+                                <div class="card-header">
+                                    <div class="card-icon">📊</div>
+                                    <h3>Database Analysis</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Analyze database performance and structure</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="database-migration">
+                                <div class="card-header">
+                                    <div class="card-icon">🚀</div>
+                                    <h3>Database Migration</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Database schema migration and version control</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Network Category -->
+                    <section class="category-section" data-section="network">
+                        <div class="section-header">
+                            <h2>🌐 Network Management</h2>
+                            <p>Network configuration and monitoring tools</p>
+                        </div>
+                        
+                        <div class="thingamabobs-grid">
+                            <div class="thingamabob-card" data-component="domain-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">🌍</div>
+                                    <h3>Domain Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Manage domains and DNS configuration</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="email-validator">
+                                <div class="card-header">
+                                    <div class="card-icon">✉️</div>
+                                    <h3>Email Validator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Validate email addresses and domains</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card">
+                                <div class="card-header">
+                                    <div class="card-icon">📡</div>
+                                    <h3>Network Monitor</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Real-time network traffic and bandwidth monitoring</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card">
+                                <div class="card-header">
+                                    <div class="card-icon">🔌</div>
+                                    <h3>Port Scanner</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Scan and manage network ports and services</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Development Category -->
+                    <section class="category-section" data-section="development">
+                        <div class="section-header">
+                            <h2>💻 Development Tools</h2>
+                            <p>Development environment and testing tools</p>
+                        </div>
+                        
+                        <div class="thingamabobs-grid">
+                            <div class="thingamabob-card" data-component="jupyter">
+                                <div class="card-header">
+                                    <div class="card-icon">🔬</div>
+                                    <h3>Jupyter Lab</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Interactive data science and development environment</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="developer-api">
+                                <div class="card-header">
+                                    <div class="card-icon">🔧</div>
+                                    <h3>Developer API</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>API development and testing tools</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="testing-framework">
+                                <div class="card-header">
+                                    <div class="card-icon">🧪</div>
+                                    <h3>Testing Framework</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Automated testing and quality assurance</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="plugin-manager">
+                                <div class="card-header">
+                                    <div class="card-icon">🧩</div>
+                                    <h3>Plugin Manager</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Install and manage system plugins</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="extension-catalog">
+                                <div class="card-header">
+                                    <div class="card-icon">📦</div>
+                                    <h3>Extension Catalog</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Browse and install system extensions</p>
+                                </div>
+                            </div>
+
+                            <div class="thingamabob-card" data-component="purple-pages">
+                                <div class="card-header">
+                                    <div class="card-icon">📖</div>
+                                    <h3>Purple Pages</h3>
+                                </div>
+                                <div class="card-body">
+                                    <p>Documentation and knowledge management system</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- PFQL Commands Category -->
+                    <section class="category-section" data-section="pfql">
+                        <div class="section-header">
+                            <h2>🚀 PFQL Command Portal</h2>
+                            <p>Revolutionary PsiForceDB query interface with quantum optimization</p>
+                        </div>
+                        
+                        <div class="pfql-portal-container">
+                            @render_component("pfql_command_portal_thingamabob")
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Active Thingamabob Display Container -->
+                <div id="active-thingamabob-container" style="display: none;">
+                    <div class="thingamabob-header">
+                        <button class="back-to-panel-btn">← Back to Control Panel</button>
+                        <h2 id="active-thingamabob-title">Thingamabob</h2>
+                    </div>
+                    <div id="active-thingamabob-content">
+                        <!-- Active thingamabob will be loaded here -->
+                    </div>
+                </div>
+            </main>
+        </body>
+
+        <style>
+        /* Control Panel Styles */
+        .control-panel-page {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .control-panel-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .version-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .control-panel-nav {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-categories {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+        }
+
+        .nav-category {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .nav-category:hover {
+            background: #f8f9fa;
+            border-bottom-color: #ddd;
+        }
+
+        .nav-category.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-bottom-color: #5a6fd8;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .category-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .nav-category span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .control-panel-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .category-section {
+            display: none;
+        }
+
+        .category-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .thingamabobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .thingamabob-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thingamabob-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .thingamabob-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .thingamabob-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .card-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .card-body p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .pfql-portal-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        #active-thingamabob-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .thingamabob-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .back-to-panel-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-panel-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        #active-thingamabob-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        #active-thingamabob-content {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-categories {
+                justify-content: center;
+                gap: 15px;
+                padding-bottom: 10px;
+            }
+
+            .nav-category {
+                padding: 10px 15px;
+            }
+
+            .thingamabobs-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .section-header h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .thingamabobs-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+        </style>
+
+        <script>
+        // Control Panel JavaScript
+        class MedusaControlPanel {
+            constructor() {
+                this.activeCategory = 'system';
+                this.activeThingamabob = null;
+                this.thingamabobComponents = new Map();
+                this.init();
+            }
+
+            init() {
+                console.log('🎛️ MedusaServ Control Panel v0.4.0 initializing...');
+                
+                // Wait for security core
+                this.waitForSecurity().then(() => {
+                    this.bindEventListeners();
+                    this.loadThingamabobComponents();
+                    this.updateCategoryDisplay();
+                }).catch(error => {
+                    console.error('❌ Control Panel security initialization failed:', error);
+                });
+            }
+
+            async waitForSecurity() {
+                return new Promise((resolve, reject) => {
+                    const checkSecurity = () => {
+                        if (window.MedusaSecurityCore && window.MedusaSecure) {
+                            console.log('✅ Control Panel secured with AES 256 PQC');
+                            resolve();
+                        } else {
+                            setTimeout(checkSecurity, 100);
+                        }
+                    };
+                    
+                    checkSecurity();
+                    
+                    setTimeout(() => {
+                        reject(new Error('Security core timeout'));
+                    }, 10000);
+                });
+            }
+
+            bindEventListeners() {
+                // Category navigation
+                document.querySelectorAll('.nav-category').forEach(category => {
+                    category.addEventListener('click', (e) => {
+                        this.switchCategory(e.currentTarget.dataset.category);
+                    });
+                });
+
+                // Thingamabob cards
+                document.querySelectorAll('.thingamabob-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const component = e.currentTarget.dataset.component;
+                        if (component) {
+                            this.loadThingamabob(component);
+                        }
+                    });
+                });
+
+                // Back to panel button
+                document.querySelector('.back-to-panel-btn')?.addEventListener('click', () => {
+                    this.hideActiveThingamabob();
+                });
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.activeThingamabob) {
+                        this.hideActiveThingamabob();
+                    }
+                });
+            }
+
+            switchCategory(categoryName) {
+                // Update navigation
+                document.querySelectorAll('.nav-category').forEach(cat => {
+                    cat.classList.remove('active');
+                });
+                document.querySelector(`[data-category="${categoryName}"]`).classList.add('active');
+
+                // Update content sections
+                document.querySelectorAll('.category-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.querySelector(`[data-section="${categoryName}"]`).classList.add('active');
+
+                this.activeCategory = categoryName;
+                
+                console.log(`📂 Switched to ${categoryName} category`);
+            }
+
+            async loadThingamabob(componentName) {
+                try {
+                    console.log(`🔧 Loading thingamabob: ${componentName}`);
+
+                    // Show loading state
+                    this.showLoadingState();
+
+                    // Get thingamabob component
+                    const component = this.getThingamabobComponent(componentName);
+                    
+                    if (!component) {
+                        throw new Error(`Thingamabob component not found: ${componentName}`);
+                    }
+
+                    // Load component via secure call
+                    const response = await window.MedusaSecure.secureCall(
+                        'unified-thingamabob-manager',
+                        'loadComponent',
+                        {
+                            component_name: componentName,
+                            load_mode: 'full_interface',
+                            security_level: 'quantum_resistant'
+                        }
+                    );
+
+                    if (response.success) {
+                        this.displayThingamabob(componentName, response.data);
+                    } else {
+                        throw new Error(`Failed to load thingamabob: ${response.error}`);
+                    }
+
+                } catch (error) {
+                    console.error(`❌ Failed to load thingamabob ${componentName}:`, error);
+                    this.showError(`Failed to load ${componentName}: ${error.message}`);
+                }
+            }
+
+            displayThingamabob(componentName, componentData) {
+                const container = document.getElementById('active-thingamabob-container');
+                const titleElement = document.getElementById('active-thingamabob-title');
+                const contentElement = document.getElementById('active-thingamabob-content');
+
+                // Set title
+                titleElement.textContent = this.getThingamabobTitle(componentName);
+
+                // Set content
+                if (componentData.html) {
+                    contentElement.innerHTML = componentData.html;
+                } else {
+                    // Render component directly
+                    contentElement.innerHTML = `<div class="${componentName}">${this.renderThingamabobComponent(componentName)}</div>`;
+                }
+
+                // Execute component JavaScript if available
+                if (componentData.javascript) {
+                    try {
+                        eval(componentData.javascript);
+                    } catch (error) {
+                        console.warn(`⚠️ Error executing ${componentName} JavaScript:`, error);
+                    }
+                }
+
+                // Show container
+                container.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                this.activeThingamabob = componentName;
+                
+                console.log(`✅ Loaded thingamabob: ${componentName}`);
+            }
+
+            hideActiveThingamabob() {
+                const container = document.getElementById('active-thingamabob-container');
+                container.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                this.activeThingamabob = null;
+                
+                console.log('📤 Closed active thingamabob');
+            }
+
+            showLoadingState() {
+                const container = document.getElementById('active-thingamabob-container');
+                const contentElement = document.getElementById('active-thingamabob-content');
+                
+                contentElement.innerHTML = `
+                    <div style="text-align: center; padding: 100px;">
+                        <div style="font-size: 48px; margin-bottom: 20px;">⏳</div>
+                        <h3>Loading Thingamabob...</h3>
+                        <p>Please wait while we load the component securely.</p>
+                    </div>
+                `;
+                
+                container.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            showError(message) {
+                const container = document.getElementById('active-thingamabob-container');
+                const contentElement = document.getElementById('active-thingamabob-content');
+                
+                contentElement.innerHTML = `
+                    <div style="text-align: center; padding: 100px;">
+                        <div style="font-size: 48px; margin-bottom: 20px; color: #e74c3c;">❌</div>
+                        <h3>Error Loading Thingamabob</h3>
+                        <p style="color: #666; max-width: 600px; margin: 0 auto;">${message}</p>
+                        <button onclick="medusaControlPanel.hideActiveThingamabob()" 
+                                style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Close
+                        </button>
+                    </div>
+                `;
+                
+                container.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+
+            loadThingamabobComponents() {
+                // Register all thingamabob components
+                const components = [
+                    'system-configuration-manager',
+                    'system-resource-monitor',
+                    'system-health',
+                    'system-log-viewer',
+                    'system-update-manager',
+                    'performance-monitoring',
+                    'system-service-manager',
+                    'cron-manager',
+                    'webmail',
+                    'vsftpd',
+                    'filemanager',
+                    'security-firewall-manager',
+                    'icewall-firewall',
+                    'ssl-certificate-manager',
+                    'security-vulnerability-scanner',
+                    'secure-directories',
+                    'database-optimizer',
+                    'database-backup',
+                    'database-restore',
+                    'database-analysis',
+                    'database-migration',
+                    'domain-manager',
+                    'email-validator',
+                    'jupyter',
+                    'developer-api',
+                    'testing-framework',
+                    'plugin-manager',
+                    'extension-catalog',
+                    'purple-pages'
+                ];
+
+                components.forEach(component => {
+                    this.thingamabobComponents.set(component, {
+                        name: component,
+                        title: this.getThingamabobTitle(component),
+                        loaded: false
+                    });
+                });
+
+                console.log(`📦 Registered ${components.length} thingamabob components`);
+            }
+
+            getThingamabobComponent(componentName) {
+                return this.thingamabobComponents.get(componentName);
+            }
+
+            getThingamabobTitle(componentName) {
+                const titles = {
+                    'system-configuration-manager': 'System Configuration Manager',
+                    'system-resource-monitor': 'System Resource Monitor',
+                    'system-health': 'System Health Monitor',
+                    'system-log-viewer': 'System Log Viewer',
+                    'system-update-manager': 'System Update Manager',
+                    'performance-monitoring': 'Performance Monitor',
+                    'system-service-manager': 'System Service Manager',
+                    'cron-manager': 'Cron Job Manager',
+                    'webmail': 'Webmail Service',
+                    'vsftpd': 'FTP Service Manager',
+                    'filemanager': 'File Manager',
+                    'security-firewall-manager': 'Firewall Manager',
+                    'icewall-firewall': 'IceWall Firewall',
+                    'ssl-certificate-manager': 'SSL Certificate Manager',
+                    'security-vulnerability-scanner': 'Vulnerability Scanner',
+                    'secure-directories': 'Secure Directories',
+                    'database-optimizer': 'Database Optimizer',
+                    'database-backup': 'Database Backup',
+                    'database-restore': 'Database Restore',
+                    'database-analysis': 'Database Analysis',
+                    'database-migration': 'Database Migration',
+                    'domain-manager': 'Domain Manager',
+                    'email-validator': 'Email Validator',
+                    'jupyter': 'Jupyter Lab',
+                    'developer-api': 'Developer API',
+                    'testing-framework': 'Testing Framework',
+                    'plugin-manager': 'Plugin Manager',
+                    'extension-catalog': 'Extension Catalog',
+                    'purple-pages': 'Purple Pages Documentation'
+                };
+
+                return titles[componentName] || componentName;
+            }
+
+            renderThingamabobComponent(componentName) {
+                // This would render the actual thingamabob component
+                // In practice, this would load the component from the components directory
+                return `<div>Loading ${componentName}...</div>`;
+            }
+
+            updateCategoryDisplay() {
+                // Update any dynamic category information
+                console.log(`📊 Updated category display for: ${this.activeCategory}`);
+            }
+        }
+
+        // Initialize Control Panel
+        let medusaControlPanel;
+        document.addEventListener('DOMContentLoaded', () => {
+            medusaControlPanel = new MedusaControlPanel();
+        });
+        </script>
+    }
+}

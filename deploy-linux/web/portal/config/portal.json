@@ -1,0 +1,212 @@
+{
+  "portal": {
+    "name": "PFQL Portal",
+    "version": "1.0.0",
+    "description": "Yorkshire Champion Gold Standard System Management Portal",
+    "environment": "production"
+  },
+  
+  "database": {
+    "host": "172.236.23.54",
+    "port": 5432,
+    "database": "psiforcedb_main",
+    "ssl": {
+      "enabled": true,
+      "rejectUnauthorized": false
+    },
+    "pool": {
+      "min": 2,
+      "max": 20,
+      "acquireTimeoutMillis": 30000,
+      "idleTimeoutMillis": 30000
+    }
+  },
+
+  "authentication": {
+    "jwtSecret": "b06874c4e4534e412d54e8b23273b49544d104b41ee8d7f6fc0ccb128c2bef21",
+    "masterKey": "b06874c4e4534e412d54e8b23273b49544d104b41ee8d7f6fc0ccb128c2bef21",
+    "tokenExpiry": "24h",
+    "yorkshireAccess": {
+      "enabled": true,
+      "masterUser": "LamiaFabrica",
+      "requiredRole": "root"
+    }
+  },
+
+  "services": {
+    "discoveryEnabled": true,
+    "autoRegister": true,
+    "categories": [
+      {
+        "id": "database",
+        "name": "Database Services",
+        "icon": "🗄️",
+        "description": "Database management and optimization services",
+        "sortOrder": 1
+      },
+      {
+        "id": "system",
+        "name": "System Services", 
+        "icon": "⚙️",
+        "description": "System monitoring and management services",
+        "sortOrder": 2
+      },
+      {
+        "id": "performance",
+        "name": "Performance Services",
+        "icon": "🚀", 
+        "description": "Performance analysis and optimization services",
+        "sortOrder": 3
+      },
+      {
+        "id": "security",
+        "name": "Security Services",
+        "icon": "🛡️",
+        "description": "Security and threat management services",
+        "sortOrder": 4
+      },
+      {
+        "id": "quantum",
+        "name": "Quantum Services",
+        "icon": "⚛️",
+        "description": "Quantum computing and optimization services", 
+        "sortOrder": 5
+      },
+      {
+        "id": "chaos",
+        "name": "Chaos Services",
+        "icon": "🔥",
+        "description": "Chaos engineering and resilience services",
+        "sortOrder": 6
+      },
+      {
+        "id": "consciousness",
+        "name": "Consciousness Services",
+        "icon": "🧠",
+        "description": "AI consciousness and awareness services",
+        "sortOrder": 7
+      },
+      {
+        "id": "ai",
+        "name": "AI Services",
+        "icon": "🤖",
+        "description": "Artificial intelligence and automation services",
+        "sortOrder": 8
+      }
+    ]
+  },
+
+  "pfql": {
+    "enabled": true,
+    "commandTimeout": 30000,
+    "yorkshireStandards": {
+      "enabled": true,
+      "masterAccess": true,
+      "militaryGrade": true,
+      "quantumLevel": "advanced",
+      "consciousnessLevel": "transcendent"
+    },
+    "logging": {
+      "enabled": true,
+      "logLevel": "info",
+      "auditTrail": true
+    }
+  },
+
+  "api": {
+    "basePath": "/api/pfql-routes",
+    "versioning": {
+      "enabled": true,
+      "currentVersion": "v1"
+    },
+    "rateLimit": {
+      "enabled": true,
+      "windowMs": 900000,
+      "maxRequests": 1000
+    },
+    "cors": {
+      "enabled": true,
+      "allowedOrigins": [
+        "http://172.236.28.155:3013",
+        "https://portal.poweredbymedusa.com",
+        "http://localhost:3013"
+      ]
+    }
+  },
+
+  "monitoring": {
+    "enabled": true,
+    "healthCheck": {
+      "enabled": true,
+      "interval": 30000
+    },
+    "metrics": {
+      "enabled": true,
+      "retention": "7d"
+    },
+    "alerts": {
+      "enabled": true,
+      "channels": ["database", "log"]
+    }
+  },
+
+  "security": {
+    "https": {
+      "enabled": true,
+      "forceRedirect": true
+    },
+    "headers": {
+      "contentSecurityPolicy": true,
+      "hsts": true,
+      "xssProtection": true
+    },
+    "encryption": {
+      "algorithm": "aes-256-gcm",
+      "keyRotation": "weekly"
+    }
+  },
+
+  "ui": {
+    "theme": "yorkshire-champion",
+    "branding": {
+      "title": "PFQL Portal",
+      "subtitle": "Yorkshire Champion Gold Standard",
+      "logo": "🐍"
+    },
+    "features": {
+      "darkMode": true,
+      "responsiveDesign": true,
+      "accessibilityCompliance": true
+    }
+  },
+
+  "deployment": {
+    "environment": "production",
+    "cluster": {
+      "enabled": false,
+      "instances": 1
+    },
+    "backup": {
+      "enabled": true,
+      "interval": "daily",
+      "retention": "30d"
+    }
+  },
+
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "destinations": [
+      {
+        "type": "file",
+        "path": "./logs/portal.log",
+        "maxSize": "100MB",
+        "maxFiles": 10
+      },
+      {
+        "type": "database",
+        "table": "pfql_portal_logs"
+      }
+    ]
+  }
+}

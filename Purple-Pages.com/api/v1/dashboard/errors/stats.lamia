@@ -1,0 +1,136 @@
+<!--
+Purple-Pages.com - Error Statistics API
+Comprehensive error statistics and analytics
+© 2025 D Hargreaves (Roylepython) - Yorkshire Champion Standards
+-->
+
+manifest purple_pages_error_stats_api() {
+    header("Content-Type: application/json");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    
+    if (request.method == "OPTIONS") {
+        return response(200, "");
+    }
+    
+    auth_result = verify_api_authentication();
+    if (!auth_result.authenticated) {
+        return response(401, json({"error": "Unauthorized"}));
+    }
+    
+    // Parse time range
+    start_time = request.query.get("start_time") ? parse_timestamp(request.query.get("start_time")) : get_epoch_ms() - (24 * 60 * 60 * 1000);
+    end_time = request.query.get("end_time") ? parse_timestamp(request.query.get("end_time")) : get_epoch_ms();
+    server_id_filter = request.query.get("server_id");
+    
+    // Get statistics
+    stats = get_error_statistics_vpc(start_time, end_time, server_id_filter);
+    
+    return response(200, json({
+        "success": true,
+        "period": {
+            "start": format_timestamp(start_time),
+            "end": format_timestamp(end_time)
+        },
+        "total_errors": stats.total_errors,
+        "by_level": stats.by_level,
+        "by_server": stats.by_server,
+        "by_application": stats.by_application,
+        "by_category": stats.by_category,
+        "resolution_stats": stats.resolution_stats,
+        "query_time_ms": stats.query_time_ms
+    }));
+}
+
+function get_error_statistics_vpc(start_time, end_time, server_id_filter) {
+    db_connection = get_vpc_db_connection("10.0.0.4", 5432);
+    start_query = get_epoch_ms();
+    
+    try {
+        where_clause = "WHERE epoch_ms >= " + start_time + " AND epoch_ms <= " + end_time;
+        if (server_id_filter) {
+            where_clause += " AND server_id = '" + server_id_filter + "'";
+        }
+        
+        // Total errors
+        total_query = "SELECT COUNT(*) as total FROM purple_pages_error_logs " + where_clause;
+        total_result = db_connection.execute_prepared(total_query, []);
+        total_errors = total_result.rows[0].total;
+        
+        // By level
+        level_query = "SELECT error_level, COUNT(*) as count FROM purple_pages_error_logs " + where_clause + " GROUP BY error_level";
+        level_result = db_connection.execute_prepared(level_query, []);
+        by_level = {};
+        for (row in level_result.rows) {
+            by_level[row.error_level] = row.count;
+        }
+        
+        // By server
+        server_query = "SELECT server_id, COUNT(*) as count FROM purple_pages_error_logs " + where_clause + " GROUP BY server_id";
+        server_result = db_connection.execute_prepared(server_query, []);
+        by_server = {};
+        for (row in server_result.rows) {
+            by_server[row.server_id] = row.count;
+        }
+        
+        // By application
+        app_query = "SELECT application, COUNT(*) as count FROM purple_pages_error_logs " + where_clause + " GROUP BY application";
+        app_result = db_connection.execute_prepared(app_query, []);
+        by_application = {};
+        for (row in app_result.rows) {
+            by_application[row.application] = row.count;
+        }
+        
+        // By category
+        cat_query = "SELECT error_category, COUNT(*) as count FROM purple_pages_error_logs " + where_clause + " GROUP BY error_category";
+        cat_result = db_connection.execute_prepared(cat_query, []);
+        by_category = {};
+        for (row in cat_result.rows) {
+            by_category[row.error_category] = row.count;
+        }
+        
+        // Resolution stats
+        resolved_query = "SELECT resolved, COUNT(*) as count FROM purple_pages_error_logs " + where_clause + " GROUP BY resolved";
+        resolved_result = db_connection.execute_prepared(resolved_query, []);
+        resolved_count = 0;
+        unresolved_count = 0;
+        for (row in resolved_result.rows) {
+            if (row.resolved) {
+                resolved_count = row.count;
+            } else {
+                unresolved_count = row.count;
+            }
+        }
+        
+        query_time = get_epoch_ms() - start_query;
+        
+        return {
+            "total_errors": total_errors,
+            "by_level": by_level,
+            "by_server": by_server,
+            "by_application": by_application,
+            "by_category": by_category,
+            "resolution_stats": {
+                "resolved": resolved_count,
+                "unresolved": unresolved_count,
+                "avg_resolution_time_hours": 0  // Would calculate from resolved_at - timestamp
+            },
+            "query_time_ms": query_time
+        };
+        
+    } catch (error) {
+        return {
+            "total_errors": 0,
+            "by_level": {},
+            "by_server": {},
+            "by_application": {},
+            "by_category": {},
+            "resolution_stats": {"resolved": 0, "unresolved": 0},
+            "query_time_ms": 0
+        };
+    } finally {
+        db_connection.close();
+    }
+}
+

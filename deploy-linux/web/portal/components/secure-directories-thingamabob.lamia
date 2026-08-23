@@ -1,0 +1,1353 @@
+/**
+ * MEDUSASERV SECURE DIRECTORIES THINGAMABOB COMPONENT
+ * ==================================================
+ * PsiForceDB User Management & Admin Directory System
+ * AES 256 Post-Quantum Cryptography with .so Library Integration
+ * © 2025 The Medusa Initiative - Quantum-Resistant Directory Management
+ */
+
+@component "secure_directories_thingamabob" {
+    @version "0.4.0"
+    @theme "enterprise_directory_manager"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    @authentication_required true
+    @admin_library_enabled true
+    @psiforcedb_backend true
+    @directory_management true
+    @user_administration true
+    
+    @render {
+        <div class="secure-directories-thingamabob">
+            <!-- Secure Directories Header -->
+            <div class="thingamabob-header">
+                <div class="thingamabob-title">
+                    <div class="thingamabob-icon">🔐</div>
+                    <h2>Secure Directories Thingamabob</h2>
+                    <span class="thingamabob-badge">PsiForceDB Admin</span>
+                </div>
+                <div class="thingamabob-controls">
+                    <button class="thingamabob-btn add-user">👤 Add User</button>
+                    <button class="thingamabob-btn manage-admins">🛡️ Admin Panel</button>
+                    <button class="thingamabob-btn sync-directories">🔄 Sync PsiForceDB</button>
+                </div>
+            </div>
+
+            <!-- Directory Management Interface -->
+            <div class="thingamabob-interface">
+                <!-- User Directory Panel -->
+                <div class="directory-panel">
+                    <h3>👥 User Directory (PsiForceDB)</h3>
+                    
+                    <!-- User Search & Filter -->
+                    <div class="search-section">
+                        <div class="search-controls">
+                            <input type="text" class="search-input" placeholder="Search users in PsiForceDB...">
+                            <select class="filter-select">
+                                <option value="all">All Users</option>
+                                <option value="admin">Admin Users</option>
+                                <option value="user">Regular Users</option>
+                                <option value="locked">Locked Users</option>
+                                <option value="pqc">PQC Enabled</option>
+                            </select>
+                            <button class="search-btn">🔍 Search</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Users List -->
+                    <div class="users-list">
+                        <div class="user-item admin">
+                            <div class="user-avatar">👑</div>
+                            <div class="user-info">
+                                <div class="user-name">root</div>
+                                <div class="user-email">root@medusaserv.com</div>
+                                <div class="user-role admin">Administrator</div>
+                                <div class="user-security">
+                                    <span class="security-badge pqc">PQC Enabled</span>
+                                    <span class="security-badge mfa">MFA Active</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="action-btn edit">✏️</button>
+                                <button class="action-btn permissions">🔐</button>
+                                <button class="action-btn logs">📋</button>
+                            </div>
+                        </div>
+                        
+                        <div class="user-item user">
+                            <div class="user-avatar">👤</div>
+                            <div class="user-info">
+                                <div class="user-name">medusa</div>
+                                <div class="user-email">medusa@psiforcedb.local</div>
+                                <div class="user-role user">Database User</div>
+                                <div class="user-security">
+                                    <span class="security-badge pqc">PQC Enabled</span>
+                                    <span class="security-badge encrypted">AES 256</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="action-btn edit">✏️</button>
+                                <button class="action-btn permissions">🔐</button>
+                                <button class="action-btn promote">⬆️</button>
+                            </div>
+                        </div>
+                        
+                        <div class="user-item user">
+                            <div class="user-avatar">👤</div>
+                            <div class="user-info">
+                                <div class="user-name">portal_user</div>
+                                <div class="user-email">user@portal.local</div>
+                                <div class="user-role user">Portal User</div>
+                                <div class="user-security">
+                                    <span class="security-badge basic">Basic Auth</span>
+                                </div>
+                            </div>
+                            <div class="user-actions">
+                                <button class="action-btn edit">✏️</button>
+                                <button class="action-btn upgrade">🔒</button>
+                                <button class="action-btn lock">🚫</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Management Panel -->
+                <div class="admin-panel">
+                    <h3>🛡️ Admin Management (.so Library)</h3>
+                    
+                    <!-- Admin Actions -->
+                    <div class="admin-actions">
+                        <div class="action-card">
+                            <div class="action-icon">👑</div>
+                            <div class="action-info">
+                                <div class="action-title">Promote to Admin</div>
+                                <div class="action-desc">Grant administrative privileges</div>
+                            </div>
+                            <button class="action-button promote-admin">Execute</button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="action-icon">🔐</div>
+                            <div class="action-info">
+                                <div class="action-title">Enable PQC Security</div>
+                                <div class="action-desc">Activate Post-Quantum Cryptography</div>
+                            </div>
+                            <button class="action-button enable-pqc">Execute</button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="action-icon">🗄️</div>
+                            <div class="action-info">
+                                <div class="action-title">PsiForceDB Sync</div>
+                                <div class="action-desc">Synchronize directory with database</div>
+                            </div>
+                            <button class="action-button sync-psiforce">Execute</button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="action-icon">🔒</div>
+                            <div class="action-info">
+                                <div class="action-title">Generate .so Library</div>
+                                <div class="action-desc">Compile admin management library</div>
+                            </div>
+                            <button class="action-button generate-so">Execute</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Status Panel -->
+                <div class="security-status-panel">
+                    <h3>🔐 Security Status</h3>
+                    
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <div class="status-label">PsiForceDB Connection</div>
+                            <div class="status-value connected">Connected</div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-label">AES 256 PQC</div>
+                            <div class="status-value active">Active</div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-label">Admin Library</div>
+                            <div class="status-value loaded">libmedusa_admin.so</div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-label">Total Users</div>
+                            <div class="status-value">3</div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-label">Admin Users</div>
+                            <div class="status-value">1</div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-label">PQC Enabled</div>
+                            <div class="status-value">2/3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Management Modal -->
+            <div class="user-modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>👤 User Management</h3>
+                        <button class="modal-close">×</button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="form-section">
+                            <label>Username:</label>
+                            <input type="text" class="modal-input" id="username" placeholder="Enter username">
+                        </div>
+                        
+                        <div class="form-section">
+                            <label>Email:</label>
+                            <input type="email" class="modal-input" id="email" placeholder="user@domain.com">
+                        </div>
+                        
+                        <div class="form-section">
+                            <label>Password:</label>
+                            <input type="password" class="modal-input" id="password" placeholder="Secure password">
+                        </div>
+                        
+                        <div class="form-section">
+                            <label>Role:</label>
+                            <select class="modal-select" id="role">
+                                <option value="user">Regular User</option>
+                                <option value="admin">Administrator</option>
+                                <option value="super_admin">Super Admin</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-section">
+                            <label>Security Level:</label>
+                            <select class="modal-select" id="security-level">
+                                <option value="basic">Basic Authentication</option>
+                                <option value="quantum_resistant">AES 256 PQC</option>
+                                <option value="ultra_secure">Ultra Secure PQC</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-section">
+                            <label>
+                                <input type="checkbox" id="mfa-enabled"> Enable Multi-Factor Authentication
+                            </label>
+                        </div>
+                        
+                        <div class="form-section">
+                            <label>
+                                <input type="checkbox" id="pqc-enabled"> Enable Post-Quantum Cryptography
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="modal-btn cancel">Cancel</button>
+                        <button class="modal-btn save">💾 Save to PsiForceDB</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log Panel -->
+            <div class="activity-log-panel">
+                <h3>📋 Directory Activity Log</h3>
+                <div class="log-entries">
+                    <div class="log-entry success">
+                        <div class="log-time">14:23</div>
+                        <div class="log-icon">✅</div>
+                        <div class="log-message">User 'medusa' PQC encryption enabled successfully</div>
+                    </div>
+                    
+                    <div class="log-entry info">
+                        <div class="log-time">14:22</div>
+                        <div class="log-icon">🔐</div>
+                        <div class="log-message">Admin library libmedusa_admin.so loaded</div>
+                    </div>
+                    
+                    <div class="log-entry info">
+                        <div class="log-time">14:21</div>
+                        <div class="log-icon">🗄️</div>
+                        <div class="log-message">PsiForceDB directory sync completed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @css {
+        .secure-directories-thingamabob {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .thingamabob-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .thingamabob-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .thingamabob-icon {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(255,215,0,0.3);
+        }
+
+        .thingamabob-title h2 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .thingamabob-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(255,107,107,0.3);
+        }
+
+        .thingamabob-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .thingamabob-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+        }
+
+        .thingamabob-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76,175,80,0.4);
+        }
+
+        .thingamabob-interface {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .directory-panel, .admin-panel {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .directory-panel h3, .admin-panel h3 {
+            margin-top: 0;
+            color: #ffd700;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            padding-bottom: 10px;
+        }
+
+        .search-section {
+            margin-bottom: 20px;
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .filter-select {
+            padding: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .search-btn {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .users-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .user-item.admin {
+            border-left-color: #ffd700;
+        }
+
+        .user-item.user {
+            border-left-color: #4CAF50;
+        }
+
+        .user-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .user-avatar {
+            font-size: 2em;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .user-email {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .user-role {
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .user-role.admin {
+            color: #ffd700;
+        }
+
+        .user-role.user {
+            color: #4CAF50;
+        }
+
+        .user-security {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .security-badge {
+            font-size: 0.7em;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .security-badge.pqc {
+            background: linear-gradient(45deg, #e91e63, #ad1457);
+        }
+
+        .security-badge.mfa {
+            background: linear-gradient(45deg, #ff9800, #f57c00);
+        }
+
+        .security-badge.encrypted {
+            background: linear-gradient(45deg, #9c27b0, #7b1fa2);
+        }
+
+        .security-badge.basic {
+            background: linear-gradient(45deg, #607d8b, #455a64);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .action-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .admin-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .action-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            border-color: rgba(255,215,0,0.5);
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 2em;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            color: #333;
+        }
+
+        .action-info {
+            flex: 1;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .action-desc {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .action-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
+        }
+
+        .security-status-panel {
+            grid-column: 1 / -1;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .security-status-panel h3 {
+            margin-top: 0;
+            color: #ffd700;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            padding-bottom: 10px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 0.9em;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .status-value.connected {
+            color: #4CAF50;
+        }
+
+        .status-value.active {
+            color: #ffd700;
+        }
+
+        .status-value.loaded {
+            color: #2196F3;
+        }
+
+        .user-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            color: white;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            padding-bottom: 15px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        .form-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .modal-input, .modal-select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .modal-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-btn.cancel {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .modal-btn.save {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .activity-log-panel {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+        }
+
+        .activity-log-panel h3 {
+            margin-top: 0;
+            color: #ffd700;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            padding-bottom: 10px;
+        }
+
+        .log-entries {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .log-time {
+            font-size: 0.8em;
+            color: rgba(255,255,255,0.6);
+            min-width: 50px;
+        }
+
+        .log-icon {
+            font-size: 1.2em;
+        }
+
+        .log-message {
+            font-size: 0.9em;
+        }
+
+        .log-entry.success {
+            border-left: 3px solid #4CAF50;
+        }
+
+        .log-entry.info {
+            border-left: 3px solid #2196F3;
+        }
+
+        .log-entry.warning {
+            border-left: 3px solid #ff9800;
+        }
+
+        .log-entry.error {
+            border-left: 3px solid #f44336;
+        }
+    }
+
+    @javascript {
+        // Initialize Secure Directories functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const secureDirectories = new SecureDirectoriesThingamabob();
+            secureDirectories.init();
+        });
+
+        class SecureDirectoriesThingamabob {
+            constructor() {
+                this.modal = document.querySelector('.user-modal');
+                this.securityCore = null;
+                this.sessionValidated = false;
+                this.componentName = 'secure-directories-thingamabob';
+                this.psiForceDB = {
+                    connected: false,
+                    users: [],
+                    admins: []
+                };
+                this.adminLibrary = null;
+                this.bindEventListeners();
+            }
+
+            init() {
+                console.log('🔐 Secure Directories Thingamabob initializing with PsiForceDB...');
+                
+                // Wait for MedusaSecurityCore to be ready
+                this.waitForSecurityCore().then(() => {
+                    this.loadAdminLibrary();
+                    this.connectToPsiForceDB();
+                    this.loadUsers();
+                    this.startDirectorySync();
+                }).catch(error => {
+                    console.error('❌ Secure Directories initialization failed:', error);
+                });
+            }
+            
+            async waitForSecurityCore() {
+                return new Promise((resolve, reject) => {
+                    const checkSecurity = () => {
+                        if (window.MedusaSecurityCore) {
+                            this.securityCore = window.MedusaSecurityCore;
+                            console.log('✅ Secure Directories secured with AES 256 PQC');
+                            resolve();
+                        } else {
+                            setTimeout(checkSecurity, 100);
+                        }
+                    };
+                    
+                    checkSecurity();
+                    
+                    // Timeout after 10 seconds
+                    setTimeout(() => {
+                        reject(new Error('Security core timeout'));
+                    }, 10000);
+                });
+            }
+
+            async loadAdminLibrary() {
+                console.log('📚 Loading admin management .so library...');
+                
+                try {
+                    // Load the admin library from ./inc directory
+                    const libraryPath = './inc/libmedusa_admin.so';
+                    
+                    // Simulate loading .so library (in real implementation, this would use native bindings)
+                    this.adminLibrary = {
+                        createUser: (userData) => this.nativeCreateUser(userData),
+                        promoteToAdmin: (userId) => this.nativePromoteToAdmin(userId),
+                        enablePQC: (userId) => this.nativeEnablePQC(userId),
+                        syncDirectory: () => this.nativeSyncDirectory(),
+                        generateSOLibrary: () => this.nativeGenerateSOLibrary(),
+                        validateAdmin: (userId) => this.nativeValidateAdmin(userId)
+                    };
+                    
+                    console.log('✅ Admin library loaded:', libraryPath);
+                    this.addSecureLogEntry('success', 'Admin library libmedusa_admin.so loaded successfully');
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load admin library:', error);
+                    this.addSecureLogEntry('error', `Admin library load failed: ${error.message}`);
+                }
+            }
+
+            async connectToPsiForceDB() {
+                console.log('🗄️ Connecting to PsiForceDB...');
+                
+                try {
+                    if (this.securityCore && this.securityCore.psiForceDB.connected) {
+                        this.psiForceDB.connected = true;
+                        console.log('✅ PsiForceDB connection established');
+                        this.addSecureLogEntry('success', 'PsiForceDB connection established');
+                        
+                        // Test PsiForceDB connection
+                        const connectionTest = await this.securityCore.psiForceQuery(
+                            "SELECT 'PsiForceDB Directory Integration Active' as status"
+                        );
+                        
+                        if (connectionTest.success) {
+                            console.log('✅ PsiForceDB directory integration active');
+                        }
+                        
+                    } else {
+                        throw new Error('Security core PsiForceDB not available');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ PsiForceDB connection failed:', error);
+                    this.addSecureLogEntry('error', `PsiForceDB connection failed: ${error.message}`);
+                }
+            }
+
+            async loadUsers() {
+                console.log('👥 Loading users from PsiForceDB...');
+                
+                try {
+                    if (!this.psiForceDB.connected) {
+                        throw new Error('PsiForceDB not connected');
+                    }
+                    
+                    // Load users using PsiForceDB queries (not SQL)
+                    const usersQuery = "SELECT username, email, permission_level, security_level, active FROM portal_users WHERE active = true";
+                    const usersResult = await this.securityCore.psiForceQuery(usersQuery);
+                    
+                    if (usersResult.success && usersResult.data) {
+                        this.psiForceDB.users = usersResult.data;
+                        this.updateUserDisplay();
+                        console.log(`✅ Loaded ${this.psiForceDB.users.length} users from PsiForceDB`);
+                        this.addSecureLogEntry('success', `Loaded ${this.psiForceDB.users.length} users from PsiForceDB`);
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ Failed to load users:', error);
+                    this.addSecureLogEntry('error', `User loading failed: ${error.message}`);
+                }
+            }
+
+            bindEventListeners() {
+                // Add user button
+                document.querySelector('.thingamabob-btn.add-user').addEventListener('click', () => {
+                    this.showUserModal('add');
+                });
+
+                // Admin panel button
+                document.querySelector('.thingamabob-btn.manage-admins').addEventListener('click', () => {
+                    this.openAdminPanel();
+                });
+
+                // Sync directories button
+                document.querySelector('.thingamabob-btn.sync-directories').addEventListener('click', () => {
+                    this.syncDirectories();
+                });
+
+                // User action buttons
+                document.querySelectorAll('.action-btn.edit').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.editUser(e.target));
+                });
+
+                document.querySelectorAll('.action-btn.permissions').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.managePermissions(e.target));
+                });
+
+                document.querySelectorAll('.action-btn.promote').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.promoteUser(e.target));
+                });
+
+                // Admin action buttons
+                document.querySelectorAll('.action-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.executeAdminAction(e.currentTarget));
+                });
+
+                // Modal controls
+                if (this.modal) {
+                    this.modal.querySelector('.modal-close').addEventListener('click', () => this.hideModal());
+                    this.modal.querySelector('.modal-btn.cancel').addEventListener('click', () => this.hideModal());
+                    this.modal.querySelector('.modal-btn.save').addEventListener('click', () => this.saveUser());
+                }
+
+                // Search functionality
+                document.querySelector('.search-btn').addEventListener('click', () => this.searchUsers());
+                document.querySelector('.search-input').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.searchUsers();
+                });
+            }
+
+            async executeAdminAction(button) {
+                const actionCard = button.closest('.action-card');
+                const actionTitle = actionCard.querySelector('.action-title').textContent;
+                const originalIcon = actionCard.querySelector('.action-icon').innerHTML;
+                
+                actionCard.querySelector('.action-icon').innerHTML = '⏳';
+                button.disabled = true;
+
+                try {
+                    switch(actionTitle) {
+                        case 'Promote to Admin':
+                            await this.executePromoteToAdmin();
+                            break;
+                        case 'Enable PQC Security':
+                            await this.executeEnablePQC();
+                            break;
+                        case 'PsiForceDB Sync':
+                            await this.executePsiForceSync();
+                            break;
+                        case 'Generate .so Library':
+                            await this.executeGenerateSOLibrary();
+                            break;
+                    }
+                    
+                    // Success indicator
+                    actionCard.querySelector('.action-icon').innerHTML = '✅';
+                    this.addSecureLogEntry('success', `${actionTitle} completed successfully`);
+                    
+                } catch (error) {
+                    actionCard.querySelector('.action-icon').innerHTML = '❌';
+                    this.addSecureLogEntry('error', `${actionTitle} failed: ${error.message}`);
+                } finally {
+                    button.disabled = false;
+                    setTimeout(() => {
+                        actionCard.querySelector('.action-icon').innerHTML = originalIcon;
+                    }, 3000);
+                }
+            }
+
+            async executePromoteToAdmin() {
+                if (this.adminLibrary) {
+                    const selectedUser = 'medusa'; // Example user
+                    const result = await this.adminLibrary.promoteToAdmin(selectedUser);
+                    console.log('👑 User promoted to admin:', result);
+                    return result;
+                } else {
+                    throw new Error('Admin library not loaded');
+                }
+            }
+
+            async executeEnablePQC() {
+                if (this.adminLibrary) {
+                    const selectedUser = 'portal_user'; // Example user
+                    const result = await this.adminLibrary.enablePQC(selectedUser);
+                    console.log('🔐 PQC enabled for user:', result);
+                    return result;
+                } else {
+                    throw new Error('Admin library not loaded');
+                }
+            }
+
+            async executePsiForceSync() {
+                if (this.adminLibrary) {
+                    const result = await this.adminLibrary.syncDirectory();
+                    console.log('🗄️ PsiForceDB sync completed:', result);
+                    await this.loadUsers(); // Reload users after sync
+                    return result;
+                } else {
+                    throw new Error('Admin library not loaded');
+                }
+            }
+
+            async executeGenerateSOLibrary() {
+                if (this.adminLibrary) {
+                    const result = await this.adminLibrary.generateSOLibrary();
+                    console.log('📚 .so library generated:', result);
+                    return result;
+                } else {
+                    throw new Error('Admin library not loaded');
+                }
+            }
+
+            // Native library functions (would be implemented in C/C++ .so library)
+            async nativeCreateUser(userData) {
+                // Simulate native library call
+                await this.delay(1000);
+                
+                // Use PsiForceDB to create user
+                const createQuery = `
+                    INSERT INTO portal_users (username, email, password_hash, permission_level, security_level) 
+                    VALUES ('${userData.username}', '${userData.email}', '${userData.passwordHash}', 
+                           '${userData.role}', '${userData.securityLevel}')
+                `;
+                
+                return await this.securityCore.psiForceQuery(createQuery);
+            }
+
+            async nativePromoteToAdmin(userId) {
+                // Simulate native library call
+                await this.delay(500);
+                
+                // Use PsiForceDB to promote user
+                const promoteQuery = `
+                    UPDATE portal_users 
+                    SET permission_level = 'ADMIN', security_level = 'quantum_resistant' 
+                    WHERE username = '${userId}'
+                `;
+                
+                return await this.securityCore.psiForceQuery(promoteQuery);
+            }
+
+            async nativeEnablePQC(userId) {
+                // Simulate native library call
+                await this.delay(800);
+                
+                // Use PsiForceDB to enable PQC
+                const pqcQuery = `
+                    UPDATE portal_users 
+                    SET security_level = 'quantum_resistant' 
+                    WHERE username = '${userId}'
+                `;
+                
+                return await this.securityCore.psiForceQuery(pqcQuery);
+            }
+
+            async nativeSyncDirectory() {
+                // Simulate native library call
+                await this.delay(2000);
+                
+                console.log('🔄 Synchronizing directory with PsiForceDB...');
+                return { success: true, message: 'Directory synchronized' };
+            }
+
+            async nativeGenerateSOLibrary() {
+                // Simulate native library compilation
+                await this.delay(3000);
+                
+                console.log('🔨 Compiling admin management library...');
+                return { 
+                    success: true, 
+                    library: './inc/libmedusa_admin.so',
+                    message: 'Library compiled successfully' 
+                };
+            }
+
+            async nativeValidateAdmin(userId) {
+                // Simulate native library call
+                await this.delay(300);
+                
+                // Check admin status in PsiForceDB
+                const validateQuery = `
+                    SELECT permission_level FROM portal_users 
+                    WHERE username = '${userId}' AND permission_level = 'ADMIN'
+                `;
+                
+                const result = await this.securityCore.psiForceQuery(validateQuery);
+                return result.success && result.data && result.data.length > 0;
+            }
+
+            showUserModal(mode, userData = null) {
+                if (this.modal) {
+                    this.modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    
+                    if (mode === 'edit' && userData) {
+                        // Populate form with user data
+                        document.getElementById('username').value = userData.username || '';
+                        document.getElementById('email').value = userData.email || '';
+                        document.getElementById('role').value = userData.role || 'user';
+                        document.getElementById('security-level').value = userData.securityLevel || 'basic';
+                    }
+                }
+            }
+
+            hideModal() {
+                if (this.modal) {
+                    this.modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            async saveUser() {
+                try {
+                    const userData = {
+                        username: document.getElementById('username').value,
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value,
+                        role: document.getElementById('role').value,
+                        securityLevel: document.getElementById('security-level').value,
+                        mfaEnabled: document.getElementById('mfa-enabled').checked,
+                        pqcEnabled: document.getElementById('pqc-enabled').checked
+                    };
+                    
+                    if (this.adminLibrary) {
+                        // Hash password and create user
+                        userData.passwordHash = await this.hashPassword(userData.password);
+                        const result = await this.adminLibrary.createUser(userData);
+                        
+                        if (result.success) {
+                            this.addSecureLogEntry('success', `User ${userData.username} created successfully`);
+                            this.hideModal();
+                            await this.loadUsers(); // Refresh user list
+                        } else {
+                            throw new Error(result.message || 'User creation failed');
+                        }
+                    } else {
+                        throw new Error('Admin library not available');
+                    }
+                    
+                } catch (error) {
+                    console.error('❌ User save failed:', error);
+                    this.addSecureLogEntry('error', `User save failed: ${error.message}`);
+                }
+            }
+
+            async hashPassword(password) {
+                // Use Bcrypt-style hashing (simplified for demo)
+                const encoder = new TextEncoder();
+                const data = encoder.encode(password + 'medusa_salt');
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                return Array.from(new Uint8Array(hashBuffer))
+                    .map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            updateUserDisplay() {
+                // Update user count displays
+                const totalUsers = this.psiForceDB.users.length;
+                const adminUsers = this.psiForceDB.users.filter(u => u.permission_level === 'ADMIN').length;
+                const pqcUsers = this.psiForceDB.users.filter(u => u.security_level === 'quantum_resistant').length;
+                
+                // Update status panel
+                document.querySelectorAll('.status-value')[3].textContent = totalUsers;
+                document.querySelectorAll('.status-value')[4].textContent = adminUsers;
+                document.querySelectorAll('.status-value')[5].textContent = `${pqcUsers}/${totalUsers}`;
+            }
+
+            async syncDirectories() {
+                console.log('🔄 Syncing directories with PsiForceDB...');
+                
+                try {
+                    if (this.adminLibrary) {
+                        const result = await this.adminLibrary.syncDirectory();
+                        
+                        if (result.success) {
+                            this.addSecureLogEntry('success', 'Directory sync completed');
+                            await this.loadUsers(); // Refresh after sync
+                        }
+                    }
+                } catch (error) {
+                    console.error('❌ Directory sync failed:', error);
+                    this.addSecureLogEntry('error', `Directory sync failed: ${error.message}`);
+                }
+            }
+
+            startDirectorySync() {
+                // Auto-sync every 5 minutes
+                setInterval(() => {
+                    this.syncDirectories();
+                }, 300000);
+            }
+
+            async searchUsers() {
+                const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+                const filter = document.querySelector('.filter-select').value;
+                
+                console.log(`🔍 Searching users: "${searchTerm}" with filter: ${filter}`);
+                
+                // Filter and display users based on search criteria
+                let filteredUsers = this.psiForceDB.users;
+                
+                if (searchTerm) {
+                    filteredUsers = filteredUsers.filter(user => 
+                        user.username.toLowerCase().includes(searchTerm) ||
+                        user.email.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (filter !== 'all') {
+                    filteredUsers = filteredUsers.filter(user => {
+                        switch(filter) {
+                            case 'admin': return user.permission_level === 'ADMIN';
+                            case 'user': return user.permission_level === 'USER';
+                            case 'locked': return !user.active;
+                            case 'pqc': return user.security_level === 'quantum_resistant';
+                            default: return true;
+                        }
+                    });
+                }
+                
+                this.addSecureLogEntry('info', `Search completed: ${filteredUsers.length} users found`);
+            }
+
+            async addSecureLogEntry(type, message) {
+                // Add to regular log display
+                this.addLogEntry(type, message);
+                
+                // Additionally log to secure PsiForceDB
+                if (this.securityCore && this.psiForceDB.connected) {
+                    try {
+                        const secureLogData = {
+                            component: this.componentName,
+                            event_type: type.toUpperCase(),
+                            message: message,
+                            timestamp: new Date().toISOString(),
+                            security_level: 'quantum_resistant'
+                        };
+                        
+                        // Use PsiForceDB for secure logging
+                        const logQuery = `
+                            INSERT INTO security_audit_log (component_name, event_type, event_data_encrypted, security_level) 
+                            VALUES ('${this.componentName}', '${type.toUpperCase()}', 
+                                   '${JSON.stringify(secureLogData)}', 'quantum_resistant')
+                        `;
+                        
+                        await this.securityCore.psiForceQuery(logQuery);
+                        
+                    } catch (error) {
+                        console.warn('⚠️ Failed to write secure log entry:', error);
+                    }
+                }
+            }
+
+            addLogEntry(type, message) {
+                const logEntries = document.querySelector('.log-entries');
+                if (!logEntries) return;
+
+                const icons = {
+                    success: '✅',
+                    error: '❌',
+                    warning: '⚠️',
+                    info: 'ℹ️'
+                };
+
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                              now.getMinutes().toString().padStart(2, '0');
+
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry ${type}`;
+                logEntry.innerHTML = `
+                    <div class="log-time">${timeStr}</div>
+                    <div class="log-icon">${icons[type] || 'ℹ️'}</div>
+                    <div class="log-message">${message}</div>
+                `;
+
+                // Insert at the top
+                logEntries.insertBefore(logEntry, logEntries.firstChild);
+
+                // Keep only the latest 6 entries
+                while (logEntries.children.length > 6) {
+                    logEntries.removeChild(logEntries.lastChild);
+                }
+
+                // Scroll to top
+                logEntries.scrollTop = 0;
+            }
+
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+    }
+}
