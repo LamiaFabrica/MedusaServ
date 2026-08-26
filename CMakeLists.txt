@@ -411,22 +411,38 @@ if(UNIX AND NOT APPLE)
         target_link_libraries(medusaserv "${LFSSL_DIR}/build_wsl/liblfssl.a")
     endif()
     if(ENABLE_COLLABORATION_HUB)
-        # Link real PsiForceDB engine & cryptography libraries
+        # Link the full estate static closure (RESCAN: --start-group so
+        # cross-archive references resolve regardless of order) from the
+        # estate's staged obj-x86_64-linux-gnu layout.
         target_link_libraries(medusaserv
+            -Wl,--start-group
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpfql_core.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_collaboration.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_ai.a"
-            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/src/server/libpsiforcedb_server_core.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_ai_bridge.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_ai_brain.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_hub.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_mcp.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_runner.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_server_estate.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_server_core.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/src/server/libpsiforcedb_server_psmdb.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/src/server/libpsiforcedb_server_security.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/src/server/libpsiforcedb_server_lfcs.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_nemadic.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_nemadic_field.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_user_dome.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_living_book.a"
+            "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/libpsiforcedb_database.a"
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/liblfssl_core.a"
+            -Wl,--end-group
             "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/src/server/libpsiforcedb_lfssl.so"
             tbb
             zstd
-            z
+            # The host has the zlib runtime (libz.so.1) but not always the
+            # dev symlink (libz.so); link the runtime lib explicitly so the
+            # ELF build is not gated on the zlib1g-dev package.
+            /usr/lib/x86_64-linux-gnu/libz.so.1
         )
         target_link_options(medusaserv PRIVATE "-Wl,--allow-multiple-definition")
     endif()
