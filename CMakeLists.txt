@@ -177,9 +177,14 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/compat  # Windows compatibility headers
     ${CMAKE_CURRENT_SOURCE_DIR}/inc  # MedusaJSON standalone header
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    "${MCMAKER_PROJECTS_DIR}/PFQL/include"
+    # Clean-room Nemadic model include root (PFQL command headers reference
+    # nemadic/* headers); the Living Book exposes it via psiforcedb_common.
+    "${MCMAKER_PROJECTS_DIR}/../Nemadic modelling/model/include"
+    "${MCMAKER_PROJECTS_DIR}/Aegis/include"
     ${PSIFORCEDB_INCLUDE_PATH}
     "${PSIFORCEDB_DIR}/src"
-    "${PSIFORCEDB_DIR}/src/server/third_party/supercollider"
+    "${PSIFORCEDB_DIR}/src/server/common"
     "${PSIFORCEDB_DIR}/src/server/pfql"
     "${PSIFORCEDB_DIR}/src/server/core"
     "${PSIFORCEDB_DIR}/src/server/ai_bridge"
@@ -218,6 +223,7 @@ set(API_HANDLER_SOURCES
     src/api/purple_pages_api_handler.cpp               # Purple Pages API handler
     src/api/purple_pages_medusaserv_integration.cpp   # Purple Pages integration with MedusaServ
     src/api/psiforcedb_website_api_handlers.cpp       # PsiForceDB website API handlers
+    src/api/mcp_http_bridge.cpp                       # MCP-over-HTTP bridge (second-brain MCP server)
 )
 
 # ============================================================================
@@ -245,9 +251,9 @@ set(UTILITY_SOURCES
     # utils/logging.cpp               # CORRUPTED - excluded from build
     utils/exception_system.cpp        # Exception handling system
     # utils/exceptions.cpp            # CORRUPTED - excluded from build
-    utils/memory_pool.cpp             # Memory pool allocator
+    # utils/memory_pool.cpp           # CORRUPTED (100% NUL) - excluded from build
     # utils/performance_utils.cpp    # CORRUPTED - excluded from build
-    utils/utility_implementations.cpp # General utility implementations
+    # utils/utility_implementations.cpp # CORRUPTED (100% NUL) - excluded from build
 )
 
 # ============================================================================
@@ -278,7 +284,7 @@ set(EXECUTABLE_PROCESS_SOURCES
 # PORTAL RENDERING - Server-side rendering for installable portal
 # ============================================================================
 set(PORTAL_SOURCES
-    portal/renderers/ssr_engine.cpp  # Server-side rendering engine for portal
+    # portal/renderers/ssr_engine.cpp  # CORRUPTED (100% NUL) - excluded from build
 )
 
 # ============================================================================
@@ -329,7 +335,7 @@ set(PSIFORCEDB_SOURCES
 # AI & MACHINE LEARNING - Code completion, AI assistance
 # ============================================================================
 set(AI_SOURCES
-    ai/ai_code_completion.cpp  # AI-powered code completion engine
+    # ai/ai_code_completion.cpp  # CORRUPTED (100% NUL) - excluded from build
 )
 
 # API Handler headers
@@ -430,11 +436,73 @@ elseif(APPLE)
         pthread
     )
 elseif(WIN32)
-    # Windows-specific
+    # Windows-specific: the PsiForceDB archive group below already carries the
+    # Living Book's lfssl_core (the sole crypto substrate). A second, separate
+    # LFSSL build (build_fortress_win/lib/liblfssl.a) was previously linked
+    # here too; with --allow-multiple-definition that mixed two dilithium
+    # implementations and blew up AIFastTokenManager::initialize() at boot
+    # (std::bad_alloc). One substrate, one archive.
+    # PsiForceDB.com API-handler integration closure (Windows). The portal /
+    # purple-pages / website API handlers resolve their PsiForceDB symbols from
+    # the LivingBook build archives + the PFQL import lib, which PsiHost builds
+    # BEFORE this project (order: LFSSL, FCCP, PFQL, CODEX, LivingBook, ...).
+    # The full archive set is wrapped in a linker group so cross-archive
+    # dependencies resolve cyclically, exactly as the Living Book omega runtime
+    # links its own closure.
+    set(PSIHOST_LIVINGBOOK_LIB_DIR "C:/McMaker Projects/Projects/PsiHost/build/LivingBook/lib")
+    set(PSIHOST_PFQL_DIR "C:/McMaker Projects/Projects/PsiHost/build/PFQL")
+    if(EXISTS "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_collaboration.a"
+       AND EXISTS "${PSIHOST_PFQL_DIR}/libpfql_core.dll.a")
+        # MasterLicensingSystem and DiscordRoleChecker are implemented in the
+        # PsiForceDB tree but are not wired into any LivingBook archive;
+        # compile them here so the licensing API handlers resolve.
+        target_sources(medusaserv PRIVATE
+            "${PSIFORCEDB_DIR}/src/server/common/master_licensing_system.cpp"
+            "${PSIFORCEDB_DIR}/src/server/common/discord_role_checker.cpp"
+        )
+        target_link_libraries(medusaserv
+            -Wl,--start-group
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/liblfssl_core.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_core_endpoint_router.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_collaboration.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_ai_bridge.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_mcp.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_ai.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_ai_brain.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_server_core.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_server_gate.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_server_lfcs.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_server_psmdb.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_server_security.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_database.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_living_book.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_nemadic.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_nemadic_field.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_user_dome.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_argon2.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_runner.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_hub.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libpsiforcedb_psidigger.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libzlibstatic.a"
+            "${PSIHOST_LIVINGBOOK_LIB_DIR}/libzstd.a"
+            "${PSIHOST_PFQL_DIR}/libpfql_core.dll.a"
+            -Wl,--end-group
+        )
+        target_link_options(medusaserv PRIVATE "-Wl,--allow-multiple-definition")
+    endif()
+    # Windows system import libs. These MUST come after the archive group:
+    # static members pulled from the group (bertiebot_mcp_client,
+    # pfql_connector, keystore, ...) introduce __imp_* imports for ws2_32 /
+    # crypt32 that GNU ld only resolves from libraries scanned after the
+    # member is pulled in. Each is listed exactly once so CMake cannot hoist
+    # any of them ahead of the group.
     target_link_libraries(medusaserv
         ws2_32
         winhttp
+        wininet
         rpcrt4
+        bcrypt
+        crypt32
     )
 endif()
 
@@ -444,8 +512,7 @@ target_compile_definitions(medusaserv
     PURPLE_PAGES_ENABLED=1
     PSIFORCEDB_INTEGRATION=1
     BUILD_API_HANDLERS=1
-    USE_LFSSL=1  # Using LFSSL (LamiaFabrica SSL) instead of OpenSSL
-    # USE_OPENSSL=1  # Removed - using LFSSL instead
+    USE_LFSSL=1  # Sole Cryptographic Substrate (LFSSL) — OpenSSL never used
 )
 
 # Set output directory
@@ -477,6 +544,11 @@ if(UNIX AND NOT APPLE)
     if(EXISTS "${LFSSL_DIR}/build_wsl/liblfssl.a")
         target_link_libraries(medusaserv_encrypt "${LFSSL_DIR}/build_wsl/liblfssl.a")
     endif()
+elseif(WIN32)
+    target_link_libraries(medusaserv_encrypt
+        "${LFSSL_DIR}/build_fortress_win/lib/liblfssl.a"
+        bcrypt
+    )
 endif()
 
 target_compile_definitions(medusaserv_encrypt
@@ -517,6 +589,8 @@ elseif(WIN32)
     target_link_libraries(medusaserv_cli
         ws2_32
         winhttp
+        "${LFSSL_DIR}/build_fortress_win/lib/liblfssl.a"
+        bcrypt
     )
 endif()
 
@@ -544,6 +618,8 @@ elseif(WIN32)
     target_link_libraries(medusaserv_ultimate_cli
         ws2_32
         winhttp
+        "${LFSSL_DIR}/build_fortress_win/lib/liblfssl.a"
+        bcrypt
     )
 endif()
 
