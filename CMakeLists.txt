@@ -231,6 +231,12 @@ set(API_HANDLER_SOURCES
 # ============================================================================
 set(WEBSERVER_SOURCES
     src/webserver/medusaserv_vhost_manager.cpp  # Virtual host manager with LFSSL encryption
+    src/webserver/managers/dns_manager.cpp      # Authoritative DNS record store (LFSSL-hashed)
+    src/webserver/managers/wire_dns_server.cpp  # Lamia-native wire DNS server (UDP+TCP :53, DNSSEC)
+    src/webserver/managers/medusamail_smtp.cpp  # MedusaMail native SMTP server (ESMTP + DKIM)
+    src/webserver/managers/native_tls_listener.cpp  # Native TLS 1.3 HTTPS listener (Dilithium-5 identity)
+    src/webserver/managers/native_websocket_server.cpp  # Native RFC 6455 WebSocket server (LFSSL codec)
+    src/webserver/managers/native_pfev_variables.cpp  # Machine-bound PFEV encrypted config (BLAKE3 KDF + AES-256-GCM)
 )
 
 # ============================================================================
@@ -298,7 +304,6 @@ set(CORE_SOURCES
     core/notification_filter.cpp             # Notification filtering system
     core/notification_scheduler.cpp           # Notification scheduling
     core/template_manager.cpp                 # Template management system
-    core/websocket_server.cpp                 # WebSocket server implementation
     src/purple_pages.cpp                      # Purple Pages core (moved to src/)
     src/purple_pages_api.cpp                  # Purple Pages API (moved to src/)
     core/gif3d/libultimate_gif3d_revolution.cpp  # GIF3D rendering library
@@ -386,6 +391,9 @@ add_executable(medusaserv ${ALL_SOURCES})
 
 # LFSSL substrate include (target-scoped; canonical path for the cured crypto seams)
 target_include_directories(medusaserv PRIVATE "${LFSSL_DIR}/include")
+# Native TLS 1.3 listener is on by default (started alongside DNS/SMTP); it can be
+# disabled by env MEDUSASERV_TLS_PORT not being set.
+target_compile_definitions(medusaserv PRIVATE MEDUSASERV_TLS_DEFAULT_ON MEDUSASERV_WEBSOCKET_DEFAULT_ON)
 
 # Link libraries
 target_link_libraries(medusaserv
@@ -406,9 +414,28 @@ if(UNIX AND NOT APPLE)
         pthread
         uuid
     )
-    # LFSSL substrate static lib for the cured crypto seams (ELF archive; WSL build)
-    if(EXISTS "${LFSSL_DIR}/build_wsl/liblfssl.a")
-        target_link_libraries(medusaserv "${LFSSL_DIR}/build_wsl/liblfssl.a")
+    # LFSSL substrate. The canonical complete LANE library is the SHARED object
+    # (build_wsl_26/lib/liblfssl.so) — it carries the full PQC surface (dnssec,
+    # dkim, TLS13, Argon2, AES256GCM, KEM). The static .a produced by the same
+    # build is not always a self-contained closure (some object members reference
+    # symbols outside the archive), so the .so is preferred; the .a is only a
+    # fallback. One and only one LFSSL is linked — the estate rule.
+    set(LFSSL_ELF_LIB "")
+    foreach(candidate
+            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so"
+            "${LFSSL_DIR}/build_wsl_26/liblfssl.so"
+            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.a"
+            "${LFSSL_DIR}/build_wsl_26/liblfssl.a"
+            "${LFSSL_DIR}/build_fortress_wsl26/liblfssl.a"
+            "${LFSSL_DIR}/build_wsl/liblfssl.a")
+        if(EXISTS "${candidate}")
+            set(LFSSL_ELF_LIB "${candidate}")
+            break()
+        endif()
+    endforeach()
+    if(LFSSL_ELF_LIB)
+        target_link_libraries(medusaserv "${LFSSL_ELF_LIB}")
+        message(STATUS "Linking LFSSL archive: ${LFSSL_ELF_LIB}")
     endif()
     if(ENABLE_COLLABORATION_HUB)
         # Link the full estate static closure (RESCAN: --start-group so

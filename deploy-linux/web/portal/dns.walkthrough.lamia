@@ -1,0 +1,159 @@
+/**
+ * MEDUSASERV DNS & NAME SERVER WALKTHROUGH
+ * ========================================
+ * Guided end-to-end: how to ADD DNS Records, HOST a Name Server, and SERVE that
+ * name server against MedusaServ — the Lamia-native way. No external bind, no
+ * NGINX proxy in front of the wire. Every step calls the real Portal API that
+ * writes to the LFSSL-hashed authoritative zone archive served on :53.
+ *
+ * The client-side is Lamia-bridged: this page is served by the MedusaServ Lamia
+ * engine and the interactions live in /js/lamia-dns-bridge. Its browser-compat
+ * module adapts the same behaviour to Chrome / Firefox / Edge / Internet
+ * Explorer, so the UI runs anywhere the estate ships it.
+ *
+ * © 2025 D Hargreaves (Roylepython) - The Medusa Project
+ * Yorkshire Champion Standards - "Spared No Expense"
+ */
+
+@component "medusaserv_dns_walkthrough" {
+    @version "1.0.0"
+    @theme "enterprise_dns_walkthrough"
+    @security_level "quantum_resistant"
+    @encryption "AES_256_PQC"
+    @session_management "JWT_PsiForceDB"
+    @authentication_required true
+    @lamia_native true
+    @dns_management true
+    @nameserver_hosting true
+
+    @render {
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>MedusaServ - Host a Name Server (DNS Walkthrough)</title>
+            <link rel="icon" type="image/png" href="/assets/MedusaServ.png">
+            <link rel="stylesheet" href="/css/lamia-dns-walkthrough.css">
+        </head>
+        <body class="dns-walkthrough-page">
+            <header class="walkthrough-header">
+                <div class="brand">
+                    <img src="/assets/MedusaServ.png" alt="MedusaServ" class="brand-logo">
+                    <div>
+                        <h1>DNS &amp; Name Server</h1>
+                        <span class="subtitle">Host your own authoritative name server</span>
+                    </div>
+                </div>
+                <div class="ledge">
+                    <span class="badge">Lamia Native</span>
+                    <span class="badge badge-green">DNSSEC Ready</span>
+                </div>
+            </header>
+
+            <nav class="step-tabs">
+                <button class="step-tab active" data-step="1">1. Add Records</button>
+                <button class="step-tab" data-step="2">2. Host Name Server</button>
+                <button class="step-tab" data-step="3">3. NS Glue</button>
+                <button class="step-tab" data-step="4">4. Zone File</button>
+                <button class="step-tab" data-step="5">5. Serve &amp; Verify</button>
+            </nav>
+
+            <main class="walkthrough-body">
+                <!-- STEP 1: ADD DNS RECORDS -->
+                <section class="step-panel active" id="step-1">
+                    <h2>Step 1 — Add DNS Records</h2>
+                    <p>Create the A / AAAA / CNAME / MX / TXT records for your domain. They are written straight into the authoritative zone archive served by MedusaServ on port 53.</p>
+                    <div class="form-grid">
+                        <label>Domain <input id="rec-domain" placeholder="example.com"></label>
+                        <label>Type
+                            <select id="rec-type">
+                                <option value="A">A</option>
+                                <option value="AAAA">AAAA</option>
+                                <option value="CNAME">CNAME</option>
+                                <option value="MX">MX</option>
+                                <option value="TXT">TXT</option>
+                                <option value="NS">NS</option>
+                                <option value="SRV">SRV</option>
+                            </select>
+                        </label>
+                        <label>Hostname <input id="rec-hostname" placeholder="@ or www"></label>
+                        <label>Value <input id="rec-value" placeholder="192.168.1.10"></label>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-primary" id="btn-add-record">Add Record</button>
+                        <button class="btn-ghost" id="btn-list-records">List Records</button>
+                    </div>
+                    <pre class="output" id="record-output">Records will appear here.</pre>
+                </section>
+
+                <!-- STEP 2: HOST A NAME SERVER -->
+                <section class="step-panel" id="step-2">
+                    <h2>Step 2 — Host a Name Server</h2>
+                    <p>Install the SOA so MedusaServ becomes authoritative for this zone. This is the step Apache/NGINX never shipped: the server itself answers the wire.</p>
+                    <div class="form-grid">
+                        <label>Domain <input id="ns-domain" placeholder="example.com"></label>
+                        <label>Primary NS <input id="ns-primary" placeholder="ns1.example.com"></label>
+                        <label>Admin Email <input id="ns-email" placeholder="hostmaster.example.com"></label>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-primary" id="btn-host-ns">Host Name Server</button>
+                        <button class="btn-ghost" id="btn-list-zones">List Hosted Zones</button>
+                    </div>
+                    <pre class="output" id="ns-output">No zone hosted yet.</pre>
+                </section>
+
+                <!-- STEP 3: NS GLUE -->
+                <section class="step-panel" id="step-3">
+                    <h2>Step 3 — Add Name Server Glue</h2>
+                    <p>Point the parent registrar at your name servers. The A glue record lets the registry resolve ns1/ns2 to this server's IP.</p>
+                    <div class="form-grid">
+                        <label>Domain <input id="glue-domain" placeholder="example.com"></label>
+                        <label>Name Server <input id="glue-ns" placeholder="ns1.example.com"></label>
+                        <label>Glue IPv4 <input id="glue-ip" placeholder="192.168.1.10"></label>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-primary" id="btn-add-glue">Add Glue</button>
+                    </div>
+                    <pre class="output" id="glue-output">No glue records added.</pre>
+                </section>
+
+                <!-- STEP 4: ZONE FILE -->
+                <section class="step-panel" id="step-4">
+                    <h2>Step 4 — Generate Zone File</h2>
+                    <p>Pull the ready-to-seed BIND zone text. Copy it anywhere you need a portable copy of your hosted zone.</p>
+                    <div class="form-grid">
+                        <label>Domain <input id="zone-domain" placeholder="example.com"></label>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-primary" id="btn-gen-zone">Generate Zone File</button>
+                    </div>
+                    <pre class="output" id="zone-output">Enter a hosted domain and generate its zone.</pre>
+                </section>
+
+                <!-- STEP 5: SERVE & VERIFY -->
+                <section class="step-panel" id="step-5">
+                    <h2>Step 5 — Serve Against MedusaServ &amp; Verify</h2>
+                    <p>The walkthrough is complete. Point your registrar's NS at the name servers hosted by this server, then verify the chain:</p>
+                    <ol class="verify-list">
+                        <li>Registrar NS records <code>ns1.example.com</code>, <code>ns2.example.com</code></li>
+                        <li>MedusaServ answers authoritatively on UDP+TCP port 53</li>
+                        <li>Every RRset carries a valid Ed25519 DNSSEC RRSIG</li>
+                    </ol>
+                    <div class="cmd-snippet">
+                        dig @&lt;medusaserv-ip&gt; &lt;hostname&gt;.&lt;domain&gt; A +dnssec
+                    </div>
+                </section>
+            </main>
+
+            <footer class="walkthrough-footer">
+                <span>MedusaServ Professional — Lamia Native Name Server</span>
+                <button class="btn-ghost" id="btn-guide">PDFL Guide</button>
+            </footer>
+
+            <script src="/js/lamia-dns-bridge.js"></script>
+            <script src="/js/lamia-browser-compat.js"></script>
+        </body>
+        </html>
+    }
+}
