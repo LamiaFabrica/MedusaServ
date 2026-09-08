@@ -94,7 +94,7 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always -fdiagnostics-show-option")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fmessage-length=0")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -fno-omit-frame-pointer")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -march=native -static-libgcc -static-libstdc++")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG -march=x86-64-v2 -static-libgcc -static-libstdc++")
 endif()
 
 # Find required packages
@@ -237,6 +237,7 @@ set(WEBSERVER_SOURCES
     src/webserver/managers/native_tls_listener.cpp  # Native TLS 1.3 HTTPS listener (Dilithium-5 identity)
     src/webserver/managers/native_websocket_server.cpp  # Native RFC 6455 WebSocket server (LFSSL codec)
     src/webserver/managers/native_pfev_variables.cpp  # Machine-bound PFEV encrypted config (BLAKE3 KDF + AES-256-GCM)
+    src/webserver/managers/php_fpm_bridge.cpp      # FastCGI client to the PHP application server (php-fpm)
 )
 
 # ============================================================================
