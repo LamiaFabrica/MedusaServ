@@ -574,7 +574,30 @@ add_executable(medusaserv_encrypt
     # src/security/LFSSL_Native_Crypto.cpp REMOVED (ROLLOUT-MEDUSA-01): shim -> canonical LFSSL
 )
 
+# PFEV variable sealer: the sanctioned way to put secrets into the machine-bound
+# store (no plaintext env, no argv secrets). Links the same LFSSL substrate.
+add_executable(medusaserv_pfev
+    src/tools/medusaserv_pfev.cpp
+    src/webserver/managers/native_pfev_variables.cpp
+)
+
 target_include_directories(medusaserv_encrypt PRIVATE "${LFSSL_DIR}/include")
+
+target_link_libraries(medusaserv_pfev
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+
+if(UNIX AND NOT APPLE)
+    target_link_libraries(medusaserv_pfev
+        "${PSIFORCEDB_DIR}/obj-x86_64-linux-gnu/liblfssl_core.a"
+        dl
+    )
+    if(EXISTS "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so")
+        target_link_libraries(medusaserv_pfev "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so")
+    elseif(EXISTS "${LFSSL_DIR}/build_wsl/liblfssl.a")
+        target_link_libraries(medusaserv_pfev "${LFSSL_DIR}/build_wsl/liblfssl.a")
+    endif()
+endif()
 
 target_link_libraries(medusaserv_encrypt
     ${CMAKE_THREAD_LIBS_INIT}
