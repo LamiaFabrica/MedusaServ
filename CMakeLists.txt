@@ -200,13 +200,16 @@ include_directories(
 # link line are forbidden (Dual-Truth Collapse Policy).
 set(LFSSL_ELF_LIB "")
 if(UNIX AND NOT APPLE)
+    # The canonical WSL lane output: the static archive (LFSSL_BUILD_SHARED=OFF
+    # in build_wsl_26). Fresh, F-01D-complete. Prefer it; the .so variants are
+    # foreign-lane debris (Dual-Truth).
     foreach(candidate
-            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so"
-            "${LFSSL_DIR}/build_wsl_26/liblfssl.so"
-            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.a"
             "${LFSSL_DIR}/build_wsl_26/liblfssl.a"
+            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.a"
             "${LFSSL_DIR}/build_fortress_wsl26/liblfssl.a"
-            "${LFSSL_DIR}/build_wsl/liblfssl.a")
+            "${LFSSL_DIR}/build_wsl/liblfssl.a"
+            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so"
+            "${LFSSL_DIR}/build_wsl_26/liblfssl.so")
         if(EXISTS "${candidate}")
             set(LFSSL_ELF_LIB "${candidate}")
             break()
@@ -250,6 +253,7 @@ endif()
 set(MEDUSASERV_CORE_SOURCES
     src/lamia_server.cpp                    # Main HTTP server with Lamia file processing
     src/lamia_ergonomic_processor.cpp      # Ergonomic @ syntax processor for Lamia files
+    src/webserver/managers/http_document_root.cpp  # Shared document-root serving core (parity cell)
     MedusaServ/src/webserver/lamia/engine/lamia_engine.cpp  # Dual-dialect Lamia engine (manifest + @ergonomic)
     # handlers/concrete_request_handlers.cpp  # REMOVED: file was zero-filled/corrupted; real handlers to be re-implemented
     # fix_lamia_server.cpp                    # HTTP response handling patches for Lamia support
@@ -508,6 +512,32 @@ set_target_properties(propup_auth_secret_failclosed PROPERTIES
     INSTALL_RPATH "${MEDUSASERV_RPATH}")
 add_test(NAME propup_auth_secret_failclosed
          COMMAND propup_auth_secret_failclosed ${CMAKE_CURRENT_SOURCE_DIR})
+
+# [HTTP-003] DocumentRoot parity — GET of a real route-tree file is the body.
+add_executable(propup_http_documentroot_parity
+    tests/propup/propup_http_documentroot_parity.cpp
+    src/webserver/managers/http_document_root.cpp
+    MedusaServ/src/webserver/lamia/engine/lamia_engine.cpp
+    src/lamia_ergonomic_processor.cpp
+)
+target_include_directories(propup_http_documentroot_parity PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/security
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/webserver/managers
+    ${CMAKE_CURRENT_SOURCE_DIR}/MedusaServ/src/webserver/lamia/engine
+    "${LFSSL_DIR}/include"
+)
+target_link_libraries(propup_http_documentroot_parity PRIVATE
+    ${CMAKE_THREAD_LIBS_INIT}
+)
+set_target_properties(propup_http_documentroot_parity PROPERTIES
+    BUILD_RPATH "${MEDUSASERV_RPATH}"
+    INSTALL_RPATH "${MEDUSASERV_RPATH}")
+add_test(NAME propup_http_documentroot_parity
+         COMMAND propup_http_documentroot_parity
+                 "/mnt/c/McMaker Projects/Fake Dev Web Root")
 
 # Platform-specific libraries
 if(UNIX AND NOT APPLE)
