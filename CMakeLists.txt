@@ -177,6 +177,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/compat  # Windows compatibility headers
     ${CMAKE_CURRENT_SOURCE_DIR}/inc  # MedusaJSON standalone header
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/MedusaServ/src/webserver/lamia/engine  # Dual-dialect Lamia engine
     "${MCMAKER_PROJECTS_DIR}/PFQL/include"
     # Clean-room Nemadic model include root (PFQL command headers reference
     # nemadic/* headers); the Living Book exposes it via psiforcedb_common.
@@ -189,6 +190,49 @@ include_directories(
     "${PSIFORCEDB_DIR}/src/server/core"
     "${PSIFORCEDB_DIR}/src/server/ai_bridge"
 )
+
+# ============================================================================
+# LFSSL SUBSTRATE RESOLUTION (one and only one LFSSL — estate rule)
+# ============================================================================
+# Resolved ONCE, before any target, so medusaserv and every Propup battery
+# link the identical canonical LFSSL. The shared object is preferred (full PQC
+# surface); the static archive is the fallback. Dual LFSSL archives in one
+# link line are forbidden (Dual-Truth Collapse Policy).
+set(LFSSL_ELF_LIB "")
+if(UNIX AND NOT APPLE)
+    foreach(candidate
+            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so"
+            "${LFSSL_DIR}/build_wsl_26/liblfssl.so"
+            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.a"
+            "${LFSSL_DIR}/build_wsl_26/liblfssl.a"
+            "${LFSSL_DIR}/build_fortress_wsl26/liblfssl.a"
+            "${LFSSL_DIR}/build_wsl/liblfssl.a")
+        if(EXISTS "${candidate}")
+            set(LFSSL_ELF_LIB "${candidate}")
+            break()
+        endif()
+    endforeach()
+elseif(WIN32)
+    foreach(candidate
+            "${LFSSL_DIR}/build_fortress_win/lib/liblfssl.dll.a"
+            "${LFSSL_DIR}/build_fortress_win/lib/liblfssl.a"
+            "${LFSSL_DIR}/build_shared/lib/liblfssl.dll.a")
+        if(EXISTS "${candidate}")
+            set(LFSSL_ELF_LIB "${candidate}")
+            break()
+        endif()
+    endforeach()
+endif()
+if(LFSSL_ELF_LIB)
+    message(STATUS "LFSSL substrate resolved: ${LFSSL_ELF_LIB}")
+    # Bake the substrate directory into the runtime search path so the server
+    # and every ctest Propup run self-contained (no env fiddling).
+    get_filename_component(LFSSL_LIB_DIR "${LFSSL_ELF_LIB}" DIRECTORY)
+    set(MEDUSASERV_RPATH "${LFSSL_LIB_DIR}")
+else()
+    message(FATAL_ERROR "LFSSL substrate not found — the estate has exactly one "
+                        "crypto substrate and it is mandatory (fail closed).")
+endif()
 
 # Add Collaboration Hub include path if enabled
 if(ENABLE_COLLABORATION_HUB)
@@ -206,6 +250,7 @@ endif()
 set(MEDUSASERV_CORE_SOURCES
     src/lamia_server.cpp                    # Main HTTP server with Lamia file processing
     src/lamia_ergonomic_processor.cpp      # Ergonomic @ syntax processor for Lamia files
+    MedusaServ/src/webserver/lamia/engine/lamia_engine.cpp  # Dual-dialect Lamia engine (manifest + @ergonomic)
     # handlers/concrete_request_handlers.cpp  # REMOVED: file was zero-filled/corrupted; real handlers to be re-implemented
     # fix_lamia_server.cpp                    # HTTP response handling patches for Lamia support
     # examples/simple_module.cpp            # Excluded: encoding issues, not needed for production
@@ -407,6 +452,63 @@ target_link_libraries(medusaserv
     # ${CMAKE_CURRENT_SOURCE_DIR}/inc/so/libmedusa_json.so
 )
 
+# ============================================================================
+# PROPUP BATTERIES (Propup Gate Policy §6.1 — security targets declare Propups)
+# ============================================================================
+# Every security surface in medusaserv is Propped by a registered executable
+# battery under tests/propup/. Gates fail closed; Policy IDs appear in output
+# for Purple Pages extraction. These are the ONLY validation harnesses for
+# these surfaces — ad-hoc shell validation is abolished (Propup §2, §6.4).
+enable_testing()
+
+add_executable(propup_smtp_auth_failclosed
+    tests/propup/propup_smtp_auth_failclosed.cpp
+    src/webserver/managers/medusamail_smtp.cpp
+    src/webserver/managers/dns_manager.cpp
+)
+target_include_directories(propup_smtp_auth_failclosed PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/security
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/webserver/managers
+    "${LFSSL_DIR}/include"
+)
+target_link_libraries(propup_smtp_auth_failclosed PRIVATE
+    ${CMAKE_THREAD_LIBS_INIT}
+    "${LFSSL_ELF_LIB}"
+)
+set_target_properties(propup_smtp_auth_failclosed PROPERTIES
+    BUILD_RPATH "${MEDUSASERV_RPATH}"
+    INSTALL_RPATH "${MEDUSASERV_RPATH}")
+if(WIN32)
+    target_link_libraries(propup_smtp_auth_failclosed PRIVATE ws2_32)
+endif()
+add_test(NAME propup_smtp_auth_failclosed
+         COMMAND propup_smtp_auth_failclosed)
+
+add_executable(propup_auth_secret_failclosed
+    tests/propup/propup_auth_secret_failclosed.cpp
+    src/webserver/managers/native_pfev_variables.cpp
+)
+target_include_directories(propup_auth_secret_failclosed PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/security
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/webserver/managers
+    "${LFSSL_DIR}/include"
+)
+target_link_libraries(propup_auth_secret_failclosed PRIVATE
+    ${CMAKE_THREAD_LIBS_INIT}
+    "${LFSSL_ELF_LIB}"
+)
+set_target_properties(propup_auth_secret_failclosed PROPERTIES
+    BUILD_RPATH "${MEDUSASERV_RPATH}"
+    INSTALL_RPATH "${MEDUSASERV_RPATH}")
+add_test(NAME propup_auth_secret_failclosed
+         COMMAND propup_auth_secret_failclosed ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Platform-specific libraries
 if(UNIX AND NOT APPLE)
     # Linux-specific
@@ -415,28 +517,14 @@ if(UNIX AND NOT APPLE)
         pthread
         uuid
     )
-    # LFSSL substrate. The canonical complete LANE library is the SHARED object
-    # (build_wsl_26/lib/liblfssl.so) — it carries the full PQC surface (dnssec,
-    # dkim, TLS13, Argon2, AES256GCM, KEM). The static .a produced by the same
-    # build is not always a self-contained closure (some object members reference
-    # symbols outside the archive), so the .so is preferred; the .a is only a
-    # fallback. One and only one LFSSL is linked — the estate rule.
-    set(LFSSL_ELF_LIB "")
-    foreach(candidate
-            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.so"
-            "${LFSSL_DIR}/build_wsl_26/liblfssl.so"
-            "${LFSSL_DIR}/build_wsl_26/lib/liblfssl.a"
-            "${LFSSL_DIR}/build_wsl_26/liblfssl.a"
-            "${LFSSL_DIR}/build_fortress_wsl26/liblfssl.a"
-            "${LFSSL_DIR}/build_wsl/liblfssl.a")
-        if(EXISTS "${candidate}")
-            set(LFSSL_ELF_LIB "${candidate}")
-            break()
-        endif()
-    endforeach()
+    # LFSSL substrate: resolved ONCE globally (above) — medusaserv and every
+    # Propup battery link the identical canonical object. One and only one
+    # LFSSL is linked — the estate rule.
     if(LFSSL_ELF_LIB)
         target_link_libraries(medusaserv "${LFSSL_ELF_LIB}")
-        message(STATUS "Linking LFSSL archive: ${LFSSL_ELF_LIB}")
+        set_target_properties(medusaserv PROPERTIES
+            BUILD_RPATH "${MEDUSASERV_RPATH}"
+            INSTALL_RPATH "${MEDUSASERV_RPATH}")
     endif()
     if(ENABLE_COLLABORATION_HUB)
         # Link the full estate static closure (RESCAN: --start-group so

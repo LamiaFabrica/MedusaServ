@@ -1,0 +1,3 @@
+propup_smtp_auth_failclosed 1 0.0772183
+propup_auth_secret_failclosed 2 0.0218189
+---

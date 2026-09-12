@@ -1,0 +1,10 @@
+{
+  "id": "eebf9e105096cdb0c61e2bb81a44ae5e98a89c4bf0c62593d7f919ea12bb974b",
+  "mailbox": "bob@medusa.test",
+  "from": "clerk@medusa.test",
+  "to": ["bob@medusa.test"],
+  "subject": "propup",
+  "received_at": 1789235339,
+  "read": false,
+  "dkim": ""
+}
