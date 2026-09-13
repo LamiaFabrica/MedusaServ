@@ -1,4 +1,4 @@
-propup_smtp_auth_failclosed 4 0.0177109
-propup_auth_secret_failclosed 5 0.00770534
-propup_http_documentroot_parity 2 0.0205633
+propup_smtp_auth_failclosed 10 0.00655463
+propup_auth_secret_failclosed 11 0.00299328
+propup_http_documentroot_parity 8 0.00381464
 ---

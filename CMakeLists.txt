@@ -13,7 +13,7 @@ if(UNIX AND NOT APPLE)
     message(STATUS "Building MedusaServ for Ubuntu 24.04 Server (WSL) - ELF Binary")
     
     # Find bleeding-edge compiler: GCC 15+ preferred for libstdc++ compatibility, fallback Clang
-    find_program(BLEEDING_CXX g++-20 g++-19 g++-18 g++-17 g++-16 g++-15 clang++-20 clang++-19 clang++-18 clang++ g++-14 g++-13 g++ REQUIRED)
+    find_program(BLEEDING_CXX g++ g++-16 g++-15 clang++-20 clang++-19 clang++-18 g++-14 g++-13 REQUIRED)
     set(CMAKE_CXX_COMPILER ${BLEEDING_CXX})
     get_filename_component(COMPILER_DIR ${BLEEDING_CXX} DIRECTORY)
     get_filename_component(COMPILER_BASE ${BLEEDING_CXX} NAME_WE)
@@ -117,6 +117,7 @@ endif()
 
 # LFSSL (Lamia Fabrica SSL) - Sole Cryptographic Substrate (ROLLOUT-MEDUSA-01)
 set(LFSSL_DIR "${MCMAKER_PROJECTS_DIR}/LFSSL - Lamia Fabrica SSL" CACHE PATH "LFSSL directory path")
+set(MEDUSAMAIL_DIR "${MCMAKER_PROJECTS_DIR}/MedusaMail_1.0.0" CACHE PATH "MedusaMail directory path (CONSUME — mail product)")
 
 set(PSIFORCEDB_DIR "${MCMAKER_PROJECTS_DIR}/PsiForceDB - The Living Book" CACHE PATH "PsiForceDB directory path" FORCE)
 set(OLYMPUS_CLIENT_DIR "${MCMAKER_PROJECTS_DIR}/Olympus Client")
@@ -178,6 +179,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/inc  # MedusaJSON standalone header
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/MedusaServ/src/webserver/lamia/engine  # Dual-dialect Lamia engine
+    "${MEDUSAMAIL_DIR}/include"  # Mail product (CONSUME — smtp_auth.hpp)
     "${MCMAKER_PROJECTS_DIR}/PFQL/include"
     # Clean-room Nemadic model include root (PFQL command headers reference
     # nemadic/* headers); the Living Book exposes it via psiforcedb_common.
@@ -476,6 +478,7 @@ target_include_directories(propup_smtp_auth_failclosed PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/security
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/webserver/managers
+    "${MEDUSAMAIL_DIR}/include"
     "${LFSSL_DIR}/include"
 )
 target_link_libraries(propup_smtp_auth_failclosed PRIVATE
@@ -527,6 +530,7 @@ target_include_directories(propup_http_documentroot_parity PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/webserver/managers
     ${CMAKE_CURRENT_SOURCE_DIR}/MedusaServ/src/webserver/lamia/engine
+    "${MEDUSAMAIL_DIR}/include"
     "${LFSSL_DIR}/include"
 )
 target_link_libraries(propup_http_documentroot_parity PRIVATE

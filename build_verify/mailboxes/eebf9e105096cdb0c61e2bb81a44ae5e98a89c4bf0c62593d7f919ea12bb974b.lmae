@@ -4,7 +4,7 @@
   "from": "clerk@medusa.test",
   "to": ["bob@medusa.test"],
   "subject": "propup",
-  "received_at": 1789256285,
+  "received_at": 1789262543,
   "read": false,
   "dkim": ""
 }
